@@ -1,6 +1,6 @@
 {
     "name": "fits-admin-ui",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "FitsAdminUI是根据element plus进行二次开发的组件库",
     "main": "fits-admin-ui.umd.js",
     "module": "fits-admin-ui.es.js",
@@ -19,7 +19,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/caoguanjie/fitsadmin.git"
+        "url": "git+https://github.com/caoguanjie/fitsadmin/tree/master/libs"
     },
     "keywords": [
         "vue3",
@@ -40,5 +40,5 @@
     "bugs": {
         "url": "https://github.com/caoguanjie/fitsadmin/issues"
     },
-    "homepage": "https://github.com/caoguanjie/fitsadmin#readme"
+    "homepage": "https://github.com/caoguanjie/fitsadmin/tree/master/libs"
 }

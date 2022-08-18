@@ -1,6 +1,6 @@
 {
-    "name": "vue3-element-admin",
-    "version": "1.0.0",
+    "name": "fitsadmin",
+    "version": "1.0.1",
     "scripts": {
         "dev": "vite serve --mode dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",
@@ -74,7 +74,7 @@
         "vuepress": "^2.0.0-beta.49",
         "vuepress-theme-hope": "^2.0.0-beta.91"
     },
-    "repository": "https://gitee.com/youlaiorg/vue3-element-admin.git",
-    "author": "有来开源组织",
+    "repository": "https://github.com/caoguanjie/fitsadmin",
+    "author": "caoguanjie",
     "license": "MIT"
 }

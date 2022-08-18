@@ -19,6 +19,7 @@ export default defineConfig({
     build: {
         // 编译之后输出的地址
         outDir: 'libs',
+        emptyOutDir: false,
         lib: {
             // 需要编译的入口文件
             entry: path.resolve(__dirname, './src/components/index.ts'),

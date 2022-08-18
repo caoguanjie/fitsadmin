@@ -8,7 +8,7 @@
 
 ## 功能清单
 
-![图 2](../assets/images/20220810044534.png)  
+![图 2](https://github.com/caoguanjie/fitsadmin/blob/master/docs/.vuepress/public/images/20220810085530.png)  
 
 
 
