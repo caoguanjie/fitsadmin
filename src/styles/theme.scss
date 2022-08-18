@@ -1,0 +1,26 @@
+.white {
+    --fits-sidebar-backgroud-color: #fff;
+    --fits-sidebar-box-shawdow: 0px 1px 4px 0px rgba(0, 26, 54, 0.1);
+    --fits-sidebar-base-font-color: #303133;
+    --fits-sidebar-active-font-color: var(--fits-sidebar-base-active-font-color);
+    --fits-sidebar-submenu-padding: 8px;
+    --fits-sidebar-hover-backgroud-color: var(--fits-sidebar-base-hover-backgroud-color);
+}
+
+.blue {
+    --fits-sidebar-backgroud-color: #0c5fc4;
+    --fits-sidebar-box-shawdow: 0px 1px 4px 0px rgba(0, 26, 54, 0.1);
+    --fits-sidebar-base-font-color: #fff;
+    --fits-sidebar-active-font-color: #fff;
+    --fits-sidebar-submenu-padding: 8px;
+    --fits-sidebar-hover-backgroud-color: #094c9c;
+}
+
+.black {
+    --fits-sidebar-backgroud-color: #2b3649;
+    --fits-sidebar-box-shawdow: 0px 1px 4px 0px rgba(0, 26, 54, 0.1);
+    --fits-sidebar-base-font-color: #fff;
+    --fits-sidebar-active-font-color: #fff;
+    --fits-sidebar-submenu-padding: 8px;
+    --fits-sidebar-hover-backgroud-color: #222b3a;
+}

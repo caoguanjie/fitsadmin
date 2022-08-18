@@ -1,0 +1,80 @@
+import { hopeTheme } from "vuepress-theme-hope";
+import navbar from "./navbar";
+import sidebar from "./sidebar";
+
+export default hopeTheme({
+  hostname: "/",
+  author: {
+    name: "caoguanjie",
+    url: "https://github.com/caoguanjie/fits-admin-ui.git",
+  },
+
+  iconAssets: "iconfont",
+
+  logo: "/images/logo.png",
+
+  repo: "https://github.com/caoguanjie/fits-admin-ui.git",
+
+  docsDir: "demo/src",
+
+  // navbar
+  navbar: navbar,
+
+  // sidebar
+  sidebar: sidebar,
+
+  footer: "广东丰德科技有限公司 | Copyright © 软件事业部 前端框架组",
+
+  displayFooter: true,
+  // 文章信息，可以填入数组，数组的顺序是各条目显示的顺序
+  pageInfo: ["Author", "Date", "Original", "Category", "Tag", "ReadingTime", "Word", "PageView"],
+  // 是否展示编辑此页链接
+  editLink: false,
+  // 默认的版权信息，设置为 false 来默认禁用它。
+  copyright: false,
+  contributors: true,
+  // 是否显示页面最后更新时间
+  lastUpdated: true,
+  encrypt: {
+    config: {
+      "/guide/encrypt.html": ["1234"],
+    },
+  },
+  plugins: {
+    blog: false,
+
+    // 如果你不需要评论，可以直接删除 comment 配置，
+    // 以下配置仅供体验，如果你需要评论，请自行配置并使用自己的环境，详见文档。
+    // 为了避免打扰主题开发者以及消耗他的资源，请不要在你的正式环境中直接使用下列配置!!!!!
+    comment: {
+      /**
+       * Using Giscus
+       */
+      provider: "Giscus",
+      repo: "vuepress-theme-hope/giscus-discussions",
+      repoId: "R_kgDOG_Pt2A",
+      category: "Announcements",
+      categoryId: "DIC_kwDOG_Pt2M4COD69",
+
+      /**
+       * Using Twikoo
+       */
+      // provider: "Twikoo",
+      // envId: "https://twikoo.ccknbc.vercel.app",
+
+      /**
+       * Using Waline
+       */
+      // provider: "Waline",
+      // serverURL: "https://vuepress-theme-hope-comment.vercel.app",
+    },
+
+    mdEnhance: {
+      demo: true,
+      enableAll: false,
+      presentation: {
+        plugins: ["highlight", "math", "search", "notes", "zoom"],
+      },
+    },
+  },
+});

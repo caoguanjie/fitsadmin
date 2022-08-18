@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="883px" height="697px" viewBox="0 0 883 697" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 8</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="画板备份-11" transform="translate(-764.000000, -160.000000)">
+            <g id="编组-8" transform="translate(764.922748, 160.867270)">
+                <path d="M65.3398466,13.0777761 L201.170616,13.0777761 L201.170616,256.077776 L143.339847,256.077776 C100.261636,256.077776 65.3398466,221.155987 65.3398466,178.077776 L65.3398466,13.0777761 L65.3398466,13.0777761 Z" id="矩形" fill="#F6FAFE" opacity="0.359444754" transform="translate(133.255231, 134.577776) rotate(44.000000) translate(-133.255231, -134.577776) "></path>
+                <rect id="矩形备份-2" fill="#F7FBFF" opacity="0.395438058" transform="translate(302.255231, 156.577776) rotate(44.000000) translate(-302.255231, -156.577776) " x="234.339847" y="35.0777761" width="135.830769" height="243"></rect>
+                <rect id="矩形备份-3" fill="#F7FBFF" opacity="0.395438058" transform="translate(708.253594, 579.228108) rotate(44.000000) translate(-708.253594, -579.228108) " x="666.753594" y="457.728108" width="83" height="243"></rect>
+                <path d="M751.753594,397.728108 L807.753594,397.728108 L807.753594,397.728108 L807.753594,640.728108 L724.753594,640.728108 L724.753594,424.728108 C724.753594,409.81642 736.841905,397.728108 751.753594,397.728108 Z" id="矩形备份-4" fill="#F7FBFE" opacity="0.395438058" transform="translate(766.253594, 519.228108) rotate(-225.000000) translate(-766.253594, -519.228108) "></path>
+                <polygon id="路径-2" fill="#EDF4FF" opacity="0.359444754" points="169 192.13273 169 1.70102865e-15 266.510462 96.0663651"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

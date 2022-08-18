@@ -1,0 +1,106 @@
+:root {
+    --c-brand: rgb(66, 184, 131) !important; // 主色调
+    --c-brand-light: rgb(47, 202, 133) !important; // 主色调(高亮)
+    --c-text-lightest: #3c3c3cb3;
+}
+
+// 进度条颜色
+#nprogress {
+    --nprogress-color: #187391;
+}
+
+
+/*
+* 首页标题
+*/
+
+#main-title {
+    font-size: 3.5rem;
+}
+
+.description {
+    font-weight: 300 !important;
+    font-size: 2rem !important;
+    margin-bottom: 30px !important;
+}
+
+
+/*
+* 首页按钮
+*/
+
+.action-button {
+    font-weight: 600;
+    font-size: 16px !important;
+    padding: 8px 18px !important;
+    border-radius: 6px !important;
+    border: 0 !important;
+    background-color: var(--c-brand);
+    color: var(--c-bg)!important;
+}
+
+.home.project .hero .action-button.primary:hover {
+    background-color: rgb(47, 202, 133) !important;
+}
+
+.action-button.secondary {
+    color: #476582 !important;
+    background-color: #f1f1f1 !important;
+}
+
+.action-button.secondary:hover {
+    background-color: #e5e5e5 !important;
+}
+
+// 首页的logo界面
+@media (min-width: 959px) {
+    .home.project .hero {
+        display: block;
+        margin: 0 auto;
+        text-align: center
+    }
+    .home.project .hero h1,
+    .home.project .hero .description,
+    .home.project .hero .action {
+        margin: 1.8rem auto;
+    }
+}
+
+.home.project .hero img {
+    margin: 3rem auto 1.5rem;
+    width: 200px;
+}
+
+// 导航条的样式
+.navbar {
+    border-bottom: 1px solid var(--c-border);
+    box-shadow: none;
+}
+
+.navbar .nav-item>.nav-link {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    overflow-wrap: break-word;
+}
+
+.navbar-left>*,
+.navbar-right>*,
+.navbar-center>*,
+.navbar .nav-item {
+    margin: 0 .5rem;
+}
+
+.navbar-center {
+    flex: 1;
+    justify-content: flex-end;
+    margin-right: .5rem;
+}
+
+// 关闭代码中的复制按钮
+.vmi-previewer {
+    .copy-code-button {
+        display: none;
+    }
+}
