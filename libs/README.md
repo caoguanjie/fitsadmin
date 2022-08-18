@@ -172,8 +172,7 @@ export default defineConfig({
 
 2. 效果图如下：
 
-![./markdown/docs/view.jpg](https://github.com/caoguanjie/fitsadmin/tree/master/libs/assets/view.jpg)
-
+![图 2](https://github.com/caoguanjie/fitsadmin/tree/master/libs/assets/view.jpg)  
 
 ### 发布组件库
 1. 前期工作都做好，并且保证本地已经登录npm的账号密码情况下，要给`package.json`文件添加一些属性。只有配置好了`main`、`module`、`style`、`types`、`type`、`exports`、`repository`这些属性之后，项目中才能使用`import FitsAdmin from 'fits-admin-ui'`这种办法导入
