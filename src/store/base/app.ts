@@ -58,7 +58,7 @@ const useAppStore = defineStore({
       {
         key: "keyValue",
         storage: window.localStorage,
-        paths: ['sidebar', 'sidebar']
+        paths: ['sidebar']
       }
     ]
   }

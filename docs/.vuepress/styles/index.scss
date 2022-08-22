@@ -104,3 +104,36 @@
         display: none;
     }
 }
+
+// 仿element plus的属性表格的样式
+table {
+    display: table;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.5em;
+    &>thead tr:first-child th {
+        border-top: none;
+    }
+    &>th,
+    &>td {
+        padding: .6em 1em;
+        max-width: 250px;
+        white-space: pre-wrap;
+        border-bottom: 1px solid #dcdfe6;
+        border-top: 1px solid #dcdfe6;
+    }
+    tr {
+        border-top: 0
+    }
+}
+
+th,
+td {
+    padding: .6em 1em;
+    max-width: 250px;
+    white-space: pre-wrap;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #dcdfe6;
+    border-top: 1px solid #dcdfe6;
+}

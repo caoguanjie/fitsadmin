@@ -8,9 +8,20 @@ export class FitsDefaultSetting implements FitsSetting {
     system: FitsSystemSetting;
     login: LoginSetting;
     constructor({ project, system, login }: any = {}) {
-        this.project = project;
+        this.project = Object.assign({}, this.InitProjectData(), project);
         this.system = Object.assign({}, this.InitSystemData(), system);
         this.login = Object.assign({}, this.InitLoginData(), login);
+    }
+
+    InitProjectData(): FitsProjectSetting {
+        return {
+            title: '',
+            subTitle: '',
+            company: '',
+            version: '1.0.0',
+            api_address: '',
+            http_timeout: 15000
+        }
     }
 
     InitSystemData(): FitsSystemSetting {

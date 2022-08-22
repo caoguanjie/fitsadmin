@@ -70,8 +70,12 @@ export default hopeTheme({
     },
 
     mdEnhance: {
+      // 代码演示支持
       demo: true,
+      // 开启markdown增强模式
       enableAll: false,
+      // 添加选项卡支持
+      tabs: true,
       presentation: {
         plugins: ["highlight", "math", "search", "notes", "zoom"],
       },

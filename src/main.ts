@@ -2,7 +2,7 @@ import { createApp, Directive } from 'vue';
 import App from './App.vue';
 import { setupRouter } from '@/router';
 
-import 'fits-admin-ui/libs/style.css';
+import 'fits-admin-ui/style.css';
 import ElementPlus from 'element-plus';
 import 'element-plus/theme-chalk/index.css';
 import Pagination from '@/components/Pagination/index.vue';

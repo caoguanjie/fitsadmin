@@ -1,6 +1,6 @@
 import { FitsDefaultSetting } from "./type";
-const importModules = import.meta.globEager('./modules/*.ts');
 
+const importModules = import.meta.globEager('./modules/*.ts');
 // 环境变量默认是以开发环境为主
 interface PreviousValue {
     [envKey: string]: any;

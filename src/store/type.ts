@@ -1,4 +1,4 @@
-import {FormType} from '@/components/Common/FormType.vue'
+import { FormType } from '@/components/Common/FormType.vue'
 import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
 /**
  * 系统类型声明
