@@ -63,6 +63,12 @@ const componentRouter: RouteRecordRaw = {
                     component: () => import("@/views/components-manage/form/FormExample.vue"),
                     meta: { title: "表单范例", roles: ["admin", "editor"] },
                 },
+                {
+                    path: "echarts",
+                    name: "EchartsExample",
+                    component: () => import("@/views/components-manage/form/EchartsExample.vue"),
+                    meta: { title: "Echarts范例", roles: ["admin", "editor"] },
+                },
             ]
         },
         {
@@ -123,6 +129,21 @@ const componentRouter: RouteRecordRaw = {
                 },
 
             ],
+        },
+        {
+            path: "formcomponents",
+            name: "formcomponents",
+            redirect: "/componentManger/package/echarts",
+            component: () => import("@/views/components-manage/index.vue"),
+            meta: { title: "表单组件", icon: "fits-component1", alwaysShow: true },
+            children: [
+                {
+                    path: "treeSelect",
+                    name: "FitsTreeSelect",
+                    component: () => import("@/views/components-manage/form-components/fits-tree-select/index.vue"),
+                    meta: { title: "树筛选", roles: ["admin", "editor"] },
+                },
+            ]
         },
     ],
 };

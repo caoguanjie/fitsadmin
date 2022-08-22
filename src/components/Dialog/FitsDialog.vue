@@ -1,8 +1,8 @@
 <template>
     <div class="dialog">
-        <el-dialog ref="elDialogRef" :title="props.title" :width="myProps.width" v-model="isVisible"
-            custom-class="fits-dialog" @close="$emit('cancle')" :close-on-click-modal="false" :top="myProps.marginTop"
-            draggable>
+        <el-dialog ref="elDialogRef" v-model="isVisible" v-bind="props"
+            :custom-class="props?.customClass ? props.customClass + ' fits-dialog' : 'fits-dialog'"
+            :close-on-click-modal="false" :top="myProps.marginTop" draggable>
             <div class="dialog-body" v-loading="loading" element-loading-text="拼命加载中"
                 element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
                 <el-scrollbar :noresize="true">
@@ -23,36 +23,17 @@
     </div>
 </template>
 
-<script lang="ts">
-/**
- * 弹出框的配置
- */
-export class DialogProps {
-    marginTop: string;
-    width: string;
-    title: string;
-    /**
-     * @property {String} marginTop 外边距
-     */
-    constructor({ marginTop, width, title }: any = {}) {
-        this.marginTop = marginTop || '0';
-        this.width = width || '50%';
-        this.title = title || '标题'
-    }
-}
-</script>
-
 <script lang="ts" setup>
 import { reactive, ref, toRefs, watch, nextTick } from "vue";
 
 const prop = withDefaults(defineProps<{
     visible: boolean,
     loading?: boolean,
-    props?: DialogProps
+    props?: any
 }>(), {
     visible: false,
     loading: false,
-    props: () => new DialogProps()
+    props: {}
 })
 
 const emit = defineEmits(["update:modelValue", 'cancle', 'submit', 'open'])
@@ -66,8 +47,11 @@ const { isVisible, myProps } = toRefs(state);
 const elDialogRef = ref()
 
 watch(() => prop.visible, (newVal: boolean) => {
+    console.log(prop);
+
     isVisible.value = newVal
     newVal && emit('open')
+    !newVal && emit('cancle')
     nextTick(() => {
         updatedWindowHeight();
     });
@@ -86,7 +70,7 @@ function emitSave() {
  */
 function emitCancle() {
     emit("cancle");
-    isVisible.value = false;
+    // isVisible.value = false;
 }
 
 /**

@@ -1,14 +1,10 @@
 import { defineUserConfig } from "vuepress";
 import theme from "./theme";
 import { searchPlugin } from "@vuepress/plugin-search";
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-const { viteBundler } = require('@vuepress/bundler-vite')
-const { registerComponentsPlugin } = require('@vuepress/plugin-register-components')
 import { codeBlockPlugin } from '@bfehub/vuepress-plugin-code-block'
-import { resolve } from 'path'
-import { path } from '@vuepress/utils'
+import { viteBundler } from '@vuepress/bundler-vite';
+import { resolve } from "path";
+
 export default defineUserConfig({
   lang: "zh-CN",
   title: "FitsAdmin",
@@ -27,15 +23,25 @@ export default defineUserConfig({
         }
       }
     }),
-    registerComponentsPlugin({
-      componentsDir: resolve(__dirname, '../../src/components'),
-      getComponentName: (filename: string) => {
-        //生成的组件名字
-        const arr = filename.split("/")
-        return `Fits${path.trimExt(arr[arr.length - 1])}`;
-      }
-    }),
+    // registerComponentsPlugin({
+    //   componentsDir: resolve(__dirname, '../../src/components'),
+    //   getComponentName: (filename: string) => {
+    //     //生成的组件名字
+    //     const arr = filename.split("/")
+    //     return `Fits${path.trimExt(arr[arr.length - 1])}`;
+    //   }
+    // }),
     // @bfehub/vuepress-plugin-code-block
     codeBlockPlugin(),
   ],
+  bundler: viteBundler({
+    viteOptions: {
+      configFile: resolve(__dirname, './vite.config.ts'),
+      // @ts-expect-error: vite does not provide types for ssr options yet
+      // 解决Must use import to load ES Module导致的报错
+      ssr: {
+        noExternal: ['element-plus'],
+      },
+    }
+  }),
 });

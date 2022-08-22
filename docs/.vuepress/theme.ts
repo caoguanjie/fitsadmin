@@ -3,7 +3,7 @@ import navbar from "./navbar";
 import sidebar from "./sidebar";
 
 export default hopeTheme({
-  hostname: "/",
+  hostname: "http://192.168.32.60:8080",
   author: {
     name: "caoguanjie",
     url: "https://github.com/caoguanjie/fits-admin-ui.git",

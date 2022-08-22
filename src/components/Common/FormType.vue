@@ -5,8 +5,8 @@
             @open="openForm">
             <template #body>
                 <div class="form-dialog-container" v-for="item in form" :key="item.id">
-                    <divider v-model="item.title" />
-                    <form-create v-bind='item' v-model:api="item.api" v-model="item.modelValue">
+                    <divider v-model="item.title" v-show="item.title" />
+                    <form-create v-bind='item' v-model:api="item.api" v-model="item.formValue">
                     </form-create>
                 </div>
             </template>
@@ -15,11 +15,11 @@
         <fits-drawer v-bind='$attrs' @cancle="closeForm" @submit="submitForm" @open="openForm" v-else>
             <div class="form-drawer-container" v-for="item in form" :key="item.id">
                 <el-scrollbar>
-                    <div class="title">
+                    <div class="title" v-show="item.title">
                         <svg-icon :icon-class="item.iconClass"></svg-icon>
                         {{ item.title }}
                     </div>
-                    <form-create v-bind='item' v-model:api="item.api" v-model="item.modelValue">
+                    <form-create v-bind='item' v-model:api="item.api">
                     </form-create>
                 </el-scrollbar>
             </div>
@@ -36,8 +36,9 @@ export type FormType = 'dialog' | 'drawer'
  */
 export interface FormTypeProps extends FormCreateProps {
     id: string;
-    title: string;
-    iconClass: string;
+    formValue: object,
+    title?: string;
+    iconClass?: string;
 }
 export type FormTypeArray = FormTypeProps[]
 
@@ -64,6 +65,7 @@ const { setting } = useStore();
 function closeForm() {
     prop.form.forEach((item: any, index: number) => {
         item.api.resetFields()
+        item.api.reload()
     })
     emit("cancle")
 }
@@ -80,7 +82,6 @@ function submitForm() {
             //没通过校验
             console.log(index + '没通过');
         }).then((data: any) => {
-            console.log(data, 'data');
             formValue = Object.assign(formValue, data);
             flag === prop.form.length && emit('submit', formValue)
         })
@@ -91,6 +92,7 @@ function submitForm() {
  * 打开窗口之前清空之前残留的验证
  */
 function openForm() {
+    console.log(prop.form, 'form');
     nextTick(() => {
         prop.form.forEach((item: any, index: number) => {
             item.api.clearValidateState()
