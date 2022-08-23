@@ -1,0 +1,107 @@
+<template>
+    <tree-select :filterInput="filterInput" :selectInput="selectInput" :tree="tree">
+        <template #>
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        </template>
+    </tree-select>
+</template>
+
+<script lang="ts" setup>
+import TreeSelect from '@/components/Form/TreeSelect.vue';
+import { reactive, toRefs } from 'vue'
+
+const options = [
+    {
+        value: 'Option1',
+        label: 'Option1',
+    }]
+
+const state = reactive({
+    filterInput: {
+        show: true,
+    },
+    selectInput: {
+    },
+    tree: {
+        nodeKey: "id",
+        defaultExpandAll: true,
+        draggable: true,
+        data: [
+            {
+                id: 1,
+                label: 'Level 1',
+                children: [
+                    {
+                        id: 4,
+                        label: 'Level 1-1',
+                        children: [
+                            {
+                                id: 9,
+                                label: 'Level 1-1-1',
+                            },
+                            {
+                                id: 11,
+                                label: 'Level 1-1-2',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: 21,
+                label: 'Level 2',
+                children: [
+                    {
+                        id: 5,
+                        label: 'Level 2-1',
+                        children: [
+                            {
+                                id: 91,
+                                label: 'Level 2-1-1',
+                            },
+                            {
+                                id: 111,
+                                label: 'Level 2-2-2',
+                            },
+                        ],
+                    },
+                    {
+                        id: 6,
+                        label: 'Level 2-2',
+                    },
+                ],
+            },
+            {
+                id: 3,
+                label: 'Level 3',
+                children: [
+                    {
+                        id: 7,
+                        label: 'Level 3-1',
+                    },
+                    {
+                        id: 8,
+                        label: 'Level 3-2',
+                        children: [
+                            {
+                                id: 92,
+                                label: 'Level 3-2-1',
+                            },
+                            {
+                                id: 120,
+                                label: 'Level 3-2-2',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    }
+})
+const { filterInput, selectInput, tree } = toRefs(state)
+</script>
+<style lang="scss" scoped>
+</style>
+
+<style lang="scss">
+</style>

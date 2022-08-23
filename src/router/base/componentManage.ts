@@ -133,7 +133,7 @@ const componentRouter: RouteRecordRaw = {
         {
             path: "formcomponents",
             name: "formcomponents",
-            redirect: "/componentManger/package/echarts",
+            redirect: "/componentManger/formcomponents/treeSelect",
             component: () => import("@/views/components-manage/index.vue"),
             meta: { title: "表单组件", icon: "fits-component1", alwaysShow: true },
             children: [

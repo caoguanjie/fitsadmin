@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 import { reactive, toRefs, markRaw, ref, onMounted, render } from 'vue';
-import TreeSearch from '@/components/Form/TreeSelect.vue'
+import TreeSelect from '@/components/Form/TreeSelect.vue'
 import IconSelect from '@/components/Form/IconSelect.vue'
 import FormType, { FormTypeArray } from '@/components/Common/FormType.vue'
 import { isEmail, isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
@@ -89,6 +89,16 @@ import { Search } from '@element-plus/icons-vue'
 import Divider from '@/components/Form/Divider.vue'
 import CheckboxAll from '@/components/Form/CheckboxAll.vue'
 import { ElMessage } from 'element-plus';
+
+// const abc: FitsTreeSelect = {
+//     filterInput: {},
+//     selectInput: {},
+//     tree: {
+//         data: [{
+//             label: '123'
+//         }]
+//     }
+// }
 
 const simpleForm = reactive({
     formValue: {
@@ -703,7 +713,7 @@ const customForm = reactive({
                     type: "tree-search",
                     field: "treeSearch",
                     title: "下拉选择树",
-                    component: markRaw(TreeSearch),
+                    component: markRaw(TreeSelect),
                     value: '2',
                     props: {
                         selectInput: {
@@ -1201,7 +1211,7 @@ const dialogForm = [
         rule: [
             {
                 type: "tree-search",
-                component: TreeSearch,
+                component: TreeSelect,
                 field: "Department",
                 name: "organization",
                 title: "所属部门",

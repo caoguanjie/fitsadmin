@@ -1,4 +1,3 @@
-import { FormType } from "@/components/Common/FormType.vue";
 
 /**
  * 给环境配置的属性加上默认的实体类
@@ -48,8 +47,10 @@ export class FitsDefaultSetting implements FitsSetting {
     }
 }
 
-
-
+/**
+ * @description 表单弹窗的类型
+ */
+export type FormType = 'dialog' | 'drawer'
 
 export interface FitsSetting {
     /**

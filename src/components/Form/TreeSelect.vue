@@ -1,28 +1,62 @@
 <template>
     <div class="tree-search">
-        <el-select v-model="selectedValue" ref="selectInput" v-bind='$attrs.selectInput' :filter-method="filterMethod"
+        <el-select v-model="selectedValue" ref="selectInput" :filter-method="filterMethod" v-bind='$attrs.selectInput'
             @visible-change="VisibleChange" :fit-input-width="true"
             :popper-class="($attrs.selectInput as any)?.popperClass ? ($attrs.selectInput as any)?.popperClass + ' tree-popper' : 'tree-popper'">
             <template #empty>
                 <el-scrollbar class="tree-scrollbar">
                     <div class="custom-tree">
-                        <el-input v-model="filterText" v-bind='$attrs.filterInput' class="filterInput"
-                            v-show="($attrs.filterInput as any)?.show" />
+                        <el-input v-model="filterText" placeholder="请输入关键词" v-bind='$attrs.filterInput'
+                            class="filterInput" v-show="($attrs.filterInput as any)?.show" />
                         <el-tree ref="treeRef" :filter-node-method="filterNode" :highlight-current="true"
                             @node-click="nodeClick" v-bind='$attrs.tree' class="tree"
-                            :props="{ ...defaultProps, ...($attrs.tree as any)?.props }" />
+                            :props="{ ...defaultProps, ...($attrs.tree as any)?.props }" @check="Check">
+                        </el-tree>
                     </div>
                 </el-scrollbar>
+            </template>
+            <template v-for="(index, name) in $slots" v-slot:[name]>
+                <slot :name="name"></slot>
             </template>
         </el-select>
     </div>
 </template>
 
+<script lang="ts">
+
+export interface FilterInput extends InputProps {
+    // 是否显示下拉框内的过滤框
+    show: boolean
+}
+
+export interface FitsTreeSelect {
+    filterInput: FilterInput
+    selectInput: ISelectProps
+    tree: TreeComponentProps,
+    // 树默认选中节点的id（nodeKey可以指定属性名），多选类型是id数组
+    modelValue: string | string[]
+}
+
+
+// interface FilterInput {
+//     show: boolean
+// }
+
+</script>
+
 <script lang="ts" setup>
 import { onMounted, reactive, ref, toRefs, watch } from 'vue'
-import { ElTree } from 'element-plus'
+import { InputProps, ISelectProps } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
-import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
+import type { TreeComponentProps, TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
+
+const emit = defineEmits(["update:modelValue"])
+
+const props = defineProps({
+    modelValue: {
+        required: false
+    }
+})
 
 const state = reactive({
     selectedValue: '',
@@ -33,29 +67,22 @@ const { selectedValue, filterText } = toRefs(state);
 const treeRef = ref()
 const selectInput = ref()
 
-const emit = defineEmits(["update:modelValue"])
-
-const props = withDefaults(defineProps<{
-    modelValue: any
-}>(), {
-    modelValue: ''
-})
-
 defineExpose({
     treeRef
 })
 
 const defaultProps = {
-    class: customNodeClass,
+    // class: customNodeClass,
     label: "label",
     children: "children",
+    disabled: 'disabled'
 }
 
 watch(filterText, (val: string) => {
     treeRef.value?.filter(val)
 })
 
-watch(() => props.modelValue, (val: string) => {
+watch(() => props.modelValue, (val: any) => {
     initValue(val)
 })
 
@@ -101,6 +128,25 @@ function nodeClick(node: TreeNodeData, option: Node, event: any) {
     }
 }
 
+/**
+ * 共三个参数，依次为：
+ * 传递给 data 属性的数组中该节点所对应的对象、
+ * 节点本身是否被选中、
+ * 节点的子树中是否有被选中的节点
+ */
+function checkChange(obj: any, isChecked: boolean, isChildChecked: boolean) {
+    console.log('checkedchange', obj, isChecked, isChildChecked);
+}
+
+/**
+ * 共两个参数，依次为：
+ * 传递给 data 属性的数组中该节点所对应的对象、
+ * 树目前的选中状态对象，(包含 checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys 四个属性)
+ */
+function Check(obj: any, checkedObjs: any,) {
+    console.log('checked', obj, checkedObjs);
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -130,6 +176,18 @@ function nodeClick(node: TreeNodeData, option: Node, event: any) {
 
 .custom-tree {
 
+    .el-checkbox+.el-tree-node__label {
+        margin-left: 0 !important;
+    }
+
+    .el-checkbox+i {
+        width: 12px !important;
+    }
+
+    .el-checkbox {
+        margin-left: 5px !important;
+    }
+
     .el-tree>.el-tree-node>.el-tree-node__content {
         padding-left: 8px !important;
     }
@@ -139,7 +197,7 @@ function nodeClick(node: TreeNodeData, option: Node, event: any) {
     }
 
     .el-tree-node__label {
-        margin-left: 8px;
+        // margin-left: 8px;
     }
 
     .el-tree-node__expand-icon {
@@ -165,7 +223,7 @@ function nodeClick(node: TreeNodeData, option: Node, event: any) {
 
     .is-leaf .el-tree-node__content {
         i {
-            width: 0;
+            // width: 0;
         }
 
         .el-tree-node__label {

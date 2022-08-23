@@ -1,6 +1,5 @@
 <template>
     <div class="form-type">
-        <!-- {{ form }} -->
         <fits-dialog v-if="setting.formType === 'dialog'" v-bind='$attrs' @cancle="closeForm" @submit="submitForm"
             @open="openForm">
             <template #body>
@@ -29,8 +28,6 @@
 
 <script lang="ts">
 import { FormCreateProps } from '@form-create/element-ui'
-export type FormType = 'dialog' | 'drawer'
-
 /**
  * 表单属性类型声明
  */
@@ -41,7 +38,6 @@ export interface FormTypeProps extends FormCreateProps {
     iconClass?: string;
 }
 export type FormTypeArray = FormTypeProps[]
-
 </script>
 
 <script lang="ts" setup>
