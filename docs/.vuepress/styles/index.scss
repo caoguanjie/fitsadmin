@@ -137,3 +137,8 @@ td {
     border-bottom: 1px solid #dcdfe6;
     border-top: 1px solid #dcdfe6;
 }
+
+// 解决流程图里面的文字是黑色的问题
+.md-enhance-mermaid .label {
+    color: #fff!important;
+}

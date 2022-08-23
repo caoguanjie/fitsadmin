@@ -76,6 +76,8 @@ export default hopeTheme({
       enableAll: false,
       // 添加选项卡支持
       tabs: true,
+      // 流程图支持
+      mermaid: true,
       presentation: {
         plugins: ["highlight", "math", "search", "notes", "zoom"],
       },
