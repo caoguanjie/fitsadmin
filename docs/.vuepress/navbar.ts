@@ -4,10 +4,12 @@ export default navbar([
   {
     text: '指南',
     link: '/guide/quickstart',
+    activeMatch: "^/guide",
   },
   {
     text: '组件',
-    link: '/components/about'
+    link: '/components/about',
+    activeMatch: "^/components",
   },
 
   // {
