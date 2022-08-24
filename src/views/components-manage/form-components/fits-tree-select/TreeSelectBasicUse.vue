@@ -8,9 +8,11 @@ import { reactive, toRefs } from 'vue'
 
 const state = reactive({
     filterInput: {
-        // show: true,
+        show: true,
     },
     selectInput: {
+        filterable: true,
+        clearable: true
     },
     tree: {
         nodeKey: "id",
@@ -26,11 +28,11 @@ const state = reactive({
                         children: [
                             {
                                 id: 9,
-                                label: 'Level 1-1-1',
+                                label: 'Level 1-1-1'
                             },
                             {
                                 id: 11,
-                                label: 'Level 1-1-2',
+                                label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
                             },
                         ],
                     },
@@ -85,6 +87,7 @@ const state = reactive({
                 ],
             },
         ],
+        // emptyText: '12无匹配'
     }
 })
 const { filterInput, selectInput, tree } = toRefs(state)

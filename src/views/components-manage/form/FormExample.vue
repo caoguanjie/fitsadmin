@@ -83,22 +83,14 @@
 import { reactive, toRefs, markRaw, ref, onMounted, render } from 'vue';
 import TreeSelect from '@/components/Form/TreeSelect.vue'
 import IconSelect from '@/components/Form/IconSelect.vue'
-import FormType, { FormTypeArray } from '@/components/Common/FormType.vue'
+import { FormTypeArray } from '@/components/Common/FormType.vue'
 import { isEmail, isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
 import { Search } from '@element-plus/icons-vue'
 import Divider from '@/components/Form/Divider.vue'
 import CheckboxAll from '@/components/Form/CheckboxAll.vue'
 import { ElMessage } from 'element-plus';
 
-// const abc: FitsTreeSelect = {
-//     filterInput: {},
-//     selectInput: {},
-//     tree: {
-//         data: [{
-//             label: '123'
-//         }]
-//     }
-// }
+let num = 0
 
 const simpleForm = reactive({
     formValue: {
@@ -1463,8 +1455,6 @@ const dialogForm = [
         },
     }
 ]
-
-let num = 0
 
 const state: any = reactive({
     spliceVisible: false,

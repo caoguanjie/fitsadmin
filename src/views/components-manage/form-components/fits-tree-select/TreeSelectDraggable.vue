@@ -1,20 +1,11 @@
 <template>
     <tree-select :filterInput="filterInput" :selectInput="selectInput" :tree="tree">
-        <template #>
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-        </template>
     </tree-select>
 </template>
 
 <script lang="ts" setup>
 import TreeSelect from '@/components/Form/TreeSelect.vue';
 import { reactive, toRefs } from 'vue'
-
-const options = [
-    {
-        value: 'Option1',
-        label: 'Option1',
-    }]
 
 const state = reactive({
     filterInput: {

@@ -1,20 +1,20 @@
 <template>
     <tree-select :filterInput="filterInput" :selectInput="selectInput" :tree="tree" class="TreeSelecrCustomNode">
+        <!-- <template #default="{ node, data }">
+            <span class="custom-tree-node">
+                <span>{{ node }}</span>
+                <span>
+                    <a @click="append(data)"> 123 </a>
+                    <a style="margin-left: 8px" @click="remove(node, data)"> 321 </a>
+                </span>
+            </span>
+        </template> -->
     </tree-select>
 </template>
 
 <script lang="ts" setup>
 import TreeSelect from '@/components/Form/TreeSelect.vue';
-import { reactive, toRefs } from 'vue'
-
-const buttons = [
-    { type: '', text: 'plain' },
-    { type: 'primary', text: 'primary' },
-    { type: 'success', text: 'success' },
-    { type: 'info', text: 'info' },
-    { type: 'warning', text: 'warning' },
-    { type: 'danger', text: 'danger' },
-]
+import { reactive, ref, toRefs } from 'vue'
 
 const state = reactive({
     filterInput: {

@@ -7,7 +7,7 @@ export default sidebar({
     },
     {
       text: '进阶',
-      children: ['elementplus', 'srcAlias', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor']
+      children: ['style-guide', 'elementplus', 'srcAlias', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart']
     }
   ],
   '/components/': [

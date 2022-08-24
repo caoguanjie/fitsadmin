@@ -1,8 +1,5 @@
 <template>
-    <div>
-
-    </div>
-    <!-- <tree-select :filterInput="filterInput" :selectInput="selectInput" :tree="tree" :modelValue="91" /> -->
+    <tree-select :filterInput="filterInput" :selectInput="selectInput" :tree="tree" :modelValue="91" />
 </template>
 
 <script lang="ts" setup>
@@ -15,7 +12,7 @@ const state = reactive({
     selectInput: {
     },
     tree: {
-        nodeKey: "myID",
+        nodeKey: "id",
         defaultExpandAll: false,
         data: [
             {

@@ -1,62 +1,4 @@
-import { FormType } from '@/components/Common/FormType.vue'
 import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
-/**
- * 系统类型声明
- */
-export interface AppState {
-    device: string;
-    sidebar: {
-        opened: boolean;
-        withoutAnimation: boolean;
-    };
-    language: string;
-    size: string;
-}
-
-
-
-/**
- * 标签状态类型声明
- */
-export interface TagView extends Partial<RouteLocationNormalized> {
-    title?: string;
-}
-
-export interface TagsViewState {
-    visitedViews: TagView[];
-    cachedViews: string[];
-}
-
-export interface UserState {
-    token: string;
-    nickname: string;
-    avatar: string;
-    roles: string[];
-    perms: string[];
-}
-
-/**
-* 设置状态类型声明
-*/
-export interface SettingState {
-    theme: string;
-    tagsView: boolean;
-    fixedHeader: boolean;
-    showSettings: boolean;
-    sidebarLogo: boolean;
-    isShowSetting: boolean;
-    isInsensitivity: boolean
-    showFooterBreadcrumb: boolean,
-    formType: FormType
-}
-/**
-* 权限类型声明
-*/
-export interface PermissionState {
-    routes: RouteRecordRaw[];
-    addRoutes: RouteRecordRaw[];
-    activeMenu: string; // 当前要显示的默认一级菜单
-}
 
 /**
  * 注意: sub-menu 仅在route children.length>=1 时出现
@@ -100,6 +42,16 @@ export class RouteMeta {
         this.hidden = hidden ?? false
         this.alwaysShow = alwaysShow ?? false
     }
+}
+
+
+/**
+* 权限类型声明
+*/
+export interface PermissionState {
+    routes: RouteRecordRaw[];
+    addRoutes: RouteRecordRaw[];
+    activeMenu: string; // 当前要显示的默认一级菜单
 }
 
 

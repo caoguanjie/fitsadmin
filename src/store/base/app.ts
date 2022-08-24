@@ -1,4 +1,4 @@
-import { AppState } from '@/store/type';
+
 import { localStorage } from '@/utils/storage';
 import { defineStore } from 'pinia';
 export enum DeviceType {

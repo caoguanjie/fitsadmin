@@ -1,12 +1,13 @@
 <template>
     <div class="FitsTreeSelect">
 
-        <!-- <el-tree :data="data" :show-checkbox='true' /> -->
-
         <el-card class="box-card">
             <template #header>
                 <div class="title">基础用法</div>
-                <div class="describe">基础的树形筛选组件展示</div>
+                <div class="describe">
+                    基础的树形筛选组件展示<br />
+                    当节点数据超过下拉框的长度时，会通过滚动条的形式进行展示
+                </div>
             </template>
             <tree-select-basic-use />
         </el-card>
@@ -70,9 +71,21 @@
             <template #header>
                 <div class="title">自定义节点内容</div>
                 <div class="describe">
+                    通过设置 tree.renderContent 渲染函数，该函数返回需要的节点区内容即可。
                 </div>
             </template>
             <tree-select-custom-node />
+        </el-card>
+
+        <el-card class="box-card">
+            <template #header>
+                <div class="title">动态加载节点数据</div>
+                <div class="describe">
+                    动态加载数据仅当 'tree.lazy=true' 时有效。并通过 tree.load 传递一个函数，参数为 node 和 resolve ， node为当前点击的节点，
+                    resolve为数据加载完成的回调(必须调用)
+                </div>
+            </template>
+            <tree-select-dynamic-load />
         </el-card>
     </div>
 </template>
@@ -85,72 +98,14 @@ import TreeSelectFilterable from './TreeSelectFilterable.vue';
 import TreeSelectDefaultValue from './TreeSelectDefaultValue.vue';
 import TreeSelectDraggable from './TreeSelectDraggable.vue';
 import TreeSelectCustomNode from './TreeSelectCustomNode.vue';
+import TreeSelectDynamicLoad from './TreeSelectDynamicLoad.vue';
 
-const data: any = [
-    {
-        label: 'Level one 1',
-        children: [
-            {
-                label: 'Level two 1-1',
-                // children: [
-                //     {
-                //         label: 'Level three 1-1-1',
-                //     },
-                // ],
-            },
-        ],
-    },
-    {
-        label: 'Level one 2',
-        children: [
-            {
-                label: 'Level two 2-1',
-                children: [
-                    {
-                        label: 'Level three 2-1-1',
-                        disabled: true
-                    },
-                ],
-            },
-            {
-                label: 'Level two 2-2',
-                children: [
-                    {
-                        label: 'Level three 2-2-1',
-                        disabled: true
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        label: 'Level one 3',
-        children: [
-            {
-                label: 'Level two 3-1',
-                children: [
-                    {
-                        label: 'Level three 3-1-1',
-                    },
-                ],
-            },
-            {
-                label: 'Level two 3-2',
-                children: [
-                    {
-                        label: 'Level three 3-2-1',
-                    },
-                ],
-            },
-        ],
-    },
-]
+
 </script>
 <style lang="scss" scoped>
 .FitsTreeSelect {
     padding: 16px;
     background: #fff;
-    // height: 500px;
 
     .box-card {
         width: 55vw;

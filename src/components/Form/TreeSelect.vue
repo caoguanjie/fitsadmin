@@ -2,45 +2,77 @@
     <div class="tree-search">
         <el-select v-model="selectedValue" ref="selectInput" :filter-method="filterMethod" v-bind='$attrs.selectInput'
             @visible-change="VisibleChange" :fit-input-width="true"
-            :popper-class="($attrs.selectInput as any)?.popperClass ? ($attrs.selectInput as any)?.popperClass + ' tree-popper' : 'tree-popper'">
+            :popper-class="($attrs.selectInput as any)?.popperClass ? `${($attrs.selectInput as any)?.popperClass} tree-popper` : `tree-popper`"
+            @clear="clearSelected">
             <template #empty>
                 <el-scrollbar class="tree-scrollbar">
                     <div class="custom-tree">
                         <el-input v-model="filterText" placeholder="请输入关键词" v-bind='$attrs.filterInput'
                             class="filterInput" v-show="($attrs.filterInput as any)?.show" />
                         <el-tree ref="treeRef" :filter-node-method="filterNode" :highlight-current="true"
-                            @node-click="nodeClick" v-bind='$attrs.tree' class="tree"
-                            :props="{ ...defaultProps, ...($attrs.tree as any)?.props }" @check="Check">
+                            @node-click="nodeClick" @check="Check" v-bind='$attrs.tree' class="tree"
+                            :props="{ ...defaultProps, ...($attrs.tree as any)?.props }">
                         </el-tree>
                     </div>
                 </el-scrollbar>
             </template>
-            <template v-for="(index, name) in $slots" v-slot:[name]>
+            <!-- <template v-for="(index, name) in $slots" v-slot:[name]>
                 <slot :name="name"></slot>
-            </template>
+            </template> -->
         </el-select>
     </div>
 </template>
 
 <script lang="ts">
-
+/**
+ * 内部过滤输入框的配置
+ */
 export interface FilterInput extends InputProps {
-    // 是否显示下拉框内的过滤框
-    show: boolean
+    /**
+     * @description 是否显示内部的过滤输入框，非必填
+     * @default {false}
+     */
+    show?: boolean
 }
 
+interface TreeSelectInput {
+    /**
+     * @description 是否禁用树下拉筛选组件
+     */
+    disabled: boolean
+    /**
+     * @description 选择输入框的尺寸
+     * @default {'default'}
+     */
+    size: 'large' | 'default' | 'small',
+    /**
+     * @description 是否可以清空选项
+     * @default {false}
+     */
+    clearable: boolean
+}
+
+/**
+ * 下拉筛选树的配置
+ */
 export interface FitsTreeSelect {
+    /**
+     * @description 树默认选中值的key
+     */
+    modelValue?: string | number
+    /**
+     * @description 外部下拉输入框的配置
+     */
+    selectInput: TreeSelectInput
+    /**
+     * @description 内部过滤输入框的配置
+     */
     filterInput: FilterInput
-    selectInput: ISelectProps
-    tree: TreeComponentProps,
-    // 树默认选中节点的id（nodeKey可以指定属性名），多选类型是id数组
-    modelValue: string | string[]
+    /**
+     * @description 树组件的配置
+     */
+    tree: TreeComponentProps
 }
-
-
-// interface FilterInput {
-//     show: boolean
-// }
 
 </script>
 
@@ -49,6 +81,9 @@ import { onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { InputProps, ISelectProps } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import type { TreeComponentProps, TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
+import { useAttrs } from 'vue'
+
+const attrs: any = useAttrs()
 
 const emit = defineEmits(["update:modelValue"])
 
@@ -60,9 +95,10 @@ const props = defineProps({
 
 const state = reactive({
     selectedValue: '',
-    filterText: ''
+    filterText: '',
+    nodeId: ''
 })
-const { selectedValue, filterText } = toRefs(state);
+const { selectedValue, filterText, nodeId } = toRefs(state);
 
 const treeRef = ref()
 const selectInput = ref()
@@ -110,6 +146,10 @@ function VisibleChange() {
     treeRef.value?.filter('')
 }
 
+function clearSelected() {
+    treeRef.value.setCurrentKey(null)
+}
+
 function filterNode(value: string, data: TreeNodeData, node: Node) {
     if (!value) return true
     return data[(node.store.props.label as string)].includes(value)
@@ -120,31 +160,25 @@ function filterMethod(value: string) {
 }
 
 function nodeClick(node: TreeNodeData, option: Node, event: any) {
+    if (attrs.tree.showCheckbox && option.disabled) return
     if (option.isLeaf) {
         // 把值放进输入框，关闭下拉
         selectInput.value.blur()
         emit("update:modelValue", node.id);
+        console.log(node.id);
+
+        nodeId.value = node.id
         selectedValue.value = node[event.props.props.label]
     }
 }
 
 /**
- * 共三个参数，依次为：
+ * @desc 复选框被点击触发的事件
  * 传递给 data 属性的数组中该节点所对应的对象、
- * 节点本身是否被选中、
- * 节点的子树中是否有被选中的节点
+ * 树目前的选中状态对象，包含 checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys 四个属性
  */
-function checkChange(obj: any, isChecked: boolean, isChildChecked: boolean) {
-    console.log('checkedchange', obj, isChecked, isChildChecked);
-}
-
-/**
- * 共两个参数，依次为：
- * 传递给 data 属性的数组中该节点所对应的对象、
- * 树目前的选中状态对象，(包含 checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys 四个属性)
- */
-function Check(obj: any, checkedObjs: any,) {
-    console.log('checked', obj, checkedObjs);
+function Check(obj: any, checkedObj: any) {
+    console.log(obj, checkedObj);
 }
 
 </script>
@@ -170,7 +204,7 @@ function Check(obj: any, checkedObjs: any,) {
 <style lang="scss">
 .tree-popper {
     .el-scrollbar__wrap {
-        max-height: 30vh;
+        // max-height: 30vh;
     }
 }
 

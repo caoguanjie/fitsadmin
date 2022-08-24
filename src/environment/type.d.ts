@@ -1,58 +1,12 @@
 
-/**
- * 给环境配置的属性加上默认的实体类
- */
-export class FitsDefaultSetting implements FitsSetting {
-    project: FitsProjectSetting;
-    system: FitsSystemSetting;
-    login: LoginSetting;
-    constructor({ project, system, login }: any = {}) {
-        this.project = Object.assign({}, this.InitProjectData(), project);
-        this.system = Object.assign({}, this.InitSystemData(), system);
-        this.login = Object.assign({}, this.InitLoginData(), login);
-    }
 
-    InitProjectData(): FitsProjectSetting {
-        return {
-            title: '',
-            subTitle: '',
-            company: '',
-            version: '1.0.0',
-            api_address: '',
-            http_timeout: 15000
-        }
-    }
-
-    InitSystemData(): FitsSystemSetting {
-        return {
-            tagsView: true,
-            fixedHeader: true,
-            sidebarLogo: true,
-            isInsensitivity: true,
-            showSettings: true,
-            errorLog: true,
-            coutDownTime: 30,
-            showFooterBreadcrumb: true,
-            formType: 'dialog'
-        }
-    }
-
-    InitLoginData(): LoginSetting {
-        return {
-            appScanCode: true,
-            smsLogin: true,
-            accountLogin: true,
-            appDownload: true
-        }
-    }
-}
 
 /**
  * @description 表单弹窗的类型
  */
-export type FormType = 'dialog' | 'drawer'
+type FormType = 'dialog' | 'drawer'
 
-export interface FitsSetting {
+interface FitsSetting {
     /**
      * @description 项目配置, 必填
      */
@@ -70,7 +24,7 @@ export interface FitsSetting {
 /**
  * 项目配置
  */
-export interface FitsProjectSetting {
+interface FitsProjectSetting {
     /**
      * @description 网站标题，项目名称
      */
@@ -103,7 +57,7 @@ export interface FitsProjectSetting {
 /**
  * 系统配置
  */
-export interface FitsSystemSetting {
+interface FitsSystemSetting {
     /**
      * @description 是否要需要多页签
      * @default {true}
@@ -154,7 +108,7 @@ export interface FitsSystemSetting {
 /**
  * 登录设置
  */
-export interface LoginSetting {
+interface LoginSetting {
     /**
      * @description app扫码登录
      * @default {true} 

@@ -1,4 +1,6 @@
-import { FitsDefaultSetting } from "./type";
+import { FitsDefaultSetting } from "./model";
+
+
 
 const importModules = import.meta.globEager('./modules/*.ts');
 // 环境变量默认是以开发环境为主

@@ -184,7 +184,6 @@ const state = reactive({
             },
         ],
         filterNodeMethod: (value: any, data: any, node: any) => {
-            console.log(node.label);
             if (!value) return true
             return node.label.indexOf(value) === -1
         }

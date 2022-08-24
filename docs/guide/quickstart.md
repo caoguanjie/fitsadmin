@@ -79,6 +79,7 @@ date: 2022-08-17
 │   ├── directive                        # 全局指令
 │   ├── layout                           # 全局 layout
 │   ├── environment                      # 全局 环境变量，多环境配置
+│   ├── model                            # 全局 存放class声明，实体类，继承等变量声明
 │   ├── router                           # 路由
 │       ├── base                         # 框架预定义的一些常量路由
 │       └── modules                      # 这块是存放业务级别的路由，每个项目的业务路由不一样
