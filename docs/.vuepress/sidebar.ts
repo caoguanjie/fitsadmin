@@ -3,11 +3,11 @@ export default sidebar({
   '/guide/': [
     {
       text: "基础",
-      children: ['quickstart', 'piniajs']
+      children: ['quickstart', 'piniajs', 'style-guide']
     },
     {
       text: '进阶',
-      children: ['style-guide', 'elementplus', 'srcAlias', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart']
+      children: ['eslint', 'elementplus', 'srcAlias', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart']
     }
   ],
   '/components/': [

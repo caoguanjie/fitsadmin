@@ -75,7 +75,7 @@ const componentRouter: RouteRecordRaw = {
             path: "commonuse",
             name: "commonuse",
             redirect: "/sysManger/commonuse/GuidePage",
-            component: () => import("@/views/ready/index.vue"),
+            component: () => import("@/views/components-manage/index.vue"),
             meta: { title: "常用功能", icon: "fits-changyong", roles: ["admin", "editor"] },
             children: [
                 {
@@ -124,7 +124,7 @@ const componentRouter: RouteRecordRaw = {
                 {
                     path: "Workflow",
                     name: "Workflow",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/workflow/index.vue"),
                     meta: { title: "工作流范例", roles: ["admin", "editor"] },
                 },
 
@@ -142,6 +142,12 @@ const componentRouter: RouteRecordRaw = {
                     name: "FitsTreeSelect",
                     component: () => import("@/views/components-manage/form-components/fits-tree-select/index.vue"),
                     meta: { title: "树筛选", roles: ["admin", "editor"] },
+                },
+                {
+                    path: "iconSelect",
+                    name: "FitsIconSelect",
+                    component: () => import("@/views/components-manage/form-components/fits-icon-select/index.vue"),
+                    meta: { title: "图标选择", roles: ["admin", "editor"] },
                 },
             ]
         },

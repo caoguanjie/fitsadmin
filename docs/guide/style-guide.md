@@ -460,3 +460,8 @@ const { fixedHeader, tagsView, sidebarLogo, theme, showFooterBreadcrumb, formTyp
 ::: warning 
 这里提醒一下，并不是说以后就不能用`ref()`声明单个变量使用，我们制定风格标准，编码规范，目的是让代码变得更加简洁，阅读性好，后期维护容易，多人开发可以无缝切换等好处，所以当你的页面足够简单，只有一两个变量的时候，是可以用`ref()`，如果复杂的页面交互，望各位开发能够遵循编码规范
 :::
+
+
+::: note
+想了解更多的规范标准，请看[Vue2.x的开发规范](http://192.168.32.108:8012/#/knowledge/docs/vue2)
+:::
