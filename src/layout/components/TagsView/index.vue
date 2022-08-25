@@ -2,7 +2,7 @@
   <div class="tags-view__container">
     <scroll-pane ref="scrollPaneRef" class="tags-view__wrapper" @scroll="handleScroll">
       <router-link v-for="tag in visitedViews" :key="tag.path" :data-path="tag.path"
-        :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+        :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath } as any"
         class="tags-view__item" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)" @click="setCurrentTags(tag)">
         <svg-icon v-if="tag.meta.icon" :icon-class="tag.meta.icon" />
@@ -15,8 +15,8 @@
     <el-dropdown @visible-change="handleTabMore" @command="handleCommand">
       <span class="fits-tabs-more" :class="{ 'fits-tab-more-active': tabMoreActive }">
         <span class="fits-tabs-more-icon">
-          <i class="box box-t"></i>
-          <i class="box box-b"></i>
+          <i class="box box-t" />
+          <i class="box box-b" />
         </span>
 
       </span>
@@ -76,7 +76,7 @@ import {
 import path from 'path-browserify';
 
 import { RouteRecordRaw, useRoute, useRouter } from 'vue-router';
-import { TagView } from '@/store/type';
+
 
 import ScrollPane from './ScrollPane.vue';
 import SvgIcon from '@/components/SvgIcon/index.vue';
@@ -87,6 +87,7 @@ import CloseOtherIcon from '@/assets/icons/fits-close-other.svg';
 import CloseleftIcon from '@/assets/icons/fits-close-left.svg';
 import CloseRightIcon from '@/assets/icons/fits-close-right.svg';
 import CloseAllIcon from '@/assets/icons/fits-close-all.svg';
+import { TagView } from '@/model/base/store';
 
 
 const { tagsView, permission } = useStore();

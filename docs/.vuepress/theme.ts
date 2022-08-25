@@ -6,14 +6,14 @@ export default hopeTheme({
   hostname: "http://192.168.32.60:8080",
   author: {
     name: "caoguanjie",
-    url: "https://github.com/caoguanjie/fits-admin-ui.git",
+    url: "https://github.com/caoguanjie/",
   },
 
   iconAssets: "iconfont",
 
   logo: "/images/logo.png",
 
-  repo: "https://github.com/caoguanjie/fits-admin-ui.git",
+  repo: "https://github.com/caoguanjie/fitsadmin",
 
   docsDir: "demo/src",
 
