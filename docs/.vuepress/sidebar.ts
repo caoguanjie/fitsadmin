@@ -3,7 +3,7 @@ export default sidebar({
   '/guide/': [
     {
       text: "基础",
-      children: ['quickstart', 'layout', 'router-and-nav', 'tags-view', 'piniajs', 'style-guide']
+      children: ['quickstart', 'layout', 'router-and-nav', 'permission', 'tags-view', 'piniajs', 'style-guide']
     },
     {
       text: '进阶',
