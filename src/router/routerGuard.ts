@@ -9,10 +9,11 @@ import ENV from '@/environment/index';
 const whiteList = ['/login', '/404']
 export const createRouterGuards = (router: Router) => {
     router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized, next: any) => {
-        // Start progress bar
+        // 开启进度条
         NProgress.start()
         const { user } = useStore();
         const { permission } = useStore();
+
         // 确定用户是否已登录
         if (user && user.token) {
             if (to.path === '/login') {
@@ -69,7 +70,7 @@ export const createRouterGuards = (router: Router) => {
     })
 
     router.afterEach((to: RouteLocationNormalized) => {
-        // Finish progress bar
+        // 关闭 进度条
         NProgress.done()
 
         // 设置页面标题

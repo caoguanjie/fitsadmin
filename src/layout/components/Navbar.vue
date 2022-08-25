@@ -4,23 +4,23 @@
       @toggleClick="toggleSideBar" />
 
     <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
-    <top-menu></top-menu>
+    <top-menu />
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <!--        <search id="header-search" class="right-menu-item" />
                 <error-log class="errLog-container right-menu-item hover-effect" />-->
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
         <el-tooltip content="主题设置" effect="dark" placement="bottom">
-          <theme-select class="right-menu-item hover-effect setting"></theme-select>
+          <theme-select class="right-menu-item hover-effect setting" />
         </el-tooltip>
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" popper-class="navDropdown"
         placement="bottom-end">
         <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
+          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar">
           <span class="nickname">{{ nickname }}</span>
-          <svg-icon icon-class="down"></svg-icon>
+          <svg-icon icon-class="down" />
         </div>
 
         <template #dropdown>
