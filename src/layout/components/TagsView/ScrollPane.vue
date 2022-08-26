@@ -12,8 +12,9 @@ import {
   onBeforeUnmount,
   getCurrentInstance,
 } from 'vue';
-import { TagView } from '@/store/type';
+
 import useStore from '@/store';
+import { TagView } from '@/model/base/store';
 
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance() as any;
