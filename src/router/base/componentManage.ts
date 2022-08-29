@@ -149,6 +149,12 @@ const componentRouter: RouteRecordRaw = {
                     component: () => import("@/views/components-manage/form-components/fits-icon-select/index.vue"),
                     meta: { title: "图标选择", roles: ["admin", "editor"] },
                 },
+                {
+                    path: "checkboxAll",
+                    name: "FitsCheckboxAll",
+                    component: () => import("@/views/components-manage/form-components/fits-checkbox-all/index.vue"),
+                    meta: { title: "全选框", roles: ["admin", "editor"] },
+                },
             ]
         },
     ],

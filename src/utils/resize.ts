@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import 'default-passive-events';
 export default function () {
   const chart = ref<any>();
   const sidebarElm = ref<Element>();

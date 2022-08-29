@@ -1,15 +1,23 @@
 <template>
-    <tree-select :filterInput="filterInput" :selectInput="selectInput" :tree="tree" :modelValue="91" />
+    <fits-tree-select :options="state" />
 </template>
 
 <script lang="ts" setup>
-import TreeSelect from '@/components/Form/TreeSelect.vue';
-import { reactive, toRefs } from 'vue'
+import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue';
+import { reactive } from 'vue'
+import { FitsTreeSelectModel } from '@/components/Form/model';
 
-const state = reactive({
-    filterInput: {
+const state = reactive(new FitsTreeSelectModel({
+    modelValue: 91,
+    select: {
+        clearable: true,
+        placeholder: '请选择'
     },
-    selectInput: {
+    input: {
+        show: false,
+        elementProps: {
+            clearable: true,
+        }
     },
     tree: {
         nodeKey: "id",
@@ -86,8 +94,8 @@ const state = reactive({
             },
         ],
     }
-})
-const { filterInput, selectInput, tree } = toRefs(state)
+}))
+
 </script>
 <style lang="scss" scoped>
 </style>

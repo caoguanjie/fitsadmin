@@ -2,7 +2,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
 import { asyncRoutes, constantRoutes } from '@/router';
-import { listRoutes } from '@/api/system/menu';
 import { RouteMeta, PermissionState } from '@/model/base/store';
 
 

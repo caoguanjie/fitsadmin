@@ -1,97 +1,33 @@
 <template>
     <div class="tree-search">
-        <el-select v-model="selectedValue" ref="selectInput" :filter-method="filterMethod" v-bind='$attrs.selectInput'
-            @visible-change="VisibleChange" :fit-input-width="true"
-            :popper-class="($attrs.selectInput as any)?.popperClass ? `${($attrs.selectInput as any)?.popperClass} tree-popper` : `tree-popper`"
-            @clear="clearSelected">
+        <el-select ref="selectInputRef" v-bind='select' v-model="selectedValue" :filter-method="filterMethod"
+            @visible-change="VisibleChange" @clear="clearSelected" :popper-class="`${select?.popperClass} tree-popper`">
             <template #empty>
                 <el-scrollbar class="tree-scrollbar">
                     <div class="custom-tree">
-                        <el-input v-model="filterText" placeholder="请输入关键词" v-bind='$attrs.filterInput'
-                            class="filterInput" v-show="($attrs.filterInput as any)?.show" />
-                        <el-tree ref="treeRef" :filter-node-method="filterNode" :highlight-current="true"
-                            @node-click="nodeClick" @check="Check" v-bind='$attrs.tree' class="tree"
-                            :props="{ ...defaultProps, ...($attrs.tree as any)?.props }">
-                        </el-tree>
+                        <el-input v-bind='input?.elementProps' v-model="filterText" class="filterInput"
+                            v-show="input?.show" />
+                        <el-tree ref="treeRef" highlightCurrent :filter-node-method="filterNode" v-bind='tree'
+                            @node-click="nodeClick" @check="Check" class="tree" />
                     </div>
                 </el-scrollbar>
             </template>
-            <!-- <template v-for="(index, name) in $slots" v-slot:[name]>
-                <slot :name="name"></slot>
-            </template> -->
         </el-select>
     </div>
 </template>
 
-<script lang="ts">
-/**
- * 内部过滤输入框的配置
- */
-export interface FilterInput extends InputProps {
-    /**
-     * @description 是否显示内部的过滤输入框，非必填
-     * @default {false}
-     */
-    show?: boolean
-}
-
-interface TreeSelectInput {
-    /**
-     * @description 是否禁用树下拉筛选组件
-     */
-    disabled: boolean
-    /**
-     * @description 选择输入框的尺寸
-     * @default {'default'}
-     */
-    size: 'large' | 'default' | 'small',
-    /**
-     * @description 是否可以清空选项
-     * @default {false}
-     */
-    clearable: boolean
-}
-
-/**
- * 下拉筛选树的配置
- */
-export interface FitsTreeSelect {
-    /**
-     * @description 树默认选中值的key
-     */
-    modelValue?: string | number
-    /**
-     * @description 外部下拉输入框的配置
-     */
-    selectInput: TreeSelectInput
-    /**
-     * @description 内部过滤输入框的配置
-     */
-    filterInput: FilterInput
-    /**
-     * @description 树组件的配置
-     */
-    tree: TreeComponentProps
-}
-
-</script>
-
 <script lang="ts" setup>
 import { onMounted, reactive, ref, toRefs, watch } from 'vue'
-import { InputProps, ISelectProps } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
-import type { TreeComponentProps, TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
-import { useAttrs } from 'vue'
+import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
+import { FitsTreeSelectModel } from './model';
 
-const attrs: any = useAttrs()
+const props = withDefaults(defineProps<{ options: FitsTreeSelectModel }>(), {
+    options: () => new FitsTreeSelectModel(),
+})
+const { input, select, tree, modelValue } = toRefs(props.options)
 
 const emit = defineEmits(["update:modelValue"])
-
-const props = defineProps({
-    modelValue: {
-        required: false
-    }
-})
 
 const state = reactive({
     selectedValue: '',
@@ -101,29 +37,22 @@ const state = reactive({
 const { selectedValue, filterText, nodeId } = toRefs(state);
 
 const treeRef = ref()
-const selectInput = ref()
+const selectInputRef = ref()
 
 defineExpose({
     treeRef
 })
 
-const defaultProps = {
-    // class: customNodeClass,
-    label: "label",
-    children: "children",
-    disabled: 'disabled'
-}
-
 watch(filterText, (val: string) => {
     treeRef.value?.filter(val)
 })
 
-watch(() => props.modelValue, (val: any) => {
+watch(() => modelValue?.value, (val: any) => {
     initValue(val)
 })
 
 onMounted(() => {
-    initValue(props.modelValue)
+    initValue(modelValue?.value)
 })
 
 function initValue(val: any) {
@@ -131,13 +60,6 @@ function initValue(val: any) {
         treeRef.value.setCurrentKey(val)
         selectedValue.value = treeRef.value.getNode(val)?.label
     }
-}
-
-function customNodeClass(data: TreeNodeData, node: Node) {
-    if (node.isLeaf) {
-        return 'is-leaf'
-    }
-    return null
 }
 
 // 下拉框打开/关闭的时候清空内部输入框的值，恢复所有下拉数据
@@ -150,23 +72,21 @@ function clearSelected() {
     treeRef.value.setCurrentKey(null)
 }
 
+function filterMethod(value: string) {
+    treeRef.value?.filter(value)
+}
+
 function filterNode(value: string, data: TreeNodeData, node: Node) {
     if (!value) return true
     return data[(node.store.props.label as string)].includes(value)
 }
 
-function filterMethod(value: string) {
-    treeRef.value?.filter(value)
-}
-
 function nodeClick(node: TreeNodeData, option: Node, event: any) {
-    if (attrs.tree.showCheckbox && option.disabled) return
+    if (tree.value.showCheckbox) return
     if (option.isLeaf) {
         // 把值放进输入框，关闭下拉
-        selectInput.value.blur()
+        selectInputRef.value.blur()
         emit("update:modelValue", node.id);
-        console.log(node.id);
-
         nodeId.value = node.id
         selectedValue.value = node[event.props.props.label]
     }
@@ -178,7 +98,10 @@ function nodeClick(node: TreeNodeData, option: Node, event: any) {
  * 树目前的选中状态对象，包含 checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys 四个属性
  */
 function Check(obj: any, checkedObj: any) {
-    console.log(obj, checkedObj);
+    const arrNames: any = []
+    const arr = checkedObj.checkedNodes.filter((item: any) => !item['children'])
+    arr.map((item: any) => arrNames.push(item.label))
+    selectedValue.value = arrNames
 }
 
 </script>
@@ -202,12 +125,6 @@ function Check(obj: any, checkedObj: any) {
 </style>
 
 <style lang="scss">
-.tree-popper {
-    .el-scrollbar__wrap {
-        // max-height: 30vh;
-    }
-}
-
 .custom-tree {
 
     .el-checkbox+.el-tree-node__label {

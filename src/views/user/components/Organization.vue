@@ -1,14 +1,13 @@
 <template>
     <div class="organization">
-        <form-create v-model:api="fApi" :rule="rule" :option="option" v-model="formValue" ref="organizationForm">
-        </form-create>
+        <form-create v-model:api="fApi" :rule="rule" :option="option" v-model="formValue" ref="organizationForm" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref, toRefs, watch } from 'vue';
 import { isHomeNumber, isPhoneNumber } from '@/utils/is';
-import TreeSearch from '@/components/Form/TreeSelect.vue'
+import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue'
 import { postUserDetail } from '@/api/base/user';
 import { ResultEnum } from '@/utils/http/types';
 import { ElMessage } from 'element-plus';
@@ -52,20 +51,20 @@ const state = reactive({
         },
         {
             type: "tree-search",
-            component: TreeSearch,
+            component: FitsTreeSelect,
             field: "Department",
             name: "organization",
             title: "组织机构",
             props: {
-                selectInput: {
+                select: {
                     class: "mySelect",
                     placeholder: "请选择组织机构",
-                    // popperClass: 'new-popper',
                 },
-                filterInput: {
-                    class: "myInput",
-                    placeholder: "部门搜索",
-                    show: true
+                input: {
+                    elementProps: {
+                        class: "myInput",
+                        placeholder: "部门搜索",
+                    },
                 },
                 tree: {
                     class: "myTree",

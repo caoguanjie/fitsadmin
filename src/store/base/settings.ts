@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { SettingState } from '@/store/type';
+
 import { localStorage } from '@/utils/storage';
 import ENV from '@/environment/index';
 const { system: { showSettings, tagsView, fixedHeader, sidebarLogo, isInsensitivity, showFooterBreadcrumb, formType } } = ENV;

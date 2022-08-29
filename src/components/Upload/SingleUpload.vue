@@ -1,26 +1,16 @@
 <template>
   <div>
     <!-- 上传组件 -->
-    <el-upload
-      ref="singleUploadRef"
-      action=""
-      class="single-uploader"
-      :show-file-list="false"
-      :before-upload="handleBeforeUpload"
-      :http-request="uploadImage"
-    >
-      <img v-if="imgUrl" :src="imgUrl" class="single-uploader__image" />
+    <el-upload ref="singleUploadRef" action="" class="single-uploader" :show-file-list="false"
+      :before-upload="handleBeforeUpload" :http-request="uploadImage">
+      <img v-if="imgUrl" :src="imgUrl" class="single-uploader__image">
 
       <el-icon v-else class="single-uploader__plus">
         <Plus />
       </el-icon>
 
       <!-- 删除图标 -->
-      <el-icon
-        v-if="props.showClose && imgUrl"
-        class="single-uploader__remove"
-        @click.stop="handleRemove(imgUrl)"
-      >
+      <el-icon v-if="props.showClose && imgUrl" class="single-uploader__remove" @click.stop="handleRemove(imgUrl)">
         <Close />
       </el-icon>
     </el-upload>
@@ -36,7 +26,7 @@ import {
   UploadRawFile,
   UploadRequestOptions
 } from 'element-plus';
-import { uploadFile, deleteFile } from '@/api/system/file';
+
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -70,8 +60,8 @@ const imgUrl = computed<string | undefined>({
  * @param params
  */
 async function uploadImage(options: UploadRequestOptions): Promise<any> {
-  const response = await uploadFile(options.file);
-  imgUrl.value = response.data;
+  // const response = await uploadFile(options.file);
+  // imgUrl.value = response.data;
 }
 
 /**
@@ -81,7 +71,7 @@ async function uploadImage(options: UploadRequestOptions): Promise<any> {
  */
 function handleRemove(fileUrl?: string) {
   if (fileUrl) {
-    deleteFile(fileUrl);
+    // deleteFile(fileUrl);
     imgUrl.value = undefined; // 这里会触发imgUrl的computed的set方法
   }
 }
@@ -108,6 +98,7 @@ function handleBeforeUpload(file: UploadRawFile) {
   overflow: hidden;
   transition: var(--el-transition-duration-fast);
   text-align: center;
+
   &:hover {
     border-color: var(--el-color-primary);
   }

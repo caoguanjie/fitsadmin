@@ -9,11 +9,12 @@ import { reactive } from 'vue'
 
 const state = reactive(new FitsTreeSelectModel({
     select: {
-        disabled: true,
+        multiple: true,
     },
     tree: {
         nodeKey: "id",
-        defaultExpandAll: false,
+        highlightCurrent: false,
+        showCheckbox: true,
         data: [
             {
                 id: 1,
@@ -22,14 +23,16 @@ const state = reactive(new FitsTreeSelectModel({
                     {
                         id: 4,
                         label: 'Level 1-1',
+                        // disabled: true,
                         children: [
                             {
                                 id: 9,
                                 label: 'Level 1-1-1',
+                                disabled: true
                             },
                             {
                                 id: 11,
-                                label: 'Level 1-1-2',
+                                label: 'level 1-1-2',
                             },
                         ],
                     },
@@ -84,7 +87,7 @@ const state = reactive(new FitsTreeSelectModel({
                 ],
             },
         ],
-    }
+    },
 }))
 
 </script>

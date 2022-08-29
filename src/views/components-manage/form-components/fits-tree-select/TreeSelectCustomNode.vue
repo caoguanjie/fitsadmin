@@ -1,27 +1,13 @@
 <template>
-    <tree-select :filterInput="filterInput" :selectInput="selectInput" :tree="tree" class="TreeSelecrCustomNode">
-        <!-- <template #default="{ node, data }">
-            <span class="custom-tree-node">
-                <span>{{ node }}</span>
-                <span>
-                    <a @click="append(data)"> 123 </a>
-                    <a style="margin-left: 8px" @click="remove(node, data)"> 321 </a>
-                </span>
-            </span>
-        </template> -->
-    </tree-select>
+    <fits-tree-select :options="state" />
 </template>
 
 <script lang="ts" setup>
-import TreeSelect from '@/components/Form/TreeSelect.vue';
-import { reactive, ref, toRefs } from 'vue'
+import { FitsTreeSelectModel } from '@/components/Form/model';
+import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue';
+import { reactive } from 'vue'
 
-const state = reactive({
-    filterInput: {
-        // show: true,
-    },
-    selectInput: {
-    },
+const state = reactive(new FitsTreeSelectModel({
     tree: {
         nodeKey: "id",
         defaultExpandAll: true,
@@ -79,9 +65,7 @@ const state = reactive({
         ],
         renderContent,
     }
-})
-
-const { filterInput, selectInput, tree } = toRefs(state)
+}))
 
 const append = (data: any) => {
     let id = 1000
@@ -90,7 +74,7 @@ const append = (data: any) => {
         data.children = []
     }
     data.children.push(newChild)
-    tree.value.data = [...tree.value.data]
+    state.tree.data = [...state.tree.data]
 }
 
 const remove = (node: any, data: any) => {
@@ -98,7 +82,7 @@ const remove = (node: any, data: any) => {
     const children: any[] = parent.data.children || parent.data
     const index = children.findIndex((d) => d.id === data.id)
     children.splice(index, 1)
-    tree.value.data = [...tree.value.data]
+    state.tree.data = [...state.tree.data]
 }
 
 function renderContent(

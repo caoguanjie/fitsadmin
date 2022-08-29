@@ -6,8 +6,7 @@
                 普通表单
             </h1>
             <form-create v-model:api="simpleForm.fApi" v-model="simpleForm.formValue" :rule="simpleForm.rule"
-                :option="simpleForm.option" ref="Form" class="exampleForm simpleForm">
-            </form-create>
+                :option="simpleForm.option" ref="Form" class="exampleForm simpleForm" />
         </div>
 
         <div class="exampleBox inlineBox">
@@ -15,8 +14,7 @@
                 行内表单（栅格布局）
             </h1>
             <form-create v-model:api="inlineForm.fApi" v-model="inlineForm.formValue" :rule="inlineForm.rule"
-                :option="inlineForm.option" ref="Form" class="exampleForm inlineForm">
-            </form-create>
+                :option="inlineForm.option" ref="Form" class="exampleForm inlineForm" />
         </div>
 
         <div class="exampleBox dynamicBox">
@@ -38,8 +36,7 @@
                 </el-button>
             </el-button-group>
             <form-create v-model:api="dynamicForm.fApi" v-model="dynamicForm.formValue" :rule="dynamicForm.rule"
-                :option="dynamicForm.option" ref="Form" class="exampleForm dynamicForm">
-            </form-create>
+                :option="dynamicForm.option" ref="Form" class="exampleForm dynamicForm" />
         </div>
 
         <div class="exampleBox">
@@ -47,8 +44,7 @@
                 自定义组件
             </h1>
             <form-create v-model:api="customForm.fApi" v-model="customForm.formValue" :rule="customForm.rule"
-                :option="customForm.option" class="exampleForm customForm">
-            </form-create>
+                :option="customForm.option" class="exampleForm customForm" />
         </div>
 
         <div class="exampleBox">
@@ -56,8 +52,7 @@
                 组件插槽
             </h1>
             <form-create v-model:api="slotForm.fApi" v-model="slotForm.formValue" :rule="slotForm.rule"
-                :option="slotForm.option" class="exampleForm slotForm">
-            </form-create>
+                :option="slotForm.option" class="exampleForm slotForm" />
         </div>
 
         <div class="exampleBox dialogBox">
@@ -68,26 +63,24 @@
                 打开表单弹窗
             </el-button>
             <form-type :visible="dialogVisible" :props="myProps" :form="dialogForm" @submit="submitDialogForm"
-                @cancle="closeForm">
-            </form-type>
+                @cancle="closeForm" />
         </div>
 
         <!-- props是dialog或drawer的属性，form是表单数组，除了form-create的配置还有一些属性要传递 -->
         <form-type :visible="spliceVisible" :props="spliceProps" :form="spliceForm" @submit="submitSpliceForm"
-            @cancle="closeForm">
-        </form-type>
+            @cancle="closeForm" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, toRefs, markRaw, ref, onMounted, render } from 'vue';
-import TreeSelect from '@/components/Form/TreeSelect.vue'
-import IconSelect from '@/components/Form/IconSelect.vue'
-import { FormTypeArray } from '@/components/Common/FormType.vue'
+import { reactive, toRefs, markRaw } from 'vue';
+import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue'
+import FitsIconSelect from '@/components/Form/FitsIconSelect.vue'
+import FormType, { FormTypeArray } from '@/components/Common/FormType.vue'
 import { isEmail, isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
 import { Search } from '@element-plus/icons-vue'
 import Divider from '@/components/Form/Divider.vue'
-import CheckboxAll from '@/components/Form/CheckboxAll.vue'
+import FitsCheckboxAll from '@/components/Form/FitsCheckboxAll.vue'
 import { ElMessage } from 'element-plus';
 
 let num = 0
@@ -196,6 +189,7 @@ const simpleForm = reactive({
             //         class: 'el-icon el-icon--left',
             //     }
             // ]
+
         },
         {
             type: "select",
@@ -407,17 +401,14 @@ const simpleForm = reactive({
             field: "checkbox1",
             options: [
                 {
-                    value: "104",
                     label: "生态蔬菜",
                     disabled: false
                 },
                 {
-                    value: "105",
                     label: "新鲜水果",
                     disabled: false
                 },
                 {
-                    value: "106",
                     label: "蛋糕甜点",
                     disabled: false
                 },
@@ -425,7 +416,7 @@ const simpleForm = reactive({
         },
         {
             type: "checkboxAll",
-            component: markRaw(CheckboxAll),
+            component: markRaw(FitsCheckboxAll),
             title: "多选(全选)",
             field: "checkbox2",
             props: {
@@ -705,16 +696,18 @@ const customForm = reactive({
                     type: "tree-search",
                     field: "treeSearch",
                     title: "下拉选择树",
-                    component: markRaw(TreeSelect),
+                    component: markRaw(FitsTreeSelect),
                     value: '2',
                     props: {
-                        selectInput: {
+                        select: {
                             class: "mySelect",
                             placeholder: "请选择组织机构",
                         },
-                        filterInput: {
-                            class: "myInput",
-                            placeholder: "部门搜索",
+                        input: {
+                            element: {
+                                placeholder: "部门搜索",
+                                class: "myInput",
+                            },
                             show: true
                         },
                         tree: {
@@ -890,14 +883,16 @@ const customForm = reactive({
                     type: "icon-select",
                     field: "iconSelect",
                     title: "图标选择",
-                    component: markRaw(IconSelect),
+                    component: markRaw(FitsIconSelect),
                     name: "IconSelect",
                     props: {
-                        selectInput: {
+                        select: {
                             placeholder: "请选择图标",
                         },
-                        filterInput: {
-                            placeholder: "图标搜索",
+                        input: {
+                            elementProps: {
+                                placeholder: "图标搜索",
+                            },
                             show: true,
                         },
                         noDataText: '暂无数据'
@@ -1203,19 +1198,20 @@ const dialogForm = [
         rule: [
             {
                 type: "tree-search",
-                component: TreeSelect,
+                component: FitsTreeSelect,
                 field: "Department",
                 name: "organization",
                 title: "所属部门",
                 props: {
-                    selectInput: {
+                    select: {
                         class: "mySelect",
                         placeholder: "请选择组织机构",
-                        // popperClass: 'new-popper',
                     },
-                    filterInput: {
-                        class: "myInput",
-                        placeholder: "部门搜索",
+                    input: {
+                        elementProps: {
+                            class: "myInput",
+                            placeholder: "部门搜索",
+                        },
                         show: true
                     },
                     tree: {
