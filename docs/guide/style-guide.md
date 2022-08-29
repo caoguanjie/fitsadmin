@@ -462,6 +462,8 @@ const { fixedHeader, tagsView, sidebarLogo, theme, showFooterBreadcrumb, formTyp
 :::
 
 
+## Vue2.x的开发规范
+
 ::: note
 想了解更多的规范标准，请看[Vue2.x的开发规范](http://192.168.32.108:8012/#/knowledge/docs/vue2)
 :::
