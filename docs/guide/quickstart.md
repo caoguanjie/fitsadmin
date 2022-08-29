@@ -114,6 +114,7 @@ date: 2022-08-17
 1. 安装[node](http://nodejs.cn/download/)环境,此项目要求是`node >= 14`,框架组默认要求是`node = 14.14.0`
 2. 开发工具VSCode,[下载请戳我](https://code.visualstudio.com/Download)
 3. 必装插件Volar,VSCode 插件市场搜索 Volar (就排在第一位的骷髅头)，且要禁用默认的 Vetur.
+   
 ![图 3](/images/20220810082733.png)  
 
 ## 安装
