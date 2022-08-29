@@ -80,6 +80,8 @@ export default hopeTheme({
       imageSize: true,
       // 流程图支持
       mermaid: true,
+      // 流程图支持
+      flowchart: true,
       presentation: {
         plugins: ["highlight", "math", "search", "notes", "zoom"],
       },

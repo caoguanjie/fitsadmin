@@ -1,4 +1,4 @@
-import { FitsSetting } from "../type"
+
 
 const ENV: FitsSetting = {
     project: {
