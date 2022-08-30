@@ -41,6 +41,7 @@ jobs:
         with:
           # 这是文档部署到的分支名称
           repository-name: caoguanjie/fitsadmin
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           branch: docs
           folder: docs/.vuepress/dist
 
