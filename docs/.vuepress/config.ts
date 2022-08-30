@@ -12,7 +12,7 @@ export default defineUserConfig({
   head: [
     ['link', { rel: 'icon', href: '/images/favicon.ico' }]
   ],
-  base: "/",
+  base: "/fitsadmin/",
 
   theme,
   plugins: [

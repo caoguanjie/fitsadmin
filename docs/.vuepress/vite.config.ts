@@ -5,6 +5,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default defineConfig({
+    base: '/fitsadmin',
     plugins: [
         AutoImport({
             resolvers: [ElementPlusResolver()],
