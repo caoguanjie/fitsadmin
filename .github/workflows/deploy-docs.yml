@@ -41,7 +41,9 @@ jobs:
         with:
           # 这是文档部署到的分支名称
           repository-name: caoguanjie/fitsadmin
+          # 令牌，是要你的GitHub设置了这个ACCESS_TOKEN属性的令牌，代替你的账号密码
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           branch: docs
+          # folder这个关键字，主要是把你写这个路径的文件直接提交到分支
           folder: docs/.vuepress/dist
 
