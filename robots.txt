@@ -2,4 +2,4 @@
 User-agent:*
 Disallow:
 
-Sitemap: http://192.168.32.60:8080/sitemap.xml
+Sitemap: http://192.168.32.60:8080/fitsadmin/sitemap.xml
