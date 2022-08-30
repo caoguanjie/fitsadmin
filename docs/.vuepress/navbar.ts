@@ -12,9 +12,80 @@ export default navbar([
     activeMatch: "^/components",
   },
 
-  // {
-  //   text: "主题文档",
-  //   icon: "note",
-  //   link: "https://vuepress-theme-hope.github.io/v2/zh/",
-  // },
+  {
+    text: "生态系统",
+    children: [
+      {
+        text: '框架相关',
+        children: [
+          {
+            text: 'FitsAdminV2',
+            link: "https://cn.vuejs.org/",
+          },
+          {
+            text: 'Yapi接口管理',
+            link: "http://192.168.32.108:3000/",
+          },
+          {
+            text: '项目的SVN地址',
+            link: "/guide/encrypt",
+          },
+        ]
+      },
+      {
+        text: '官方库',
+        children: [
+          {
+            text: 'Vue3.x',
+            link: "https://cn.vuejs.org/",
+          },
+          {
+            text: 'Pinia',
+            link: "https://pinia.vuejs.org/",
+          },
+          {
+            text: 'Vite',
+            link: "https://cn.vitejs.dev/",
+          },
+          {
+            text: 'Vue Router',
+            link: "https://router.vuejs.org/zh/",
+          },
+          {
+            text: 'Element Plus',
+            link: "https://element-plus.org/zh-CN/#/zh-CN",
+          },
+        ]
+      },
+      {
+        text: '优秀案例',
+        children: [
+          {
+            text: 'vue-admin-better',
+            link: "https://vue-admin-beautiful.com/vue-admin-beautiful-element/?hmsr=github&hmpl=&hmcu=&hmkw=&hmci=#/index",
+          },
+          {
+            text: 'Vue Admin plus',
+            link: "https://vue-admin-beautiful.com/admin-plus/#/index",
+          },
+          {
+            text: 'vue-element-admin',
+            link: "https://panjiachen.github.io/vue-element-admin/",
+          },
+          {
+            text: 'vue3-element-admin',
+            link: "http://vue3.youlai.tech/",
+          },
+        ]
+      }
+    ],
+  },
+  {
+    text: "Fits知识库",
+    link: "http://192.168.32.108:8012/#/",
+  },
+  {
+    text: "Demo演示",
+    link: "http://192.168.32.108:8012/#/",
+  },
 ]);

@@ -23,7 +23,7 @@ date: 2022-08-17
 ## 前期准备
 
 
-你需要在本地安装 [node](https://nodejs.org/en/)和 [Git](https://git-scm.com/)。本项目技术栈基于[ES2015+](https://es6.ruanyifeng.com/)、[vue3.2](https://cn.vuejs.org/)、[Pinia](https://pinia.vuejs.org/)、[vue-router](https://router.vuejs.org/zh/) 、[vite](https://vitejs.cn/) 、[axios](https://github.com/axios/axios)、[Volar](https://github.com/johnsoncodehk/volar) 和 [Element Plus](https://element-plus.org/zh-CN/#/zh-CN)。 所有的请求数据都使用[Yapi](http://192.168.32.108:8012/#/tools/yapi/)进行模拟，提前了解和学习这些知识会对使用本项目有很大的帮助。
+你需要在本地安装 [node](https://nodejs.org/en/)和 [Git](https://git-scm.com/)。本项目技术栈基于[ES2015+](https://es6.ruanyifeng.com/)、[vue3.2](https://cn.vuejs.org/)、[Pinia](https://pinia.vuejs.org/)、[vue-router](https://router.vuejs.org/zh/) 、[vite](https://cn.vitejs.dev/) 、[axios](https://github.com/axios/axios)、[Volar](https://github.com/johnsoncodehk/volar) 和 [Element Plus](https://element-plus.org/zh-CN/#/zh-CN)。 所有的请求数据都使用[Yapi](http://192.168.32.108:8012/#/tools/yapi/)进行模拟，提前了解和学习这些知识会对使用本项目有很大的帮助。
 
 **本项目不支持IE浏览器和需要Chrome64以上版本，有需求请自行添加 polyfill** [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)
 

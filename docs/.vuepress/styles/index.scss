@@ -77,12 +77,17 @@
     box-shadow: none;
 }
 
-.navbar .nav-item>.nav-link {
+.navbar .nav-item>.nav-link,
+.dropdown-wrapper .dropdown-title {
     color: #2c3e50;
     font-weight: 600;
     font-size: 15px;
     text-decoration: none;
     overflow-wrap: break-word;
+}
+
+.dropdown-wrapper .dropdown-title:hover {
+    color: var(--dark-grey);
 }
 
 .navbar-left>*,
