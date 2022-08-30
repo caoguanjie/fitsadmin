@@ -40,6 +40,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # 这是文档部署到的分支名称
+          repository-name: caoguanjie/fitsadmin
           branch: docs
-          folder: .
+          folder: docs/.vuepress/dist
 
