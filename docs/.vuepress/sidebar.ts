@@ -8,6 +8,10 @@ export default sidebar({
     {
       text: '进阶',
       children: ['eslint', 'elementplus', 'srcAlias', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart']
+    },
+    {
+      text: '其他',
+      children: ['function-list']
     }
   ],
   '/components/': [

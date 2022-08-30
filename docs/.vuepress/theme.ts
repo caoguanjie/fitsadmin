@@ -82,6 +82,8 @@ export default hopeTheme({
       mermaid: true,
       // 流程图支持
       flowchart: true,
+      // 任务列表支持
+      tasklist: true,
       presentation: {
         plugins: ["highlight", "math", "search", "notes", "zoom"],
       },
