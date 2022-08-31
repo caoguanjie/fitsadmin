@@ -1,9 +1,9 @@
 name: 部署ui库
 
-# on:
-#   push:
-#     path: 
-#       - 'libs/**'
+on:
+  branches:
+      # 确保这是你正在使用的分支名称
+    - main
 
 jobs:
   deploy-fits-admin-ui:
