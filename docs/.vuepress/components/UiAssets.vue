@@ -7,20 +7,16 @@
             <RouterLink to="/resources/encrypt.html#相关设计文件" style='text-decoration:none'>
                 <el-button type="primary">下载</el-button>
             </RouterLink>
-            <!-- <a href="/resources/encrypt.html#相关设计文件" style='text-decoration:none'>
-                <el-button type="primary">下载</el-button>
-            </a> -->
         </div>
         <div class="ui-area">
             <img src="/images/PxCook.png" alt="">
             <div class="text">PxCook 源文件</div>
             <div class="decs">由Sketch源文件导出的像素大厨格式，方便前端开发读取元素尺寸、元素距离、文本样式、颜色的智能标注,支持智能切图等等</div>
-            <a href="/images/PxCook.pxcp" style='text-decoration:none'>
+            <a href="https://github.com/caoguanjie/fitsadmin/blob/master/docs/.vuepress/public/images/PxCook.pxcp"
+                style='text-decoration:none'>
                 <el-button type="primary">下载</el-button>
             </a>
         </div>
-
-
     </div>
 </template>
 

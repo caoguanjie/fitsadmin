@@ -37,7 +37,7 @@ export default hopeTheme({
   lastUpdated: true,
   encrypt: {
     config: {
-      "/guide/encrypt.html": ["1234"],
+      "/resources/encrypt.html": ["fits"],
     },
   },
   plugins: {
