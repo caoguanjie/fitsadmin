@@ -1,9 +1,9 @@
 name: 部署ui库
 
-on:
-  push:
-    path: 
-      - 'libs/**'
+# on:
+#   push:
+#     path: 
+#       - 'libs/**'
 
 jobs:
   deploy-fits-admin-ui:
