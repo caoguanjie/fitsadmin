@@ -14,7 +14,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
 
   return {
-    base: mode !== 'dev' ? '/FitsAdminV3' : '/',
+    base: mode !== 'dev' ? '/' : '/',
     plugins: [
       vue(),
       svgLoader(),

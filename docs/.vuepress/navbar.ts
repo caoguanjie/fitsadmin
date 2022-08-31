@@ -89,7 +89,7 @@ export default navbar([
   },
   {
     text: "Demo演示",
-    link: "http://192.168.32.108:8012/#/",
+    link: "http://192.168.32.60:3001/",
   },
 
 

@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite serve --mode dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",
-        "build:dev": " vite serve --mode prod",
+        "build:dev": " vite build --mode prod",
         "serve": "vite preview",
         "lint": "eslint src/**/*.{ts,js,vue} --fix",
         "prepare": "husky install",
@@ -12,7 +12,7 @@
         "docs:build": "vuepress build docs",
         "docs:clean-dev": "vuepress dev docs --clean-cache",
         "docs:dev": "vuepress dev docs",
-        "docs:github": "NODE_ENV=github  vuepress dev docs",
+        "docs:github": "cross-env NODE_ENV=github vuepress build docs",
         "build:lib": "vite build --config ./lib.config.ts"
     },
     "dependencies": {
@@ -58,6 +58,7 @@
         "@vitejs/plugin-vue": "^1.9.3",
         "@vuepress/client": "^2.0.0-beta.49",
         "@vuepress/plugin-search": "^2.0.0-beta.49",
+        "cross-env": "^7.0.3",
         "eslint": "^8.14.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.0.0",
