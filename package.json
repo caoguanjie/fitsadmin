@@ -13,7 +13,7 @@
         "docs:clean-dev": "vuepress dev docs --clean-cache",
         "docs:dev": "vuepress dev docs",
         "docs:github": "cross-env NODE_ENV=github vuepress build docs",
-        "build:lib": "vite build --config ./lib.config.ts"
+        "build:lib": "vite build --config ./lib.config.ts && cd libs && npm version patch"
     },
     "dependencies": {
         "@bfehub/vuepress-plugin-code-block": "^1.0.4",
