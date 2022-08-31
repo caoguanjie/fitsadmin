@@ -1,3 +1,18 @@
+<p align="center">
+    <img src="https://img.shields.io/badge/Vue-3.2.25-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/Vite-2.9.7-green.svg"/>
+    <img src="https://img.shields.io/badge/Element Plus-2.2.9-blue.svg"/>
+    <a src="https://github.com/caoguanjie" target="_blank">
+        <img src="https://img.shields.io/github/stars/caoguanjie/fitsadmin.svg?style=social&label=Stars"/>
+    </a>
+    <br/>
+    <a href="https://github.com/caoguanjie" target="_blank">
+        <img src="https://img.shields.io/badge/Author-丰德前端框架组-orange.svg"/>
+    </a>
+</p>
+<p align="center">
+    <a target="_blank" href="https://caoguanjie.github.io/fitsadmin/">在线预览</a> |  <a target="_blank" href="https://caoguanjie.github.io/fitsadmin/">官方文档</a> 
+</p>
 # 介绍
 
 ## 项目简介
@@ -8,8 +23,9 @@
 
 ## 功能清单
 
-![图 2](https://github.com/caoguanjie/fitsadmin/blob/master/docs/.vuepress/public/images/20220810085530.png)  
+![图 2](https://github.com/caoguanjie/fitsadmin/blob/master/docs/.vuepress/public/images/20220810044534.png)  
 
+## 官方文档
 
 
 ## 前期准备
