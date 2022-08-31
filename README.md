@@ -2,6 +2,7 @@
     <img src="https://img.shields.io/badge/Vue-3.2.25-brightgreen.svg"/>
     <img src="https://img.shields.io/badge/Vite-2.9.7-green.svg"/>
     <img src="https://img.shields.io/badge/Element Plus-2.2.9-blue.svg"/>
+    <img src="https://img.shields.io/badge/pinia-2.0.12-blueviolet.svg"/>
     <a src="https://github.com/caoguanjie" target="_blank">
         <img src="https://img.shields.io/github/stars/caoguanjie/fitsadmin.svg?style=social&label=Stars"/>
     </a>
