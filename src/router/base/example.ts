@@ -163,35 +163,46 @@ export const businessRouter: RouteRecordRaw = {
         },
 
         {
-            path: "Echarts",
+            path: "echarts",
             name: "Echarts",
-            redirect: "/businessRouter//Echarts/BarEcharts",
-            component: () => import("@/views/ready/index.vue"),
+            redirect: "/businessRouter/echarts/bar-echarts",
+            component: () => import("@/views/components-manage/index.vue"),
             meta: { title: "echarts图表", roles: ["admin", "editor"], icon: 'fits-charts' },
             children: [
                 {
-                    path: "BarEcharts",
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "bar-echarts",
                     name: "BarEcharts",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/echarts/BarEchartsExample.vue"),
                     meta: { title: "柱状图" },
                 },
                 {
-                    path: "LineEcharts",
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "line-echarts",
                     name: "LineEcharts",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/echarts/LineEchartsExample.vue"),
                     meta: { title: "折线图" },
                 },
                 {
-                    path: "PieEcharts",
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "pie-echarts",
                     name: "PieEcharts",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/echarts/PieEchartsExample.vue"),
                     meta: { title: "饼图" },
                 },
                 {
-                    path: "otherEcharts",
-                    name: "otherEcharts",
-                    component: () => import("@/views/ready/index.vue"),
-                    meta: { title: "其他图形" },
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "comprehensive-example1",
+                    name: "ComprehensiveExample1",
+                    component: () => import("@/views/components-manage/echarts/ComprehensiveExample1.vue"),
+                    meta: { title: "综合范例1" },
+                },
+                {
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "comprehensive-example2",
+                    name: "ComprehensiveExample2",
+                    component: () => import("@/views/components-manage/echarts/ComprehensiveExample2.vue"),
+                    meta: { title: "综合范例2" },
                 },
             ],
         },

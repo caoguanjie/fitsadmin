@@ -1,0 +1,85 @@
+{
+    "nodes": [
+      {
+        "id": "001",
+        "type": "入院",
+        "x": 220,
+        "y": 170,
+        "properties": {
+        },
+        "text": {
+          "x": 220,
+          "y": 170,
+          "value": "入院"
+        },
+        "baseType": "node"
+      },
+      {
+        "id": "002",
+        "type": "阶段",
+        "x": 530,
+        "y": 170,
+        "properties": {},
+        "baseType": "node",
+        "text": {
+          "x": 530,
+          "y": 170,
+          "value": "住院1"
+        }
+      },
+      {
+        "id": "003",
+        "type": "阶段",
+        "x": 530,
+        "y": 320,
+        "properties": {},
+        "baseType": "node",
+        "text": {
+          "x": 530,
+          "y": 320,
+          "value": "阶段2"
+        }
+      },
+      {
+        "id": "004",
+        "type": "出院",
+        "x": 800,
+        "y": 170,
+        "properties": {
+        },
+        "text": {
+          "x": 800,
+          "y": 170,
+          "value": "出院"
+        },
+        "baseType": "node"
+      }
+    ],
+    "edges": [
+      {
+        "id": "00f55245-513e-43a2-9cb0-adb61b01adc8",
+        "type": "polyline",
+        "sourceNodeId": "001",
+        "targetNodeId": "002"
+        
+      },
+      {
+        "id": "bbf9754f-603e-48e4-85fe-84ed44459a6a",
+        "type": "polyline",
+        "sourceNodeId": "001",
+        "targetNodeId": "003"
+      },
+      {
+        "id": "2b3007ed-7a13-4db7-a1ea-6691d7564c34",
+        "type": "polyline",
+        "sourceNodeId": "002",
+        "targetNodeId": "004"
+      },
+      {
+        "id": "12bb443b-4070-4a08-ad4d-2755ee856f0d",
+        "type": "polyline",
+        "sourceNodeId": "003",
+        "targetNodeId": "004"
+      }
+    ]
+  }

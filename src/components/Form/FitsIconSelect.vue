@@ -1,22 +1,20 @@
 <template>
     <div class="icon-select">
-
         <el-select v-bind='select' v-model="selectedNames" ref="selectInputRef" :filter-method="filterMethod"
-            @visible-change="VisibleChange" :popper-class="`${select.popperClass} icon-popper`">
+            @visible-change="VisibleChange" :popper-class="`${select?.popperClass} icon-popper`">
             <template #empty>
-                <el-scrollbar class="icon-scrollbar">
+                <el-scrollbar class="icon-scrollbar" max-height="30vh">
                     <div class="custom-icon">
-                        <el-input v-bind='input' v-model="filterText" class="filterInput"
-                            @input="filterMethod(filterText)" v-show="input.show" />
+                        <el-input v-bind='input?.elementProps' v-model="filterText" class="filterInput"
+                            @input="filterMethod(filterText)" v-show="input?.show" />
                         <div class="icon-select__list" v-if="iconList.length">
                             <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)"
                                 class="icon-wrapper" :class="{ 'isSelected': item.isSelected }">
                                 <svg-icon color="#999" :icon-class="item.name" />
-                                <span>{{ item.name }}</span>
+                                <span>{{  item.name  }}</span>
                             </div>
                         </div>
-                        <!-- 筛选后没有数据的展示 -->
-                        <div class="no-data-text" v-else>{{ noListText }}</div>
+                        <div class="no-data-text" v-else>{{  noListText  }}</div>
                     </div>
                 </el-scrollbar>
             </template>
@@ -25,14 +23,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch } from 'vue';
+import { onMounted, reactive, ref, toRefs, watch, useAttrs } from 'vue';
 import SvgIcon from '@/components/SvgIcon/index.vue';
 import { FitsIconSelectModel } from './model';
 
-const props = withDefaults(defineProps<{ options?: FitsIconSelectModel }>(), {
+const props = withDefaults(defineProps<{ options: FitsIconSelectModel }>(), {
     options: () => new FitsIconSelectModel(),
 })
-const { modelValue, noListText, select, input }: any = toRefs(props.options)
+const { noListText, select, input }: any = toRefs(props.options)
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -54,23 +52,31 @@ const state = reactive({
 })
 const { filterText, iconList, isMultiple, selectedNames }: any = toRefs(state);
 
+const _attrs: any = useAttrs()
+
 const selectInputRef = ref()
 
-watch(() => modelValue.value, (val) => selectedValueChange(val))
+watch(_attrs.modelValue, (val) => {
+    selectedValueChange(val)
+})
 
-watch(() => selectedNames.value, (val) => selectedValueChange(val))
+watch(() => selectedNames.value, (val) => {
+    selectedValueChange(val)
+})
 
 onMounted(() => {
     isMultiple.value = select.value.multiple
     // 初始化默认值
-    iconList.value.map((item: any) => {
-        item.isSelected = modelValue.value.includes(item.name)
-        selectedNames.value = modelValue.value
-    })
+    if (_attrs.modelValue && _attrs.modelValue.length) {
+        iconList.value.map((item: any) => {
+            item.isSelected = _attrs.modelValue.includes(item.name)
+        })
+        selectedNames.value = _attrs.modelValue
+    }
 })
 
 function selectedValueChange(val: any) {
-    iconList.value.map((item: any) => item.isSelected = val.includes(item.name))
+    iconList.value.map((item: any) => item.isSelected = val?.includes(item.name))
     emit("update:modelValue", selectedNames.value)
 }
 

@@ -1,5 +1,5 @@
 <template>
-    <fits-tree-select :options="state" />
+    <fits-tree-select :options="state" :modelValue="91" />
 </template>
 
 <script lang="ts" setup>
@@ -8,7 +8,6 @@ import { reactive } from 'vue'
 import { FitsTreeSelectModel } from '@/components/Form/model';
 
 const state = reactive(new FitsTreeSelectModel({
-    modelValue: 91,
     select: {
         clearable: true,
         placeholder: '请选择'
@@ -57,7 +56,7 @@ const state = reactive(new FitsTreeSelectModel({
                                 label: 'Level 2-1-1',
                             },
                             {
-                                id: 111,
+                                id: '111',
                                 label: 'Level 2-2-2',
                             },
                         ],

@@ -12,6 +12,7 @@
         "docs:build": "vuepress build docs",
         "docs:clean-dev": "vuepress dev docs --clean-cache",
         "docs:dev": "vuepress dev docs",
+        "docs:github": "NODE_ENV=github  vuepress dev docs",
         "build:lib": "vite build --config ./lib.config.ts"
     },
     "dependencies": {
@@ -19,6 +20,7 @@
         "@element-plus/icons-vue": "^1.0.0",
         "@form-create/element-ui": "^3.1.12",
         "@logicflow/core": "^1.1.26",
+        "@logicflow/extension": "^1.1.26",
         "@wangeditor/editor": "^5.0.0",
         "@wangeditor/editor-for-vue": "^5.1.10",
         "axios": "^0.24.0",
@@ -39,6 +41,7 @@
         "sortablejs": "^1.14.0",
         "vite-plugin-dts": "^1.4.1",
         "vue": "^3.2.25",
+        "vue-json-pretty": "^2.2.2",
         "vue-router": "^4.0.12"
     },
     "devDependencies": {

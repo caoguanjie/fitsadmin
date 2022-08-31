@@ -3,11 +3,11 @@
         <el-select ref="selectInputRef" v-bind='select' v-model="selectedValue" :filter-method="filterMethod"
             @visible-change="VisibleChange" @clear="clearSelected" :popper-class="`${select?.popperClass} tree-popper`">
             <template #empty>
-                <el-scrollbar class="tree-scrollbar">
+                <el-scrollbar class="tree-scrollbar" max-height="30vh">
                     <div class="custom-tree">
                         <el-input v-bind='input?.elementProps' v-model="filterText" class="filterInput"
                             v-show="input?.show" />
-                        <el-tree ref="treeRef" highlightCurrent :filter-node-method="filterNode" v-bind='tree'
+                        <el-tree ref="treeRef" :highlightCurrent="true" :filter-node-method="filterNode" v-bind='tree'
                             @node-click="nodeClick" @check="Check" class="tree" />
                     </div>
                 </el-scrollbar>
@@ -17,24 +17,32 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { onMounted, reactive, ref, toRefs, watch, useAttrs } from 'vue'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
 import { FitsTreeSelectModel } from './model';
 
-const props = withDefaults(defineProps<{ options: FitsTreeSelectModel }>(), {
+const props = withDefaults(defineProps<{
+    options: FitsTreeSelectModel
+}>(), {
     options: () => new FitsTreeSelectModel(),
 })
-const { input, select, tree, modelValue } = toRefs(props.options)
+
+// const { input, select, tree, modelValue } = reactive(props.options)
+
+const { input, select, tree } = toRefs(props.options)
+
+// const prop = props.options
 
 const emit = defineEmits(["update:modelValue"])
 
 const state = reactive({
     selectedValue: '',
     filterText: '',
-    nodeId: ''
 })
-const { selectedValue, filterText, nodeId } = toRefs(state);
+const { selectedValue, filterText }: any = toRefs(state);
+
+const _attrs = useAttrs()
 
 const treeRef = ref()
 const selectInputRef = ref()
@@ -44,26 +52,28 @@ defineExpose({
 })
 
 watch(filterText, (val: string) => {
-    treeRef.value?.filter(val)
-})
-
-watch(() => modelValue?.value, (val: any) => {
-    initValue(val)
+    treeRef.value.filter(val)
 })
 
 onMounted(() => {
-    initValue(modelValue?.value)
+    initValue(_attrs.modelValue)
 })
 
 function initValue(val: any) {
+    // 单选
     if (val && !selectedValue.value) {
         treeRef.value.setCurrentKey(val)
         selectedValue.value = treeRef.value.getNode(val)?.label
     }
+    // 多选
+    if (tree.value.defaultCheckedKeys?.length) {
+        const checkedNodes = treeRef.value.getCheckedNodes()
+        checkedNodes.filter((item: any) => !item['children']).map((ele: any) => selectedValue.value.push(ele.label))
+    }
 }
 
 // 下拉框打开/关闭的时候清空内部输入框的值，恢复所有下拉数据
-function VisibleChange() {
+function VisibleChange(val: boolean) {
     filterText.value = ''
     treeRef.value?.filter('')
 }
@@ -84,11 +94,9 @@ function filterNode(value: string, data: TreeNodeData, node: Node) {
 function nodeClick(node: TreeNodeData, option: Node, event: any) {
     if (tree.value.showCheckbox) return
     if (option.isLeaf) {
-        // 把值放进输入框，关闭下拉
-        selectInputRef.value.blur()
-        emit("update:modelValue", node.id);
-        nodeId.value = node.id
         selectedValue.value = node[event.props.props.label]
+        emit("update:modelValue", node);
+        selectInputRef.value.blur()
     }
 }
 
@@ -102,6 +110,7 @@ function Check(obj: any, checkedObj: any) {
     const arr = checkedObj.checkedNodes.filter((item: any) => !item['children'])
     arr.map((item: any) => arrNames.push(item.label))
     selectedValue.value = arrNames
+    emit('update:modelValue', checkedObj.checkedNodes)
 }
 
 </script>

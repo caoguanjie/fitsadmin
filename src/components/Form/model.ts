@@ -32,11 +32,6 @@ export class FitsSelectProps {
      */
     placeholder?: string
     /**
-    * @description 是否通过选择器开启筛选，当已经显示内部输入框时，不建议同时开启选择器筛选
-    * @default {false}
-    */
-    filterable?: boolean
-    /**
     * @description 下拉框的自定义类名
     */
     popperClass?: string
@@ -91,7 +86,6 @@ export class FitsSelectProps {
         clearable,
         effect,
         placeholder,
-        filterable,
         popperClass,
         teleported,
         persistent,
@@ -108,7 +102,6 @@ export class FitsSelectProps {
         this.clearable = clearable ?? false;
         this.effect = effect ?? 'light'
         this.placeholder = placeholder ?? '请选择';
-        this.filterable = filterable ?? false
         this.popperClass = popperClass ?? '';
         this.teleported = teleported ?? true
         this.persistent = persistent ?? true;
@@ -150,11 +143,7 @@ export class FitsTreeSelectModel{
     /**
      * @desc 树组件的配置
      */
-    tree: TreeComponentProps
-    /**
-     * @desc 由树节点id组成的数组
-     */
-    modelValue?: string
+    tree: TreeComponentProps | any
     /**
      * @desc 选择器的属性配置
      */
@@ -165,26 +154,19 @@ export class FitsTreeSelectModel{
     input?: FitsInputProps
     constructor({
         tree,
-        modelValue,
         select,
         input
     }: any = {}) {
         this.tree = tree
-        this.modelValue = modelValue ?? ''
         this.select = new FitsSelectProps({ ...select })
         this.input = new FitsInputProps({ ...input })
     }
 }
 
 /**
- * @desc FitsTreeSelect组件的类
+ * @desc FitsIconSelect组件的类
  */
 export class FitsIconSelectModel{
-    /**
-     * @desc 由图标名称组成的数组
-     * @default {[]}
-     */
-    modelValue?: string[]
     /**
      * @desc 选择器的属性配置
      */
@@ -199,12 +181,10 @@ export class FitsIconSelectModel{
      */
     noListText?: string
     constructor({
-        modelValue,
         select,
         input,
         noListText
     }: any = {}) {
-        this.modelValue = modelValue ?? []
         this.select = new FitsSelectProps({ ...select })
         this.input = new FitsInputProps({ ...input })
         this.noListText = noListText ?? 'No Data'
@@ -223,18 +203,20 @@ export class FitsCheckboxAllModel{
      * @desc 由选项的label组成的数组
      * @default {[]}
      */
-    modelValue?: string[]
+    // modelValue?: string[]
     /**
      * @desc checkbox-group组件的属性
      */
     checkboxGroup?: IUseCheckboxGroupProps
     constructor({
         option,
-        modelValue,
+        // modelValue,
         checkboxGroup
     }: any = {}) {
         this.option = option
-        this.modelValue = modelValue ?? []
+        // this.modelValue = modelValue ?? []
         this.checkboxGroup = checkboxGroup 
     }
 }
+
+

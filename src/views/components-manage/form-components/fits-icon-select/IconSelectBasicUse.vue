@@ -9,7 +9,6 @@ import { reactive } from 'vue';
 
 const state = reactive(new FitsIconSelectModel({
     select: {
-        filterable: true,
         clearable: true,
     },
 }))

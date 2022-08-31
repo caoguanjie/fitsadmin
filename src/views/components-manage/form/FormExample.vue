@@ -82,6 +82,7 @@ import { Search } from '@element-plus/icons-vue'
 import Divider from '@/components/Form/Divider.vue'
 import FitsCheckboxAll from '@/components/Form/FitsCheckboxAll.vue'
 import { ElMessage } from 'element-plus';
+import { FitsCheckboxAllModel, FitsIconSelectModel, FitsTreeSelectModel } from '@/components/Form/model';
 
 let num = 0
 
@@ -189,7 +190,6 @@ const simpleForm = reactive({
             //         class: 'el-icon el-icon--left',
             //     }
             // ]
-
         },
         {
             type: "select",
@@ -419,20 +419,22 @@ const simpleForm = reactive({
             component: markRaw(FitsCheckboxAll),
             title: "多选(全选)",
             field: "checkbox2",
+            value: ['生态蔬菜'],
             props: {
-                options: [
-                    {
-                        label: "生态蔬菜",
-                    },
-                    {
-                        label: "新鲜水果",
-                    },
-                    {
-                        label: "蛋糕甜点",
-                    },
-                ]
+                options: new FitsCheckboxAllModel({
+                    option: [
+                        {
+                            label: "生态蔬菜",
+                        },
+                        {
+                            label: "新鲜水果",
+                        },
+                        {
+                            label: "蛋糕甜点",
+                        }
+                    ],
+                })
             },
-
         },
     ],
     option: {
@@ -699,173 +701,175 @@ const customForm = reactive({
                     component: markRaw(FitsTreeSelect),
                     value: '2',
                     props: {
-                        select: {
-                            class: "mySelect",
-                            placeholder: "请选择组织机构",
-                        },
-                        input: {
-                            element: {
-                                placeholder: "部门搜索",
-                                class: "myInput",
+                        options: new FitsTreeSelectModel({
+                            select: {
+                                class: "mySelect",
+                                placeholder: "请选择组织机构",
                             },
-                            show: true
-                        },
-                        tree: {
-                            class: "myTree",
-                            nodeKey: "id",
-                            defaultExpandAll: false,
-                            data: [
-                                {
-                                    id: "1",
-                                    label: '研发部',
-                                    children: [
-                                        {
-                                            id: 4,
-                                            label: '研发部',
-                                            children: [
-                                                {
-                                                    id: 9,
-                                                    label: '研发部',
-                                                    children: [
-                                                        {
-                                                            id: "2",
-                                                            "disabled": true,
-                                                            label: '研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部',
-                                                        },
-                                                        {
-                                                            id: 10,
-                                                            label: '研发部',
-                                                            children: [
-                                                                {
-                                                                    id: 9,
-                                                                    label: '研发部',
-                                                                },
-                                                                {
-                                                                    id: 10,
-                                                                    label: '研发部',
-                                                                    children: [
-                                                                        {
-                                                                            id: 9,
-                                                                            label: '研发部',
-                                                                        },
-                                                                        {
-                                                                            id: 10,
-                                                                            label: '研发部',
-                                                                            children: [
-                                                                                {
-                                                                                    id: 9,
-                                                                                    label: '研发部',
-                                                                                },
-                                                                                {
-                                                                                    id: 10,
-                                                                                    label: '研发部',
-                                                                                },
-                                                                            ],
-                                                                        },
-                                                                    ],
-                                                                },
-                                                            ],
-                                                        },
-                                                    ],
-                                                },
-                                                {
-                                                    id: 10,
-                                                    label: '研发部',
-                                                },
-                                            ],
-                                        },
-                                    ],
+                            input: {
+                                element: {
+                                    placeholder: "部门搜索",
+                                    class: "myInput",
                                 },
-                                {
-                                    id: 21,
-                                    label: '研发部',
-                                    children: [
-                                        {
-                                            id: 5,
-                                            label: '研发部',
-                                        },
-                                        {
-                                            id: 6,
-                                            label: '研发部',
-                                        },
-                                    ],
-                                },
-                                {
-                                    id: 3,
-                                    label: 'Level one 3',
-                                    children: [
-                                        {
-                                            id: 7,
-                                            label: 'Level two 3-1',
-                                        },
-                                        {
-                                            id: 8,
-                                            label: 'Level two 3-2',
-                                            children: [
-                                                {
-                                                    id: 9,
-                                                    label: '研发部',
-                                                },
-                                                {
-                                                    id: 10,
-                                                    label: '研发部',
-                                                    children: [
-                                                        {
-                                                            id: 9,
-                                                            label: '研发部',
-                                                        },
-                                                        {
-                                                            id: 10,
-                                                            label: '研发部',
-                                                            children: [
-                                                                {
-                                                                    id: 9,
-                                                                    label: '研发部',
-                                                                    children: [
-                                                                        {
-                                                                            id: 9,
-                                                                            label: '研发部',
-                                                                        },
-                                                                        {
-                                                                            id: 10,
-                                                                            label: '研发部',
-                                                                            children: [
-                                                                                {
-                                                                                    id: 9,
-                                                                                    label: '研发部',
-                                                                                },
-                                                                                {
-                                                                                    id: 10,
-                                                                                    label: '研发部',
-                                                                                    children: [
-                                                                                        {
-                                                                                            id: 9,
-                                                                                            label: '研发部',
-                                                                                        },
-                                                                                        {
-                                                                                            id: 10,
-                                                                                            label: '研发部',
-                                                                                        },
-                                                                                    ],
-                                                                                },
-                                                                            ],
-                                                                        },
-                                                                    ],
-                                                                },
-                                                                {
-                                                                    id: 10,
-                                                                    label: '研发部',
-                                                                },
-                                                            ],
-                                                        },
-                                                    ],
-                                                },
-                                            ],
-                                        },
-                                    ],
-                                },
-                            ],
-                        }
+                                show: true
+                            },
+                            tree: {
+                                class: "myTree",
+                                nodeKey: "id",
+                                defaultExpandAll: false,
+                                data: [
+                                    {
+                                        id: "1",
+                                        label: '研发部',
+                                        children: [
+                                            {
+                                                id: 4,
+                                                label: '研发部',
+                                                children: [
+                                                    {
+                                                        id: 9,
+                                                        label: '研发部',
+                                                        children: [
+                                                            {
+                                                                id: "2",
+                                                                "disabled": true,
+                                                                label: '研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部',
+                                                            },
+                                                            {
+                                                                id: 10,
+                                                                label: '研发部',
+                                                                children: [
+                                                                    {
+                                                                        id: 9,
+                                                                        label: '研发部',
+                                                                    },
+                                                                    {
+                                                                        id: 10,
+                                                                        label: '研发部',
+                                                                        children: [
+                                                                            {
+                                                                                id: 9,
+                                                                                label: '研发部',
+                                                                            },
+                                                                            {
+                                                                                id: 10,
+                                                                                label: '研发部',
+                                                                                children: [
+                                                                                    {
+                                                                                        id: 9,
+                                                                                        label: '研发部',
+                                                                                    },
+                                                                                    {
+                                                                                        id: 10,
+                                                                                        label: '研发部',
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                ],
+                                                            },
+                                                        ],
+                                                    },
+                                                    {
+                                                        id: 10,
+                                                        label: '研发部',
+                                                    },
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        id: 21,
+                                        label: '研发部',
+                                        children: [
+                                            {
+                                                id: 5,
+                                                label: '研发部',
+                                            },
+                                            {
+                                                id: 6,
+                                                label: '研发部',
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        id: 3,
+                                        label: 'Level one 3',
+                                        children: [
+                                            {
+                                                id: 7,
+                                                label: 'Level two 3-1',
+                                            },
+                                            {
+                                                id: 8,
+                                                label: 'Level two 3-2',
+                                                children: [
+                                                    {
+                                                        id: 9,
+                                                        label: '研发部',
+                                                    },
+                                                    {
+                                                        id: 10,
+                                                        label: '研发部',
+                                                        children: [
+                                                            {
+                                                                id: 9,
+                                                                label: '研发部',
+                                                            },
+                                                            {
+                                                                id: 10,
+                                                                label: '研发部',
+                                                                children: [
+                                                                    {
+                                                                        id: 9,
+                                                                        label: '研发部',
+                                                                        children: [
+                                                                            {
+                                                                                id: 9,
+                                                                                label: '研发部',
+                                                                            },
+                                                                            {
+                                                                                id: 10,
+                                                                                label: '研发部',
+                                                                                children: [
+                                                                                    {
+                                                                                        id: 9,
+                                                                                        label: '研发部',
+                                                                                    },
+                                                                                    {
+                                                                                        id: 10,
+                                                                                        label: '研发部',
+                                                                                        children: [
+                                                                                            {
+                                                                                                id: 9,
+                                                                                                label: '研发部',
+                                                                                            },
+                                                                                            {
+                                                                                                id: 10,
+                                                                                                label: '研发部',
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                ],
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                    {
+                                                                        id: 10,
+                                                                        label: '研发部',
+                                                                    },
+                                                                ],
+                                                            },
+                                                        ],
+                                                    },
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            }
+                        })
                     },
                     validate: [
                         { required: true, message: "请选择", trigger: 'change' }
@@ -884,29 +888,55 @@ const customForm = reactive({
                     field: "iconSelect",
                     title: "图标选择",
                     component: markRaw(FitsIconSelect),
-                    name: "IconSelect",
+                    value: ['edit', 'client'],
                     props: {
-                        select: {
-                            placeholder: "请选择图标",
-                        },
-                        input: {
-                            elementProps: {
-                                placeholder: "图标搜索",
+                        options: new FitsIconSelectModel({
+                            select: {
+                                class: "mySelect",
+                                placeholder: "请选择图标",
+                                multiple: true
                             },
-                            show: true,
-                        },
-                        noDataText: '暂无数据'
-                    },
-                    on: {
-                        // 监听组件事件
-                        selected: (iconName: any) => {
-                            console.log(iconName);
-                        }
+                            input: {
+                                element: {
+                                    placeholder: "图标搜索",
+                                },
+                            },
+                        })
                     },
                     validate: [
-                        { required: true, message: "请选择", trigger: 'change' }
+                        { required: true, message: "请选择图标", trigger: 'change' }
                     ],
-                }
+                },
+            ]
+        },
+        {
+            type: 'col',
+            props: {
+                span: 24
+            },
+            children: [
+                {
+                    type: "checkboxAll",
+                    component: markRaw(FitsCheckboxAll),
+                    title: "多选(全选)",
+                    field: "checkbox2",
+                    value: ['生态蔬菜'],
+                    props: {
+                        options: new FitsCheckboxAllModel({
+                            option: [
+                                {
+                                    label: "生态蔬菜",
+                                },
+                                {
+                                    label: "新鲜水果",
+                                },
+                                {
+                                    label: "蛋糕甜点",
+                                }
+                            ],
+                        })
+                    },
+                },
             ]
         }
     ],
@@ -1203,173 +1233,175 @@ const dialogForm = [
                 name: "organization",
                 title: "所属部门",
                 props: {
-                    select: {
-                        class: "mySelect",
-                        placeholder: "请选择组织机构",
-                    },
-                    input: {
-                        elementProps: {
-                            class: "myInput",
-                            placeholder: "部门搜索",
+                    options: new FitsTreeSelectModel({
+                        select: {
+                            class: "mySelect",
+                            placeholder: "请选择组织机构",
                         },
-                        show: true
-                    },
-                    tree: {
-                        class: "myTree",
-                        nodeKey: "id",
-                        defaultExpandAll: false,
-                        data: [
-                            {
-                                "id": "1",
-                                "label": '研发部',
-                                "children": [
-                                    {
-                                        "id": 4,
-                                        "label": '研发部',
-                                        "children": [
-                                            {
-                                                "id": 9,
-                                                "label": '研发部',
-                                                "children": [
-                                                    {
-                                                        "id": "2",
-                                                        "disabled": true,
-                                                        "label": '研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部',
-                                                    },
-                                                    {
-                                                        "id": 10,
-                                                        "label": '研发部',
-                                                        "children": [
-                                                            {
-                                                                "id": 9,
-                                                                "label": '研发部',
-                                                            },
-                                                            {
-                                                                "id": 10,
-                                                                "label": '研发部',
-                                                                "children": [
-                                                                    {
-                                                                        "id": 9,
-                                                                        "label": '研发部',
-                                                                    },
-                                                                    {
-                                                                        "id": 10,
-                                                                        "label": '研发部',
-                                                                        "children": [
-                                                                            {
-                                                                                "id": 9,
-                                                                                "label": '研发部',
-                                                                            },
-                                                                            {
-                                                                                "id": 10,
-                                                                                "label": '研发部',
-                                                                            },
-                                                                        ],
-                                                                    },
-                                                                ],
-                                                            },
-                                                        ],
-                                                    },
-                                                ],
-                                            },
-                                            {
-                                                "id": 10,
-                                                "label": '研发部',
-                                            },
-                                        ],
-                                    },
-                                ],
+                        input: {
+                            element: {
+                                placeholder: "部门搜索",
+                                class: "myInput",
                             },
-                            {
-                                "id": 21,
-                                "label": '研发部',
-                                "children": [
-                                    {
-                                        "id": 5,
-                                        "label": '研发部',
-                                    },
-                                    {
-                                        "id": 6,
-                                        "label": '研发部',
-                                    },
-                                ],
-                            },
-                            {
-                                "id": 3,
-                                "label": 'Level one 3',
-                                "children": [
-                                    {
-                                        "id": 7,
-                                        "label": 'Level two 3-1',
-                                    },
-                                    {
-                                        "id": 8,
-                                        "label": 'Level two 3-2',
-                                        "children": [
-                                            {
-                                                "id": 9,
-                                                "label": '研发部',
-                                            },
-                                            {
-                                                "id": 10,
-                                                "label": '研发部',
-                                                "children": [
-                                                    {
-                                                        "id": 9,
-                                                        "label": '研发部',
-                                                    },
-                                                    {
-                                                        "id": 10,
-                                                        "label": '研发部',
-                                                        "children": [
-                                                            {
-                                                                "id": 9,
-                                                                "label": '研发部',
-                                                                "children": [
-                                                                    {
-                                                                        "id": 9,
-                                                                        "label": '研发部',
-                                                                    },
-                                                                    {
-                                                                        "id": 10,
-                                                                        "label": '研发部',
-                                                                        "children": [
-                                                                            {
-                                                                                "id": 9,
-                                                                                "label": '研发部',
-                                                                            },
-                                                                            {
-                                                                                "id": 10,
-                                                                                "label": '研发部',
-                                                                                "children": [
-                                                                                    {
-                                                                                        "id": 9,
-                                                                                        "label": '研发部',
-                                                                                    },
-                                                                                    {
-                                                                                        "id": 10,
-                                                                                        "label": '研发部',
-                                                                                    },
-                                                                                ],
-                                                                            },
-                                                                        ],
-                                                                    },
-                                                                ],
-                                                            },
-                                                            {
-                                                                "id": 10,
-                                                                "label": '研发部',
-                                                            },
-                                                        ],
-                                                    },
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    }
+                            show: true
+                        },
+                        tree: {
+                            class: "myTree",
+                            nodeKey: "id",
+                            defaultExpandAll: false,
+                            data: [
+                                {
+                                    id: "1",
+                                    label: '研发部',
+                                    children: [
+                                        {
+                                            id: 4,
+                                            label: '研发部',
+                                            children: [
+                                                {
+                                                    id: 9,
+                                                    label: '研发部',
+                                                    children: [
+                                                        {
+                                                            id: "2",
+                                                            "disabled": true,
+                                                            label: '研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部',
+                                                        },
+                                                        {
+                                                            id: 10,
+                                                            label: '研发部',
+                                                            children: [
+                                                                {
+                                                                    id: 9,
+                                                                    label: '研发部',
+                                                                },
+                                                                {
+                                                                    id: 10,
+                                                                    label: '研发部',
+                                                                    children: [
+                                                                        {
+                                                                            id: 9,
+                                                                            label: '研发部',
+                                                                        },
+                                                                        {
+                                                                            id: 10,
+                                                                            label: '研发部',
+                                                                            children: [
+                                                                                {
+                                                                                    id: 9,
+                                                                                    label: '研发部',
+                                                                                },
+                                                                                {
+                                                                                    id: 10,
+                                                                                    label: '研发部',
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    ],
+                                                                },
+                                                            ],
+                                                        },
+                                                    ],
+                                                },
+                                                {
+                                                    id: 10,
+                                                    label: '研发部',
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: 21,
+                                    label: '研发部',
+                                    children: [
+                                        {
+                                            id: 5,
+                                            label: '研发部',
+                                        },
+                                        {
+                                            id: 6,
+                                            label: '研发部',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: 3,
+                                    label: 'Level one 3',
+                                    children: [
+                                        {
+                                            id: 7,
+                                            label: 'Level two 3-1',
+                                        },
+                                        {
+                                            id: 8,
+                                            label: 'Level two 3-2',
+                                            children: [
+                                                {
+                                                    id: 9,
+                                                    label: '研发部',
+                                                },
+                                                {
+                                                    id: 10,
+                                                    label: '研发部',
+                                                    children: [
+                                                        {
+                                                            id: 9,
+                                                            label: '研发部',
+                                                        },
+                                                        {
+                                                            id: 10,
+                                                            label: '研发部',
+                                                            children: [
+                                                                {
+                                                                    id: 9,
+                                                                    label: '研发部',
+                                                                    children: [
+                                                                        {
+                                                                            id: 9,
+                                                                            label: '研发部',
+                                                                        },
+                                                                        {
+                                                                            id: 10,
+                                                                            label: '研发部',
+                                                                            children: [
+                                                                                {
+                                                                                    id: 9,
+                                                                                    label: '研发部',
+                                                                                },
+                                                                                {
+                                                                                    id: 10,
+                                                                                    label: '研发部',
+                                                                                    children: [
+                                                                                        {
+                                                                                            id: 9,
+                                                                                            label: '研发部',
+                                                                                        },
+                                                                                        {
+                                                                                            id: 10,
+                                                                                            label: '研发部',
+                                                                                        },
+                                                                                    ],
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    ],
+                                                                },
+                                                                {
+                                                                    id: 10,
+                                                                    label: '研发部',
+                                                                },
+                                                            ],
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            ],
+                        }
+                    })
                 }
             },
             {

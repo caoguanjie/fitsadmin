@@ -14,17 +14,6 @@
 
         <el-card class="box-card">
             <template #header>
-                <div class="title">过滤图标</div>
-                <div class="describe">
-                    开启过滤的方式有两种。一种是设置 select.filterable = true；另一种是设置 input.show =
-                    true 开启内部过滤输入框。
-                </div>
-            </template>
-            <icon-select-filterable />
-        </el-card>
-
-        <el-card class="box-card">
-            <template #header>
                 <div class="title">默认值</div>
                 <div class="describe">
                     通过传递 modelValue 属性可以给图标选择组件传递默认值，该值必须是图标的名称
@@ -50,7 +39,6 @@
 
 <script lang="ts" setup>
 import IconSelectBasicUse from './IconSelectBasicUse.vue';
-import IconSelectFilterable from './IconSelectFilterable.vue';
 import IconSelectDefaultValue from './IconSelectDefaultValue.vue';
 import IconSelectMultiple from './IconSelectMultiple.vue';
 

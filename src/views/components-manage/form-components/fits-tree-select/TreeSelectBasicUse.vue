@@ -1,5 +1,5 @@
 <template>
-    <fits-tree-select :options="state" />
+    <fits-tree-select :options="state" @update:model-value="getValue" />
 </template>
 
 <script lang="ts" setup>
@@ -9,8 +9,8 @@ import { reactive } from 'vue'
 
 const state = reactive(new FitsTreeSelectModel({
     select: {
-        filterable: true,
         clearable: true,
+        filterable: true
     },
     tree: {
         nodeKey: "id",
@@ -88,6 +88,10 @@ const state = reactive(new FitsTreeSelectModel({
     },
 }))
 
+function getValue(value: any) {
+    console.log(value);
+
+}
 </script>
 <style lang="scss" scoped>
 </style>

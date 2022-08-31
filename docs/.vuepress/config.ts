@@ -5,14 +5,15 @@ import { codeBlockPlugin } from '@bfehub/vuepress-plugin-code-block'
 import { viteBundler } from '@vuepress/bundler-vite';
 import { resolve } from "path";
 import { path } from "@vuepress/utils";
+const base = process.env.NODE_ENV === 'github' ? '/fitsadmin/' : "/"
 export default defineUserConfig({
   lang: "zh-CN",
   title: "FitsAdmin",
   description: "基于vue3-element-admin为模板的前端框架",
   head: [
-    ['link', { rel: 'icon', href: '/fitsadmin/images/favicon.ico' }]
+    ['link', { rel: 'icon', href: ` ${base}images/favicon.ico` }]
   ],
-  base: "/fitsadmin/",
+  base: base,
   alias: {
     "@UiAssets": path.resolve(__dirname, "components/UiAssets.vue"),
   },

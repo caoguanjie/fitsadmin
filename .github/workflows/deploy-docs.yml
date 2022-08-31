@@ -30,7 +30,7 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=4096
         run: |-
-          npm run docs:build
+          npm run docs:github
           > docs/.vuepress/dist/.nojekyll
 
       - name: 部署文档

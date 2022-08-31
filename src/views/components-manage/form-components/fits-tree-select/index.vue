@@ -37,8 +37,7 @@
             <template #header>
                 <div class="title">过滤节点</div>
                 <div class="describe">
-                    开启过滤的方式有两种。一种是设置 select.filterable = true；另一种是设置 input.show =
-                    true 开启内部过滤输入框。<br>
+                    设置 input.show = true 开启内部过滤输入框。<br>
                     默认情况下，TreeSelect 会找出所有 label 属性包含输入值的选项。<br>
                     如果希望使用其他的搜索逻辑，可以通过 tree.filterNodeMethod 来实现。 filterNodeMethod 为一个 Function，它会在输入值发生变化时调用，参数为当前输入值。
                 </div>
@@ -110,7 +109,42 @@ import TreeSelectDraggable from './TreeSelectDraggable.vue';
 import TreeSelectCustomNode from './TreeSelectCustomNode.vue';
 import TreeSelectDynamicLoad from './TreeSelectDynamicLoad.vue';
 import TreeSelectMultiple from './TreeSelectMultiple.vue';
+import { ref } from 'vue';
+const selectRef = ref()
+function goBlur() {
+    selectRef.value.blur()
+}
+const value = ref('')
 
+const options = [
+    {
+        value: 'Option1',
+        label: 'Option1',
+    },
+    {
+        value: 'Option2',
+        label: 'Option2',
+    },
+    {
+        value: 'Option3',
+        label: 'Option3',
+    },
+    {
+        value: 'Option4',
+        label: 'Option4',
+    },
+    {
+        value: 'Option5',
+        label: 'Option5',
+    },
+]
+function Blur() {
+    console.log('myBlur');
+}
+function Focus() {
+    console.log('myFocus');
+
+}
 </script>
 <style lang="scss" scoped>
 .FitsTreeSelect {
