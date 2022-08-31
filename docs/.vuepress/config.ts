@@ -10,7 +10,7 @@ export default defineUserConfig({
   title: "FitsAdmin",
   description: "基于vue3-element-admin为模板的前端框架",
   head: [
-    ['link', { rel: 'icon', href: '/images/favicon.ico' }]
+    ['link', { rel: 'icon', href: '/fitsadmin/images/favicon.ico' }]
   ],
   base: "/fitsadmin/",
   alias: {

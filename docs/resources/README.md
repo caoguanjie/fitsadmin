@@ -23,6 +23,7 @@ footer: 设计素材提供者 | 前端框架组 UI设计师 陈连珠
 
 
 ## 设计资源
+
 更多设计资源正在处于开发状态。
 
 如果您有兴趣参与 FitsAdmin UI 的设计，请通过 `caogj@fits.com.cn` 联系我们。
@@ -119,9 +120,8 @@ footer: 设计素材提供者 | 前端框架组 UI设计师 陈连珠
    
 </script>
 <style lang='scss' scoped>
-   .page-title{
-        display:none
-    }
+
+
     .theme-hope-content:not(.custom),.page-title{
         max-width: 1080px;
     }
