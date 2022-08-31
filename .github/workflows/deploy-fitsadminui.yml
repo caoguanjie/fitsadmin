@@ -2,9 +2,7 @@ name: 部署ui库
 
 on:
   push:
-    branches:
-      # 确保这是你正在使用的分支名称
-      - master
+    path: 
       - 'libs/**'
 
 jobs:
@@ -27,4 +25,4 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=4096
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish || true
+        run: cd libs && npm publish || true
