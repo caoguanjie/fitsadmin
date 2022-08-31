@@ -11,7 +11,10 @@ export default navbar([
     link: '/components/about',
     activeMatch: "^/components",
   },
-
+  {
+    text: '资源',
+    link: '/resources/README.md',
+  },
   {
     text: "生态系统",
     children: [
@@ -28,7 +31,7 @@ export default navbar([
           },
           {
             text: '项目的SVN地址',
-            link: "/guide/encrypt",
+            link: "/resources/encrypt",
           },
         ]
       },
@@ -88,4 +91,6 @@ export default navbar([
     text: "Demo演示",
     link: "http://192.168.32.108:8012/#/",
   },
+
+
 ]);

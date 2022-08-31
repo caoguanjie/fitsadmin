@@ -4,7 +4,7 @@ import { searchPlugin } from "@vuepress/plugin-search";
 import { codeBlockPlugin } from '@bfehub/vuepress-plugin-code-block'
 import { viteBundler } from '@vuepress/bundler-vite';
 import { resolve } from "path";
-
+import { path } from "@vuepress/utils";
 export default defineUserConfig({
   lang: "zh-CN",
   title: "FitsAdmin",
@@ -13,7 +13,9 @@ export default defineUserConfig({
     ['link', { rel: 'icon', href: '/images/favicon.ico' }]
   ],
   base: "/fitsadmin/",
-
+  alias: {
+    "@UiAssets": path.resolve(__dirname, "components/UiAssets.vue"),
+  },
   theme,
   plugins: [
     searchPlugin({

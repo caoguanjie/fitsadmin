@@ -25,7 +25,8 @@ export default sidebar({
         text: 'TreeSelect 树形选择',
         link: '/components/Form/TreeSelect'
       }]
-    }]
+    }],
+  '/resources/': 'structure'
 })
 // export default sidebar([
 //   {
