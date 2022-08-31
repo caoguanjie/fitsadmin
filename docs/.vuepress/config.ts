@@ -23,7 +23,9 @@ export default defineUserConfig({
         '/': {
           placeholder: 'Search'
         }
-      }
+      },
+      // 控制热键
+      hotKeys: ['/']
     }),
     // registerComponentsPlugin({
     //   componentsDir: resolve(__dirname, '../../src/components'),
