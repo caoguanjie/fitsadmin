@@ -120,11 +120,11 @@
 
 ## 安装
 ```sh
-# 先从SVN检出项目
-# SVN地址是：https://192.168.32.12/svn/Proj2015005-FitsDemo/04.项目编码/前端框架/PC/FitsPCFrame_V3.0
+# 下载项目
+git clone https://github.com/caoguanjie/fitsadmin.git
 
 # 进入项目目录
-cd FitsPCFrame_V3.0
+cd fitsadmin
 
 # 安装依赖
 npm install
