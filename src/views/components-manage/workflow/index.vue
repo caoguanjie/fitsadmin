@@ -29,7 +29,7 @@
       :before-close="closeDialog">
         <property-dialog
             v-if="LfDialog.dialogVisible"
-            :nodeData="clickNode"
+            :nodeData="operationPanel.clickNode"
             :lf="LF"
             @setPropertiesFinish="closeDialog"/>
     </el-drawer>
@@ -38,17 +38,10 @@
 
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-
-import LogicFlow from '@logicflow/core';
-import { Menu, Snapshot, MiniMap  } from '@logicflow/extension';
+import { LogicFlow } from '@logicflow/core';
+import { Menu, Snapshot, MiniMap } from '@logicflow/extension';
 import '@logicflow/core/dist/style/index.css';
 import '@logicflow/extension/lib/style/index.css';
-
-import Control from '@/views/components-manage/workflow/LFComponents/Control.vue';
-import NodePanel from '@/views/components-manage/workflow/LFComponents/NodePanel.vue';
-import AddPanel from '@/views/components-manage/workflow/LFComponents/AddPanel.vue';
-import DataDialog from '@/views/components-manage/workflow/LFComponents/DataDialog.vue';
-import PropertyDialog from '@/views/components-manage/workflow/PropertySetting/PropertyDialog.vue';
 import { nodeList } from './config';
 import { ElMessage } from 'element-plus';
 //引入默认节点数据
@@ -66,13 +59,49 @@ import {
   registerTask,
   registerTask1
 } from './registerNode';
-
-onMounted(() => {
-  creatLogicflow();
-});
+import Control from '@/views/components-manage/workflow/LFComponents/Control.vue';
+import NodePanel from '@/views/components-manage/workflow/LFComponents/NodePanel.vue';
+import AddPanel from '@/views/components-manage/workflow/LFComponents/AddPanel.vue';
+import DataDialog from '@/views/components-manage/workflow/LFComponents/DataDialog.vue';
+import PropertyDialog from '@/views/components-manage/workflow/PropertySetting/PropertyDialog.vue';
 
 //用于传递到组件中的LF对象
 let LF = ref();
+//默认节点数据
+const panelData = demoData;
+//主题样式
+const themeData = {
+      circle: {
+        stroke: '#000',
+        outlineColor: '#88f',
+        strokeWidth: 1
+      },
+      rect: {
+        // fill: "#54AAC9",
+        stroke: '#777',
+        outlineColor: '#88f',
+        strokeWidth: 0
+      },
+      polygon: {
+        strokeWidth: 1
+      },
+      polyline: {
+        stroke: '#3F7AE5',
+        hoverStroke: '#000000',
+        selectedStroke: '#000000',
+        outlineColor: '#88f',
+        strokeWidth: 2
+      },
+      nodeText: {
+        color: '#000'
+      },
+      edgeText: {
+        color: '#000000',
+        background: {
+          fill: '#f7f9ff'
+        }
+      }
+}
 //增加节点用到的数据
 const addPanel = reactive({
   addPanelStyle: {
@@ -82,19 +111,25 @@ const addPanel = reactive({
   showAddPanel: false,
   addClickNode: null
 });
-//默认节点数据
-let panelData = demoData;
-let clickNode = ref();
+//被操作的节点数据
+const operationPanel =reactive({
+  //被点击的节点
+  clickNode:null,
+  //被移动的节点
+  moveData:null,
+})
 //控制数据面板和节点属性面板显示隐藏
 const LfDialog = reactive({
   dialogVisible :false,
   graphData:null,
   dataVisible : false 
 })
-//保存移动移动节点的数据
-let moveData = ref({});
 
-function creatLogicflow(): void {
+onMounted(() => {
+  creatLogicflow();
+});
+
+const creatLogicflow = (): void => {
   let newContainer = document.getElementById('container');
   if (newContainer) {
     const lf = new LogicFlow({
@@ -103,7 +138,16 @@ function creatLogicflow(): void {
       plugins: [Menu, MiniMap, Snapshot],
       background: {
         backgroundColor: '#f7f9ff'
-      }
+      },
+      grid: {
+          size: 1,
+          visible: false
+      },
+      keyboard: {
+          enabled: true
+      },
+      edgeTextDraggable: true,
+      hoverOutline: false
     });
     //将LF对象传递到组件中，并能够同步操作lf
     LF.value = lf;
@@ -174,44 +218,13 @@ function creatLogicflow(): void {
       // 覆盖默认的边右键菜单，与赋值为false表现一样
       graphMenu: []
     });
-    // 设置主题
-    lf.setTheme({
-      circle: {
-        stroke: '#000',
-        outlineColor: '#88f',
-        strokeWidth: 1
-      },
-      rect: {
-        // fill: "#54AAC9",
-        stroke: '#777',
-        outlineColor: '#88f',
-        strokeWidth: 0
-      },
-      polygon: {
-        strokeWidth: 1
-      },
-      polyline: {
-        stroke: '#3F7AE5',
-        hoverStroke: '#000000',
-        selectedStroke: '#000000',
-        outlineColor: '#88f',
-        strokeWidth: 2
-      },
-      nodeText: {
-        color: '#000'
-      },
-      edgeText: {
-        color: '#000000',
-        background: {
-          fill: '#f7f9ff'
-        }
-      }
-    });
+    // 设置主题，修改节点样式
+    lf.setTheme(themeData);
     registerNode();
   }
 }
 // 注册自定义节点
-function registerNode(): void {
+const registerNode = (): void => {
   let lf = LF.value;
   registerStart(lf);
   registerStart1(lf);
@@ -226,12 +239,12 @@ function registerNode(): void {
   renderData();
 }
 //画布中添加默认数据
-function renderData(): void {
+const renderData = (): void => {
   LF.value.render(panelData);
   LfEvent();
 }
 //设置用户节点自定义操作面板样式
-function clickPlus(e: any, attributes: any): void {
+const clickPlus = (e: any, attributes: any): void => {
   e.stopPropagation();
   const { clientX, clientY } = e;
   addPanel.addPanelStyle.top = clientY - 40 + 'px';
@@ -239,24 +252,19 @@ function clickPlus(e: any, attributes: any): void {
   addPanel.showAddPanel = true;
   addPanel.addClickNode = attributes;
 }
-function mouseDownPlus(e: any): void {
+const mouseDownPlus = (e: any): void => {
   e.stopPropagation();
 }
-//LF画布事件
-function LfEvent(): void {
+//LF画布中的事件
+const LfEvent = (): void => {
   //点击节点
   LF.value.on('node:click', (data: any) => {
-    clickNode.value = data;
-    // console.log(clickNode)
+    operationPanel.clickNode = data;
     LfDialog.dialogVisible = true;
-  });
-  //点击节点（两个方法按顺序触发）
-  LF.value.on('node:click', () => {
-    // console.log("node click");
   });
   //点击连线
   LF.value.on('edge:click', (data: any) => {
-    clickNode.value = data;
+    operationPanel.clickNode = data;
     LfDialog.dialogVisible = true;
   });
   //点击节点或连线
@@ -269,7 +277,7 @@ function LfEvent(): void {
   });
   //移动画板上的节点
   LF.value.on('node:mousemove', (data: any) => {
-    moveData = data;
+    operationPanel.moveData = data;
   });
   //点击画板,不包含连线或节点
   LF.value.on('blank:click', () => {
@@ -277,6 +285,7 @@ function LfEvent(): void {
   });
   //节点连接错误，如连接同一个节点相邻两个点
   LF.value.on('connection:not-allowed', (data: any) => {
+    console.log(data)
     ElMessage({
       message: '节点连接错误',
       type: 'error'
@@ -284,18 +293,18 @@ function LfEvent(): void {
   });
 }
 //关闭用户自定义增加节点选择框
-function hideAddPanel(): void {
+const hideAddPanel = (): void => {
   addPanel.showAddPanel = false;
   addPanel.addPanelStyle.top = '0px';
   addPanel.addPanelStyle.left = '0px';
   addPanel.addClickNode = null;
 }
 //关闭节点属性抽屉，传递给property-dialog组件
-function closeDialog() {
+const closeDialog = ():void => {
   LfDialog.dialogVisible = false;
 }
-//获取面板上的节点数据
-function getGraphData(){
+//获取画布上的节点和连线的数据
+const getGraphData = ():void => {
   LfDialog.graphData = LF.value.getGraphData();
   LfDialog.dataVisible = true
 }

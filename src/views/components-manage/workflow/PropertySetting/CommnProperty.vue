@@ -3,6 +3,7 @@
     <div class="commProperty">
         <el-form label-width="80px" :model="formData" ref="formName">
             <el-form-item
+                class="CommnProperty-formItem"
                 prop="text"
                 label="阶段名称"
                 :rules="[
@@ -42,7 +43,7 @@ const emit = defineEmits([
     "onClose",
 ]);
 //扩展业务时使用的数据
-const CommnData = reactive({
+const extendData = reactive({
     text:"",
     type:""
 })
@@ -59,26 +60,24 @@ let formData = reactive ({
             })
 const formName = ref<any>(null)
 onMounted(()=>{
-    // console.log(props.nodeData)
-    const { 
-        // properties, 
-        text, 
-        type } = props.nodeData.data;
-    // properties用于给开发者存放自己的业务属性
-    // if (properties) {
-    //     formData = Object.assign({}, formData, properties);
-    // }
-    //获取节点上的名称
-    if (text) {
-        formData.text = text.value;
-    }
-    //获取节点上的类型
-    if (type) {
-        formData.type = type;
-    }
+    const { properties, text, type } = props.nodeData.data;
+        // properties用于给开发者存放自己的业务属性
+        if (properties.length) {
+            formData = Object.assign({}, formData, properties);
+        }
+        //获取节点上的名称,text为对象
+        if (text && text.value) {
+            formData.text = text.value;
+            extendData.text = text.value
+        }
+        //获取节点上的类型，type为字符串
+        if (type) {
+            formData.type = type;
+            extendData.type = type
+        }
 })
 
-function onSubmit() {
+const onSubmit = ():void => {
     if(!formName.value)
     { 
         console.log("mistake")
@@ -106,4 +105,9 @@ function onSubmit() {
 
 </script>
 <style lang="scss" scoped>
+    .CommnProperty-formItem{
+        .el-form-item__label{
+            font-weight: 500 !important;
+        }
+    }
 </style>

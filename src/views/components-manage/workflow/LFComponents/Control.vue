@@ -15,7 +15,7 @@
       >
       <el-button plain @click="download">下载图片</el-button>
       <el-button plain @click="catData">查看数据</el-button>
-      <el-button plain @click="clearData">一键美化</el-button>
+      <el-button plain @click="clearData">一键清空</el-button>
     </el-button-group>
   </div>
 </template>
@@ -28,51 +28,55 @@ const props = defineProps<{
 const emit = defineEmits([
   "getData"
 ])
-
+//控制上一步、下一步按钮禁用
 const controlData = reactive({
   undoDisable:true,
   redoDisable:true,
 })
-
+onMounted(()=>{
+  createControl()
+})
+//初始化控制栏
 const createControl = (): void => {
-  props.lf.on("history:change", ({ data: { undos, redos, undoAble, redoAble } }) => {
+  props.lf.on("history:change", (val:any) => { 
+    //val是一个对象，里面只有一个data,data里面才是数据
+    const { data } = val
+    const { undoAble,redoAble} = data 
     controlData.undoDisable = !undoAble;
     controlData.redoDisable = !redoAble;
   });
 };
-createControl();
-
 
 const zoomIn = (): void => {
   props.lf.zoom(true);
 };
-const zoomOut = () => {
+const zoomOut = (): void  => {
   props.lf.zoom(false);
 };
-const zoomReset = () => {
+const zoomReset = (): void  => {
   props.lf.resetZoom();
 };
-const translateRest = () => {
+const translateRest = (): void  => {
   props.lf.resetTranslate();
 };
-const reset = () => {
+const reset = (): void  => {
   props.lf.resetZoom();
   props.lf.resetTranslate();
 };
-const undo = () => {
+const undo = (): void  => {
   props.lf.undo();
 };
-const redo = () => {
+const redo = (): void  => {
   props.lf.redo();
 };
-const download = () => {
+const download = (): void  => {
   props.lf.getSnapshot();
 };
-const catData = () => {
+const catData = (): void  => {
   emit("getData")
 };
-const clearData = () => {
-  console.log(`该功能仍在开发中`);
+const clearData = (): void  => {
+  props.lf.clearData()
 };
 </script>
 <style scoped>

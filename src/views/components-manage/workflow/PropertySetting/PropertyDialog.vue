@@ -6,6 +6,7 @@
 <script lang="ts" setup>
 import CommonProperty from '@/views/components-manage/workflow/PropertySetting/CommnProperty.vue'
 import { onMounted } from 'vue';
+
 const props = defineProps<{
     lf:any;
     nodeData:any;
@@ -13,11 +14,12 @@ const props = defineProps<{
 const emit = defineEmits([
     "setPropertiesFinish"
 ])
+
 onMounted(()=>{
     // console.log(props.nodeData)
 })
 //关闭节点属性抽屉，从index中接收，传递给common-property组件
-function handleClose(){
+const handleClose = ():void => {
     emit("setPropertiesFinish")
 }
 </script>

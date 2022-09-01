@@ -42,13 +42,13 @@ const props = defineProps<{
   nodeList: any;
 }>();
 // 开始拖拽，并传入选中图形的配置
-function dragNode(item: any): void {
+const dragNode = (item: any): void => {
   props.lf.dnd.startDrag({
     type: item.type,
     text: setText(item)
   });
 }
-function setText(item: any) {
+const setText = (item: any):string => {
   if (item.type === '入院') {
     return '入院';
   } else if (item.type === '阶段') {

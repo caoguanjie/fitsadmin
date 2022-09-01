@@ -1,5 +1,5 @@
 <template>
-  <!-- 点击推送节点的添加按钮 -->
+  <!-- 点击自定义节点的添加按钮 -->
   <el-tabs tab-position="left">
     <el-tab-pane label="添加动作">
       <div v-for="item in nodeList" :key="item.type">
@@ -11,11 +11,12 @@
   </el-tabs>
 </template>
 <script lang="ts" setup>
-// 传配置项直接替换 + 数据
+  
 const props = defineProps<{
   lf: any;
   nodeData: any;
 }>();
+
 const emit = defineEmits([
   "addNodeFinish"
 ])
@@ -30,8 +31,8 @@ const nodeList = [
     label: '推送'
   }
 ];
-// 新增节点
-function addNode(item: any): void {
+// 新增用户自定义节点
+const addNode = (item: any): void => {
   const { lf, nodeData } = props;
   const { id, x, y } = nodeData;
   const nextNode = lf.addNode({

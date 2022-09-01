@@ -96,17 +96,17 @@ export const businessRouter: RouteRecordRaw = {
         },
 
         {
-            path: "Excle",
-            name: "Excle",
-            redirect: "/businessRouter/Excle/ExploreExcle",
+            path: "Excel",
+            name: "Excel",
+            redirect: "/businessRouter/Excel/ExploreExcel",
             component: () => import("@/views/ready/index.vue"),
-            meta: { title: "execle功能", roles: ["admin", "editor"], icon: "fits-execle" },
+            meta: { title: "Excel功能", roles: ["admin", "editor"], icon: "fits-execle" },
             children: [
                 {
-                    path: "ExploreExcle",
-                    name: "ExploreExcle",
+                    path: "ExploreExcel",
+                    name: "ExploreExcel",
                     component: () => import("@/views/ready/index.vue"),
-                    meta: { title: "导出excle" },
+                    meta: { title: "导出Excel" },
                 },
                 {
                     path: "ExploreSelected",
@@ -121,16 +121,16 @@ export const businessRouter: RouteRecordRaw = {
                     meta: { title: "导出多级表头" },
                 },
                 {
-                    path: "UploadExcle",
-                    name: "UploadExcle",
+                    path: "UploadExcel",
+                    name: "UploadExcel",
                     component: () => import("@/views/ready/index.vue"),
-                    meta: { title: "上传excle" },
+                    meta: { title: "上传Excel" },
                 },
                 {
-                    path: "DownloadExcle",
-                    name: "DownloadExcle",
+                    path: "DownloadExcel",
+                    name: "DownloadExcel",
                     component: () => import("@/views/ready/index.vue"),
-                    meta: { title: "下载excle" },
+                    meta: { title: "下载Excel" },
                 },
             ],
         },

@@ -1,7 +1,7 @@
 <template>
     <!-- 查看数据的弹出框 -->
     <div>
-        <vue-json-pretty :path="'res'" :data="props.graphData"></vue-json-pretty>
+        <vue-json-pretty :path="'res'" :data="props.graphData"/>
     </div>
 </template>
 <script lang="ts" setup>
