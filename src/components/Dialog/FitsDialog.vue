@@ -6,7 +6,7 @@
             <div class="dialog-body" v-loading="loading" element-loading-text="拼命加载中"
                 element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
                 <el-scrollbar :noresize="true">
-                    <slot name="body"></slot>
+                    <slot name="body" />
                 </el-scrollbar>
             </div>
             <template #footer>
@@ -47,8 +47,6 @@ const { isVisible, myProps } = toRefs(state);
 const elDialogRef = ref()
 
 watch(() => prop.visible, (newVal: boolean) => {
-    console.log(prop);
-
     isVisible.value = newVal
     newVal && emit('open')
     !newVal && emit('cancle')
@@ -177,7 +175,7 @@ function updatedWindowHeight() {
     }
 
     .el-scrollbar__view {
-        padding: 16px 32px;
+        padding: 0 32px;
     }
 }
 </style>

@@ -2,7 +2,7 @@
     <div class="drawer-container">
         <el-drawer v-model="isVisible" @close="closeDrawer" v-bind="$attrs.props">
             <!-- drawer的内容 -->
-            <slot></slot>
+            <slot />
             <template #footer>
                 <div class="drawer-footer">
                     <el-button @click="closeDrawer">

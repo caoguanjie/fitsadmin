@@ -1,75 +1,58 @@
 <template>
-    <div class="form-type">
-        <fits-dialog v-if="setting.formType === 'dialog'" v-bind='$attrs' @cancle="closeForm" @submit="submitForm"
-            @open="openForm">
-            <template #body>
-                <div class="form-dialog-container" v-for="item in form" :key="item.id">
-                    <divider v-model="item.title" v-show="item.title" />
-                    <form-create v-bind='item' v-model:api="item.api" v-model="item.formValue">
-                    </form-create>
-                </div>
-            </template>
-        </fits-dialog>
-
-        <fits-drawer v-bind='$attrs' @cancle="closeForm" @submit="submitForm" @open="openForm" v-else>
-            <div class="form-drawer-container" v-for="item in form" :key="item.id">
-                <el-scrollbar>
-                    <div class="title" v-show="item.title">
-                        <svg-icon :icon-class="item.iconClass"></svg-icon>
-                        {{ item.title }}
-                    </div>
-                    <form-create v-bind='item' v-model:api="item.api">
-                    </form-create>
-                </el-scrollbar>
+    <!-- <div class="form-type"> -->
+    <fits-dialog v-if="setting.formType === 'dialog'" class="FormTypeDialog" v-bind='$attrs' @cancle="closeForm"
+        @submit="submitForm" @open="openForm">
+        <template #body>
+            <div class="forms-container" v-for="(item, index) in forms" :key="index">
+                <fits-module-name :model-value="item.title" v-if="item?.title" />
+                <fits-form-create :form="item.form" ref="FormRef" />
             </div>
-        </fits-drawer>
-    </div>
-</template>
+            <!-- <fits-form-create :form="forms" ref="FormRef" /> -->
+        </template>
+    </fits-dialog>
 
-<script lang="ts">
-import { FormCreateProps } from '@form-create/element-ui'
-/**
- * 表单属性类型声明
- */
-export interface FormTypeProps extends FormCreateProps {
-    id: string;
-    formValue: object,
-    title?: string;
-    iconClass?: string;
-}
-export type FormTypeArray = FormTypeProps[]
-</script>
+    <fits-drawer v-bind='$attrs' @cancle="closeForm" @submit="submitForm" @open="openForm" v-else>
+        <!-- <div class="form-drawer-container" v-for="item in form" :key="item.id">
+            <el-scrollbar>
+                <div class="title" v-show="item.title">
+                    <svg-icon :icon-class="item.iconClass" />
+                    {{ item.title }}
+                </div>
+                <form-create v-bind='item' v-model:api="item.api" />
+            </el-scrollbar>
+        </div> -->
+    </fits-drawer>
+    <!-- </div> -->
+</template>
 
 <script lang="ts" setup>
 import FitsDialog from '@/components/Dialog/FitsDialog.vue'
 import FitsDrawer from '@/components/Dialog/FitsDrawer.vue'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 import useStore from '@/store';
-import { nextTick } from 'vue';
-import Divider from '@/components/Form/Divider.vue'
+import { getCurrentInstance, nextTick, onMounted, ref } from 'vue';
+import { FitsFormModuleModel } from './model';
+import FitsModuleName from "@/components/Form/FitsModuleName.vue";
+import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
 
-const prop = defineProps({
-    form: {
-        required: true,
-        type: Object
-    }
-})
+const props = defineProps<{
+    forms: FitsFormModuleModel[];
+}>();
 const emit = defineEmits(['cancle', 'submit'])
-
+const FormRef = ref()
 const { setting } = useStore();
 
 function closeForm() {
-    prop.form.forEach((item: any, index: number) => {
-        item.api.resetFields()
-        item.api.reload()
-    })
+    console.log(FormRef.value.fApi);
+    FormRef.value.fApi.resetFields()
+    FormRef.value.fApi.reload()
     emit("cancle")
 }
 
 function submitForm() {
     let flag = 0
     let formValue = {}
-    prop.form.forEach((item: any, index: number) => {
+    props.forms.forEach((item: any, index: number) => {
         item.api.submit((formData: any, fapi: any) => {
             //通过校验
             console.log(index + '通过');
@@ -79,7 +62,7 @@ function submitForm() {
             console.log(index + '没通过');
         }).then((data: any) => {
             formValue = Object.assign(formValue, data);
-            flag === prop.form.length && emit('submit', formValue)
+            flag === props.forms.length && emit('submit', formValue)
         })
     })
 }
@@ -88,10 +71,9 @@ function submitForm() {
  * 打开窗口之前清空之前残留的验证
  */
 function openForm() {
-    console.log(prop.form, 'form');
     nextTick(() => {
-        prop.form.forEach((item: any, index: number) => {
-            item.api.clearValidateState()
+        FormRef.value.forEach((item: any) => {
+            console.log(item.fApi)
         })
     })
 }
@@ -135,37 +117,43 @@ function openForm() {
 }
 </style>
 <style lang="scss">
-.form-type {
-
-    .el-input__wrapper,
-    .el-input__inner {
-        border-radius: 0;
-    }
-
-    .el-form-item {
-        margin-bottom: 28px;
-        // min-width: 250px !important;
+.FormTypeDialog {
+    .form-divider {
+        margin: 24px 0;
     }
 }
 
-.form-drawer-container {
-    .el-form-item {
-        width: 100%;
-    }
+// .form-type {
 
-    .el-form--inline .el-form-item {
-        margin-right: 20px;
-    }
-}
+//     .el-input__wrapper,
+//     .el-input__inner {
+//         border-radius: 0;
+//     }
 
-.form-dialog-container {
-    .el-row {
-        justify-content: space-between;
-        margin: 0 46px;
-    }
+//     .el-form-item {
+//         margin-bottom: 28px;
+//         // min-width: 250px !important;
+//     }
+// }
 
-    .el-form-item {
-        width: 43%;
-    }
-}
+// .form-drawer-container {
+//     .el-form-item {
+//         width: 100%;
+//     }
+
+//     .el-form--inline .el-form-item {
+//         margin-right: 20px;
+//     }
+// }
+
+// .form-dialog-container {
+//     .el-row {
+//         justify-content: space-between;
+//         margin: 0 46px;
+//     }
+
+//     .el-form-item {
+//         width: 43%;
+//     }
+// }
 </style>

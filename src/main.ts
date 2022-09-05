@@ -21,7 +21,7 @@ import * as directive from '@/directive';
 import { setupStore } from '@/store';
 
 // form-create表单构造
-import formCreate from '@form-create/element-ui'
+// import formCreate from '@form-create/element-ui'
 
 Object.keys(directive).forEach((key) => {
   app.directive(key, (directive as { [key: string]: Directive })[key]);
@@ -38,5 +38,5 @@ app
   .component('Pagination', Pagination)
   .use(ElementPlus)
   .use(FitsAdmin)
-  .use(formCreate)
+  // .use(formCreate)
   .mount('#app');

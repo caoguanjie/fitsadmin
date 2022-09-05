@@ -23,7 +23,7 @@ export default navbar([
         children: [
           {
             text: 'FitsAdminV2',
-            link: "https://cn.vuejs.org/",
+            link: "http://192.168.32.60:3002/",
           },
           {
             text: 'Yapi接口管理',
