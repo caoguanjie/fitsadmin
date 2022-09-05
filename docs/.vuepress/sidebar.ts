@@ -7,7 +7,7 @@ export default sidebar({
     },
     {
       text: '进阶',
-      children: ['eslint', 'elementplus', 'srcAlias', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart']
+      children: ['eslint', 'elementplus', 'srcAlias', 'auto-imports', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart']
     },
     {
       text: '其他',

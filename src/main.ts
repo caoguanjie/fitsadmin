@@ -1,11 +1,8 @@
-import { createApp, Directive } from 'vue';
+import { Directive } from 'vue';
 import App from './App.vue';
 import { setupRouter } from '@/router';
 
 
-
-
-import Pagination from '@/components/Pagination/index.vue';
 import FitsAdmin from 'fits-admin-ui'
 
 // 引入svg注册脚本
@@ -19,10 +16,8 @@ const app = createApp(App);
 // 自定义指令
 import * as directive from '@/directive';
 import { setupStore } from '@/store';
-import formCreate from '@form-create/element-ui';
+import setupOtherImports from './other-imports';
 
-// form-create表单构造
-// import formCreate from '@form-create/element-ui'
 
 Object.keys(directive).forEach((key) => {
   app.directive(key, (directive as { [key: string]: Directive })[key]);
@@ -32,12 +27,10 @@ Object.keys(directive).forEach((key) => {
 setupRouter(app);
 // 挂载pinia状态管理
 setupStore(app);
-
+// 全局注册更多第三方的组件库、插件等内容
+setupOtherImports(app)
 
 // 注册全局组件
 app
-  .component('Pagination', Pagination)
-
   .use(FitsAdmin)
-  .use(formCreate)
   .mount('#app');

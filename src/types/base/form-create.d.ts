@@ -1,0 +1,1 @@
+declare module '@form-create/element-ui/auto-import';
