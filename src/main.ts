@@ -2,9 +2,9 @@ import { createApp, Directive } from 'vue';
 import App from './App.vue';
 import { setupRouter } from '@/router';
 
-import 'fits-admin-ui/style.css';
-import ElementPlus from 'element-plus';
-import 'element-plus/theme-chalk/index.css';
+
+
+
 import Pagination from '@/components/Pagination/index.vue';
 import FitsAdmin from 'fits-admin-ui'
 
@@ -19,6 +19,7 @@ const app = createApp(App);
 // 自定义指令
 import * as directive from '@/directive';
 import { setupStore } from '@/store';
+import formCreate from '@form-create/element-ui';
 
 // form-create表单构造
 // import formCreate from '@form-create/element-ui'
@@ -36,7 +37,7 @@ setupStore(app);
 // 注册全局组件
 app
   .component('Pagination', Pagination)
-  .use(ElementPlus)
+
   .use(FitsAdmin)
-  // .use(formCreate)
+  .use(formCreate)
   .mount('#app');

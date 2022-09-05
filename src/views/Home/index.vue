@@ -1,11 +1,12 @@
 <template>
     <div class="home-container">
-        <div class="welcomebg"></div>
+        <div class="welcomebg" />
         <div class="title-box">
             <div class="title">{{ user.nickname }}您好，</div>
             <div class="title">欢迎登录{{ title }}</div>
             <div class="subtitle">Welcome to {{ subTitle }}</div>
         </div>
+        <FitsButtonTest />
     </div>
 </template>
 

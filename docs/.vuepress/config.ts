@@ -18,6 +18,8 @@ export default defineUserConfig({
     "@UiAssets": path.resolve(__dirname, "components/UiAssets.vue"),
   },
   theme,
+  // 指定 vuepress build 命令的输出目录。
+  dest: '/FitsAdminDocs',
   plugins: [
     searchPlugin({
       locales: {

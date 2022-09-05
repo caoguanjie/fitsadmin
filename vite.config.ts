@@ -4,7 +4,9 @@ import vue from '@vitejs/plugin-vue';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import path from 'path';
 import svgLoader from 'vite-svg-loader'
-
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
@@ -16,6 +18,28 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   return {
     base: mode !== 'dev' ? '/' : '/',
     plugins: [
+
+      // 自动导入elment-plus
+      AutoImport({
+
+        imports: ['vue', 'vue-router'],
+        dts: './src/auto-imports.d.ts',
+        // imports: [
+        //   { 'fits-admin-ui': ['FitsAdmin'] }
+        // ],
+        resolvers: [ElementPlusResolver()],
+        eslintrc: {
+          enabled: true, // Default `false`
+          filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
+          globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
+        },
+
+      }),
+      Components({
+        dts: './src/components.d.ts',
+        resolvers: [ElementPlusResolver()],
+      }),
+
       vue(),
       svgLoader(),
       createSvgIconsPlugin({
@@ -24,7 +48,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]'
       }),
-
     ],
     css: {
       // css预处理器
@@ -59,6 +82,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }
     },
     build: {
+      outDir: 'FitsAdmin',
       minify: 'terser',
       terserOptions: {
         compress: {

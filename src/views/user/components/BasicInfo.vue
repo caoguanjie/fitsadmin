@@ -1,14 +1,13 @@
 <template>
     <div class="basic-info">
         <div class="info-container">
-            <form-create v-model:api="fApi" v-model="formValue" :rule="rule" :option="option" ref="basicForm">
-            </form-create>
+            <form-create v-model:api="fApi" v-model="formValue" :rule="rule" :option="option" ref="basicForm" />
             <div class="right-box" v-show="showAvator">
                 <el-upload class="avatar-uploader" :show-file-list="false" :before-upload="beforeAvatarUpload"
                     :http-request="httpRequest">
                     <div class="avator-box">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                        <img src="@/assets/avator.png" v-else />
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <img src="@/assets/avator.png" v-else>
                     </div>
                     <el-button>
                         上传头像
@@ -22,10 +21,10 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { isPhoneNumber, isHomeNumber, isEmail, isShortNumber } from "@/utils/is"
-import { ElMessage, UploadRequestOptions } from 'element-plus'
-import type { UploadProps } from 'element-plus'
 import { postUserDetail, postUserAvator } from '@/api/base/user';
 import { ResultEnum } from '@/utils/http/types';
+import { UploadRequestOptions } from 'element-plus';
+// import { UploadRequestOptions } from 'element-plus';
 
 const props = defineProps({
     userDetail: {
