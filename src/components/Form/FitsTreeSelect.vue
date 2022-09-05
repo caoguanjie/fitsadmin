@@ -66,7 +66,7 @@ function initValue(val: any) {
         selectedValue.value = treeRef.value.getNode(val)?.label
     }
     // 多选
-    if (tree.value.defaultCheckedKeys?.length) {
+    if (tree.value?.defaultCheckedKeys?.length) {
         const checkedNodes = treeRef.value.getCheckedNodes()
         checkedNodes.filter((item: any) => !item['children']).map((ele: any) => selectedValue.value.push(ele.label))
     }

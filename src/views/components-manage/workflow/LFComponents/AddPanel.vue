@@ -4,14 +4,14 @@
     <el-tab-pane label="添加动作">
       <div v-for="item in nodeList" :key="item.type">
         <el-button class="add-node-btn" type="primary" @click="addNode(item)">{{
-          item.label
+            item.label
         }}</el-button>
       </div>
     </el-tab-pane>
   </el-tabs>
 </template>
 <script lang="ts" setup>
-  
+
 const props = defineProps<{
   lf: any;
   nodeData: any;
@@ -20,7 +20,6 @@ const props = defineProps<{
 const emit = defineEmits([
   "addNodeFinish"
 ])
-
 const nodeList = [
   {
     type: 'user',
@@ -42,7 +41,7 @@ const addNode = (item: any): void => {
   });
   const nextId = nextNode.id;
   lf.addEdge({ sourceNodeId: id, targetNodeId: nextId });
-    emit('addNodeFinish');
+  emit('addNodeFinish');
 }
 </script>
 <style scoped>

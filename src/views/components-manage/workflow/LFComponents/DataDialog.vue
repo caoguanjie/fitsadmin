@@ -1,7 +1,7 @@
 <template>
     <!-- 查看数据的弹出框 -->
     <div>
-        <vue-json-pretty :path="'res'" :data="props.graphData"/>
+        <vue-json-pretty :path="'res'" :data="props.graphData" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -11,9 +11,9 @@ import "vue-json-pretty/lib/styles.css";
 import { onMounted } from 'vue';
 
 const props = defineProps<{
-    graphData:any
+    graphData: any
 }>();
-onMounted(()=>{
+onMounted(() => {
     // console.log(props.graphData)
 })
 </script>

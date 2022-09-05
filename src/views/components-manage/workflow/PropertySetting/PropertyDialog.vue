@@ -1,6 +1,6 @@
 <template>
     <div class="property-dialog">
-        <common-property :nodeData="nodeData" :lf="props.lf" @onClose="handleClose"/>
+        <common-property :nodeData="nodeData" :lf="props.lf" @onClose="handleClose" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -8,18 +8,18 @@ import CommonProperty from '@/views/components-manage/workflow/PropertySetting/C
 import { onMounted } from 'vue';
 
 const props = defineProps<{
-    lf:any;
-    nodeData:any;
+    lf: any;
+    nodeData: any;
 }>();
 const emit = defineEmits([
     "setPropertiesFinish"
 ])
 
-onMounted(()=>{
+onMounted(() => {
     // console.log(props.nodeData)
 })
-//关闭节点属性抽屉，从index中接收，传递给common-property组件
-const handleClose = ():void => {
+//关闭节点属性抽屉，从index中获取，传递给common-property组件
+const handleClose = (): void => {
     emit("setPropertiesFinish")
 }
 </script>

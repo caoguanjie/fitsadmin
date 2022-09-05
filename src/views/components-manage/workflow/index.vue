@@ -1,43 +1,30 @@
 <template>
   <div class="logic-flow-view">
     <!-- 辅助工具栏 -->
-    <control class="demo-control" v-if="LF" :lf="LF" @getData="getGraphData"/>
-    <!-- 节点面板 -->
+    <div class="controlDiv">
+      <control class="demo-control" v-if="LF" :lf="LF" @getData="getGraphData" />
+    </div>
     <node-panel v-if="LF" :lf="LF" :nodeList="nodeList" />
+    <!-- 节点面板 -->
     <!-- 画布 -->
     <div id="container" class="container" />
     <!-- 节点操作面板 -->
-    <add-panel
-      v-if="addPanel.showAddPanel"
-      class="add-panel"
-      :style="addPanel.addPanelStyle"
-      :lf="LF"
-      :nodeData="addPanel.addClickNode"
-      @addNodeFinish="hideAddPanel"
-    />
+    <add-panel v-if="addPanel.showAddPanel" class="add-panel" :style="addPanel.addPanelStyle" :lf="LF"
+      :nodeData="addPanel.addClickNode" @addNodeFinish="hideAddPanel" />
     <!-- 数据查看面板 -->
     <el-dialog title="数据" v-model="LfDialog.dataVisible" width="50%">
-        <data-dialog :graphData="LfDialog.graphData" 
-            v-if="LfDialog.dataVisible"/>
+      <data-dialog :graphData="LfDialog.graphData" v-if="LfDialog.dataVisible" />
     </el-dialog>
     <!-- 属性面板 -->
-    <el-drawer
-      title="设置节点属性"
-      v-model="LfDialog.dialogVisible"
-      direction="rtl"
-      size="500px"
-      :before-close="closeDialog">
-        <property-dialog
-            v-if="LfDialog.dialogVisible"
-            :nodeData="operationPanel.clickNode"
-            :lf="LF"
-            @setPropertiesFinish="closeDialog"/>
+    <el-drawer title="设置节点属性" v-model="LfDialog.dialogVisible" direction="rtl" size="500px" :before-close="closeDialog">
+      <property-dialog v-if="LfDialog.dialogVisible" :nodeData="operationPanel.clickNode" :lf="LF"
+        @setPropertiesFinish="closeDialog" />
     </el-drawer>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, onBeforeUnmount, reactive, ref } from 'vue';
 import { LogicFlow } from '@logicflow/core';
 import { Menu, Snapshot, MiniMap } from '@logicflow/extension';
 import '@logicflow/core/dist/style/index.css';
@@ -64,6 +51,13 @@ import NodePanel from '@/views/components-manage/workflow/LFComponents/NodePanel
 import AddPanel from '@/views/components-manage/workflow/LFComponents/AddPanel.vue';
 import DataDialog from '@/views/components-manage/workflow/LFComponents/DataDialog.vue';
 import PropertyDialog from '@/views/components-manage/workflow/PropertySetting/PropertyDialog.vue';
+import { time } from 'console';
+
+interface EventListener {
+  (evt: Event): void;
+}
+//创建定时器
+let timer: any;
 
 //用于传递到组件中的LF对象
 let LF = ref();
@@ -71,36 +65,36 @@ let LF = ref();
 const panelData = demoData;
 //主题样式
 const themeData = {
-      circle: {
-        stroke: '#000',
-        outlineColor: '#88f',
-        strokeWidth: 1
-      },
-      rect: {
-        // fill: "#54AAC9",
-        stroke: '#777',
-        outlineColor: '#88f',
-        strokeWidth: 0
-      },
-      polygon: {
-        strokeWidth: 1
-      },
-      polyline: {
-        stroke: '#3F7AE5',
-        hoverStroke: '#000000',
-        selectedStroke: '#000000',
-        outlineColor: '#88f',
-        strokeWidth: 2
-      },
-      nodeText: {
-        color: '#000'
-      },
-      edgeText: {
-        color: '#000000',
-        background: {
-          fill: '#f7f9ff'
-        }
-      }
+  circle: {
+    stroke: '#000',
+    outlineColor: '#88f',
+    strokeWidth: 1
+  },
+  rect: {
+    // fill: "#54AAC9",
+    stroke: '#777',
+    outlineColor: '#88f',
+    strokeWidth: 0
+  },
+  polygon: {
+    strokeWidth: 1
+  },
+  polyline: {
+    stroke: '#3F7AE5',
+    hoverStroke: '#000000',
+    selectedStroke: '#000000',
+    outlineColor: '#88f',
+    strokeWidth: 2
+  },
+  nodeText: {
+    color: '#000'
+  },
+  edgeText: {
+    color: '#000000',
+    background: {
+      fill: '#f7f9ff'
+    }
+  }
 }
 //增加节点用到的数据
 const addPanel = reactive({
@@ -112,39 +106,48 @@ const addPanel = reactive({
   addClickNode: null
 });
 //被操作的节点数据
-const operationPanel =reactive({
+const operationPanel = reactive({
   //被点击的节点
-  clickNode:null,
+  clickNode: null,
   //被移动的节点
-  moveData:null,
+  moveData: null,
 })
 //控制数据面板和节点属性面板显示隐藏
 const LfDialog = reactive({
-  dialogVisible :false,
-  graphData:null,
-  dataVisible : false 
+  dialogVisible: false,
+  graphData: null,
+  dataVisible: false
 })
+
+const chart = ref<any>();
+const LFElm = ref<any>();
 
 onMounted(() => {
   creatLogicflow();
+  initResizeEvent();
+  initLFResizeEvent();
+});
+
+onBeforeUnmount(() => {
+  destroyResizeEvent();
+  destroyLFResizeEvent();
 });
 
 const creatLogicflow = (): void => {
   let newContainer = document.getElementById('container');
   if (newContainer) {
     const lf = new LogicFlow({
-      //将lf挂载到dom
       container: newContainer,
       plugins: [Menu, MiniMap, Snapshot],
       background: {
         backgroundColor: '#f7f9ff'
       },
       grid: {
-          size: 1,
-          visible: false
+        size: 1,
+        visible: false
       },
       keyboard: {
-          enabled: true
+        enabled: true
       },
       edgeTextDraggable: true,
       hoverOutline: false
@@ -252,6 +255,7 @@ const clickPlus = (e: any, attributes: any): void => {
   addPanel.showAddPanel = true;
   addPanel.addClickNode = attributes;
 }
+//用户节点自定义操作面板点击之后触发
 const mouseDownPlus = (e: any): void => {
   e.stopPropagation();
 }
@@ -300,29 +304,96 @@ const hideAddPanel = (): void => {
   addPanel.addClickNode = null;
 }
 //关闭节点属性抽屉，传递给property-dialog组件
-const closeDialog = ():void => {
+const closeDialog = (): void => {
   LfDialog.dialogVisible = false;
 }
 //获取画布上的节点和连线的数据
-const getGraphData = ():void => {
+const getGraphData = (): void => {
   LfDialog.graphData = LF.value.getGraphData();
   LfDialog.dataVisible = true
 }
+
+//增加窗口变化的监听器
+const initResizeEvent = () => {
+  window.addEventListener('resize', chartResizeHandler as EventListener, { passive: true });
+};
+
+const chartResizeHandler = () => {
+  if (chart.value) {
+    chart.value.resize();
+  }
+  if (timer) {
+    clearTimeout(timer);
+    timer = null
+    creatTimer()
+  } else {
+    creatTimer()
+  }
+};
+
+const creatTimer = () => {
+  if (!timer) {
+    timer = setTimeout(function () {
+      LF.value.resetZoom();
+      LF.value.resetTranslate();
+    }, 300)
+  }
+}
+
+//增加画布变化的监听器
+const initLFResizeEvent = () => {
+  LFElm.value = document.getElementsByClassName('container')[0];
+  if (LFElm.value) {
+    LFElm.value.addEventListener(
+      'transitionend',
+      LFResizeHandler as EventListener,
+      { passive: true }
+    );
+  }
+};
+
+const LFResizeHandler = (e: TransitionEvent) => {
+  // console.log("画布变化:", e.propertyName)
+  if (e.propertyName === 'width') {
+    chartResizeHandler as EventListener;
+  }
+};
+
+//销毁监听器
+const destroyResizeEvent = () => {
+  window.removeEventListener('resize', chartResizeHandler);
+};
+const destroyLFResizeEvent = () => {
+  if (LFElm.value) {
+    LFElm.value.removeEventListener(
+      'transitionend',
+      LFResizeHandler as EventListener
+    );
+  }
+};
+
 </script>
 
 <style lang="scss" scoped>
 * {
   touch-action: none;
 }
+
 .logic-flow-view {
   height: 80vh;
   position: relative;
-  .demo-control {
+
+  .controlDiv {
     position: absolute;
     top: 40px;
     left: 60px;
     z-index: 2;
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 115px);
+    padding: 15px;
   }
+
   .container {
     width: calc(100% - 40px);
     height: 80vh;
@@ -332,6 +403,7 @@ const getGraphData = ():void => {
     padding: 15px;
     background: #fff;
   }
+
   .add-panel {
     position: absolute;
     z-index: 11;

@@ -4,14 +4,11 @@
     </div>
 </template>
 
-<script setup lang="ts">import { onMounted } from 'vue';
+<script setup lang="ts">
 
-const props = defineProps({
-    modelValue: {
-        required: true,
-        type: String
-    }
-})
+defineProps<{
+    modelValue: string
+}>()
 
 </script>
 
@@ -24,6 +21,7 @@ const props = defineProps({
     color: #007dff;
     padding: 5px 0 5px 12px;
     line-height: 20px;
+    // margin-bottom: 24px;
 }
 </style>
 <style lang="scss">
