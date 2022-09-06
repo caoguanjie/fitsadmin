@@ -385,7 +385,7 @@ const destroyLFResizeEvent = () => {
 
   .controlDiv {
     position: absolute;
-    top: 40px;
+    top: 25px;
     left: 60px;
     z-index: 2;
     display: flex;

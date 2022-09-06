@@ -15,6 +15,8 @@
 import { nextTick, onMounted, onUnmounted, toRefs, watch } from 'vue';
 import { FitsEchartsProps } from './type';
 import useBarEcharts from "./initBar"
+import useLineEcharts from "./initLine"
+import usePieEcharts from "./initPie"
 
 const props = withDefaults(defineProps<{ config: FitsEchartsProps }>(), {
     config: () => new FitsEchartsProps()
@@ -22,6 +24,10 @@ const props = withDefaults(defineProps<{ config: FitsEchartsProps }>(), {
 const { config } = toRefs(props)
 // 柱状图
 const { barEcharts, initBarEchart, barEchartsInstance } = useBarEcharts()
+// 折线图
+const { lineEcharts, initLineEchart, lineEchartsInstance } = useLineEcharts()
+// 饼图
+const { pieEcharts, initPieEchart, pieEchartsInstance } = usePieEcharts()
 
 onMounted(() => {
     window.addEventListener('resize', resizeEcharts);
@@ -35,7 +41,17 @@ onUnmounted(() => {
  * 重置echarts图表尺寸
  */
 function resizeEcharts() {
-    barEchartsInstance.value?.resize()
+    switch (config.value.type) {
+        case "bar":
+            barEchartsInstance.value?.resize()
+            break;
+        case "line":
+            lineEchartsInstance.value?.resize()
+            break;
+        case "pie":
+            pieEchartsInstance.value?.resize()
+            break;
+    }
 }
 
 /**
@@ -47,20 +63,27 @@ watch(() => config, async () => {
         case "bar":
             initBarEchart(config.value)
             break;
+        case "line":
+            initLineEchart(config.value)
+            break;
+        case "pie":
+            initPieEchart(config.value)
+            break;
     }
 }, { deep: true })
 </script>
 
 <style lang="scss" scoped>
 .fits-echarts {
+    width: 100%;
+    height: 100%;
 
     .custom,
     .bar,
     .line,
     .pie {
         width: 100%;
-        height: 25rem;
-        margin: auto;
+        height: 100%;
         background-color: #ffffff;
     }
 }

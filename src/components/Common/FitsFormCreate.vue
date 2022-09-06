@@ -4,10 +4,10 @@
 
 <script lang="ts" setup>
 import formCreate from "@form-create/element-ui";
-import { FitsFormCreateModel, FitsFormModuleModel } from "./model";
-import { reactive, ref } from "vue";
+import { FitsFormCreateModel } from "./model";
+import { ref } from "vue";
 
-const props = defineProps<{
+defineProps<{
     form: FitsFormCreateModel;
 }>();
 
@@ -31,7 +31,7 @@ defineExpose({
     }
 
     .el-input__wrapper {
-        border-radius: 0 !important;
+        border-radius: 2px !important;
     }
 }
 </style>

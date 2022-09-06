@@ -36,7 +36,7 @@ const prop = withDefaults(defineProps<{
     props: {}
 })
 
-const emit = defineEmits(["update:modelValue", 'cancle', 'submit', 'open'])
+const emit = defineEmits(['cancle', 'submit', 'open'])
 
 const state: any = reactive({
     isVisible: false,

@@ -12,7 +12,7 @@ import { Options } from '@form-create/core/types/index'
 export interface FitsFormModuleModel {
     form: FitsFormCreateModel
     title?: string
-    iconClass?: string | Component,
+    iconClass?: string
 }
 
 /**
@@ -102,9 +102,7 @@ export class FitsFormCreateOptionModel {
         this.submitBtn = Object.assign({}, this.InitSubmitBtn(), submitBtn);
         this.resetBtn = Object.assign({}, this.InitResetBtn(), resetBtn);
         this.row = row || Object.assign({}, this.InitRow(), row);
-        this.onSubmit = onSubmit || function (formData: any, fApi: any) {
-            alert(JSON.stringify(formData));
-        }
+        this.onSubmit = onSubmit
         this.onReload = onReload || function ( fApi: any) {
             fApi.resetFields();
         }
@@ -131,7 +129,7 @@ export class FitsFormCreateOptionModel {
 
     InitResetBtn() {
         return {
-            show: false,
+            show: true,
             size: "default",
             innerText: "取消",
             click: function ( fApi: any) {

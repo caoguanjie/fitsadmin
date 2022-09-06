@@ -1,7 +1,7 @@
 <template>
     <div class="icon-select">
-        <el-select v-bind='select' v-model="selectedNames" ref="selectInputRef" :filter-method="filterMethod"
-            @visible-change="VisibleChange" :popper-class="`${select?.popperClass} icon-popper`">
+        <el-select v-bind='select' v-model="selectedNames" ref="selectInputRef" @visible-change="VisibleChange"
+            @clear="clearSelected" :popper-class="`${select?.popperClass} icon-popper`" @remove-tag="RemoveTag">
             <template #empty>
                 <el-scrollbar class="icon-scrollbar" max-height="30vh">
                     <div class="custom-icon">
@@ -11,10 +11,10 @@
                             <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)"
                                 class="icon-wrapper" :class="{ 'isSelected': item.isSelected }">
                                 <svg-icon color="#999" :icon-class="item.name" />
-                                <span>{{  item.name  }}</span>
+                                <span>{{ item.name }}</span>
                             </div>
                         </div>
-                        <div class="no-data-text" v-else>{{  noListText  }}</div>
+                        <div class="no-data-text" v-else>{{ noListText }}</div>
                     </div>
                 </el-scrollbar>
             </template>
@@ -48,7 +48,7 @@ const state = reactive({
     filterText: '',
     iconList: icons,
     isMultiple: false,
-    selectedNames: []
+    selectedNames: ''
 })
 const { filterText, iconList, isMultiple, selectedNames }: any = toRefs(state);
 
@@ -56,28 +56,29 @@ const _attrs: any = useAttrs()
 
 const selectInputRef = ref()
 
-watch(_attrs.modelValue, (val) => {
-    selectedValueChange(val)
-})
-
-watch(() => selectedNames.value, (val) => {
-    selectedValueChange(val)
+watch(() => _attrs.modelValue, (val) => {
+    initData(val)
 })
 
 onMounted(() => {
     isMultiple.value = select.value.multiple
-    // 初始化默认值
-    if (_attrs.modelValue && _attrs.modelValue.length) {
-        iconList.value.map((item: any) => {
-            item.isSelected = _attrs.modelValue.includes(item.name)
-        })
-        selectedNames.value = _attrs.modelValue
-    }
+    initData(_attrs.modelValue)
 })
 
-function selectedValueChange(val: any) {
-    iconList.value.map((item: any) => item.isSelected = val?.includes(item.name))
-    emit("update:modelValue", selectedNames.value)
+function initData(val: any) {
+    // 初始化默认值
+    if (!val?.length) return
+    selectedNames.value = val
+    // 单选
+    if (!isMultiple.value) {
+        iconList.value.find((item: any) => item.name === val).isSelected = true
+    } else {
+        // 多选
+        iconList.value.map((item: any) => {
+            item.isSelected = val.includes(item.name)
+        })
+    }
+    emit('update:modelValue', val)
 }
 
 function filterMethod(val: string) {
@@ -90,24 +91,47 @@ function VisibleChange() {
     iconList.value = icons
 }
 
+/**
+ * @desc 选择图标
+ */
 function selectedIcon(item: any) {
-    item.isSelected = !item.isSelected
     // 单选
     if (!isMultiple.value) {
-        selectedNames.value = []
+        iconList.value.map((item: any) => item.isSelected = false)
+        item.isSelected = !item.isSelected
         if (item.isSelected) {
-            selectedNames.value.push(item.name)
+            selectedNames.value = item.name
         }
         selectInputRef.value.blur()
-        return
-    }
-    // 多选
-    if (!item.isSelected) {
-        const index = selectedNames.value.indexOf(item.name)
-        selectedNames.value.splice(index, 1)
     } else {
-        selectedNames.value.push(item.name)
+        // 多选
+        item.isSelected = !item.isSelected
+        // 之前是被选中
+        if (!item.isSelected) {
+            // 重新用一个变量赋值是因为，调用splice方法或者直接赋值的话，emit的值监听不到变化
+            const arr = [...selectedNames.value]
+            const index = arr.indexOf(item.name)
+            arr.splice(index, 1)
+            selectedNames.value = [...arr]
+        } else {
+            selectedNames.value = [...selectedNames.value, item.name]
+        }
     }
+    emit('update:modelValue', selectedNames.value)
+}
+
+/**
+ * @desc 多选模式下取消勾选
+ */
+function RemoveTag(val: any) {
+    iconList.value.find((item: any) => item.name === val).isSelected = false
+    emit('update:modelValue', selectedNames.value)
+}
+
+function clearSelected() {
+    selectedNames.value = isMultiple.value ? [] : ''
+    iconList.value.map((item: any) => item.isSelected = false)
+    emit('update:modelValue', selectedNames.value)
 }
 
 </script>

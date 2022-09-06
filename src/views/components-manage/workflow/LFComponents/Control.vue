@@ -2,18 +2,18 @@
   <!-- 辅助工具栏 -->
   <div>
     <el-button-group>
-      <el-button size="small" @click="zoomIn">放大</el-button>
-      <el-button size="small" @click="zoomOut">缩小</el-button>
-      <el-button size="small" @click="returndefault">重做</el-button>
-      <el-button size="small" @click="commit">提交</el-button>
-      <!-- <el-button  type="primary" size="small" @click="zoomReset">大小适应</el-button> -->
-      <el-button size="small" @click="translateRest">定位还原</el-button>
-      <el-button size="small" @click="reset">还原(大小&定位)</el-button>
-      <el-button size="small" @click="undo" :disabled="controlData.undoDisable">上一步(ctrl+z)</el-button>
-      <el-button size="small" @click="redo" :disabled="controlData.redoDisable">下一步(ctrl+y)</el-button>
-      <el-button size="small" @click="download">下载图片</el-button>
-      <el-button size="small" @click="catData">查看数据</el-button>
-      <el-button size="small" @click="clearData">一键清空</el-button>
+      <el-button @click="zoomIn">放大</el-button>
+      <el-button @click="zoomOut">缩小</el-button>
+      <el-button @click="returndefault">重置</el-button>
+      <el-button @click="commit">提交</el-button>
+      <!-- <el-button  type="primary"  @click="zoomReset">大小适应</el-button> -->
+      <el-button @click="translateRest">定位还原</el-button>
+      <el-button @click="reset">还原(大小&定位)</el-button>
+      <el-button @click="undo" :disabled="controlData.undoDisable">上一步(ctrl+z)</el-button>
+      <el-button @click="redo" :disabled="controlData.redoDisable">下一步(ctrl+y)</el-button>
+      <el-button @click="download">下载图片</el-button>
+      <el-button @click="catData">查看数据</el-button>
+      <el-button @click="clearData">一键清空</el-button>
     </el-button-group>
   </div>
 </template>

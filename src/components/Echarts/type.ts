@@ -5,22 +5,28 @@
 export class FitsEchartsProps {
     type?: EchartsType;
     legend: LegendConfoig
-    data: number[][];
+    data: number[][] | IPieData[]; // 如果是饼图，需要传IPieData[]类型的数据
     xAxisNames: string[]
     isShowZoom?: boolean
-    hasBarRadius?: boolean
-    isStack?: boolean
+    hasBarRadius?: boolean // 柱状图配置
+    isStack?: boolean // 柱状图配置
+    isSmooth?: boolean // 折线图配置
+    isShowArea?: boolean // 折线图配置
+    isHasGap?: boolean // 饼图配置
     [key: string]: any
     /**
      * @property {EchartsType} type echarts图类型
      * @property {LegendConfoig} legend 图例组件配置
-     * @property {number[][]} data 图表数据
+     * @property {number[][]} data 图表数据，如果是饼图，需要传IPieData[]类型的数据
      * @property {string[]} xAxisNames x轴刻度名
      * @property {boolean} isShowZoom 是否显示缩放组件
-     * @property {boolean} hasBarRadius 柱状图是否有圆角
-     * @property {boolean} isStack 数据是否堆叠
+     * @property {boolean} hasBarRadius 柱状图是否有圆角（柱状图配置）
+     * @property {boolean} isStack 数据是否堆叠（柱状图配置）
+     * @property {boolean} isSmooth 线条是否平滑（折线图配置）
+     * @property {boolean} isShowArea 是否展示面积（折线图配置）
+     * @property {boolean} isHasGap 是否有空隙(饼图配置)
      */
-    constructor({ type, legend, data, xAxisNames, isShowZoom, hasBarRadius, isStack }: any = {}) {
+    constructor({ type, legend, data, xAxisNames, isShowZoom, hasBarRadius, isStack, isSmooth, isShowArea, isHasGap }: any = {}) {
         this.type = type ?? "bar";
         this.legend = new LegendConfoig(legend ?? {});
         this.data = data ?? [];
@@ -28,6 +34,9 @@ export class FitsEchartsProps {
         this.isShowZoom = isShowZoom ?? false;
         this.hasBarRadius = hasBarRadius ?? true;
         this.isStack = isStack ?? false;
+        this.isSmooth = isSmooth ?? false;
+        this.isShowArea = isShowArea ?? false;
+        this.isHasGap = isHasGap ?? false;
     }
 }
 
@@ -79,7 +88,7 @@ export class LegendConfoig {
     [key: string]: any
     /**
      * @property {boolean} show 是否显示图例
-     * @property {LegendPositon} positon 图例显示位置
+     * @property {LegendPositon} positon 图例显示位置（饼图无效，饼图设置的图例都是在左侧）
      * @property {ILegendData[]} data 图例数据
      */
     constructor({ show, positon, data }: any = {}) {
@@ -87,4 +96,16 @@ export class LegendConfoig {
         this.positon = positon ?? "topCenter";
         this.data = data ?? [];
     }
+}
+
+/**
+ * 饼图一项数据
+ * @member name 名称
+ * @member value 值
+ * @member color 颜色
+ */
+export interface IPieData {
+    name: string
+    value: number,
+    color?: string | IGradientColor[]
 }

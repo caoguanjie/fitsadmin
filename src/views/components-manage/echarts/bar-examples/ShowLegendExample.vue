@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <fits-echarts :config="state.echartsOptions" />
     </div>
 </template>
@@ -22,7 +22,6 @@ const state = reactive({
                 { name: "已关闭" },
             ]
         },
-        xAxisNames: ["网络组", "运维组", "客户组", "维修组"]
     }),
 })
 
@@ -31,6 +30,7 @@ const state = reactive({
  */
 function getEchartsData() {
     setTimeout(() => {
+        state.echartsOptions.xAxisNames = ["网络组", "运维组", "客户组", "维修组"]
         state.echartsOptions.data = [
             [100, 50, 44, 89],
             [11, 132, 57, 34],
@@ -45,4 +45,7 @@ getEchartsData()
 </script>
 
 <style lang="scss" scoped>
+.container {
+    height: 25rem;
+}
 </style>

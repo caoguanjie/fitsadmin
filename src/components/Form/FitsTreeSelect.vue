@@ -1,7 +1,7 @@
 <template>
     <div class="tree-search">
-        <el-select ref="selectInputRef" v-bind='select' v-model="selectedValue" :filter-method="filterMethod"
-            @visible-change="VisibleChange" @clear="clearSelected" :popper-class="`${select?.popperClass} tree-popper`">
+        <el-select ref="selectInputRef" v-bind='select' v-model="selectedValue" @visible-change="VisibleChange"
+            @clear="clearSelected" :popper-class="`${select?.popperClass} tree-popper`" @remove-tag="RemoveTag">
             <template #empty>
                 <el-scrollbar class="tree-scrollbar" max-height="30vh">
                     <div class="custom-tree">
@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, toRefs, watch, useAttrs } from 'vue'
+import { onMounted, reactive, ref, toRefs, watch, useAttrs, nextTick } from 'vue'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
 import { FitsTreeSelectModel } from './model';
@@ -28,21 +28,18 @@ const props = withDefaults(defineProps<{
     options: () => new FitsTreeSelectModel(),
 })
 
-// const { input, select, tree, modelValue } = reactive(props.options)
-
-const { input, select, tree } = toRefs(props.options)
-
-// const prop = props.options
+const { input, select, tree }: any = toRefs(props.options)
 
 const emit = defineEmits(["update:modelValue"])
 
 const state = reactive({
     selectedValue: '',
     filterText: '',
+    isMultiple: false
 })
-const { selectedValue, filterText }: any = toRefs(state);
+const { selectedValue, filterText, isMultiple }: any = toRefs(state);
 
-const _attrs = useAttrs()
+const _attrs: any = useAttrs()
 
 const treeRef = ref()
 const selectInputRef = ref()
@@ -51,24 +48,33 @@ defineExpose({
     treeRef
 })
 
+watch(() => _attrs.modelValue, (val: any) => {
+    console.log('modelValue');
+    initValue(val)
+})
+
 watch(filterText, (val: string) => {
     treeRef.value.filter(val)
 })
 
 onMounted(() => {
+    isMultiple.value = select.value.multiple
     initValue(_attrs.modelValue)
 })
 
-function initValue(val: any) {
+function initValue(val: string) {
+    if (!val?.length) return
     // 单选
-    if (val && !selectedValue.value) {
+    if (!isMultiple.value) {
         treeRef.value.setCurrentKey(val)
         selectedValue.value = treeRef.value.getNode(val)?.label
-    }
-    // 多选
-    if (tree.value?.defaultCheckedKeys?.length) {
-        const checkedNodes = treeRef.value.getCheckedNodes()
-        checkedNodes.filter((item: any) => !item['children']).map((ele: any) => selectedValue.value.push(ele.label))
+        emit('update:modelValue', val)
+    } else {
+        // 多选
+        treeRef.value.setCheckedKeys(val)
+        selectedValue.value = []
+        treeRef.value.getCheckedNodes(true).map((item: any) => selectedValue.value.push(item.label))
+        emit('update:modelValue', treeRef.value.getCheckedKeys(true))
     }
 }
 
@@ -79,11 +85,14 @@ function VisibleChange(val: boolean) {
 }
 
 function clearSelected() {
-    treeRef.value.setCurrentKey(null)
-}
-
-function filterMethod(value: string) {
-    treeRef.value?.filter(value)
+    // 单选
+    if (!isMultiple.value) {
+        treeRef.value.setCurrentKey(null)
+    } else {
+        // 多选
+        treeRef.value.setCheckedKeys([])
+    }
+    emit('update:modelValue', '')
 }
 
 function filterNode(value: string, data: TreeNodeData, node: Node) {
@@ -95,8 +104,8 @@ function nodeClick(node: TreeNodeData, option: Node, event: any) {
     if (tree.value.showCheckbox) return
     if (option.isLeaf) {
         selectedValue.value = node[event.props.props.label]
-        emit("update:modelValue", node);
         selectInputRef.value.blur()
+        emit('update:modelValue', node.id)
     }
 }
 
@@ -105,12 +114,29 @@ function nodeClick(node: TreeNodeData, option: Node, event: any) {
  * 传递给 data 属性的数组中该节点所对应的对象、
  * 树目前的选中状态对象，包含 checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys 四个属性
  */
-function Check(obj: any, checkedObj: any) {
-    const arrNames: any = []
-    const arr = checkedObj.checkedNodes.filter((item: any) => !item['children'])
-    arr.map((item: any) => arrNames.push(item.label))
-    selectedValue.value = arrNames
-    emit('update:modelValue', checkedObj.checkedNodes)
+function Check(obj: any, treeObj: any) {
+    const index = selectedValue.value.indexOf(obj.label)
+    // 取消勾选
+    if (index !== -1) {
+        selectedValue.value.splice(index, 1)
+    } else {
+        // 勾选
+        const leafArr = treeObj.checkedNodes.filter((item: any) => !item['children'])
+        selectedValue.value = []
+        leafArr.map((item: any) => selectedValue.value.push(item.label))
+    }
+    emit('update:modelValue', treeRef.value.getCheckedKeys(true))
+}
+
+/**
+ * @desc 多选模式下取消勾选
+ */
+function RemoveTag(val: any) {
+    const checkNodes = treeRef.value.getCheckedNodes(true)
+    // 找到一样内容的节点，取消它的勾选
+    const removeNode = checkNodes.find((item: any) => item.label === val)
+    treeRef.value.setChecked(removeNode.id, false)
+    emit('update:modelValue', treeRef.value.getCheckedKeys(true))
 }
 
 </script>
@@ -177,7 +203,7 @@ function Check(obj: any, checkedObj: any) {
 
         .el-input__wrapper,
         .el-input__inner {
-            border-radius: 0;
+            border-radius: 2px;
         }
     }
 

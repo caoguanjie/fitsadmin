@@ -1,13 +1,13 @@
 <template>
-    <!-- 全选按钮 -->
     <div class="checkboxAll">
-        <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"
-            style="width: 100%">
+        <!-- 全选按钮 -->
+        <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
             全选
         </el-checkbox>
-        <el-checkbox-group v-bind=checkboxGroup v-model="checkedValue" @change="handleCheckedChange">
+
+        <el-checkbox-group v-model="checkedValue" @change="handleCheckedChange" v-bind=checkboxGroup>
             <el-checkbox v-for="item in option" :key="item.label" v-bind="item">
-                {{  item.label  }}
+                {{ item.label }}
             </el-checkbox>
         </el-checkbox-group>
     </div>
@@ -33,27 +33,37 @@ const state: any = reactive({
 const { checkAll, isIndeterminate, checkedValue } = toRefs(state)
 
 const _attrs = useAttrs()
-watch(() => checkedValue.value, (val: any) => {
-    emit("update:modelValue", val);
+
+watch(() => _attrs.modelValue, () => {
+    checkedValue.value = _attrs.modelValue
+})
+
+watch(checkedValue, (val: any) => {
+    checkAll.value = val.length === option.value.length
+    isIndeterminate.value = val.length < option.value.length && val.length > 0
 })
 
 onMounted(() => {
     checkedValue.value = _attrs.modelValue
-    checkAll.value = checkedValue.value?.length === option?.value?.length
-    isIndeterminate.value = !checkAll.value
 })
 
+/**
+ * @desc 全选按钮状态改变
+ */
 function handleCheckAllChange(val: CheckboxValueType) {
     checkedValue.value = []
     if (val) {
         option.value.map((item: any) => checkedValue.value.push(item.label))
     }
-    isIndeterminate.value = false
+    emit('update:modelValue', checkedValue.value)
 }
 
-function handleCheckedChange(value: CheckboxValueType[]) {
-    const checkedCount = value?.length
-    checkAll.value = checkedCount === option.value?.length
-    isIndeterminate.value = checkedCount > 0 && checkedCount < option.value?.length
+/**
+ * @desc 选项的状态改变，改变全选按钮的状态
+ */
+function handleCheckedChange(val: CheckboxValueType[]) {
+    // 已选的个数 === 全部选项的个数
+    checkAll.value = val.length === option.value.length
+    emit('update:modelValue', checkedValue)
 }
 </script>

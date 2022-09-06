@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <fits-echarts :config="state.echartsOptions" />
     </div>
 </template>
@@ -48,4 +48,7 @@ getEchartsData()
 </script>
 
 <style lang="scss" scoped>
+.container {
+    height: 25rem;
+}
 </style>

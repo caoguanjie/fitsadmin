@@ -81,7 +81,7 @@ const componentRouter: RouteRecordRaw = {
                 {
                     path: "GuidePage",
                     name: "GuidePage",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/guide-page/index.vue"),
                     meta: { title: "引导页" },
                 },
 

@@ -8,11 +8,11 @@
             <fits-form-create :form="simpleForm" />
         </div>
 
-        <!-- <div class="exampleBox inlineBox">
+        <div class="exampleBox inlineBox">
             <h1>
                 行内表单
             </h1>
-            <fits-form-create :forms="inlineForm" />
+            <fits-form-create :form="inlineForm" />
         </div>
 
         <div class="exampleBox dynamicBox">
@@ -33,22 +33,22 @@
                     删除指定规则
                 </el-button>
             </el-button-group>
-            <fits-form-create :forms="dynamicForm" ref="dynamicFef" />
+            <fits-form-create :form="dynamicForm" ref="dynamicFef" />
         </div>
 
         <div class="exampleBox">
             <h1>
                 自定义组件
             </h1>
-            <fits-form-create :forms="customForm" />
+            <fits-form-create :form="customForm" />
         </div>
 
         <div class="exampleBox">
             <h1>
                 组件插槽
             </h1>
-            <fits-form-create :forms="slotForm" />
-        </div> -->
+            <fits-form-create :form="slotForm" />
+        </div>
 
         <div class="exampleBox dialogBox">
             <h1>
@@ -62,13 +62,13 @@
         </div>
 
         <!-- props是dialog或drawer的属性，form是表单数组，除了form-create的配置还有一些属性要传递 -->
-        <!-- <form-type :visible="spliceVisible" :props="spliceProps" :forms="spliceForm" @submit="submitSpliceForm"
-            @cancle="closeForm" /> -->
+        <form-type :visible="spliceVisible" :props="spliceProps" :forms="spliceForm" @submit="submitSpliceForm"
+            @cancle="closeForm" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, toRefs, markRaw, ref, onMounted } from 'vue';
+import { reactive, toRefs, markRaw, ref } from 'vue';
 import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue'
 import FitsIconSelect from '@/components/Form/FitsIconSelect.vue'
 import FormType from '@/components/Common/FormType.vue'
@@ -80,13 +80,9 @@ import { ElMessage } from 'element-plus';
 import { FitsCheckboxAllModel, FitsIconSelectModel, FitsTreeSelectModel } from '@/components/Form/model';
 import FitsFormCreate from '@/components/Common/FitsFormCreate.vue'
 import { FitsFormCreateModel } from '@/components/Common/model'
+import useStore from '@/store';
 
-
-
-
-let num = 0
-
-const dynamicFef = ref()
+const { setting } = useStore();
 
 const simpleForm = reactive(
     new FitsFormCreateModel({
@@ -105,7 +101,7 @@ const simpleForm = reactive(
                     prefixIcon: markRaw(Search)
                 },
                 validate: [
-                    { required: true, message: '请输入goods_name', trigger: 'blur' },
+                    { required: true, message: '请输入goods_name', trigger: 'change' },
                 ]
             },
             {
@@ -150,31 +146,31 @@ const simpleForm = reactive(
                     },
                 ]
             },
-            {
-                type: "select",
-                title: "下拉选择控件（自定义、分组）",
-                field: "select",
-                props: {
-                    clearable: true,
-                },
-                options: [
-                    {
-                        value: "104",
-                        label: "生态蔬菜",
-                        disabled: false
-                    },
-                    {
-                        value: "105",
-                        label: "新鲜水果",
-                        disabled: true
-                    },
-                    {
-                        value: "106",
-                        label: "蛋糕甜点",
-                        disabled: false
-                    },
-                ]
-            },
+            // {
+            //     type: "select",
+            //     title: "下拉选择控件（自定义、分组）",
+            //     field: "select",
+            //     props: {
+            //         clearable: true,
+            //     },
+            //     options: [
+            //         {
+            //             value: "104",
+            //             label: "生态蔬菜",
+            //             disabled: false
+            //         },
+            //         {
+            //             value: "105",
+            //             label: "新鲜水果",
+            //             disabled: true
+            //         },
+            //         {
+            //             value: "106",
+            //             label: "蛋糕甜点",
+            //             disabled: false
+            //         },
+            //     ]
+            // },
             {
                 type: "select",
                 title: "下拉选择控件（筛选、可创建条目）",
@@ -376,16 +372,20 @@ const simpleForm = reactive(
                 type: "checkbox",
                 title: "多选",
                 field: "checkbox1",
+                value: ['104'],
                 options: [
                     {
+                        value: "104",
                         label: "生态蔬菜",
                         disabled: false
                     },
                     {
+                        value: "105",
                         label: "新鲜水果",
-                        disabled: false
+                        disabled: true
                     },
                     {
+                        value: "106",
                         label: "蛋糕甜点",
                         disabled: false
                     },
@@ -393,6 +393,443 @@ const simpleForm = reactive(
             },
             {
                 type: "checkboxAll",
+                component: markRaw(FitsCheckboxAll),
+                title: "多选(全选)",
+                field: "checkbox2",
+                value: ['生态蔬菜1'],
+                props: {
+                    options: new FitsCheckboxAllModel({
+                        option: [
+                            {
+                                label: "生态蔬菜1",
+                            },
+                            {
+                                label: "新鲜水果1",
+                            },
+                            {
+                                label: "蛋糕甜点1",
+                            }
+                        ],
+                    })
+                },
+            },
+        ],
+        option: {
+            onSubmit: (formData: any) => {
+                alert(JSON.stringify(formData))
+            },
+        },
+    })
+)
+
+const inlineForm = reactive(
+    new FitsFormCreateModel({
+        rule: [
+            {
+                type: "input",
+                title: "输入框",
+                field: "input",
+                value: "iphone 7",
+                props: {
+                    prefixIcon: markRaw(Search)
+                },
+                validate: [
+                    { required: true, message: '请输入', trigger: 'change' },
+                ]
+            },
+            {
+                type: "input",
+                title: "多行文本",
+                field: "textarea",
+                value: "iphone 7",
+                props: {
+                    type: "textarea",
+                    placeholder: "请输入商品名称",
+                    rows: 5,
+                    autosize: { minRows: 2, maxRows: 5 }
+                }
+            },
+            {
+                type: "select",
+                title: "下拉选择",
+                field: "select",
+                props: {
+                    clearable: true
+                },
+                options: [
+                    {
+                        value: "104",
+                        label: "生态蔬菜",
+                        disabled: false
+                    },
+                    {
+                        value: "105",
+                        label: "新鲜水果",
+                        disabled: true
+                    },
+                    {
+                        value: "106",
+                        label: "蛋糕甜点",
+                        disabled: false
+                    },
+                ]
+            },
+            {
+                type: "radio",
+                title: "单选",
+                field: "radio2",
+                props: {
+                    type: 'button'
+                },
+                options: [
+                    {
+                        value: "104",
+                        label: "生态蔬菜",
+                        disabled: false
+                    },
+                    {
+                        value: "105",
+                        label: "新鲜水果",
+                        disabled: false
+                    },
+                    {
+                        value: "106",
+                        label: "蛋糕甜点",
+                        disabled: false
+                    },
+                ]
+            },
+            {
+                type: "checkbox",
+                title: "多选",
+                field: "checkbox2",
+                options: [
+                    {
+                        value: "104",
+                        label: "生态蔬菜",
+                        disabled: false
+                    },
+                    {
+                        value: "105",
+                        label: "新鲜水果",
+                        disabled: false
+                    },
+                    {
+                        value: "106",
+                        label: "蛋糕甜点",
+                        disabled: false
+                    },
+                ]
+            },
+        ],
+        option: {
+            form: {
+                labelPosition: "right",
+            },
+            onSubmit: (formData: any) => {
+                alert(JSON.stringify(formData))
+            },
+            global: {
+                //设置所有组件
+                '*': {
+                    col: {
+                        span: 8,
+                        xl: 6
+                    }
+                }
+            }
+        },
+    })
+)
+
+const dynamicForm = reactive(
+    new FitsFormCreateModel({
+        rule: [
+            {
+                type: "input",
+                title: "输入框",
+                field: "input",
+                value: "iphone 7",
+                props: {
+                    prefixIcon: markRaw(Search)
+                },
+                validate: [
+                    { required: true, message: '请输入goods_name', trigger: 'blur' },
+                ],
+            },
+            {
+                type: "input",
+                title: "文本",
+                field: "textarea",
+                props: {
+                    placeholder: "请输入商品名称",
+                }
+            },
+        ],
+        option: {
+            form: {
+                labelPosition: 'right'
+            },
+            global: {
+                //设置所有组件
+                '*': {
+                    col: {
+                        span: 12,
+                    }
+                }
+            }
+        },
+    })
+)
+
+const customForm = reactive(
+    new FitsFormCreateModel({
+        rule: [
+            {
+                field: "treeSearch",
+                title: "下拉选择树(单选)",
+                component: markRaw(FitsTreeSelect),
+                value: '9',
+                props: {
+                    options: new FitsTreeSelectModel({
+                        select: {
+                            placeholder: "请选择组织机构",
+                            clearable: true
+                        },
+                        input: {
+                            element: {
+                                placeholder: "部门搜索",
+                            },
+                        },
+                        tree: {
+                            class: "myTree",
+                            nodeKey: "id",
+                            defaultExpandAll: false,
+                            data: [
+                                {
+                                    id: '1',
+                                    label: 'Level 1',
+                                    children: [
+                                        {
+                                            id: '4',
+                                            label: 'Level 1-1',
+                                            children: [
+                                                {
+                                                    id: '9',
+                                                    label: 'Level 1-1-1'
+                                                },
+                                                {
+                                                    id: '11',
+                                                    label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '21',
+                                    label: 'Level 2',
+                                    children: [
+                                        {
+                                            id: '5',
+                                            label: 'Level 2-1',
+                                            children: [
+                                                {
+                                                    id: '91',
+                                                    label: 'Level 2-1-1',
+                                                },
+                                                {
+                                                    id: '111',
+                                                    label: 'Level 2-2-2',
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            id: '6',
+                                            label: 'Level 2-2',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '3',
+                                    label: 'Level 3',
+                                    children: [
+                                        {
+                                            id: '7',
+                                            label: 'Level 3-1',
+                                        },
+                                        {
+                                            id: '8',
+                                            label: 'Level 3-2',
+                                            children: [
+                                                {
+                                                    id: '92',
+                                                    label: 'Level 3-2-1',
+                                                },
+                                                {
+                                                    id: '120',
+                                                    label: 'Level 3-2-2',
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            ],
+                        }
+                    })
+                },
+                validate: [
+                    { required: true, message: "请选择", trigger: 'change' }
+                ],
+            },
+            {
+                field: "treeSearchMultiple",
+                title: "下拉选择树(多选)",
+                component: markRaw(FitsTreeSelect),
+                value: ['9', '11'],
+                props: {
+                    options: new FitsTreeSelectModel({
+                        select: {
+                            placeholder: "请选择组织机构",
+                            multiple: true,
+                            clearable: true
+                        },
+                        input: {
+                            element: {
+                                placeholder: "部门搜索",
+                            },
+                        },
+                        tree: {
+                            showCheckbox: true,
+                            class: "myTree",
+                            nodeKey: "id",
+                            defaultExpandAll: false,
+                            data: [
+                                {
+                                    id: '1',
+                                    label: 'Level 1',
+                                    children: [
+                                        {
+                                            id: '4',
+                                            label: 'Level 1-1',
+                                            children: [
+                                                {
+                                                    id: '9',
+                                                    label: 'Level 1-1-1'
+                                                },
+                                                {
+                                                    id: '11',
+                                                    label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '21',
+                                    label: 'Level 2',
+                                    children: [
+                                        {
+                                            id: '5',
+                                            label: 'Level 2-1',
+                                            children: [
+                                                {
+                                                    id: '91',
+                                                    label: 'Level 2-1-1',
+                                                },
+                                                {
+                                                    id: '111',
+                                                    label: 'Level 2-2-2',
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            id: '6',
+                                            label: 'Level 2-2',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '3',
+                                    label: 'Level 3',
+                                    children: [
+                                        {
+                                            id: '7',
+                                            label: 'Level 3-1',
+                                        },
+                                        {
+                                            id: '8',
+                                            label: 'Level 3-2',
+                                            children: [
+                                                {
+                                                    id: '92',
+                                                    label: 'Level 3-2-1',
+                                                },
+                                                {
+                                                    id: '120',
+                                                    label: 'Level 3-2-2',
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            ],
+                        }
+                    })
+                },
+                validate: [
+                    // 多选的时候需要指定类型，否则可能校验会有问题
+                    { type: 'array', required: true, message: "请选择", trigger: 'change' }
+                ],
+            },
+            {
+                field: "iconSelect",
+                title: "图标选择(单选)",
+                component: markRaw(FitsIconSelect),
+                value: 'edit',
+                props: {
+                    options: new FitsIconSelectModel({
+                        select: {
+                            class: "mySelect",
+                            placeholder: "请选择图标",
+                            clearable: true
+                        },
+                        input: {
+                            element: {
+                                placeholder: "图标搜索",
+                            },
+                        },
+                    })
+                },
+                validate: [
+                    { required: true, message: "请选择图标", trigger: 'change' }
+                ],
+            },
+            {
+                field: "iconSelectMultiple",
+                title: "图标选择(多选)",
+                component: markRaw(FitsIconSelect),
+                value: ['edit', 'client'],
+                props: {
+                    options: new FitsIconSelectModel({
+                        select: {
+                            class: "mySelect",
+                            placeholder: "请选择图标",
+                            multiple: true,
+                            clearable: true
+                        },
+                        input: {
+                            element: {
+                                placeholder: "图标搜索",
+                            },
+                        },
+                    })
+                },
+                validate: [
+                    { type: 'array', required: true, message: "请选择图标", trigger: 'change' }
+                ],
+            },
+            {
                 component: markRaw(FitsCheckboxAll),
                 title: "多选(全选)",
                 field: "checkbox2",
@@ -417,418 +854,98 @@ const simpleForm = reactive(
         option: {
             onSubmit: (formData: any) => {
                 alert(JSON.stringify(formData))
+            }
+        }
+    })
+)
+
+const slotForm = reactive(
+    new FitsFormCreateModel({
+        rule: [
+            {
+                type: 'button',
+                field: 'slotButton',
+                title: '按钮插槽',
+                props: {
+                    type: 'primary'
+                },
+                children: [
+                    {
+                        // form-create使用组件的默认插槽
+                        type: 'div',
+                        component: markRaw(Search),
+                        class: 'el-icon el-icon--left',
+                    },
+                    '按钮名称'
+                ]
+            },
+            {
+                type: 'input',
+                field: 'slotInput',
+                title: '输入框插槽',
+                children: [
+                    {
+                        type: 'div',
+                        component: markRaw(Search),
+                        class: 'el-icon',
+                        slot: 'prefix',
+                    },
+                    {
+                        type: 'span',
+                        slot: 'suffix',
+                        children: ['suffix']
+                    },
+                ]
+            },
+            {
+                type: 'select',
+                field: 'slotSelect',
+                title: '下拉框插槽',
+                options: [
+                    {
+                        value: "104",
+                        label: "生态蔬菜",
+                    },
+                    {
+                        value: "105",
+                        label: "新鲜水果",
+                    },
+                    {
+                        value: "106",
+                        label: "蛋糕甜点",
+                    },
+                ],
+                // select的插槽
+                children: [
+                    {
+                        type: 'span',
+                        children: ['我是select的默认插槽']
+                    },
+                    // 无效，未解决
+                    {
+                        type: 'svg',
+                        slot: 'empty',
+                        component: markRaw(Search),
+                    },
+                    // 无效，未解决
+                    {
+                        type: 'svg',
+                        slot: 'prefix',
+                        component: markRaw(Search),
+                    }
+                ]
+            },
+        ],
+        option: {
+            submitBtn: {
+                show: false
+            },
+            resetBtn: {
+                show: false
             },
         },
     })
 )
-
-const inlineForm = reactive([
-    {
-        form: new FitsFormCreateModel({
-            rule: [
-                {
-                    type: "input",
-                    title: "输入框",
-                    field: "input",
-                    value: "iphone 7",
-                    props: {
-                        prefixIcon: markRaw(Search)
-                    },
-                    validate: [
-                        { required: true, message: '请输入', trigger: 'blur' },
-                    ]
-                },
-                {
-                    type: "input",
-                    title: "多行文本",
-                    field: "textarea",
-                    value: "iphone 7",
-                    props: {
-                        type: "textarea",
-                        placeholder: "请输入商品名称",
-                        rows: 5,
-                        autosize: { minRows: 2, maxRows: 5 }
-                    }
-                },
-                {
-                    type: "select",
-                    title: "下拉选择",
-                    field: "select",
-                    props: {
-                        clearable: true
-                    },
-                    options: [
-                        {
-                            value: "104",
-                            label: "生态蔬菜",
-                            disabled: false
-                        },
-                        {
-                            value: "105",
-                            label: "新鲜水果",
-                            disabled: true
-                        },
-                        {
-                            value: "106",
-                            label: "蛋糕甜点",
-                            disabled: false
-                        },
-                    ]
-                },
-                {
-                    type: "radio",
-                    title: "单选",
-                    field: "radio2",
-                    props: {
-                        type: 'button'
-                    },
-                    options: [
-                        {
-                            value: "104",
-                            label: "生态蔬菜",
-                            disabled: false
-                        },
-                        {
-                            value: "105",
-                            label: "新鲜水果",
-                            disabled: false
-                        },
-                        {
-                            value: "106",
-                            label: "蛋糕甜点",
-                            disabled: false
-                        },
-                    ]
-                },
-                {
-                    type: "checkbox",
-                    title: "多选",
-                    field: "checkbox1",
-                    options: [
-                        {
-                            value: "104",
-                            label: "生态蔬菜",
-                            disabled: false
-                        },
-                        {
-                            value: "105",
-                            label: "新鲜水果",
-                            disabled: false
-                        },
-                        {
-                            value: "106",
-                            label: "蛋糕甜点",
-                            disabled: false
-                        },
-                    ]
-                },
-            ],
-            option: {
-                form: {
-                    labelPosition: "right",
-                },
-                onSubmit: (formData: any) => {
-                    alert(JSON.stringify(formData))
-                },
-                global: {
-                    //设置所有组件
-                    '*': {
-                        col: {
-                            span: 8,
-                            xl: 6
-                        }
-                    }
-                }
-            },
-        })
-    }
-])
-
-const dynamicForm = reactive([
-    {
-        form: new FitsFormCreateModel({
-            rule: [
-                {
-                    type: "input",
-                    title: "输入框",
-                    field: "input",
-                    value: "iphone 7",
-                    props: {
-                        prefixIcon: markRaw(Search)
-                    },
-                    validate: [
-                        { required: true, message: '请输入goods_name', trigger: 'blur' },
-                    ],
-                },
-                {
-                    type: "input",
-                    title: "文本",
-                    field: "textarea",
-                    props: {
-                        placeholder: "请输入商品名称",
-                    }
-                },
-            ],
-            option: {
-                form: {
-                    labelPosition: 'right'
-                },
-                global: {
-                    //设置所有组件
-                    '*': {
-                        col: {
-                            span: 12,
-                        }
-                    }
-                }
-            },
-        }),
-    }
-])
-
-const customForm = reactive([
-    {
-        form: new FitsFormCreateModel(
-            {
-                rule: [
-                    {
-                        field: "treeSearch",
-                        title: "下拉选择树",
-                        component: markRaw(FitsTreeSelect),
-                        value: 9,
-                        props: {
-                            options: new FitsTreeSelectModel({
-                                select: {
-                                    placeholder: "请选择组织机构",
-                                },
-                                input: {
-                                    element: {
-                                        placeholder: "部门搜索",
-                                    },
-                                },
-                                tree: {
-                                    class: "myTree",
-                                    nodeKey: "id",
-                                    defaultExpandAll: false,
-                                    data: [
-                                        {
-                                            id: 1,
-                                            label: 'Level 1',
-                                            children: [
-                                                {
-                                                    id: 4,
-                                                    label: 'Level 1-1',
-                                                    children: [
-                                                        {
-                                                            id: 9,
-                                                            label: 'Level 1-1-1'
-                                                        },
-                                                        {
-                                                            id: 11,
-                                                            label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
-                                                        },
-                                                    ],
-                                                },
-                                            ],
-                                        },
-                                        {
-                                            id: 21,
-                                            label: 'Level 2',
-                                            children: [
-                                                {
-                                                    id: 5,
-                                                    label: 'Level 2-1',
-                                                    children: [
-                                                        {
-                                                            id: 91,
-                                                            label: 'Level 2-1-1',
-                                                        },
-                                                        {
-                                                            id: 111,
-                                                            label: 'Level 2-2-2',
-                                                        },
-                                                    ],
-                                                },
-                                                {
-                                                    id: 6,
-                                                    label: 'Level 2-2',
-                                                },
-                                            ],
-                                        },
-                                        {
-                                            id: 3,
-                                            label: 'Level 3',
-                                            children: [
-                                                {
-                                                    id: 7,
-                                                    label: 'Level 3-1',
-                                                },
-                                                {
-                                                    id: 8,
-                                                    label: 'Level 3-2',
-                                                    children: [
-                                                        {
-                                                            id: 92,
-                                                            label: 'Level 3-2-1',
-                                                        },
-                                                        {
-                                                            id: 120,
-                                                            label: 'Level 3-2-2',
-                                                        },
-                                                    ],
-                                                },
-                                            ],
-                                        },
-                                    ],
-                                }
-                            })
-                        },
-                        validate: [
-                            { required: true, message: "请选择", trigger: 'change' }
-                        ],
-                    },
-                    {
-                        field: "iconSelect",
-                        title: "图标选择",
-                        component: markRaw(FitsIconSelect),
-                        value: ['edit', 'client'],
-                        props: {
-                            options: new FitsIconSelectModel({
-                                select: {
-                                    class: "mySelect",
-                                    placeholder: "请选择图标",
-                                    multiple: true
-                                },
-                                input: {
-                                    element: {
-                                        placeholder: "图标搜索",
-                                    },
-                                },
-                            })
-                        },
-                        validate: [
-                            { required: true, message: "请选择图标", trigger: 'change' }
-                        ],
-                    },
-                    {
-                        component: markRaw(FitsCheckboxAll),
-                        title: "多选(全选)",
-                        field: "checkbox2",
-                        value: ['生态蔬菜'],
-                        props: {
-                            options: new FitsCheckboxAllModel({
-                                option: [
-                                    {
-                                        label: "生态蔬菜",
-                                    },
-                                    {
-                                        label: "新鲜水果",
-                                    },
-                                    {
-                                        label: "蛋糕甜点",
-                                    }
-                                ],
-                            })
-                        },
-                    },
-                ],
-                option: {
-
-                },
-            }
-        )
-    }
-])
-
-const slotForm = reactive([
-    {
-        form: new FitsFormCreateModel({
-            rule: [
-                {
-                    type: 'button',
-                    field: 'slotButton',
-                    title: '按钮插槽',
-                    props: {
-                        type: 'primary'
-                    },
-                    children: [
-                        {
-                            // form-create使用组件的默认插槽
-                            type: 'div',
-                            component: markRaw(Search),
-                            class: 'el-icon el-icon--left',
-                        },
-                        '按钮名称'
-                    ]
-                },
-                {
-                    type: 'input',
-                    field: 'slotInput',
-                    title: '输入框插槽',
-                    children: [
-                        {
-                            type: 'div',
-                            component: markRaw(Search),
-                            class: 'el-icon',
-                            slot: 'prefix',
-                        },
-                        {
-                            type: 'span',
-                            slot: 'suffix',
-                            children: ['suffix']
-                        },
-                    ]
-                },
-                {
-                    type: 'select',
-                    field: 'slotSelect',
-                    title: '下拉框插槽',
-                    options: [
-                        {
-                            value: "104",
-                            label: "生态蔬菜",
-                        },
-                        {
-                            value: "105",
-                            label: "新鲜水果",
-                        },
-                        {
-                            value: "106",
-                            label: "蛋糕甜点",
-                        },
-                    ],
-                    // select的插槽
-                    children: [
-                        {
-                            type: 'span',
-                            children: ['我是select的默认插槽']
-                        },
-                        // 无效，未解决
-                        {
-                            type: 'svg',
-                            slot: 'empty',
-                            component: markRaw(Search),
-                        },
-                        // 无效，未解决
-                        {
-                            type: 'svg',
-                            slot: 'prefix',
-                            component: markRaw(Search),
-                        }
-                    ]
-                },
-            ],
-            option: {
-                submitBtn: {
-                    show: false
-                },
-                resetBtn: {
-                    show: false
-                },
-            },
-        })
-    }
-])
 
 const dialogForm = reactive([
     {
@@ -836,6 +953,29 @@ const dialogForm = reactive([
         iconClass: 'user',
         form: new FitsFormCreateModel({
             rule: [
+                {
+                    field: "iconSelect",
+                    title: "图标选择",
+                    component: markRaw(FitsIconSelect),
+                    value: ['edit', 'client'],
+                    props: {
+                        options: new FitsIconSelectModel({
+                            select: {
+                                class: "mySelect",
+                                placeholder: "请选择图标",
+                                multiple: true
+                            },
+                            input: {
+                                element: {
+                                    placeholder: "图标搜索",
+                                },
+                            },
+                        })
+                    },
+                    validate: [
+                        { required: true, message: "请选择图标", trigger: 'change' }
+                    ],
+                },
                 {
                     type: "input",
                     field: "UserName",
@@ -992,7 +1132,7 @@ const dialogForm = reactive([
                     //设置所有组件
                     '*': {
                         col: {
-                            span: 12
+                            span: setting.formType === 'dialog' ? 12 : 24
                         },
                     }
                 }
@@ -1028,149 +1168,68 @@ const dialogForm = reactive([
                                 defaultExpandAll: false,
                                 data: [
                                     {
-                                        id: "1",
-                                        label: '研发部',
+                                        id: '1',
+                                        label: 'Level 1',
                                         children: [
                                             {
-                                                id: 4,
-                                                label: '研发部',
+                                                id: '4',
+                                                label: 'Level 1-1',
                                                 children: [
                                                     {
-                                                        id: 9,
-                                                        label: '研发部',
-                                                        children: [
-                                                            {
-                                                                id: "2",
-                                                                "disabled": true,
-                                                                label: '研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发研发部研发部研发部研发部研发部研发部研发部研发部发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部研发部',
-                                                            },
-                                                            {
-                                                                id: 10,
-                                                                label: '研发部',
-                                                                children: [
-                                                                    {
-                                                                        id: 9,
-                                                                        label: '研发部',
-                                                                    },
-                                                                    {
-                                                                        id: 10,
-                                                                        label: '研发部',
-                                                                        children: [
-                                                                            {
-                                                                                id: 9,
-                                                                                label: '研发部',
-                                                                            },
-                                                                            {
-                                                                                id: 10,
-                                                                                label: '研发部',
-                                                                                children: [
-                                                                                    {
-                                                                                        id: 9,
-                                                                                        label: '研发部',
-                                                                                    },
-                                                                                    {
-                                                                                        id: 10,
-                                                                                        label: '研发部',
-                                                                                    },
-                                                                                ],
-                                                                            },
-                                                                        ],
-                                                                    },
-                                                                ],
-                                                            },
-                                                        ],
+                                                        id: '9',
+                                                        label: 'Level 1-1-1'
                                                     },
                                                     {
-                                                        id: 10,
-                                                        label: '研发部',
+                                                        id: '11',
+                                                        label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
                                                     },
                                                 ],
                                             },
                                         ],
                                     },
                                     {
-                                        id: 21,
-                                        label: '研发部',
+                                        id: '21',
+                                        label: 'Level 2',
                                         children: [
                                             {
-                                                id: 5,
-                                                label: '研发部',
+                                                id: '5',
+                                                label: 'Level 2-1',
+                                                children: [
+                                                    {
+                                                        id: '91',
+                                                        label: 'Level 2-1-1',
+                                                    },
+                                                    {
+                                                        id: '111',
+                                                        label: 'Level 2-2-2',
+                                                    },
+                                                ],
                                             },
                                             {
-                                                id: 6,
-                                                label: '研发部',
+                                                id: '6',
+                                                label: 'Level 2-2',
                                             },
                                         ],
                                     },
                                     {
-                                        id: 3,
-                                        label: 'Level one 3',
+                                        id: '3',
+                                        label: 'Level 3',
                                         children: [
                                             {
-                                                id: 7,
-                                                label: 'Level two 3-1',
+                                                id: '7',
+                                                label: 'Level 3-1',
                                             },
                                             {
-                                                id: 8,
-                                                label: 'Level two 3-2',
+                                                id: '8',
+                                                label: 'Level 3-2',
                                                 children: [
                                                     {
-                                                        id: 9,
-                                                        label: '研发部',
+                                                        id: '92',
+                                                        label: 'Level 3-2-1',
                                                     },
                                                     {
-                                                        id: 10,
-                                                        label: '研发部',
-                                                        children: [
-                                                            {
-                                                                id: 9,
-                                                                label: '研发部',
-                                                            },
-                                                            {
-                                                                id: 10,
-                                                                label: '研发部',
-                                                                children: [
-                                                                    {
-                                                                        id: 9,
-                                                                        label: '研发部',
-                                                                        children: [
-                                                                            {
-                                                                                id: 9,
-                                                                                label: '研发部',
-                                                                            },
-                                                                            {
-                                                                                id: 10,
-                                                                                label: '研发部',
-                                                                                children: [
-                                                                                    {
-                                                                                        id: 9,
-                                                                                        label: '研发部',
-                                                                                    },
-                                                                                    {
-                                                                                        id: 10,
-                                                                                        label: '研发部',
-                                                                                        children: [
-                                                                                            {
-                                                                                                id: 9,
-                                                                                                label: '研发部',
-                                                                                            },
-                                                                                            {
-                                                                                                id: 10,
-                                                                                                label: '研发部',
-                                                                                            },
-                                                                                        ],
-                                                                                    },
-                                                                                ],
-                                                                            },
-                                                                        ],
-                                                                    },
-                                                                    {
-                                                                        id: 10,
-                                                                        label: '研发部',
-                                                                    },
-                                                                ],
-                                                            },
-                                                        ],
+                                                        id: '120',
+                                                        label: 'Level 3-2-2',
                                                     },
                                                 ],
                                             },
@@ -1179,7 +1238,10 @@ const dialogForm = reactive([
                                 ],
                             }
                         })
-                    }
+                    },
+                    validate: [
+                        { required: true, type: 'string', message: "请选择" }
+                    ],
                 },
                 {
                     type: "datePicker",
@@ -1258,7 +1320,7 @@ const dialogForm = reactive([
                     //设置所有组件
                     '*': {
                         col: {
-                            span: 12
+                            span: setting.formType === 'dialog' ? 12 : 24
                         },
                     }
                 }
@@ -1267,25 +1329,6 @@ const dialogForm = reactive([
     }
 ])
 
-
-
-
-const state: any = reactive({
-    spliceVisible: false,
-    dialogVisible: false,
-    myProps: {
-        title: '新增用户',
-        direction: 'rtl',
-        width: '60%',
-        customClass: 'myFormType',
-    },
-    spliceProps: {
-        title: '删除字段',
-        width: '30%',
-        customClass: 'spliceDialog'
-    }
-})
-const { spliceVisible, dialogVisible, myProps, spliceProps } = toRefs(state)
 const spliceForm = reactive([
     {
         form: new FitsFormCreateModel({
@@ -1314,6 +1357,30 @@ const spliceForm = reactive([
     }
 ])
 
+const state: any = reactive({
+    spliceVisible: false,
+    dialogVisible: false,
+    myProps: {
+        title: '新增用户',
+        direction: 'rtl',
+        width: '60%',
+        customClass: 'myFormType',
+    },
+    spliceProps: {
+        title: '删除字段',
+        width: '30%',
+        customClass: 'spliceDialog'
+    }
+})
+const { spliceVisible, dialogVisible, myProps, spliceProps } = toRefs(state)
+
+let num = 0
+
+const dynamicFef = ref()
+
+/**
+ * @desc 动态添加规则生成的规则
+ */
 function getRule() {
     num++
     return {
@@ -1362,14 +1429,14 @@ function submitSpliceForm(formValue: any) {
 }
 
 function submitDialogForm(formValue: any) {
-    console.log(formValue);
+    alert(JSON.stringify(formValue));
 }
 </script>
 
 <style lang="scss">
 .form-example {
     .el-form-item {
-        margin-bottom: 24px;
+        margin-bottom: 28px;
     }
 
     .inlineBox {
@@ -1381,10 +1448,6 @@ function submitDialogForm(formValue: any) {
                 min-width: 180px;
             }
         }
-
-        // .el-form-item:last-child {
-        //     width: 100%;
-        // }
     }
 
     .exampleForm {
@@ -1394,7 +1457,6 @@ function submitDialogForm(formValue: any) {
         }
 
         .el-form-item {
-            // margin-bottom: 0;
 
             .el-select {
                 width: 100%;
@@ -1404,7 +1466,6 @@ function submitDialogForm(formValue: any) {
 
     .simpleForm {
         .el-row {
-            // width: 100%;
             justify-content: center;
         }
 
@@ -1440,7 +1501,6 @@ function submitDialogForm(formValue: any) {
 
     .el-form-item {
         width: 100%;
-        // margin-bottom: 0;
     }
 
     .exampleForm {
@@ -1449,15 +1509,10 @@ function submitDialogForm(formValue: any) {
 
     .exampleBox {
         width: 50%;
-        // border: 1px #f3f3f3 solid;
         border: 1px dashed #dcdfe6;
         border-radius: 10px;
         margin-top: 20px;
         padding: 20px;
-
-        h1 {
-            // margin: 20px;
-        }
     }
 
     .exampleBox:first-child {

@@ -2,12 +2,12 @@
     <div class="bar-echarts-example">
         <el-card class="box-card">
             <template #header>
-                <div class="title">基础用法1</div>
+                <div class="title">基础用法</div>
                 <div class="describe">
                     基础柱状图展示，需要传入legend.data：图例数组、xAxisNames：x轴数据以及图表数据：data
                 </div>
             </template>
-            <BaseExample />
+            <base-example />
         </el-card>
         <el-card class="box-card">
             <template #header>
