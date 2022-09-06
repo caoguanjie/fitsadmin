@@ -19,7 +19,7 @@ export default defineUserConfig({
   },
   theme,
   // 指定 vuepress build 命令的输出目录。
-  dest: '/FitsAdminDocs',
+  dest: process.env.NODE_ENV === 'github' ? 'docs/.vuepress/dist' : '/FitsAdminDocs',
   plugins: [
     searchPlugin({
       locales: {
