@@ -2,9 +2,6 @@ import { Directive } from 'vue';
 import App from './App.vue';
 import { setupRouter } from '@/router';
 
-
-import FitsAdmin from 'fits-admin-ui'
-
 // 引入svg注册脚本
 import 'virtual:svg-icons-register';
 
@@ -12,7 +9,6 @@ import 'virtual:svg-icons-register';
 import '@/styles/index.scss';
 
 const app = createApp(App);
-
 // 自定义指令
 import * as directive from '@/directive';
 import { setupStore } from '@/store';
@@ -32,5 +28,4 @@ setupOtherImports(app)
 
 // 注册全局组件
 app
-  .use(FitsAdmin)
   .mount('#app');

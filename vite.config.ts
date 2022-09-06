@@ -89,6 +89,14 @@ export default ({ mode }: ConfigEnv): UserConfig => {
           drop_console: mode !== 'dev',
           drop_debugger: mode !== 'dev',
         },
+      },
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // 设置 manualChunks方案，将echarts单独打包并通过按需引入减少主包体积
+            echarts: ['echarts']
+          }
+        },
       }
     }
   };
