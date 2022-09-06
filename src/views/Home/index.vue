@@ -6,7 +6,7 @@
             <div class="title">欢迎登录{{ title }}</div>
             <div class="subtitle">Welcome to {{ subTitle }}</div>
         </div>
-        <FitsButtonTest />
+
     </div>
 </template>
 

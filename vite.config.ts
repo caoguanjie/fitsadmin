@@ -22,7 +22,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       // 自动导入elment-plus
       AutoImport({
 
-        imports: ['vue', 'vue-router'],
+        imports: ['vue', 'vue-router', { 'moment': [['default', 'moment']] }],
         dts: './src/auto-imports.d.ts',
         // imports: [
         //   { 'fits-admin-ui': ['FitsAdmin'] }
@@ -93,8 +93,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       rollupOptions: {
         output: {
           manualChunks: {
-            // 设置 manualChunks方案，将echarts单独打包并通过按需引入减少主包体积
-            echarts: ['echarts']
+            // 设置 manualChunks方案，将echarts单独打包并通过按需引入减少主包体积，
+            // 这种方式可以跟unplugin-auto-import形成互补，当用unplugin-auto-import无法实现按需自动加载的功能是，可以用manualChunks方案减少包体积大小
+            echarts: ['echarts'],
+            // moment: ['moment']
           }
         },
       }

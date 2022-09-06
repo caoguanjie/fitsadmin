@@ -225,8 +225,8 @@ getEchartsData()
 
 ```
 
-## 减少 echarts 体积大小
-在vite.config.ts的build通过设置 manualChunks方案，将echarts单独打包并通过按需引入减少主包体积
+## 减少 主包 体积大小
+在vite.config.ts的build通过设置 manualChunks方案，将echarts单独打包并通过按需引入减少主包体积，下面这种做法只是把echart的相关的代码独立打包到一个新的文件，其实没有减少echart的代码体积大小，这种方式主要针对如果是频繁多处调用echart服务的时候，因为echart已经独立出来并已经加载过一次了，不会加载第二次，从而减少了调用它的那个业务的js大小。
 
 ```js
  build: {
