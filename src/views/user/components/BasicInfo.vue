@@ -24,6 +24,7 @@ import { isPhoneNumber, isHomeNumber, isEmail, isShortNumber } from "@/utils/is"
 import { postUserDetail, postUserAvator } from '@/api/base/user';
 import { ResultEnum } from '@/utils/http/types';
 import { UploadRequestOptions } from 'element-plus';
+// import { UploadRequestOptions } from 'element-plus';
 
 const props = defineProps({
     userDetail: {
