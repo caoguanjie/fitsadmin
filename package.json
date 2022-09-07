@@ -26,6 +26,7 @@
         "axios": "^0.24.0",
         "better-scroll": "^2.4.2",
         "default-passive-events": "^2.0.0",
+        "driver.js": "^0.9.8",
         "echarts": "^5.2.2",
         "element-plus": "^2.2.16",
         "fits-admin-ui": "^1.0.5",

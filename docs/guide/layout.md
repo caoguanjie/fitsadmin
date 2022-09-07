@@ -78,9 +78,9 @@ date: 2022-08-25
 @/layout/components/AppMain
 :::
 
-` @`是 `vite `的 `alias` 不懂得请自行研究：[路径别名配置](/guide/srcAlias)
+` @`是 `vite `的 `alias` 不懂得请自行研究：[路径别名配置](/guide/srcAlias.md)
 
-这里在 `app-main` 外部包了一层` keep-alive `主要是为了缓存` <router-view> `的，配合页面的`<tabs-view>`标签导航使用，如不需要可自行[去除](/guide/tags-view)。
+这里在 `app-main` 外部包了一层` keep-alive `主要是为了缓存` <router-view> `的，配合页面的`<tabs-view>`标签导航使用，如不需要可自行[去除](/guide/tags-view.md)。
 
 其中 `transition` 定义了页面之间切换动画，可以根据自己的需求，自行修改转场动画。相关[文档](https://cn.vuejs.org/guide/built-ins/transition.html#named-transitions)。默认提供了fade和fade-transform两个转场动画，具体 css 实现见[transition.scss](https://github.com/caoguanjie/fitsadmin/blob/master/src/styles/transition.scss)。如果需要调整可在AppMain.vue中调整`transition` 的 `name`。目前项目中所配置的`name="router-fade"`其实没有写任何动画效果。
 
