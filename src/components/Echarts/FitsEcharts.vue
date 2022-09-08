@@ -1,14 +1,5 @@
 <template>
-    <div class="fits-echarts">
-        <!-- 柱状图 -->
-        <div class="bar" ref="barEcharts" v-if="config.type === 'bar'" />
-        <!-- 折线图 -->
-        <div class="line" ref="lineEcharts" v-else-if="config.type === 'line'" />
-        <!-- 饼图 -->
-        <div class="pie" ref="pieEcharts" v-else-if="config.type === 'pie'" />
-        <!-- 自定义配置 -->
-        <div class="custom" ref="customEcharts" v-else />
-    </div>
+    <div class="fits-echarts" ref="fitsEcharts" />
 </template>
 
 <script lang="ts" setup>
@@ -17,36 +8,46 @@ import { FitsEchartsProps } from './type';
 import useBarEcharts from "./initBar"
 import useLineEcharts from "./initLine"
 import usePieEcharts from "./initPie"
+import _ from 'lodash';
 
 const props = withDefaults(defineProps<{ config: FitsEchartsProps }>(), {
-    config: () => new FitsEchartsProps()
+    config: () => new FitsEchartsProps({})
 })
 const { config } = toRefs(props)
+
+const fitsEcharts = ref<HTMLElement>()
 // 柱状图
-const { barEcharts, initBarEchart, barEchartsInstance } = useBarEcharts()
+const { initBarEchart, barEchartsInstance, setBarOptions } = useBarEcharts(fitsEcharts)
 // 折线图
-const { lineEcharts, initLineEchart, lineEchartsInstance } = useLineEcharts()
+const { initLineEchart, lineEchartsInstance, setLineOptions } = useLineEcharts(fitsEcharts)
 // 饼图
-const { pieEcharts, initPieEchart, pieEchartsInstance } = usePieEcharts()
+const { initPieEchart, pieEchartsInstance } = usePieEcharts(fitsEcharts)
+
+/**
+ * 防抖处理
+ */
+const debounceFn = _.debounce(resizeEcharts, 300)
 
 onMounted(() => {
-    window.addEventListener('resize', resizeEcharts);
+    window.addEventListener('resize', debounceFn);
 })
 
 onUnmounted(() => {
-    window.removeEventListener('resize', resizeEcharts);
+    window.removeEventListener('resize', debounceFn);
 })
 
 /**
- * 重置echarts图表尺寸
+ * 重置echarts图表尺寸以及重新设置options（为了重新计算缩放组件最佳的体验范围）
  */
 function resizeEcharts() {
     switch (config.value.type) {
         case "bar":
             barEchartsInstance.value?.resize()
+            setBarOptions(config.value)
             break;
         case "line":
             lineEchartsInstance.value?.resize()
+            setLineOptions(config.value)
             break;
         case "pie":
             pieEchartsInstance.value?.resize()
@@ -77,14 +78,6 @@ watch(() => config, async () => {
 .fits-echarts {
     width: 100%;
     height: 100%;
-
-    .custom,
-    .bar,
-    .line,
-    .pie {
-        width: 100%;
-        height: 100%;
-        background-color: #ffffff;
-    }
+    background-color: #ffffff;
 }
 </style>

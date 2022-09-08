@@ -1,10 +1,11 @@
-import { reactive, ref, shallowRef } from "vue";
-import * as echarts from 'echarts';
+import { reactive, Ref, shallowRef } from "vue";
+import echarts from './register-echarts';
 import { FitsEchartsProps } from "./type";
 
-export default function useBarEcharts() {
-    // 渲染echarts的div dom
-    const barEcharts = ref()
+/**
+ * @param container 用于渲染echarts的dom容器
+ */
+export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>) {
     // dom初始化echarts后的容器，Options变化时就需要通过这个容器来重新setOptions，或者浏览器缩放重置echarts大小也需要这个变量
     /**
      * 这里需要使用shallowRef，使用ref会导致echarts使用滑块组件报错，echarts官方github能找到相关问题
@@ -27,7 +28,7 @@ export default function useBarEcharts() {
      * 初始化柱状图
      */
     function initBarEchart(config: FitsEchartsProps) {
-        barEchartsInstance.value = echarts.init(barEcharts.value);
+        barEchartsInstance.value = echarts.init(containerDom.value as HTMLElement);
         setBarOptions(config)
     }
 
@@ -35,12 +36,20 @@ export default function useBarEcharts() {
      * 设置柱状图配置项
      */
     function setBarOptions(config: FitsEchartsProps) {
-        const legendPositon = config.legend.positon
-        const isShowLegend = config.legend.show
-        const barWidth = 24
-        const barGap = 0.5
-        const _end = getDataZoomEnd(barWidth, barWidth * barGap, config.legend.data.length, config.xAxisNames.length)
-        const series = (config.legend.data || []).map((item, index) => {
+        const legendPositon = config.legend?.positon // 图例定位
+        const isShowLegend = config.legend?.show // 是否显示图例
+        const legendLength = config.legend?.data?.length || 0 // 图例个数
+        const xAxisLength = config.xAxisNames?.length || 0 // x轴项目个数
+        const barWidth = 24 // 柱条宽度
+        const barGap = 0.5 // 柱条间距 0.5 * barWidth = 12
+        // 图表容器宽度，还需要减去容器的left和right边距以及y轴宽度
+        const viewWidth = Math.max((barEchartsInstance.value?.getWidth() || 0) - 60 - 60 - 50, 0);
+        // 一个项目的宽度
+        const oneProjectWidth = legendLength * barWidth + Math.max(legendLength - 1, 0) * barWidth * barGap
+        // 是否内容溢出，如果内容溢出则自动开启缩放组件（还需要减去容器的right和left，还需要减去y轴宽度）
+        const isOverflow = (oneProjectWidth * xAxisLength) > viewWidth
+        const _end = getDataZoomEnd(barWidth, barWidth * barGap, legendLength, xAxisLength, viewWidth)
+        const series = (config.legend?.data || []).map((item, index) => {
             const color = (typeof item.color === "string") ? item.color : new echarts.graphic.LinearGradient(
                 0, 0, 0, 1,
                 item.color ? item.color : [
@@ -51,7 +60,7 @@ export default function useBarEcharts() {
             const obj = {
                 type: 'bar',
                 name: item.name,
-                data: config.data[index] || [],
+                data: (config.data && config.data[index]) || [],
                 stack: config.isStack ? "total" : undefined, // 堆叠模式
                 barWidth: "24px", // 柱子宽度
                 barGap: "50%",
@@ -113,8 +122,8 @@ export default function useBarEcharts() {
                     interval: 0, // 坐标轴刻度标签的显示间隔，默认值是auto（如果x轴刻度名过长会自动计算隐藏那些刻度），如果设置成0则全部显示，但会重叠 
                     formatter: function (name: string) {
                         // 图例个数
-                        const legendWith = config.legend.data.length * barWidth
-                        const gapWith = (config.legend.data.length - 1) * (barWidth * barGap)
+                        const legendWith = legendLength * barWidth
+                        const gapWith = Math.max(legendLength - 1, 0) * (barWidth * barGap)
                         // 能占最大宽度
                         const _maxWidth = legendWith + gapWith - barWidth // 减去一个barWidth是为了好看
                         // 一行能占的文字个数
@@ -148,11 +157,13 @@ export default function useBarEcharts() {
                     moveOnMouseMove: false, // 表示鼠标移动不能触发平移
                     preventDefaultMouseMove: true, // 是否阻止 mousemove 事件的默认行为,
                     start: 0,
-                    end: _end
+                    endValue: _end,
+                    filterMode: "filter", // 数据过滤模式,
+                    rangeMode: ["value", "value"]
                 },
                 {
                     type: 'slider', // 滑动条
-                    show: config.isShowZoom, // 是否显示滑块组件
+                    show: isOverflow ? true : config.isShowZoom, // 是否显示滑块组件（如果内容溢出则显示，否则看用户配置）
                     height: 18, // 滑块高度
                     showDataShadow: false, // 是否在滑块组件中显示数据阴影
                     zoomLock: false, // 是否锁定选择区域（或叫做数据窗口）的大小,如果设置为 true 则锁定选择区域的大小，也就是说，只能平移，不能缩放
@@ -162,36 +173,35 @@ export default function useBarEcharts() {
                     handleIcon: "path://M571.076923 39.384615h-118.153846A137.846154 137.846154 0 0 0 315.076923 177.230769v669.538462A137.846154 137.846154 0 0 0 452.923077 984.615385h118.153846a137.846154 137.846154 0 0 0 137.846154-137.846154v-669.538462A137.846154 137.846154 0 0 0 571.076923 39.384615zM472.615385 728.615385a19.692308 19.692308 0 0 1-39.384616 0v-433.23077a19.692308 19.692308 0 0 1 39.384616 0z m118.153846 0a19.692308 19.692308 0 0 1-39.384616 0v-433.23077a19.692308 19.692308 0 0 1 39.384616 0z",
                     brushSelect: false, // 是否开启刷选功能,
                     bottom: 0,
-                    filterMode: 'filter', // 数据过滤模式
-                    start: 0,
-                    end: _end
                 },
             ],
         };
-        barEchartsInstance.value && barEchartsInstance.value.setOption(option);
+        // 因为有可能会多次调用setOption，设置为true表示不合并
+        barEchartsInstance.value && barEchartsInstance.value.setOption(option, true);
     }
 
     /**
-   * 
-   * @param barWidth 柱子的宽度，单位px
-   * @param barGap 柱子与柱子之间的间隙，单位百分比，这里百分比相对于柱子宽度的，例如 barWidth = ‘14px’ barGap = ‘10%’。那么实际的间隙就是14 * 10% = 1.4px;
-   * @param barNum 一个类目柱子的数目，一个x轴的刻度放几个柱子。
-   * @param dataLength  数据的长度，也就是说x轴会存在多少个类目。
+     * 自动缩放组件的范围（最佳体验的范围）
+     * @param barWidth 柱子的宽度，单位px
+     * @param barGap 柱子与柱子之间的间隙，单位px
+     * @param barNum 一个项目有多少条柱子，应该传图例长度
+     * @param dataLength  有多少个项目，应该传x轴长度
+     * @param viewWidth  图表容器的宽度
    */
-    function getDataZoomEnd(barWidth: number, barGap: number, barNum: number, dataLength: number) {
-        const oneBarWidth = (1 + barGap / 100) * barWidth * barNum + 10; // 一个类目的宽度，10代表类目之间会有20px的空隙
-        const redix = oneBarWidth * dataLength;
-        const viewWidth = barEchartsInstance.value?.getWidth() || 0;
-        if (redix < viewWidth) {
-            return 100;
+    function getDataZoomEnd(barWidth: number, barGap: number, barNum: number, dataLength: number, viewWidth: number) {
+        // 一个项目占的宽度
+        const oneProjectWidth = barWidth * barNum + barGap * (barNum - 1)
+        if (oneProjectWidth * dataLength < viewWidth) {
+            return dataLength - 1
         } else {
-            return 100 / (dataLength - 1);
+            const maxProjectLength = Math.floor(viewWidth / oneProjectWidth)
+            return Math.max(0, maxProjectLength - 1)
         }
     }
 
     return {
-        barEcharts,
         initBarEchart,
-        barEchartsInstance
+        barEchartsInstance,
+        setBarOptions
     }
 }

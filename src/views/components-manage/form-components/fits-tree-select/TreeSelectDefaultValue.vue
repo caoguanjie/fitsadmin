@@ -1,5 +1,5 @@
 <template>
-    <fits-tree-select :options="state" :modelValue="91" />
+    <fits-tree-select :options="state" modelValue="91" />
 </template>
 
 <script lang="ts" setup>

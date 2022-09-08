@@ -2,9 +2,9 @@
     <div class="innerBox">
         <span>
             默认值多选<br>
-            <span class="describe">通过设置 tree.defaultCheckedKeys 传递一个由节点的key组成的数组设置多选的默认值</span>
+            <span class="describe">通过设置 modelValue 传递一个由节点的key组成的数组，设置多选默认值</span>
         </span>
-        <fits-tree-select :options="state1" @update:model-value="getValue" />
+        <fits-tree-select :options="state1" :modelValue="value" @update:model-value="getValue" />
     </div>
     <div class="innerBox">
         <span>多选项以文字形式展示</span>
@@ -20,14 +20,16 @@
 <script lang="ts" setup>
 import { FitsTreeSelectModel } from '@/components/Form/model';
 import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue';
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+
+const value = ref(['91', '111'])
 
 const state1 = reactive(new FitsTreeSelectModel({
     select: {
         multiple: true,
     },
     tree: {
-        defaultCheckedKeys: [91, 111],
+        // defaultCheckedKeys: ['91', '111'],
         nodeKey: "id",
         highlightCurrent: false,
         showCheckbox: true,
@@ -275,7 +277,6 @@ const state3 = reactive(new FitsTreeSelectModel({
 
 function getValue(value: any) {
     console.log(value);
-
 }
 </script>
 <style lang="scss" scoped>

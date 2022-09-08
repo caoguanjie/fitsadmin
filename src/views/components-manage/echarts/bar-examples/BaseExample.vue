@@ -14,7 +14,6 @@ const state = reactive({
     echartsOptions: new FitsEchartsProps({
         legend: {
             data: [
-                { name: "新建状态" },
                 { name: "处理中" },
                 { name: "挂起" },
                 { name: "失败解决" },
@@ -36,7 +35,7 @@ async function getEchartsData() {
     const obj = res.ReturnData.StatisList.reduce((cur, pre) => {
         Object.keys(pre).forEach(key => {
             // 传入x轴刻度名
-            key === "GroupInfo" && state.echartsOptions.xAxisNames.push(pre[key] || "")
+            key === "GroupInfo" && state.echartsOptions.xAxisNames?.push(pre[key] || "")
             // 过滤接口数据，过滤成number[][]类型的
             Object.prototype.hasOwnProperty.call(cur, key) && (cur[key]).push(pre[key] || 0)
         })

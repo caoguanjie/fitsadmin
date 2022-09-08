@@ -1,25 +1,28 @@
 <template>
-    <fits-dialog v-if="setting.formType === 'dialog'" class="FormTypeDialog" v-bind='$attrs' @cancle="closeForm"
-        @submit="submitForm" @open="openForm">
-        <template #body>
-            <div class="forms-container" v-for="(item, index) in forms" :key="index">
-                <fits-module-name :model-value="item.title" v-if="item?.title" />
-                <fits-form-create :form="item.form" ref="FormRef" />
-            </div>
-        </template>
-    </fits-dialog>
-
-    <fits-drawer v-bind='$attrs' @cancle="closeForm" @submit="submitForm" @open="openForm" v-else>
-        <div class="form-drawer-container" v-for="(item, index) in forms" :key="index">
-            <el-scrollbar>
-                <div class="title" v-show="item?.title">
-                    <svg-icon :icon-class="item?.iconClass" />
-                    {{ item.title }}
+    <div class="formType">
+        <fits-dialog v-if="setting.formType === 'dialog'" class="FormTypeDialog" :visible="option.visible"
+            :prop="option.myProp" @cancle="closeForm" @submit="submitForm" @open="openForm">
+            <template #body>
+                <div class="forms-container" v-for="(item, index) in option.forms" :key="index">
+                    <fits-module-name :model-value="item.title" v-if="item?.title" />
+                    <fits-form-create :form="item.form" ref="DialogRef" />
                 </div>
-                <fits-form-create :form="item.form" ref="FormRef" />
-            </el-scrollbar>
-        </div>
-    </fits-drawer>
+            </template>
+        </fits-dialog>
+
+        <fits-drawer :visible="option.visible" :prop="option.myProp" @cancle="closeForm" @submit="submitForm"
+            @open="openForm" v-else>
+            <div class="form-drawer-container" v-for="(item, index) in option.forms" :key="index">
+                <el-scrollbar>
+                    <div class="title" v-show="item?.title">
+                        <svg-icon :icon-class="item?.iconClass" />
+                        {{ item.title }}
+                    </div>
+                    <fits-form-create :form="item.form" ref="DrawerRef" />
+                </el-scrollbar>
+            </div>
+        </fits-drawer>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -28,26 +31,32 @@ import FitsDrawer from '@/components/Dialog/FitsDrawer.vue'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 import useStore from '@/store';
 import { nextTick, ref } from 'vue';
-import { FitsFormModuleModel } from './model';
+import { FitsFormTypeModel } from './model';
 import FitsModuleName from "@/components/Form/FitsModuleName.vue";
 import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
 
 const props = defineProps<{
-    forms: FitsFormModuleModel[];
+    option: FitsFormTypeModel
 }>();
 
 const emit = defineEmits(['cancle', 'submit'])
 
 const { setting } = useStore();
 
-const FormRef = ref()
+const DialogRef = ref()
+const DrawerRef = ref()
+const currentFormRef = computed(() => setting.formType === 'dialog' ? DialogRef.value : DrawerRef.value)
+
+defineExpose({
+    currentFormRef
+})
 
 /**
  * @desc 打开窗口之前清空之前残留的验证
  */
 function openForm() {
     nextTick(() => {
-        FormRef.value.forEach((item: any) => {
+        currentFormRef.value.forEach((item: any) => {
             item.fApi.clearValidateState()
         })
     })
@@ -57,9 +66,9 @@ function openForm() {
  * @desc 关闭表单，重置数据
  */
 function closeForm() {
-    FormRef.value.forEach((item: any) => {
+    currentFormRef.value.forEach((item: any) => {
         item.fApi.resetFields()
-        item.fApi.reload()
+        // item.fApi.reload()
     })
     emit("cancle")
 }
@@ -70,19 +79,20 @@ function closeForm() {
 function submitForm() {
     let flag = 0
     let formValue = {}
-    FormRef.value.forEach((item: any) => {
-        item.fApi.submit((formData: any, fapi: any) => {
+    currentFormRef.value.forEach((item: any) => {
+        item.fApi.submit((formData: any) => {
             // 通过校验
             flag++
             formValue = Object.assign(formValue, formData);
         }).then(() => {
-            if (flag !== props.forms.length) return
+            if (flag !== props.option.forms.length) return
             emit('submit', formValue)
         })
     })
 }
 
-</script>
+</script >
+
 <style lang="scss" scoped>
 .form-drawer-container {
     background: #fff;
@@ -121,16 +131,23 @@ function submitForm() {
     margin-top: 0;
 }
 </style>
-<style lang="scss">
-.FormTypeDialog {
-    .form-divider {
-        margin: 24px 0;
-    }
-}
 
-.form-drawer-container {
-    .el-form-item {
-        margin-right: 22px;
+<style lang="scss">
+.formType {
+    .FormTypeDialog {
+        .el-form-item {
+            margin-right: 22px;
+        }
+
+        .form-divider {
+            margin: 24px 0;
+        }
+    }
+
+    .form-drawer-container {
+        .el-form-item {
+            margin-right: 22px;
+        }
     }
 }
 </style>

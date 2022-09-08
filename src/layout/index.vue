@@ -4,11 +4,14 @@
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <Sidebar class="sidebar-container" />
     <div :class="{ hasTagsView: needTagsView }" class="main-container">
-      <div :class="{ 'fixed-header': fixedHeader }">
+      <!-- <div :class="{ 'fixed-header': fixedHeader }"> -->
+      <div class="fits-head">
         <navbar />
         <tags-view v-if="needTagsView" />
       </div>
-      <app-main />
+      <el-scrollbar :height="mainContent" class="mainContentScrollbar">
+        <app-main />
+      </el-scrollbar>
       <RightPanel v-if="showSettings">
         <settings />
       </RightPanel>
@@ -34,10 +37,18 @@ const { app, setting } = useStore();
 const sidebar = computed(() => app.sidebar);
 const device = computed(() => app.device);
 const needTagsView = computed(() => setting.tagsView);
-const fixedHeader = computed(() => setting.fixedHeader);
+// const fixedHeader = computed(() => setting.fixedHeader);
 const showSettings = computed(() => setting.showSettings);
 const theme = computed(() => setting.theme);
 const showFooterBreadcrumb = computed(() => setting.showFooterBreadcrumb);
+
+// 主要内容的高度
+const mainContent = computed(() => {
+  const tagsViewHeight = needTagsView.value ? parseInt(variables.tagsViewHeight) : 0;
+  const footerHeight = showFooterBreadcrumb.value ? parseInt(variables.footerHeight) : 0;
+  return document.body.clientHeight - parseInt(variables.headHeight) - tagsViewHeight - footerHeight + 'px'
+})
+
 
 const classObj = computed(() => {
   const arr = []
@@ -105,5 +116,11 @@ function handleClickOutside() {
 
 .mobile .fixed-header {
   width: 100%;
+}
+
+.fits-head {
+
+  position: relative;
+  z-index: 1;
 }
 </style>

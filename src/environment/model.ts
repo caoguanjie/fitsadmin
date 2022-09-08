@@ -25,7 +25,6 @@ export class FitsDefaultSetting implements FitsSetting {
     InitSystemData(): FitsSystemSetting {
         return {
             tagsView: true,
-            fixedHeader: true,
             sidebarLogo: true,
             isInsensitivity: true,
             showSettings: true,

@@ -23,11 +23,12 @@ const state = reactive(new FitsTreeSelectModel({
                         children: [
                             {
                                 id: '9',
-                                label: 'Level 1-1-1'
+                                label: 'Level 1-1-1',
                             },
                             {
                                 id: '11',
                                 label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
+                                disabled: true
                             },
                         ],
                     },
@@ -44,6 +45,7 @@ const state = reactive(new FitsTreeSelectModel({
                             {
                                 id: '91',
                                 label: 'Level 2-1-1',
+                                disabled: true
                             },
                             {
                                 id: '111',
@@ -68,6 +70,7 @@ const state = reactive(new FitsTreeSelectModel({
                     {
                         id: '8',
                         label: 'Level 3-2',
+                        disabled: true,
                         children: [
                             {
                                 id: '92',

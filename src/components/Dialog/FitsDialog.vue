@@ -1,8 +1,8 @@
 <template>
     <div class="dialog">
-        <el-dialog ref="elDialogRef" v-model="isVisible" v-bind="props"
-            :custom-class="props?.customClass ? props.customClass + ' fits-dialog' : 'fits-dialog'"
-            :close-on-click-modal="false" :top="myProps.marginTop" draggable>
+        <el-dialog ref="elDialogRef" v-model="isVisible" v-bind="prop"
+            :class="prop?.class ? prop.class + ' fits-dialog' : 'fits-dialog'" :close-on-click-modal="false"
+            :top="dialogMarginTop" draggable>
             <div class="dialog-body" v-loading="loading" element-loading-text="拼命加载中"
                 element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
                 <el-scrollbar :noresize="true">
@@ -24,29 +24,32 @@
 </template>
 
 <script lang="ts" setup>
+import useStore from "@/store";
 import { reactive, ref, toRefs, watch, nextTick } from "vue";
 
-const prop = withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
     visible: boolean,
     loading?: boolean,
-    props?: any
+    prop?: any
 }>(), {
     visible: false,
     loading: false,
-    props: {}
+    prop: {}
 })
 
 const emit = defineEmits(['cancle', 'submit', 'open'])
 
 const state: any = reactive({
     isVisible: false,
-    myProps: prop.props
+    dialogMarginTop: '0'
 })
-const { isVisible, myProps } = toRefs(state);
+const { isVisible, dialogMarginTop } = toRefs(state);
+
+const { setting } = useStore();
 
 const elDialogRef = ref()
 
-watch(() => prop.visible, (newVal: boolean) => {
+watch(() => props.visible, (newVal: boolean) => {
     isVisible.value = newVal
     newVal && emit('open')
     !newVal && emit('cancle')
@@ -60,7 +63,6 @@ watch(() => prop.visible, (newVal: boolean) => {
  */
 function emitSave() {
     emit("submit");
-    // isVisible.value = false;
 }
 
 /**
@@ -68,7 +70,6 @@ function emitSave() {
  */
 function emitCancle() {
     emit("cancle");
-    // isVisible.value = false;
 }
 
 /**
@@ -76,14 +77,15 @@ function emitCancle() {
  * 当弹窗内容低于540高度的时候，marginTop: -10vh。也能达到大概居中的目的
  */
 function updatedWindowHeight() {
+    if (setting.formType !== 'dialog') return
     // 实际弹窗部分
     const dialogWindowHeight = elDialogRef.value.dialogContentRef.$el.getBoundingClientRect().height
     // 黑色阴影的div
     const dialogWrapWindowHeight = elDialogRef.value.dialogContentRef.$parent.$parent.$el.getBoundingClientRect().height;
     if (dialogWindowHeight > 540) {
-        myProps.value.marginTop = "0";
+        dialogMarginTop.value = "0";
     } else {
-        myProps.value.marginTop = dialogWrapWindowHeight < 540 ? "20px" : "-10vh";
+        dialogMarginTop.value = dialogWrapWindowHeight < 540 ? "20px" : "-10vh";
     }
 }
 </script>

@@ -1,10 +1,11 @@
-import { reactive, ref, shallowRef } from "vue";
-import * as echarts from 'echarts';
+import { reactive, Ref, shallowRef } from "vue";
+import echarts from './register-echarts';
 import { FitsEchartsProps } from "./type";
 
-export default function useLineEcharts() {
-    // 渲染echarts的div dom
-    const lineEcharts = ref()
+/**
+ * @param container 用于渲染echarts的dom容器
+ */
+export default function useLineEcharts(containerDom: Ref<HTMLElement | undefined>) {
     // dom初始化echarts后的容器，Options变化时就需要通过这个容器来重新setOptions，或者浏览器缩放重置echarts大小也需要这个变量
     /**
      * 这里需要使用shallowRef，使用ref会导致echarts使用滑块组件报错，echarts官方github能找到相关问题
@@ -20,7 +21,7 @@ export default function useLineEcharts() {
      * 初始化折线图
      */
     function initLineEchart(config: FitsEchartsProps) {
-        lineEchartsInstance.value = echarts.init(lineEcharts.value);
+        lineEchartsInstance.value = echarts.init(containerDom.value as HTMLElement);
         setLineOptions(config)
     }
 
@@ -28,9 +29,15 @@ export default function useLineEcharts() {
      * 设置折线图配置项
      */
     function setLineOptions(config: FitsEchartsProps) {
-        const legendPositon = config.legend.positon
-        const isShowLegend = config.legend.show
-        const series = (config.legend.data || []).map((item, index) => {
+        const legendPositon = config.legend?.positon // 图例定位
+        const isShowLegend = config.legend?.show // 是否显示图例
+        const xAxisLength = config.xAxisNames?.length || 0 // x轴项目个数
+        // 图表容器宽度，还需要减去容器的left和right边距以及y轴宽度
+        const viewWidth = Math.max((lineEchartsInstance.value?.getWidth() || 0) - 60 - 60 - 50, 0);
+        // 是否内容溢出，如果内容溢出则自动开启缩放组件（12是字体大小，5是超过5个字就换行）
+        const isOverflow = (12 * 5 * xAxisLength) > viewWidth
+        const _end = getDataZoomEnd(5, 12, xAxisLength, viewWidth)
+        const series = (config.legend?.data || []).map((item, index) => {
             const color = (typeof item.color === "object") ? new echarts.graphic.LinearGradient(
                 0, 0, 0, 1,
                 item.color
@@ -40,7 +47,7 @@ export default function useLineEcharts() {
             const obj = {
                 type: 'line',
                 name: item.name,
-                data: config.data[index] || [],
+                data: (config.data && config.data[index]) || [],
                 smooth: config.isSmooth,
                 lineStyle: {
                     color,  // 设置线条颜色
@@ -103,7 +110,16 @@ export default function useLineEcharts() {
                     lineHeight: 17, // 行高
                     color: "rgba(0, 0, 0, 0.45)", // 刻度字体颜色
                     fontFamily: "PingFangSC-Regular", //刻度字体
-                    // interval: 0, // 坐标轴刻度标签的显示间隔，默认值是auto（如果x轴刻度名过长会自动计算隐藏那些刻度），如果设置成0则全部显示，但会重叠 
+                    interval: 0, // 坐标轴刻度标签的显示间隔，默认值是auto（如果x轴刻度名过长会自动计算隐藏那些刻度），如果设置成0则全部显示，但会重叠 
+                    formatter: function (name: string) {
+                        if (name && name.length > 10) {
+                            return `${name.substring(0, 5)}\n${name.substring(5, 9)}...`
+                        } else if (name.length > 5 && name.length <= 10) {
+                            return `${name.substring(0, 5)}\n${name.substring(5, 10)}`
+                        } else {
+                            return name
+                        }
+                    }
                 }
             },
             yAxis: {
@@ -124,12 +140,14 @@ export default function useLineEcharts() {
                     moveOnMouseWheel: false, // 表示鼠标移动不能触发平移
                     moveOnMouseMove: false, // 表示鼠标移动不能触发平移
                     preventDefaultMouseMove: true, // 是否阻止 mousemove 事件的默认行为,
-                    // start: 0,
-                    // end: _end
+                    start: 0,
+                    endValue: _end,
+                    filterMode: 'filter', // 数据过滤模式,
+                    rangeMode: ["value", "value"]
                 },
                 {
                     type: 'slider', // 滑动条
-                    show: config.isShowZoom, // 是否显示滑块组件
+                    show: isOverflow ? true : config.isShowZoom, // 是否显示滑块组件（如果内容溢出则显示，否则看用户配置）
                     height: 18, // 滑块高度
                     showDataShadow: false, // 是否在滑块组件中显示数据阴影
                     zoomLock: false, // 是否锁定选择区域（或叫做数据窗口）的大小,如果设置为 true 则锁定选择区域的大小，也就是说，只能平移，不能缩放
@@ -139,18 +157,34 @@ export default function useLineEcharts() {
                     handleIcon: "path://M571.076923 39.384615h-118.153846A137.846154 137.846154 0 0 0 315.076923 177.230769v669.538462A137.846154 137.846154 0 0 0 452.923077 984.615385h118.153846a137.846154 137.846154 0 0 0 137.846154-137.846154v-669.538462A137.846154 137.846154 0 0 0 571.076923 39.384615zM472.615385 728.615385a19.692308 19.692308 0 0 1-39.384616 0v-433.23077a19.692308 19.692308 0 0 1 39.384616 0z m118.153846 0a19.692308 19.692308 0 0 1-39.384616 0v-433.23077a19.692308 19.692308 0 0 1 39.384616 0z",
                     brushSelect: false, // 是否开启刷选功能,
                     bottom: 0,
-                    filterMode: 'filter', // 数据过滤模式
-                    // start: 0,
-                    // end: _end
                 },
             ],
         };
-        lineEchartsInstance.value && lineEchartsInstance.value.setOption(option);
+        // 因为有可能会多次调用setOption，设置为true表示不合并
+        lineEchartsInstance.value && lineEchartsInstance.value.setOption(option, true);
+    }
+
+    /**
+     * 自动缩放组件的范围（最佳体验的范围）
+     * @param barWidth x轴刻度标签，一行超过多少字符换行
+     * @param barGap x轴刻度标签字体大小
+     * @param dataLength  有多少个项目，应该传x轴长度
+     * @param viewWidth  图表容器宽度
+   */
+    function getDataZoomEnd(oneLineWords: number, fontSize: number, dataLength: number, viewWidth: number) {
+        // 一个项目占的宽度
+        const oneProjectWidth = oneLineWords * fontSize
+        if (oneProjectWidth * dataLength < viewWidth) {
+            return dataLength - 1
+        } else {
+            const maxProjectLength = Math.floor(viewWidth / oneProjectWidth)
+            return Math.max(0, maxProjectLength - 1)
+        }
     }
 
     return {
-        lineEcharts,
         initLineEchart,
-        lineEchartsInstance
+        lineEchartsInstance,
+        setLineOptions
     }
 }

@@ -20,6 +20,7 @@
       <property-dialog v-if="LfDialog.dialogVisible" :nodeData="operationPanel.clickNode" :lf="LF"
         @setPropertiesFinish="closeDialog" />
     </el-drawer>
+
   </div>
 </template>
 

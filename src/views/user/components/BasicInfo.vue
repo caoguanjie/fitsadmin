@@ -1,7 +1,7 @@
 <template>
     <div class="basic-info">
         <div class="info-container">
-            <form-create v-model:api="fApi" v-model="formValue" :rule="rule" :option="option" ref="basicForm" />
+            <fits-form-create :form="form" ref="FormRef" />
             <div class="right-box" v-show="showAvator">
                 <el-upload class="avatar-uploader" :show-file-list="false" :before-upload="beforeAvatarUpload"
                     :http-request="httpRequest">
@@ -19,177 +19,164 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch } from 'vue';
+import { reactive, ref, toRefs, watch } from 'vue';
 import { isPhoneNumber, isHomeNumber, isEmail, isShortNumber } from "@/utils/is"
 import { postUserDetail, postUserAvator } from '@/api/base/user';
 import { ResultEnum } from '@/utils/http/types';
-import { UploadRequestOptions } from 'element-plus';
-// import { UploadRequestOptions } from 'element-plus';
+import { ElMessage, UploadRequestOptions } from 'element-plus';
+import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
+import { FitsFormCreateModel } from '@/components/Common/model';
 
-const props = defineProps({
-    userDetail: {
-        required: true,
-        type: Object
-    }
-})
+const props = defineProps<{
+    userDetail: any
+}>();
 
-const basicForm: any = ref()
+const FormRef: any = ref()
 
 const state: any = reactive({
-    formValue: {},
-    fApi: {},
     showAvator: true,
     imageUrl: '',
-    rule: [
-        {
-            type: "input",
-            field: "UserName",
-            title: "用户名称",
-            props: {
-                placeholder: "请输入用户名称",
-            },
-            validate: [
-                { required: true, type: 'string', message: "请输入用户名称" }
-            ],
-        },
-        {
-            type: "input",
-            field: "UserAccount",
-            title: "用户账号",
-            props: {
-                placeholder: "请输入用户账号"
-            },
-            validate: [
-                { required: true, type: 'string', message: "请输入用户账号" }
-            ],
-        },
-        {
-            type: "datePicker",
-            field: "birthday",
-            title: "生日",
-            props: {
-                placeholder: "请选择日期"
-            },
-        },
-        {
-            type: "radio",
-            field: "sex",
-            title: "性别",
-            options: [
-                {
-                    value: "1",
-                    label: "男"
+    form: new FitsFormCreateModel({
+        rule: [
+            {
+                type: "input",
+                field: "UserName",
+                title: "用户名称",
+                props: {
+                    placeholder: "请输入用户名称",
                 },
-                {
-                    value: "2",
-                    label: "女"
+                validate: [
+                    { required: true, type: 'string', message: "请输入用户名称" }
+                ],
+            },
+            {
+                type: "input",
+                field: "UserAccount",
+                title: "用户账号",
+                props: {
+                    placeholder: "请输入用户账号"
                 },
-                {
-                    label: "未知",
-                    value: "0"
-                }
-            ]
-        },
-        {
-            type: "input",
-            field: "phone",
-            title: "手机号码",
-            props: {
-                placeholder: "请输入手机号码"
+                validate: [
+                    { required: true, type: 'string', message: "请输入用户账号" }
+                ],
             },
-            validate: [
-                { required: true, type: 'string', message: "请输入手机号码" },
-                {
-                    validator: (rule: any, val: any, d: any) => {
-                        return isPhoneNumber(val)
-                    },
-                    message: "请输入正确的手机号"
-                }
-            ],
-        },
-        {
-            type: "input",
-            field: "familynumber",
-            title: "家庭号码",
-            props: {
-                placeholder: "请输入家庭号码"
+            {
+                type: "datePicker",
+                field: "birthday",
+                title: "生日",
+                props: {
+                    placeholder: "请选择日期"
+                },
             },
-            validate: [
-                {
-                    validator: (rule: any, val: any, d: any) => {
-                        return val ? isHomeNumber(val) : true
+            {
+                type: "radio",
+                field: "sex",
+                title: "性别",
+                options: [
+                    {
+                        value: "1",
+                        label: "男"
                     },
-                    message: "请输入正确的家庭号码"
-                }
-            ]
-        },
-        {
-            type: "input",
-            field: "email",
-            title: "电子邮件",
-            props: {
-                placeholder: "请输入电子邮箱"
+                    {
+                        value: "2",
+                        label: "女"
+                    },
+                    {
+                        label: "未知",
+                        value: "0"
+                    }
+                ]
             },
-            validate: [
-                {
-                    validator: (rule: any, val: any, d: any) => {
-                        return val ? isEmail(val) : true
-                    },
-                    message: "请输入正确的电子邮件"
-                }
-            ],
-        },
-        {
-            type: "input",
-            field: "shortNum",
-            title: "短号",
-            props: {
-                placeholder: "请输入短号"
+            {
+                type: "input",
+                field: "phone",
+                title: "手机号码",
+                props: {
+                    placeholder: "请输入手机号码"
+                },
+                validate: [
+                    { required: true, type: 'string', message: "请输入手机号码" },
+                    {
+                        validator: (rule: any, val: any, d: any) => {
+                            return isPhoneNumber(val)
+                        },
+                        message: "请输入正确的手机号"
+                    }
+                ],
             },
-            validate: [
-                {
-                    validator: (rule: any, val: any, d: any) => {
-                        return val ? isShortNumber(val) : true
-                    },
-                    message: "请输入正确的短号"
-                }
-            ],
+            {
+                type: "input",
+                field: "familynumber",
+                title: "家庭号码",
+                props: {
+                    placeholder: "请输入家庭号码"
+                },
+                validate: [
+                    {
+                        validator: (rule: any, val: any, d: any) => {
+                            return val ? isHomeNumber(val) : true
+                        },
+                        message: "请输入正确的家庭号码"
+                    }
+                ]
+            },
+            {
+                type: "input",
+                field: "email",
+                title: "电子邮件",
+                props: {
+                    placeholder: "请输入电子邮箱"
+                },
+                validate: [
+                    {
+                        validator: (rule: any, val: any, d: any) => {
+                            return val ? isEmail(val) : true
+                        },
+                        message: "请输入正确的电子邮件"
+                    }
+                ],
+            },
+            {
+                type: "input",
+                field: "shortNum",
+                title: "短号",
+                props: {
+                    placeholder: "请输入短号"
+                },
+                validate: [
+                    {
+                        validator: (rule: any, val: any, d: any) => {
+                            return val ? isShortNumber(val) : true
+                        },
+                        message: "请输入正确的短号"
+                    }
+                ],
+            },
+        ],
+        option: {
+            form: {
+                labelPosition: "top",
+                inline: true
+            },
+            submitBtn: {
+                className: "footerBtn el-button el-button--medium",
+                innerText: "保存基本信息"
+            },
+            onSubmit: () => {
+                saveUserDetail()
+            }
         },
-    ],
-    option: {
-        form: {
-            labelPosition: "top",
-            size: "default",
-            labelWidth: "80px",
-            hideRequiredAsterisk: false,
-            showMessage: true,
-            inlineMessage: false,
-            inline: true
-        },
-        submitBtn: {
-            show: true,
-            className: "footerBtn el-button el-button--medium",
-            innerText: "保存基本信息",
-            color: "#007dff",
-        },
-        resetBtn: {
-            show: true
-        },
-        onSubmit: () => {
-            saveUserDetail()
-        }
-    }
+    })
 })
-const { formValue, fApi, showAvator, imageUrl, rule, option } = toRefs(state);
+const { form, showAvator, imageUrl } = toRefs(state);
 
 watch(() => props.userDetail, (val: any) => {
-    Object.keys(formValue.value).forEach((item: any) => {
-        formValue.value[item] = val[item]
-    })
+    FormRef.value.fApi.setValue(val)
 })
 
 async function saveUserDetail() {
-    const { Message, RetCode }: any = await postUserDetail(formValue.value);
+    const formValue = FormRef.value.fApi.formData()
+    const { Message, RetCode }: any = await postUserDetail(formValue);
     if (RetCode === ResultEnum.SUCCESS) {
         ElMessage.success(Message)
     }

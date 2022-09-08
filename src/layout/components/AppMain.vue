@@ -22,7 +22,7 @@ const cachedViews = computed(() => tagsView.cachedViews);
 <style lang="scss" scoped>
 .app-main {
   /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  // min-height: calc(100vh - 50px);
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -42,7 +42,7 @@ const cachedViews = computed(() => tagsView.cachedViews);
   .app-main {
     /* 90 = navbar + tags-view = 50 + 40 */
     // min-height: calc(100vh - 90px);
-    min-height: 100vh;
+    // min-height: 100vh;
   }
 
   .fixed-header+.app-main {

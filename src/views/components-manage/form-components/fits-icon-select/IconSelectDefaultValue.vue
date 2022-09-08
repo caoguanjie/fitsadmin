@@ -1,15 +1,9 @@
 <template>
-    <fits-icon-select :options="state" />
+    <fits-icon-select modelValue="edit" />
 </template>
 
 <script lang="ts" setup>
 import FitsIconSelect from '@/components/Form/FitsIconSelect.vue';
-import { FitsIconSelectModel } from '@/components/Form/model';
-import { reactive } from 'vue'
-
-const state = reactive(new FitsIconSelectModel({
-    modelValue: ['edit']
-}))
 
 </script>
 <style lang="scss" scoped>

@@ -1,10 +1,11 @@
-import { reactive, ref, shallowRef } from "vue";
-import * as echarts from 'echarts';
+import { reactive, Ref, shallowRef } from "vue";
+import echarts from './register-echarts';
 import { FitsEchartsProps } from "./type";
 
-export default function usePieEcharts() {
-    // 渲染echarts的div dom
-    const pieEcharts = ref()
+/**
+ * @param container 用于渲染echarts的dom容器
+ */
+export default function usePieEcharts(containerDom: Ref<HTMLElement | undefined>) {
     // dom初始化echarts后的容器，Options变化时就需要通过这个容器来重新setOptions，或者浏览器缩放重置echarts大小也需要这个变量
     const pieEchartsInstance = shallowRef<echarts.ECharts>()
     const state = reactive({
@@ -16,7 +17,7 @@ export default function usePieEcharts() {
      * 初始饼图
      */
     function initPieEchart(config: FitsEchartsProps) {
-        pieEchartsInstance.value = echarts.init(pieEcharts.value);
+        pieEchartsInstance.value = echarts.init(containerDom.value as HTMLElement);
         setPieOptions(config)
         onChartMouseEvents()
     }
@@ -43,7 +44,7 @@ export default function usePieEcharts() {
                 color: "#303133",
                 fontFamily: "MicrosoftYaHei",
                 // 上层表格高亮时在外部显示百分比，下层表示高亮时在中间显示项目名称
-                formatter(str) {
+                formatter(str: any) {
                     return charName === "upperChart" ? str.percent + "%" : (str.name.length > 7 ? str.name.slice(0, 7) + "..." : str.name)
                 }
             },
@@ -69,7 +70,7 @@ export default function usePieEcharts() {
                     }
                 }
             },
-            data: config.data.map((item) => {
+            data: (config.data || []).map((item) => {
                 return Array.isArray(item) ? item : {
                     name: item.name,
                     value: item.value,
@@ -81,14 +82,14 @@ export default function usePieEcharts() {
                     }
                 }
             })
-        } as echarts.PieSeriesOption
+        }
     }
 
     /**
      * 设置饼图配置项
      */
     function setPieOptions(config: FitsEchartsProps) {
-        const isShowLegend = config.legend.show
+        const isShowLegend = config.legend?.show
         const option = {
             // 设置echarts在容器的位置
             grid: {
@@ -127,7 +128,6 @@ export default function usePieEcharts() {
     function onChartMouseEvents() {
         // 监听上层图表鼠标移入事件
         pieEchartsInstance.value?.on('mouseover', { seriesName: "upperChart" }, params => {
-            console.log(params);
             pieEchartsInstance.value?.dispatchAction({
                 type: "highlight",
                 seriesName: "lowerChart",
@@ -146,7 +146,6 @@ export default function usePieEcharts() {
     }
 
     return {
-        pieEcharts,
         initPieEchart,
         pieEchartsInstance
     }

@@ -47,27 +47,33 @@ for (const path in modules) {
 const state = reactive({
     filterText: '',
     iconList: icons,
-    isMultiple: false,
-    selectedNames: ''
+    isMultiple: select.value.multiple,
 })
-const { filterText, iconList, isMultiple, selectedNames }: any = toRefs(state);
+const { filterText, iconList, isMultiple }: any = toRefs(state);
 
+const selectedNames: any = isMultiple.value ? ref([]) : ref('')
 const _attrs: any = useAttrs()
-
 const selectInputRef = ref()
 
 watch(() => _attrs.modelValue, (val) => {
+    // 值为空，将列表选中样式去除
+    if (!val || !val?.length) {
+        selectedNames.value = isMultiple.value ? [] : ''
+        iconList.value.map((item: any) => {
+            item.isSelected = false
+        })
+        return
+    }
     initData(val)
 })
 
 onMounted(() => {
-    isMultiple.value = select.value.multiple
     initData(_attrs.modelValue)
 })
 
 function initData(val: any) {
     // 初始化默认值
-    if (!val?.length) return
+    if (!val || !val?.length) return
     selectedNames.value = val
     // 单选
     if (!isMultiple.value) {
@@ -177,6 +183,12 @@ function clearSelected() {
     .custom-icon {
         padding: 10px;
         box-sizing: border-box;
+
+        .icon-select__list {
+            span {
+                vertical-align: middle;
+            }
+        }
     }
 
     .no-data-text {
@@ -190,7 +202,8 @@ function clearSelected() {
     .svg-icon {
         margin-right: 10px;
         height: 30px;
-        width: 16px
+        width: 16px;
+        vertical-align: middle;
     }
 }
 </style>

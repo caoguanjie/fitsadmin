@@ -63,11 +63,11 @@ interface FitsSystemSetting {
      * @default {true}
      */
     tagsView: boolean
-    /**
-     * @desrciption 是否要固定网页的头部
-     * @default {true}
-     */
-    fixedHeader: boolean
+    // /**
+    //  * @desrciption 是否要固定网页的头部
+    //  * @default {true}
+    //  */
+    // fixedHeader: boolean
     /**
      * @desrciption 是否显示菜单栏的logo
      *  @default {true}

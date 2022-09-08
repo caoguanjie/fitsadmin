@@ -94,9 +94,6 @@ const state1 = reactive(new FitsTreeSelectModel({
 }))
 
 const state2 = reactive(new FitsTreeSelectModel({
-    input: {
-        show: false,
-    },
     tree: {
         nodeKey: "id",
         defaultExpandAll: false,

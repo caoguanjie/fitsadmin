@@ -33,7 +33,7 @@
                     删除指定规则
                 </el-button>
             </el-button-group>
-            <fits-form-create :form="dynamicForm" ref="dynamicFef" />
+            <fits-form-create :form="dynamicForm" ref="dynamicRef" />
         </div>
 
         <div class="exampleBox">
@@ -54,21 +54,18 @@
             <h1>
                 弹窗表单
             </h1>
-            <el-button @click="dialogVisible = true">
+            <el-button @click="dialogOpt.visible = true">
                 打开表单弹窗
             </el-button>
-            <form-type :visible="dialogVisible" :props="myProps" :forms="dialogForm" @submit="submitDialogForm"
-                @cancle="closeForm" />
+            <form-type :option="dialogOpt" @submit="submitDialogForm" @cancle="closeForm" ref="formtypeRef" />
         </div>
 
-        <!-- props是dialog或drawer的属性，form是表单数组，除了form-create的配置还有一些属性要传递 -->
-        <form-type :visible="spliceVisible" :props="spliceProps" :forms="spliceForm" @submit="submitSpliceForm"
-            @cancle="closeForm" />
+        <form-type :option="spliceOpt" @submit="submitSpliceForm" @cancle="closeForm" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, toRefs, markRaw, ref } from 'vue';
+import { reactive, markRaw, ref, watch } from 'vue';
 import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue'
 import FitsIconSelect from '@/components/Form/FitsIconSelect.vue'
 import FormType from '@/components/Common/FormType.vue'
@@ -83,6 +80,423 @@ import { FitsFormCreateModel } from '@/components/Common/model'
 import useStore from '@/store';
 
 const { setting } = useStore();
+
+let num = 0
+const dynamicRef = ref()
+const formtypeRef = ref()
+
+const colNum = setting.formType === 'dialog' ? ref(2) : ref()
+
+const dialogOpt = reactive({
+    visible: false,
+    forms: [
+        {
+            title: '用户信息',
+            iconClass: 'user',
+            form: new FitsFormCreateModel({
+                rule: [
+                    {
+                        field: "iconSelect",
+                        title: "图标选择",
+                        component: markRaw(FitsIconSelect),
+                        // value: ['edit', 'client'],
+                        props: {
+                            options: new FitsIconSelectModel({
+                                select: {
+                                    class: "mySelect",
+                                    placeholder: "请选择图标",
+                                    multiple: true
+                                },
+                                input: {
+                                    element: {
+                                        placeholder: "图标搜索",
+                                    },
+                                },
+                            })
+                        },
+                        validate: [
+                            { required: true, message: "请选择图标", trigger: 'change' }
+                        ],
+                    },
+                    {
+                        type: "input",
+                        field: "UserName",
+                        title: "用户名称",
+                        props: {
+                            placeholder: "请输入用户名称",
+                        },
+                        validate: [
+                            { required: true, type: 'string', message: "请输入用户名称" }
+                        ],
+                    },
+                    {
+                        type: "input",
+                        field: "UserAccount",
+                        title: "用户账号",
+                        props: {
+                            placeholder: "请输入用户账号",
+                        },
+                        validate: [
+                            { required: true, type: 'string', message: "请输入用户账号" }
+                        ],
+                    },
+                    {
+                        type: "input",
+                        field: "phone",
+                        title: "手机号码",
+                        props: {
+                            placeholder: "请输入手机号码"
+                        },
+                        validate: [
+                            { required: true, type: 'string', message: "请输入手机号码" },
+                            {
+                                validator: (rule: any, val: any) => {
+                                    return isPhoneNumber(val)
+                                },
+                                message: "请输入正确的手机号"
+                            }
+                        ],
+                    },
+                    {
+                        type: "input",
+                        field: "oldPwd",
+                        title: "初始密码",
+                        props: {
+                            type: 'password',
+                            placeholder: "请输入原始密码"
+                        },
+                        validate: [
+                            { required: true, type: 'string', message: "请输入原始密码" }
+                        ],
+                    },
+                    {
+                        type: "input",
+                        field: "telephone",
+                        title: "电话",
+                        props: {
+                            placeholder: "请输入电话"
+                        },
+                        validate: [
+                            {
+                                validator: (rule: any, val: any) => {
+                                    return val ? isPhoneNumber(val) : true
+                                },
+                                message: "请输入正确的电话"
+                            }
+                        ]
+                    },
+                    {
+                        type: "datePicker",
+                        field: "birthday",
+                        title: "生日",
+                        props: {
+                            placeholder: "请选择日期"
+                        },
+                    },
+                    {
+                        type: "input",
+                        field: "email",
+                        title: "电子邮件",
+                        props: {
+                            placeholder: "请输入电子邮箱"
+                        },
+                        validate: [
+                            {
+                                validator: (rule: any, val: any) => {
+                                    return val ? isEmail(val) : true
+                                },
+                                message: "请输入正确的电子邮件"
+                            }
+                        ],
+                    },
+                    {
+                        type: "radio",
+                        field: "sex",
+                        title: "性别",
+                        options: [
+                            {
+                                value: "1",
+                                label: "男"
+                            },
+                            {
+                                value: "2",
+                                label: "女"
+                            },
+                            {
+                                label: "未知",
+                                value: "0"
+                            }
+                        ]
+                    },
+                    {
+                        type: "input",
+                        field: "shortNum",
+                        title: "短号",
+                        props: {
+                            placeholder: "请输入短号"
+                        },
+                        validate: [
+                            {
+                                validator: (rule: any, val: any) => {
+                                    return val ? isShortNumber(val) : true
+                                },
+                                message: "请输入正确的短号"
+                            }
+                        ],
+                    },
+                    {
+                        type: "radio",
+                        field: "status",
+                        title: "状态",
+                        options: [
+                            {
+                                value: "1",
+                                label: "启用"
+                            },
+                            {
+                                value: "2",
+                                label: "禁用"
+                            }
+                        ]
+                    },
+                ],
+                option: {
+                    form: {
+                        labelPosition: 'right',
+                        // inline: true,
+                    },
+                    submitBtn: {
+                        show: false,
+                    },
+                    resetBtn: {
+                        show: false,
+                    },
+                },
+                col: colNum.value
+            }),
+        },
+        {
+            title: '组织关系',
+            iconClass: 'fits-system',
+            form: new FitsFormCreateModel({
+                rule: [
+                    {
+                        field: "Department11",
+                        title: "所属部门",
+                        component: markRaw(FitsTreeSelect),
+                        // value: '9',
+                        props: {
+                            options: new FitsTreeSelectModel({
+                                select: {
+                                    placeholder: "请选择组织机构",
+                                    clearable: true
+                                },
+                                input: {
+                                    element: {
+                                        placeholder: "部门搜索",
+                                    },
+                                },
+                                tree: {
+                                    class: "myTree",
+                                    nodeKey: "id",
+                                    defaultExpandAll: false,
+                                    data: [
+                                        {
+                                            id: '1',
+                                            label: 'Level 1',
+                                            children: [
+                                                {
+                                                    id: '4',
+                                                    label: 'Level 1-1',
+                                                    children: [
+                                                        {
+                                                            id: '9',
+                                                            label: 'Level 1-1-1'
+                                                        },
+                                                        {
+                                                            id: '11',
+                                                            label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            id: '21',
+                                            label: 'Level 2',
+                                            children: [
+                                                {
+                                                    id: '5',
+                                                    label: 'Level 2-1',
+                                                    children: [
+                                                        {
+                                                            id: '91',
+                                                            label: 'Level 2-1-1',
+                                                        },
+                                                        {
+                                                            id: '111',
+                                                            label: 'Level 2-2-2',
+                                                        },
+                                                    ],
+                                                },
+                                                {
+                                                    id: '6',
+                                                    label: 'Level 2-2',
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            id: '3',
+                                            label: 'Level 3',
+                                            children: [
+                                                {
+                                                    id: '7',
+                                                    label: 'Level 3-1',
+                                                },
+                                                {
+                                                    id: '8',
+                                                    label: 'Level 3-2',
+                                                    children: [
+                                                        {
+                                                            id: '92',
+                                                            label: 'Level 3-2-1',
+                                                        },
+                                                        {
+                                                            id: '120',
+                                                            label: 'Level 3-2-2',
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                }
+                            })
+                        },
+                        validate: [
+                            { required: true, message: "请选择", trigger: 'change' }
+                        ],
+                    },
+                    {
+                        type: "datePicker",
+                        field: "onJobDate",
+                        title: "入职日期",
+                        props: {
+                            placeholder: "请选择入职日期"
+                        },
+                        validate: [
+                            { required: true, type: 'string', message: "请选择入职日期" }
+                        ]
+                    },
+                    {
+                        type: "input",
+                        field: "office",
+                        title: "办公室",
+                        props: {
+                            placeholder: "请输入办公室"
+                        },
+                    },
+                    {
+                        type: "input",
+                        field: "officenumber",
+                        title: "办公号码",
+                        props: {
+                            placeholder: "请输入办公号码"
+                        },
+                        validate: [
+                            {
+                                validator: (rule: any, val: any) => {
+                                    return val ? isHomeNumber(val) || isPhoneNumber(val) : true
+                                },
+                                message: "请输入正确的手机号或固话"
+                            }
+                        ]
+                    },
+                    {
+                        type: "datePicker",
+                        field: "offJobDate",
+                        title: "离职日期",
+                        props: {
+                            placeholder: "请选择离职日期"
+                        }
+                    },
+                    {
+                        type: "select",
+                        field: "UserTag",
+                        title: "用户标签",
+                        props: {
+                            filterable: true,
+                            placeholder: "请选择用户标签",
+                        },
+                        options: [
+                            {
+                                value: "1",
+                                label: "选项1"
+                            },
+                            {
+                                value: "2",
+                                label: "选项2"
+                            }
+                        ],
+                    },
+                ],
+                option: {
+                    form: {
+                        labelPosition: 'right'
+                    },
+                    submitBtn: {
+                        show: false,
+                    },
+                    resetBtn: {
+                        show: false,
+                    },
+                },
+                col: colNum.value
+            }),
+        }
+    ],
+    myProp: {
+        title: '新增用户',
+        width: '60%'
+    }
+})
+
+const spliceOpt = reactive({
+    visible: false,
+    forms: [
+        {
+            title: '编辑指定规则',
+            iconClass: 'edit',
+            form: new FitsFormCreateModel({
+                rule: [
+                    {
+                        type: "input",
+                        field: "fieldName",
+                        title: "规则字段",
+                        props: {
+                            placeholder: "请输入规则字段",
+                        },
+                        validate: [
+                            { required: true, type: 'string', message: "请输入规则字段" }
+                        ],
+                    }
+                ],
+                option: {
+                    submitBtn: {
+                        show: false
+                    },
+                    resetBtn: {
+                        show: false
+                    }
+                },
+            })
+        },
+    ],
+    myProp: {
+        title: '删除字段',
+        width: '30%'
+    }
+})
 
 const simpleForm = reactive(
     new FitsFormCreateModel({
@@ -144,6 +558,9 @@ const simpleForm = reactive(
                         label: "蛋糕甜点",
                         disabled: false
                     },
+                ],
+                validate: [
+                    { required: true, message: '请选择', trigger: 'change' },
                 ]
             },
             // {
@@ -190,7 +607,7 @@ const simpleForm = reactive(
                     {
                         value: "105",
                         label: "新鲜水果",
-                        disabled: true
+                        disabled: false
                     },
                     {
                         value: "106",
@@ -229,12 +646,7 @@ const simpleForm = reactive(
                         value: "108",
                         label: "农产鸡蛋",
                         disabled: false
-                    },
-                    {
-                        value: "109",
-                        label: "奶制品",
-                        disabled: false
-                    },
+                    }
                 ]
             },
             {
@@ -299,6 +711,9 @@ const simpleForm = reactive(
                 type: "DatePicker",
                 title: "日期选择",
                 field: "DatePicker1",
+                validate: [
+                    { required: true, message: '请选择', trigger: 'change' },
+                ]
             },
             {
                 type: "DatePicker",
@@ -525,19 +940,11 @@ const inlineForm = reactive(
         option: {
             form: {
                 labelPosition: "right",
+                inline: true
             },
             onSubmit: (formData: any) => {
                 alert(JSON.stringify(formData))
             },
-            global: {
-                //设置所有组件
-                '*': {
-                    col: {
-                        span: 8,
-                        xl: 6
-                    }
-                }
-            }
         },
     })
 )
@@ -779,14 +1186,14 @@ const customForm = reactive(
                 },
                 validate: [
                     // 多选的时候需要指定类型，否则可能校验会有问题
-                    { type: 'array', required: true, message: "请选择", trigger: 'change' }
+                    { required: true, message: "请选择", trigger: 'change' }
                 ],
             },
             {
                 field: "iconSelect",
                 title: "图标选择(单选)",
                 component: markRaw(FitsIconSelect),
-                value: 'edit',
+                // value: 'edit',
                 props: {
                     options: new FitsIconSelectModel({
                         select: {
@@ -947,439 +1354,13 @@ const slotForm = reactive(
     })
 )
 
-const dialogForm = reactive([
-    {
-        title: '用户信息',
-        iconClass: 'user',
-        form: new FitsFormCreateModel({
-            rule: [
-                {
-                    field: "iconSelect",
-                    title: "图标选择",
-                    component: markRaw(FitsIconSelect),
-                    value: ['edit', 'client'],
-                    props: {
-                        options: new FitsIconSelectModel({
-                            select: {
-                                class: "mySelect",
-                                placeholder: "请选择图标",
-                                multiple: true
-                            },
-                            input: {
-                                element: {
-                                    placeholder: "图标搜索",
-                                },
-                            },
-                        })
-                    },
-                    validate: [
-                        { required: true, message: "请选择图标", trigger: 'change' }
-                    ],
-                },
-                {
-                    type: "input",
-                    field: "UserName",
-                    title: "用户名称",
-                    props: {
-                        placeholder: "请输入用户名称",
-                    },
-                    validate: [
-                        { required: true, type: 'string', message: "请输入用户名称" }
-                    ],
-                },
-                {
-                    type: "input",
-                    field: "UserAccount",
-                    title: "用户账号",
-                    props: {
-                        placeholder: "请输入用户账号",
-                    },
-                    validate: [
-                        { required: true, type: 'string', message: "请输入用户账号" }
-                    ],
-                },
-                {
-                    type: "input",
-                    field: "phone",
-                    title: "手机号码",
-                    props: {
-                        placeholder: "请输入手机号码"
-                    },
-                    validate: [
-                        { required: true, type: 'string', message: "请输入手机号码" },
-                        {
-                            validator: (rule: any, val: any, d: any) => {
-                                return isPhoneNumber(val)
-                            },
-                            message: "请输入正确的手机号"
-                        }
-                    ],
-                },
-                {
-                    type: "input",
-                    field: "oldPwd",
-                    title: "初始密码",
-                    props: {
-                        type: 'password',
-                        placeholder: "请输入原始密码"
-                    },
-                    validate: [
-                        { required: true, type: 'string', message: "请输入原始密码" }
-                    ],
-                },
-                {
-                    type: "input",
-                    field: "telephone",
-                    title: "电话",
-                    props: {
-                        placeholder: "请输入电话"
-                    },
-                    validate: [
-                        {
-                            validator: (rule: any, val: any, d: any) => {
-                                return val ? isPhoneNumber(val) : true
-                            },
-                            message: "请输入正确的电话"
-                        }
-                    ]
-                },
-                {
-                    type: "datePicker",
-                    field: "birthday",
-                    title: "生日",
-                    props: {
-                        placeholder: "请选择日期"
-                    },
-                },
-                {
-                    type: "input",
-                    field: "email",
-                    title: "电子邮件",
-                    props: {
-                        placeholder: "请输入电子邮箱"
-                    },
-                    validate: [
-                        {
-                            validator: (rule: any, val: any, d: any) => {
-                                return val ? isEmail(val) : true
-                            },
-                            message: "请输入正确的电子邮件"
-                        }
-                    ],
-                },
-                {
-                    type: "radio",
-                    field: "sex",
-                    title: "性别",
-                    options: [
-                        {
-                            value: "1",
-                            label: "男"
-                        },
-                        {
-                            value: "2",
-                            label: "女"
-                        },
-                        {
-                            label: "未知",
-                            value: "0"
-                        }
-                    ]
-                },
-                {
-                    type: "input",
-                    field: "shortNum",
-                    title: "短号",
-                    props: {
-                        placeholder: "请输入短号"
-                    },
-                    validate: [
-                        {
-                            validator: (rule: any, val: any, d: any) => {
-                                return val ? isShortNumber(val) : true
-                            },
-                            message: "请输入正确的短号"
-                        }
-                    ],
-                },
-                {
-                    type: "radio",
-                    field: "status",
-                    title: "状态",
-                    options: [
-                        {
-                            value: "1",
-                            label: "启用"
-                        },
-                        {
-                            value: "2",
-                            label: "禁用"
-                        }
-                    ]
-                },
-            ],
-            option: {
-                form: {
-                    labelPosition: 'right'
-                },
-                submitBtn: {
-                    show: false,
-                },
-                resetBtn: {
-                    show: false,
-                },
-                global: {
-                    //设置所有组件
-                    '*': {
-                        col: {
-                            span: setting.formType === 'dialog' ? 12 : 24
-                        },
-                    }
-                }
-            },
-        })
-    },
-    {
-        title: '组织关系',
-        iconClass: 'fits-system',
-        form: new FitsFormCreateModel({
-            rule: [
-                {
-                    component: FitsTreeSelect,
-                    field: "Department",
-                    name: "organization",
-                    title: "所属部门",
-                    props: {
-                        options: new FitsTreeSelectModel({
-                            select: {
-                                class: "mySelect",
-                                placeholder: "请选择组织机构",
-                            },
-                            input: {
-                                element: {
-                                    placeholder: "部门搜索",
-                                    class: "myInput",
-                                },
-                                show: true
-                            },
-                            tree: {
-                                class: "myTree",
-                                nodeKey: "id",
-                                defaultExpandAll: false,
-                                data: [
-                                    {
-                                        id: '1',
-                                        label: 'Level 1',
-                                        children: [
-                                            {
-                                                id: '4',
-                                                label: 'Level 1-1',
-                                                children: [
-                                                    {
-                                                        id: '9',
-                                                        label: 'Level 1-1-1'
-                                                    },
-                                                    {
-                                                        id: '11',
-                                                        label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
-                                                    },
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        id: '21',
-                                        label: 'Level 2',
-                                        children: [
-                                            {
-                                                id: '5',
-                                                label: 'Level 2-1',
-                                                children: [
-                                                    {
-                                                        id: '91',
-                                                        label: 'Level 2-1-1',
-                                                    },
-                                                    {
-                                                        id: '111',
-                                                        label: 'Level 2-2-2',
-                                                    },
-                                                ],
-                                            },
-                                            {
-                                                id: '6',
-                                                label: 'Level 2-2',
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        id: '3',
-                                        label: 'Level 3',
-                                        children: [
-                                            {
-                                                id: '7',
-                                                label: 'Level 3-1',
-                                            },
-                                            {
-                                                id: '8',
-                                                label: 'Level 3-2',
-                                                children: [
-                                                    {
-                                                        id: '92',
-                                                        label: 'Level 3-2-1',
-                                                    },
-                                                    {
-                                                        id: '120',
-                                                        label: 'Level 3-2-2',
-                                                    },
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }
-                        })
-                    },
-                    validate: [
-                        { required: true, type: 'string', message: "请选择" }
-                    ],
-                },
-                {
-                    type: "datePicker",
-                    field: "onJobDate",
-                    title: "入职日期",
-                    props: {
-                        placeholder: "请选择入职日期"
-                    },
-                    validate: [
-                        { required: true, type: 'string', message: "请选择入职日期" }
-                    ]
-                },
-                {
-                    type: "input",
-                    field: "office",
-                    title: "办公室",
-                    props: {
-                        placeholder: "请输入办公室"
-                    },
-                },
-                {
-                    type: "input",
-                    field: "officenumber",
-                    title: "办公号码",
-                    props: {
-                        placeholder: "请输入办公号码"
-                    },
-                    validate: [
-                        {
-                            validator: (rule: any, val: any, d: any) => {
-                                return val ? isHomeNumber(val) || isPhoneNumber(val) : true
-                            },
-                            message: "请输入正确的手机号或固话"
-                        }
-                    ]
-                },
-                {
-                    type: "datePicker",
-                    field: "offJobDate",
-                    title: "离职日期",
-                    props: {
-                        placeholder: "请选择离职日期"
-                    }
-                },
-                {
-                    type: "select",
-                    field: "UserTag",
-                    title: "用户标签",
-                    props: {
-                        filterable: true,
-                        placeholder: "请选择用户标签",
-                    },
-                    options: [
-                        {
-                            value: "1",
-                            label: "选项1"
-                        },
-                        {
-                            value: "2",
-                            label: "选项2"
-                        }
-                    ],
-                },
-            ],
-            option: {
-                form: {
-                    labelPosition: 'right'
-                },
-                submitBtn: {
-                    show: false,
-                },
-                resetBtn: {
-                    show: false,
-                },
-                global: {
-                    //设置所有组件
-                    '*': {
-                        col: {
-                            span: setting.formType === 'dialog' ? 12 : 24
-                        },
-                    }
-                }
-            },
-        })
-    }
-])
-
-const spliceForm = reactive([
-    {
-        form: new FitsFormCreateModel({
-            rule: [
-                {
-                    type: "input",
-                    field: "fieldName",
-                    title: "规则字段",
-                    props: {
-                        placeholder: "请输入规则字段",
-                    },
-                    validate: [
-                        { required: true, type: 'string', message: "请输入规则字段" }
-                    ],
-                }
-            ],
-            option: {
-                submitBtn: {
-                    show: false
-                },
-                resetBtn: {
-                    show: false
-                }
-            },
-        })
-    }
-])
-
-const state: any = reactive({
-    spliceVisible: false,
-    dialogVisible: false,
-    myProps: {
-        title: '新增用户',
-        direction: 'rtl',
-        width: '60%',
-        customClass: 'myFormType',
-    },
-    spliceProps: {
-        title: '删除字段',
-        width: '30%',
-        customClass: 'spliceDialog'
-    }
+watch(() => setting.formType, (val: any) => {
+    colNum.value = val === 'dialog' ? 2 : undefined
+    dialogOpt.forms.map(item => item.form.col = colNum.value)
 })
-const { spliceVisible, dialogVisible, myProps, spliceProps } = toRefs(state)
-
-let num = 0
-
-const dynamicFef = ref()
 
 /**
- * @desc 动态添加规则生成的规则
+规则生成的规则
  */
 function getRule() {
     num++
@@ -1395,33 +1376,32 @@ function getRule() {
 }
 
 function prependRule() {
-    console.log(dynamicFef.value.fApi);
-    dynamicFef.value.fApi.prepend(getRule())
+    dynamicRef.value.fApi.prepend(getRule())
 }
 
 function appendRule() {
-    dynamicFef.value.fApi.append(getRule())
+    dynamicRef.value.fApi.append(getRule())
 }
 
 function spliceRule() {
-    dynamicFef.value.fApi.rule.splice(0, 1)
+    dynamicRef.value.fApi.rule.splice(0, 1)
 }
 
 function spliceSpecifyRule() {
-    spliceVisible.value = true
+    spliceOpt.visible = true
 }
 
 function closeForm() {
-    spliceVisible.value = false
-    dialogVisible.value = false
+    spliceOpt.visible = false
+    dialogOpt.visible = false
 }
 
 function submitSpliceForm(formValue: any) {
     if (formValue.fieldName) {
-        if (dynamicFef.value.fApi.removeField(formValue.fieldName) === undefined) {
+        if (dynamicRef.value.fApi.removeField(formValue.fieldName) === undefined) {
             ElMessage.error('找不到该规则')
         } else {
-            dynamicFef.value.fApi.removeField(formValue.fieldName)
+            dynamicRef.value.fApi.removeField(formValue.fieldName)
             ElMessage.success('删除成功')
             closeForm()
         }
@@ -1431,6 +1411,7 @@ function submitSpliceForm(formValue: any) {
 function submitDialogForm(formValue: any) {
     alert(JSON.stringify(formValue));
 }
+
 </script>
 
 <style lang="scss">
@@ -1441,12 +1422,15 @@ function submitDialogForm(formValue: any) {
 
     .inlineBox {
         .el-form-item {
-            // width: 30%;
 
             .el-input,
             .el-textarea {
                 min-width: 180px;
             }
+        }
+
+        .el-form-item:last-child {
+            width: 100%;
         }
     }
 
@@ -1485,14 +1469,9 @@ function submitDialogForm(formValue: any) {
             margin-bottom: 28px;
         }
     }
-
-    .spliceDialog {
-        .el-form-item {
-            width: 100%;
-        }
-    }
 }
 </style>
+
 <style lang="scss" scoped>
 .form-example {
     background: #fff;

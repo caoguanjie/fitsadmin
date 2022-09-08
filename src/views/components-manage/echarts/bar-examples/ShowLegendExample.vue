@@ -14,7 +14,6 @@ const state = reactive({
         legend: {
             show: true,
             data: [
-                { name: "新建状态" },
                 { name: "处理中" },
                 { name: "挂起" },
                 { name: "失败解决" },
@@ -32,7 +31,6 @@ function getEchartsData() {
     setTimeout(() => {
         state.echartsOptions.xAxisNames = ["网络组", "运维组", "客户组", "维修组"]
         state.echartsOptions.data = [
-            [100, 50, 44, 89],
             [11, 132, 57, 34],
             [24, 57, 11, 99],
             [56, 24, 92, 38],

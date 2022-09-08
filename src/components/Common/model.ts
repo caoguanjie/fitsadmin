@@ -19,16 +19,23 @@ export interface FitsFormModuleModel {
  * @desc FitsFormCreate表单类型
  * @param rule 生成表单规则
  * @param option 表单全局配置，非必填，使用默认配置
+ * @param col 表单展示列数
  */
 export class FitsFormCreateModel{
     rule: FitsFormCreateRuleProps[]
     option?: Options<OptionAttrs, CreatorAttrs, RuleAttrs, ApiAttrs>
+    // formValue?: any
+    col?: number
     constructor({
         rule,
         option,
+        // formValue,
+        col
     }: any = {}) {
         this.rule = rule
         this.option = new FitsFormCreateOptionModel({ ...option })
+        // this.formValue = formValue
+        this.col = col
     }
 }
 
@@ -124,6 +131,7 @@ export class FitsFormCreateOptionModel {
             show: true,
             size: "default",
             innerText: "保存",
+            color: "#007dff"
         }
     }
 
@@ -155,4 +163,25 @@ type FitsFormCreateBtnType = ButtonProps & {
     click?: () => void;
     innerText?: string;
     show?: boolean;
+}
+
+/**
+ * @desc 表单弹窗的类型
+ * @param visible 弹窗是否可见
+ * @param forms 表单数组
+ * @param prop 弹窗、抽屉的其他配置
+ */
+export class FitsFormTypeModel {
+    visible: boolean
+    forms: FitsFormModuleModel[]
+    myProp?: any
+    constructor({
+        visible,
+        forms,
+        myProp,
+    }: any = {}) {
+        this.visible = visible
+        this.forms = forms
+        this.myProp = myProp
+    }
 }

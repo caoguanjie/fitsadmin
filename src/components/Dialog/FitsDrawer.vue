@@ -1,6 +1,6 @@
 <template>
     <div class="drawer-container">
-        <el-drawer v-model="isVisible" @close="closeDrawer" v-bind="$attrs.props">
+        <el-drawer v-model="isVisible" @close="closeDrawer" v-bind="prop">
             <!-- drawer的内容 -->
             <slot />
             <template #footer>
@@ -20,10 +20,12 @@
 <script lang="ts" setup>
 import { reactive, toRefs, watch } from 'vue';
 
-const prop = withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
     visible: boolean,
+    prop?: any
 }>(), {
     visible: false,
+    prop: {}
 })
 const emit = defineEmits(['cancle', 'submit', 'open'])
 
@@ -32,7 +34,7 @@ const state: any = reactive({
 })
 const { isVisible } = toRefs(state);
 
-watch(() => prop.visible, (newVal: boolean) => {
+watch(() => props.visible, (newVal: boolean) => {
     isVisible.value = newVal
     newVal && emit('open')
 })
@@ -52,7 +54,6 @@ function submitDrawer() {
     .el-drawer {
         max-width: 80% !important;
         width: auto !important;
-        // min-width: 300px;
     }
 
     .el-drawer__header {
@@ -88,7 +89,6 @@ function submitDrawer() {
     }
 
     .drawer-footer {
-        // height: 72px;
         padding: 0;
 
         .el-button {

@@ -17,10 +17,11 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, toRefs, watch, useAttrs, nextTick } from 'vue'
+import { onMounted, reactive, ref, toRefs, watch, useAttrs } from 'vue'
 import type Node from 'element-plus/es/components/tree/src/model/node'
-import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
+
 import { FitsTreeSelectModel } from './model';
+import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 
 const props = withDefaults(defineProps<{
     options: FitsTreeSelectModel
@@ -33,14 +34,14 @@ const { input, select, tree }: any = toRefs(props.options)
 const emit = defineEmits(["update:modelValue"])
 
 const state = reactive({
-    selectedValue: '',
     filterText: '',
-    isMultiple: false
+    isMultiple: select.value.multiple
 })
-const { selectedValue, filterText, isMultiple }: any = toRefs(state);
+const { filterText, isMultiple }: any = toRefs(state);
+
+const selectedValue: any = isMultiple.value ? ref([]) : ref('')
 
 const _attrs: any = useAttrs()
-
 const treeRef = ref()
 const selectInputRef = ref()
 
@@ -49,7 +50,10 @@ defineExpose({
 })
 
 watch(() => _attrs.modelValue, (val: any) => {
-    console.log('modelValue');
+    if (!val?.length) {
+        selectedValue.value = val
+        return
+    }
     initValue(val)
 })
 
@@ -58,12 +62,11 @@ watch(filterText, (val: string) => {
 })
 
 onMounted(() => {
-    isMultiple.value = select.value.multiple
     initValue(_attrs.modelValue)
 })
 
 function initValue(val: string) {
-    if (!val?.length) return
+    if (!val || !val?.length) return
     // 单选
     if (!isMultiple.value) {
         treeRef.value.setCurrentKey(val)
@@ -79,7 +82,7 @@ function initValue(val: string) {
 }
 
 // 下拉框打开/关闭的时候清空内部输入框的值，恢复所有下拉数据
-function VisibleChange(val: boolean) {
+function VisibleChange() {
     filterText.value = ''
     treeRef.value?.filter('')
 }
@@ -182,10 +185,6 @@ function RemoveTag(val: any) {
         height: 32px;
     }
 
-    .el-tree-node__label {
-        // margin-left: 8px;
-    }
-
     .el-tree-node__expand-icon {
         padding: 0;
     }
@@ -208,9 +207,6 @@ function RemoveTag(val: any) {
     }
 
     .is-leaf .el-tree-node__content {
-        i {
-            // width: 0;
-        }
 
         .el-tree-node__label {
             margin-left: 20px;
