@@ -44,7 +44,9 @@
         "vite-plugin-dts": "^1.4.1",
         "vue": "^3.2.25",
         "vue-json-pretty": "^2.2.2",
-        "vue-router": "^4.0.12"
+        "vue-router": "^4.0.12",
+        "vxe-table": "^4.3.2",
+        "xe-utils": "^3.5.6"
     },
     "devDependencies": {
         "@commitlint/cli": "^16.2.3",

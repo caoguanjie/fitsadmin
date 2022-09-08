@@ -197,3 +197,63 @@ const time = ref(moment().format())
 ### echarts
 
 echart使用的官方的按需加载，配合vite中 `manualChunks`方案实现，具体用法：[Echarts图表](/guide/echart.md)
+
+### vex-table
+
+#### 安装
+
+```sh
+ npm install xe-utils vxe-table
+```
+
+#### 在vite.config.json配置
+在vite里配置的原因很简单，就是为了减少全局注册时，主要的index.js体积过大问题，通过manualChunks方案，可以把`vxe-table`独立分割成一个js。
+
+```js
+ build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          echarts: ['echarts']
+          vxetable: ['vxe-table']
+          // 格式标准 【文件名字】：【package-name(例如fits-admin-ui)】
+        }
+      },
+    },
+  },
+```
+
+#### 全局注册
+
+```ts
+
+
+import formCreate from '@form-create/element-ui';
+import { App } from 'vue';
+
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/style.css'
+
+function setupOtherImports(app: App) {
+    app
+        .use(FitsAdmin)
+        .use(formCreate)
+        // 全局注册VXETable
+        .use(VXETable)
+}
+
+export default setupOtherImports
+```
+
+#### 按需加载 VS 全局注册
+经过实践证明，全局注册和按需加载，这个`vxetable.js`独立js文件体积大小相差不大。
+
+**按需加载：447kb**
+
+![图 1](/images/20220908024441.png)  
+
+**按需加载：503kb**
+
+![图 2](/images/20220908024528.png)  
+
+

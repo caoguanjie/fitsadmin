@@ -9,6 +9,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 
+
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
@@ -96,7 +97,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             // 设置 manualChunks方案，将echarts单独打包并通过按需引入减少主包体积，
             // 这种方式可以跟unplugin-auto-import形成互补，当用unplugin-auto-import无法实现按需自动加载的功能是，可以用manualChunks方案减少包体积大小
             echarts: ['echarts'],
-            // moment: ['moment']
+            vxetable: ['vxe-table']
           }
         },
       }

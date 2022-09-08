@@ -7,6 +7,9 @@ import FitsAdmin from 'fits-admin-ui'
 import formCreate from '@form-create/element-ui';
 import { App } from 'vue';
 
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/style.css'
+
 
 formCreate.use(install)
 
@@ -14,6 +17,7 @@ function setupOtherImports(app: App) {
     app
         .use(FitsAdmin)
         .use(formCreate)
+        .use(VXETable)
 }
 
 export default setupOtherImports
