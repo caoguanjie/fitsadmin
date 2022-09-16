@@ -12,7 +12,7 @@ const systemRouter: RouteRecordRaw = {
             path: "orgin",
             name: "orgin",
             redirect: "/sysManger/orgin/user",
-            component: () => import("@/views/ready/index.vue"),
+            component: () => import("@/views/system-manage/index.vue"),
             meta: { title: "组织机构", icon: "fits-zhuji" },
             children: [
                 {
@@ -36,7 +36,7 @@ const systemRouter: RouteRecordRaw = {
                 {
                     path: "menu",
                     name: "menu",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/system-manage/menu/index.vue"),
                     meta: { title: "菜单管理" },
                 },
             ]

@@ -23,7 +23,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       // 自动导入elment-plus
       AutoImport({
 
-        imports: ['vue', 'vue-router', { 'moment': [['default', 'moment']] }],
+        imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
         dts: './src/auto-imports.d.ts',
         // imports: [
         //   { 'fits-admin-ui': ['FitsAdmin'] }

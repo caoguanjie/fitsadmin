@@ -9,8 +9,8 @@
         <navbar />
         <tags-view v-if="needTagsView" />
       </div>
-      <el-scrollbar :height="mainContent" class="mainContentScrollbar">
-        <app-main />
+      <el-scrollbar :height="mainContent">
+        <app-main class="mainContentScrollbar" />
       </el-scrollbar>
       <RightPanel v-if="showSettings">
         <settings />
@@ -41,12 +41,12 @@ const needTagsView = computed(() => setting.tagsView);
 const showSettings = computed(() => setting.showSettings);
 const theme = computed(() => setting.theme);
 const showFooterBreadcrumb = computed(() => setting.showFooterBreadcrumb);
-
+const bodyHeight = ref(document.body.clientHeight)
 // 主要内容的高度
 const mainContent = computed(() => {
   const tagsViewHeight = needTagsView.value ? parseInt(variables.tagsViewHeight) : 0;
   const footerHeight = showFooterBreadcrumb.value ? parseInt(variables.footerHeight) : 0;
-  return document.body.clientHeight - parseInt(variables.headHeight) - tagsViewHeight - footerHeight + 'px'
+  return bodyHeight.value - parseInt(variables.headHeight) - tagsViewHeight - footerHeight + 'px'
 })
 
 
@@ -69,6 +69,13 @@ watchEffect(() => {
     app.toggleDevice('desktop');
   }
 });
+
+// 监听浏览器的变化，及时更新scorll组件的高度
+useResizeObserver(document.body, (entries) => {
+  const entry = entries[0]
+  const { height } = entry.contentRect
+  bodyHeight.value = height
+})
 
 function handleClickOutside() {
   app.closeSideBar(false);
@@ -122,5 +129,9 @@ function handleClickOutside() {
 
   position: relative;
   z-index: 1;
+}
+
+.mainContentScrollbar {
+  min-width: 768px;
 }
 </style>

@@ -1,4 +1,4 @@
-import   {  OptionAttrs, CreatorAttrs, RuleAttrs, ApiAttrs, RowProps }  from '@form-create/element-ui/types/config'
+import { OptionAttrs, CreatorAttrs, RuleAttrs, ApiAttrs, RowProps } from '@form-create/element-ui/types/config'
 import { ButtonProps } from 'element-plus'
 import { Component } from 'vue'
 import { Options } from '@form-create/core/types/index'
@@ -21,7 +21,7 @@ export interface FitsFormModuleModel {
  * @param option 表单全局配置，非必填，使用默认配置
  * @param col 表单展示列数
  */
-export class FitsFormCreateModel{
+export class FitsFormCreateModel {
     rule: FitsFormCreateRuleProps[]
     option?: Options<OptionAttrs, CreatorAttrs, RuleAttrs, ApiAttrs>
     // formValue?: any
@@ -69,6 +69,7 @@ interface FitsFormCreateRuleProps {
     props?: { [key: string]: any }
     /**
      * @description 设置表单组件的验证规则
+     * @explame
      */
     validate?: any[]
     /**
@@ -91,7 +92,7 @@ export class FitsFormCreateOptionModel {
     submitBtn: FitsFormCreateBtnType;
     resetBtn?: FitsFormCreateBtnType;
     row?: RowProps
-    onSubmit?: (formData:object, fApi:object) => void
+    onSubmit?: (formData: object, fApi: object) => void
     onReload?: (fApi: object) => void
     mounted?: (fApi: object) => void
     global?: any
@@ -110,12 +111,12 @@ export class FitsFormCreateOptionModel {
         this.resetBtn = Object.assign({}, this.InitResetBtn(), resetBtn);
         this.row = row || Object.assign({}, this.InitRow(), row);
         this.onSubmit = onSubmit
-        this.onReload = onReload || function ( fApi: any) {
+        this.onReload = onReload || function (fApi: any) {
             fApi.resetFields();
         }
-        this.mounted = mounted 
+        this.mounted = mounted
         this.global = global
-        
+
     }
 
     InitForm() {
@@ -140,7 +141,7 @@ export class FitsFormCreateOptionModel {
             show: true,
             size: "default",
             innerText: "取消",
-            click: function ( fApi: any) {
+            click: function (fApi: any) {
                 fApi.resetFields();
                 fApi.reload()
             }

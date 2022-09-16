@@ -13,6 +13,8 @@ $headHeight: 50px;
 $tagsViewHeight: 40px;
 // footer的底部公司信息的高度
 $footerHeight: 24px;
+// 列表搜索的区域的表单项的宽度
+$ListSearchFormItemWidth: 338px;
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
@@ -27,4 +29,6 @@ $footerHeight: 24px;
     headHeight: $headHeight;
     tagsViewHeight: $tagsViewHeight;
     footerHeight: $footerHeight;
+    footerHeight: $footerHeight;
+    ListSearchFormItemWidth: $ListSearchFormItemWidth
 }

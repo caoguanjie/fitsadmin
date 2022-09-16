@@ -6,27 +6,11 @@
             <div class="title">正在努力研发中，敬请期待哦～～～</div>
             <div class="subtitle">This feature is under development, so stay tuned~~~</div>
         </div>
-        <vxe-table border :data="tableData">
-            <vxe-column type="seq" width="60" />
-            <vxe-column field="name" title="Name">
-                <template #default="{ row }">
-                    <span>自定义插槽模板 {{ row.name }}</span>
-                </template>
-            </vxe-column>
-            <vxe-column field="sex" title="Sex" />
-            <vxe-column field="age" title="Age" />
-        </vxe-table>
     </div>
 </template>
 
 <script lang='ts' setup>
 
-const tableData = reactive([
-    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
-    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
-])
 </script>
 <style lang='scss' scoped>
 .ready-container {
