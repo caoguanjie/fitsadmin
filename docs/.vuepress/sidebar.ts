@@ -11,7 +11,7 @@ export default sidebar({
     },
     {
       text: '其他',
-      children: ['function-list']
+      children: ['function-list', 'svn']
     }
   ],
   '/components/': [

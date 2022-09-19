@@ -7880,9 +7880,9 @@
     "unplugin" "^0.9.0"
 
 "unplugin@^0.9.0", "unplugin@^0.9.3":
-  "integrity" "sha512-lUe769wSsZiltVA1Ns9ZRx3K1ri/4yzOrLLI/ebSAj2f0PsXqIJeHIXhkhiayEe1pv+mHuZYyBS3B2RXG2Q2EQ=="
-  "resolved" "https://registry.npmjs.org/unplugin/-/unplugin-0.9.4.tgz"
-  "version" "0.9.4"
+  "integrity" "sha512-luraheyfxwtvkvHpsOvMNv7IjLdORTWKZp0gWYNHGLi2ImON3iIZOj464qEyyEwLA/EMt12fC415HW9zRpOfTg=="
+  "resolved" "https://registry.npmjs.org/unplugin/-/unplugin-0.9.5.tgz"
+  "version" "0.9.5"
   dependencies:
     "acorn" "^8.8.0"
     "chokidar" "^3.5.3"

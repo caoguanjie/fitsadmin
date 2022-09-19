@@ -28,7 +28,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         // imports: [
         //   { 'fits-admin-ui': ['FitsAdmin'] }
         // ],
-        resolvers: [ElementPlusResolver()],
+        resolvers: [
+          ElementPlusResolver()],
         eslintrc: {
           enabled: true, // Default `false`
           filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
@@ -40,6 +41,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         dts: './src/components.d.ts',
         resolvers: [ElementPlusResolver()],
       }),
+
 
       vue(),
       svgLoader(),
@@ -104,3 +106,5 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     }
   };
 };
+
+

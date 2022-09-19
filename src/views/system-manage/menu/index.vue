@@ -1,6 +1,7 @@
 <template>
     <div class="menu-manage">
         <fits-list-seach :formItem='formItem' />
+        <fits-table />
     </div>
 </template>
 
@@ -129,6 +130,7 @@ const formItem: FitsFormItemProps[] = [
 </script>
 <style lang='scss' scoped>
 .menu-manage {
+    padding: 0 16px;
     background-color: #fff;
 }
 </style>

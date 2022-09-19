@@ -26,4 +26,14 @@ $sideBarHideWidth: 68px;
     --fits-sidebar-base-active-font-color: #1890ff;
     // --fits-sidebar-backgroud: #fff;
     // --fits-sidebar-box-shawdow: 0px 1px 4px 0px rgba(0, 26, 54, 0.1);
+    // 按钮统一文字颜色     
+    --fits-button-text-color: #333;
+    // 按钮统一边框颜色
+    --fits-button-border-base-color: #ccc;
+    --fits-button-border-focus-color: #409eff;
+    // 按钮统一圆角
+    --fits-button-border-radius: 2px;
+    // 蓝色基础颜色
+    --fits-base-color: #0e84ff;
+    --fits-base-background-color: #e8f4ff;
 }

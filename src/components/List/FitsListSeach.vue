@@ -93,7 +93,7 @@ function handleFormItemNumber(width: number) {
 </script>
 <style lang='scss' scoped>
 .list-search-wrap {
-    padding: 18px 15px 0;
+    padding: 18px 0 0;
 
 }
 
