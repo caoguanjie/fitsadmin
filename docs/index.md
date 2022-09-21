@@ -26,6 +26,15 @@ features:
   - title:  TypeScript
     details: 开源的JavaScript的超集，它可编译成纯JavaScript,可以在任何浏览器、任何计算机和任何操作系统上运行。
     link: https://www.tslang.cn/index.html
+  - title:  VueUse
+    details: 一款基于Vue组合式API的函数工具集，它为Vue的开发者提供了大量用于 Vue2 和Vue3 的基本 Composition API 实用工具函数。
+    link: https://vueuse.org/
+  - title:  Vex-Table
+    details: 一个基于 vue 的 PC 端表格组件，支持增删改查、虚拟列表、虚拟树、懒加载、快捷菜单、数据校验、打印导出、表单渲染、数据分页、弹窗、自定义模板、渲染器、贼灵活的配置项等。
+    link: https://vxetable.cn/#/table/start/install
+  - title:  Form-Create
+    details:  它是一个可以通过 JSON 生成具有动态渲染、数据收集、验证和提交功能的表单生成组件。支持3个UI框架，并且支持生成任何 Vue 组件。
+    link: http://www.form-create.com/v3/guide/
   - title: 多环境配置
     details: 更灵活的项目配置、系统配置、登录配置方案，通过预配置能自动化生成系统的主题风格等操作
     link: /guide/envirmoment/

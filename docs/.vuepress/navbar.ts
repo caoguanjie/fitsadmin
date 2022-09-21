@@ -51,6 +51,10 @@ export default navbar([
             link: "https://cn.vitejs.dev/",
           },
           {
+            text: 'VueUse',
+            link: "https://vueuse.org/",
+          },
+          {
             text: 'Vue Router',
             link: "https://router.vuejs.org/zh/",
           },
