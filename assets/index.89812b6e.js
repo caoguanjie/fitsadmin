@@ -1,0 +1,1 @@
+function t(e){return!!new RegExp(/^1[3456789]\d{9}$/).test(e)}function n(e){return!!new RegExp(/0\d{2,3}-\d{7,8}$/).test(e)}function s(e){return!!new RegExp(/^\d{3}$/).test(e)}function o(e){return!!new RegExp(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*_-]).{10,20}$/).test(e)}export{s as a,n as b,t as c,o as i};
