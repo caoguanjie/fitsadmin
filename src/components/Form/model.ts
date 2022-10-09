@@ -1,7 +1,7 @@
 import type {TreeComponentProps,} from 'element-plus/es/components/tree/src/tree.type'
 import { Component, markRaw } from 'vue'
-import { ArrowUp, CircleClose } from '@element-plus/icons-vue'
-import { CheckboxProps, IUseCheckboxGroupProps } from 'element-plus'
+import { CaretTop, CircleClose } from '@element-plus/icons-vue'
+import { CheckboxProps, ElInput, IUseCheckboxGroupProps } from 'element-plus'
 
 /**
  * （树筛选、图标选择）选择器select的配置
@@ -9,6 +9,7 @@ import { CheckboxProps, IUseCheckboxGroupProps } from 'element-plus'
 export class FitsSelectProps {
     /**
      * @description 是否禁用树下拉筛选组件
+     * @default {false}
      */
     disabled?: boolean
     /**
@@ -28,7 +29,7 @@ export class FitsSelectProps {
     effect?: 'dark' | 'light'
     /**
      * @description 占位文字
-     * @default {Select}
+     * @default {}
      */
     placeholder?: string
     /**
@@ -57,7 +58,7 @@ export class FitsSelectProps {
     fitInputWidth?: boolean
     /**
      * @description 自定义后缀图标组件
-     * @default {ArrowUp}
+     * @default {CaretTop}
      */
     suffixIcon?: string | Component
     /**
@@ -76,7 +77,7 @@ export class FitsSelectProps {
      */
     collapseTags?: boolean
     /**
-     * @description 当鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。要使用此属性，collapse-tags属性必须设定为 true
+     * @description 当鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。要使用此属性，collapseTags属性必须设定为 true
      * @default {true}
      */
     collapseTagsTooltip?: boolean
@@ -107,32 +108,11 @@ export class FitsSelectProps {
         this.persistent = persistent ?? true;
         this.clearIcon = clearIcon ?? markRaw(CircleClose)
         this.fitInputWidth = fitInputWidth ?? true;
-        this.suffixIcon = suffixIcon ?? markRaw(ArrowUp)
+        this.suffixIcon = suffixIcon ?? markRaw(CaretTop)
         this.validateEvent = validateEvent ?? true;
         this.multiple = multiple ?? false
         this.collapseTags = collapseTags ?? false
         this.collapseTagsTooltip = collapseTagsTooltip ?? false
-    }
-}
-
-/**
- * （树筛选、图标选择）输入框input的配置
- */
-export class FitsInputProps {
-    /**
-     * @desc 是否显示过滤输入框
-     */
-    show: boolean
-    /**
-     * @desc el-input的属性
-     */
-    elementProps?: any
-    constructor({
-        show,
-        elementProps
-    }: any = {}) {
-        this.show = show ?? true;
-        this.elementProps = elementProps
     }
 }
 
@@ -149,9 +129,9 @@ export class FitsTreeSelectModel{
      */
     select?: FitsSelectProps
     /**
-     * @desc 下拉框内部的输入过滤框属性配置
+     * @desc 下拉框内部的输入过滤框属性配置，参考ElInput
      */
-    input?: FitsInputProps
+    input?: any
     constructor({
         tree,
         select,
@@ -159,7 +139,7 @@ export class FitsTreeSelectModel{
     }: any = {}) {
         this.tree = tree
         this.select = new FitsSelectProps({ ...select })
-        this.input = new FitsInputProps({ ...input })
+        this.input = input
     }
 }
 
@@ -172,22 +152,29 @@ export class FitsIconSelectModel{
      */
     select?: FitsSelectProps
     /**
-     * @desc 下拉框内部的输入过滤框属性配置
+     * @desc 下拉框内部的输入过滤框属性配置，参考ElInput
      */
-    input?: FitsInputProps
+    input?: any
     /**
      * @desc 没有数据时展示的内容
-     * @default {'NoData'}
+     * @default {暂无数据}
      */
     noListText?: string
+    /**
+     * @desc 是否显示内部过滤输入框
+     * @default {暂无数据}
+     */
+    showInput?: boolean
     constructor({
         select,
         input,
-        noListText
+        noListText,
+        showInput
     }: any = {}) {
         this.select = new FitsSelectProps({ ...select })
-        this.input = new FitsInputProps({ ...input })
-        this.noListText = noListText ?? 'No Data'
+        this.input = input
+        this.noListText = noListText ?? '暂无数据'
+        this.showInput = showInput ?? true
     }
 }
 

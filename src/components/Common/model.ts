@@ -24,17 +24,14 @@ export interface FitsFormModuleModel {
 export class FitsFormCreateModel {
     rule: FitsFormCreateRuleProps[]
     option?: Options<OptionAttrs, CreatorAttrs, RuleAttrs, ApiAttrs>
-    // formValue?: any
     col?: number
     constructor({
         rule,
         option,
-        // formValue,
-        col
+        col,
     }: any = {}) {
         this.rule = rule
         this.option = new FitsFormCreateOptionModel({ ...option })
-        // this.formValue = formValue
         this.col = col
     }
 }
@@ -48,9 +45,9 @@ interface FitsFormCreateRuleProps {
      */
     field: string
     /**
-     * @description 设置生成组件的名称，自定义组件可以不设置
+     * @description 设置生成组件的名称
      */
-    type?: string
+    type: string
     /**
      * @description 定义用于规则渲染的自定义组件, 无需全局挂载自定义组件
      */
@@ -89,8 +86,8 @@ interface FitsFormCreateRuleProps {
  */
 export class FitsFormCreateOptionModel {
     form?: any
-    submitBtn: FitsFormCreateBtnType;
-    resetBtn?: FitsFormCreateBtnType;
+    submitBtn: boolean | FitsFormCreateBtnType;
+    resetBtn?: boolean | FitsFormCreateBtnType;
     row?: RowProps
     onSubmit?: (formData: object, fApi: object) => void
     onReload?: (fApi: object) => void
@@ -107,8 +104,8 @@ export class FitsFormCreateOptionModel {
         global
     }: any = {}) {
         this.form = Object.assign({}, this.InitForm(), form);
-        this.submitBtn = Object.assign({}, this.InitSubmitBtn(), submitBtn);
-        this.resetBtn = Object.assign({}, this.InitResetBtn(), resetBtn);
+        this.submitBtn = typeof submitBtn === 'boolean' ? submitBtn : Object.assign({}, this.InitSubmitBtn(), submitBtn)
+        this.resetBtn = typeof resetBtn === 'boolean' ? resetBtn : Object.assign({}, this.InitResetBtn(), resetBtn)
         this.row = row || Object.assign({}, this.InitRow(), row);
         this.onSubmit = onSubmit
         this.onReload = onReload || function (fApi: any) {
@@ -116,7 +113,6 @@ export class FitsFormCreateOptionModel {
         }
         this.mounted = mounted
         this.global = global
-
     }
 
     InitForm() {
@@ -127,12 +123,14 @@ export class FitsFormCreateOptionModel {
         }
     }
 
+    // submitBtn.click优先级高于onSubmit，两个都传了，只会执行submitBtn.click
     InitSubmitBtn() {
         return {
             show: true,
             size: "default",
             innerText: "保存",
-            color: "#007dff"
+            color: '#007dff',
+            // className: 'el-button fitsFormSubmitBtn'
         }
     }
 
@@ -143,7 +141,10 @@ export class FitsFormCreateOptionModel {
             innerText: "取消",
             click: function (fApi: any) {
                 fApi.resetFields();
-                fApi.reload()
+                // 解决重置表单为空值后出现校验
+                setTimeout(() => {
+                    fApi.clearValidateState();
+                }, 0)
             }
         }
     }
@@ -154,35 +155,45 @@ export class FitsFormCreateOptionModel {
             type: 'flex',
             align: 'middle',
             justify: 'start',
-            tag: 'div'
+            tag: 'div',
         }
     }
 }
 
-
+/**
+ * @desc 表单全局配置的类型（包括基础配置和UI框架配置）
+ * @param show 是否显示按钮
+ * @param innerText 按钮的文字
+ * @param click 按钮的点击事件
+ */
 type FitsFormCreateBtnType = ButtonProps & {
-    click?: () => void;
-    innerText?: string;
     show?: boolean;
+    innerText?: string;
+    click?: () => void;
 }
+
 
 /**
  * @desc 表单弹窗的类型
  * @param visible 弹窗是否可见
- * @param forms 表单数组
+ * @param forms 由一个或多个表单模块组成的数组
  * @param prop 弹窗、抽屉的其他配置
+ * @param formType 表单展现形式
  */
 export class FitsFormTypeModel {
     visible: boolean
     forms: FitsFormModuleModel[]
-    myProp?: any
+    dialogProp?: any
+    formType?: string
     constructor({
         visible,
         forms,
-        myProp,
+        dialogProp,
+        formType
     }: any = {}) {
         this.visible = visible
         this.forms = forms
-        this.myProp = myProp
+        this.dialogProp = dialogProp
+        this.formType = formType || 'dialog'
     }
 }

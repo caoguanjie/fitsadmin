@@ -14,12 +14,14 @@
         </el-menu-item>
       </app-link>
     </template>
+
     <el-sub-menu v-else :index="resolvePath(item.path)" popper-append-to-body :popper-class="popperClass">
       <!-- popper-append-to-body -->
+
       <template #title>
         <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
         <span v-if="item.meta && item.meta.title">{{
-            item.meta.title
+        item.meta.title
         }}</span>
       </template>
 
@@ -97,4 +99,5 @@ function resolvePath(routePath: string) {
 </script>
 
 <style lang="scss" scoped>
+
 </style>

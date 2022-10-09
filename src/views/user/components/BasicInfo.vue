@@ -159,13 +159,13 @@ const state: any = reactive({
                 inline: true
             },
             submitBtn: {
-                className: "footerBtn el-button el-button--medium",
                 innerText: "保存基本信息"
             },
             onSubmit: () => {
                 saveUserDetail()
             }
         },
+        col: 2
     })
 })
 const { form, showAvator, imageUrl } = toRefs(state);
@@ -202,7 +202,7 @@ function beforeAvatarUpload(rawFile: any) {
 }
 
 window.onresize = () => {
-    if (document.documentElement.clientWidth > 1067) {
+    if (document.documentElement.clientWidth > 1157) {
         showAvator.value = true;
     } else {
         showAvator.value = false;
@@ -216,10 +216,9 @@ window.onresize = () => {
     justify-content: space-between;
 
     .right-box {
-        margin-top: 68px;
         text-align: center;
-        // margin-left: 280px;
-        width: 500px;
+        // width: 800px;
+        margin-right: 180px;
 
         .avator-box {
             height: 140px;
@@ -238,8 +237,6 @@ window.onresize = () => {
         }
 
         .avatar {
-            // height: 87px;
-            // width: 77px;
             height: 140px !important;
             width: 140px !important;
             border-radius: 70px;
@@ -257,12 +254,11 @@ window.onresize = () => {
     }
 }
 
-@media screen and (max-width: 1067px) {
+@media screen and (max-width: 1157px) {
     .info-container {
-        /* background-color: rosybrown; */
         width: 100%;
 
-        .form-create {
+        .FitsFormCreate {
             width: 100%;
         }
     }
@@ -271,6 +267,12 @@ window.onresize = () => {
 
 <style lang="scss">
 .basic-info {
+    padding-top: 40px;
+
+    .FitsFormCreate {
+        width: 65%;
+    }
+
     .el-upload {
         flex-direction: column;
     }
@@ -278,12 +280,11 @@ window.onresize = () => {
     .el-row>.el-form-item:last-child {
         width: 100%;
     }
-}
 
-@media screen and (max-width: 580px) {
-    .basic-info {
+    @media screen and (max-width: 760px) {
         .el-form-item {
-            min-width: 250px !important;
+            width: 80%;
+            min-width: 380px;
         }
     }
 }

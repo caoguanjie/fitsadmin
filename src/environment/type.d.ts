@@ -1,11 +1,4 @@
 
-
-
-/**
- * @description 表单弹窗的类型
- */
-type FormType = 'dialog' | 'drawer'
-
 interface FitsSetting {
     /**
      * @description 项目配置, 必填
@@ -99,10 +92,15 @@ interface FitsSystemSetting {
      */
     showFooterBreadcrumb: boolean
     /**
+     * @desrciption 面包屑的展示位置
+     * @default {bottom} 
+     */
+     breadcrumbPosition: 'top' | 'bottom'
+    /**
      * @desrciption 表单的展示形式
      * @default {true} 
      */
-    formType: FormType
+    formType: 'dialog' | 'drawer'
 }
 
 /**

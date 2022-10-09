@@ -1,17 +1,22 @@
 <template>
     <div class="drawer-container">
-        <el-drawer v-model="isVisible" @close="closeDrawer" v-bind="prop">
+        <el-drawer v-model="isVisible" @close="closeDrawer" v-bind="dialogProp">
+            <!-- drawer的头部插槽 -->
+            <template #header="{ close, titleId, titleClass }">
+                <slot name="header" :close="close" :titleId="titleId" :titleClass="titleClass" />
+            </template>
             <!-- drawer的内容 -->
             <slot />
-            <template #footer>
-                <div class="drawer-footer">
-                    <el-button @click="closeDrawer">
-                        取消
+            <!-- drawer的底部插槽 -->
+            <template #footer v-if="showFooter">
+                <slot name="footer">
+                    <el-button @click="closeDrawer" class="cancelBtn">
+                        {{cancelText}}
                     </el-button>
-                    <el-button type="primary" @click="submitDrawer">
-                        确定
+                    <el-button type="primary" @click="submitDrawer" class="sureBtn">
+                        {{submitText}}
                     </el-button>
-                </div>
+                </slot>
             </template>
         </el-drawer>
     </div>
@@ -22,12 +27,18 @@ import { reactive, toRefs, watch } from 'vue';
 
 const props = withDefaults(defineProps<{
     visible: boolean,
-    prop?: any
+    submitText?: string,
+    cancelText?: string,
+    showFooter?: boolean,
+    dialogProp?: any
 }>(), {
     visible: false,
-    prop: {}
+    submitText: '确定',
+    cancelText: '取消',
+    showFooter: true,
+    dialogProp: {}
 })
-const emit = defineEmits(['cancle', 'submit', 'open'])
+const emit = defineEmits(['cancel', 'submit', 'open'])
 
 const state: any = reactive({
     isVisible: false
@@ -40,7 +51,7 @@ watch(() => props.visible, (newVal: boolean) => {
 })
 
 function closeDrawer() {
-    emit('cancle')
+    emit('cancel')
 }
 
 function submitDrawer() {
@@ -48,12 +59,14 @@ function submitDrawer() {
 }
 </script>
 <style lang="scss" scoped>
+.sureBtn {
+    background-color: #007dff;
+}
 </style>
 <style lang="scss">
 .drawer-container {
     .el-drawer {
         max-width: 80% !important;
-        width: auto !important;
     }
 
     .el-drawer__header {
@@ -80,19 +93,15 @@ function submitDrawer() {
     .el-drawer__body {
         background-color: #f2f2f2;
         padding: 10px;
-        display: flex;
+        // display: flex;
     }
 
     .el-drawer__footer {
         padding: 20px 24px;
         box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
-    }
-
-    .drawer-footer {
-        padding: 0;
 
         .el-button {
-            border-radius: 0;
+            border-radius: 2px;
             padding: 8px 24px;
             font-size: 12px;
         }

@@ -1,16 +1,16 @@
 <template>
     <div class="iconSelectMultiple">
         <div class="box">
-            <span>基础多选</span>
+            <div class="innerTitle">基础多选</div>
             <fits-icon-select :options="state1" />
         </div>
         <div class="box">
-            <span>多选项通过文字展示</span>
+            <div class="innerTitle">多选项通过文字展示</div>
             <fits-icon-select :options="state2" />
         </div>
     </div>
     <div class="outerBox">
-        <span>鼠标悬浮文字出现多选项标签</span>
+        <div class="innerTitle">鼠标悬浮文字出现多选项标签</div>
         <fits-icon-select :options="state3" />
     </div>
 </template>
@@ -61,4 +61,5 @@ const state3 = reactive(new FitsIconSelectModel({
 </style>
 
 <style lang="scss">
+
 </style>

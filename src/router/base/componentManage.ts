@@ -48,7 +48,7 @@ const componentRouter: RouteRecordRaw = {
                 {
                     path: "dialog",
                     name: "Dialog",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/dialog/DragDialog.vue"),
                     meta: { title: "拖拽对话框", roles: ["admin", "editor"] },
                 },
                 {
@@ -62,13 +62,7 @@ const componentRouter: RouteRecordRaw = {
                     name: "FormExample",
                     component: () => import("@/views/components-manage/form/FormExample.vue"),
                     meta: { title: "表单范例", roles: ["admin", "editor"] },
-                },
-                {
-                    path: "echarts",
-                    name: "EchartsExample",
-                    component: () => import("@/views/components-manage/form/EchartsExample.vue"),
-                    meta: { title: "Echarts范例", roles: ["admin", "editor"] },
-                },
+                }
             ]
         },
         {
@@ -84,7 +78,12 @@ const componentRouter: RouteRecordRaw = {
                     component: () => import("@/views/components-manage/guide-page/index.vue"),
                     meta: { title: "引导页" },
                 },
-
+                {
+                    path: "FreshIcon",
+                    name: "FreshIcon",
+                    component: () => import("@/views/components-manage/fresh-icon/index.vue"),
+                    meta: { title: "小清新图标" },
+                },
                 {
                     path: "UploadComponent",
                     name: "UploadComponent",

@@ -9,7 +9,8 @@ import { App } from 'vue';
 
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
-
+//自动生成导航菜单
+import { useOutline } from '@lazebird/vue3outline';
 
 formCreate.use(install)
 
@@ -18,6 +19,7 @@ function setupOtherImports(app: App) {
         .use(FitsAdmin)
         .use(formCreate)
         .use(VXETable)
+        .use(useOutline)
 }
 
 export default setupOtherImports

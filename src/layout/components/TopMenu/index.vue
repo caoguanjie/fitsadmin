@@ -51,6 +51,8 @@ function changeMenu(index: string) {
 
 </script>
 <style lang='scss' scoped>
+@import '@/styles/variables.module.scss';
+
 .topMenu {
     float: left;
     border: 0;

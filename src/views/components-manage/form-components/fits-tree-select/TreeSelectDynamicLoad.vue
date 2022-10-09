@@ -3,8 +3,6 @@
 </template>
 
 <script lang="ts" setup>
-import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue';
-import { reactive } from 'vue'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import { FitsTreeSelectModel } from '@/components/Form/model';
 
@@ -39,8 +37,3 @@ function loadNode(node: Node, resolve: any) {
     }, 500)
 }
 </script>
-<style lang="scss" scoped>
-</style>
-
-<style lang="scss">
-</style>

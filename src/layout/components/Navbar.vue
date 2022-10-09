@@ -3,8 +3,9 @@
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
       @toggleClick="toggleSideBar" />
 
-    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
-    <top-menu />
+    <breadcrumb v-if="hamburgerPotion == 'top' && isshowFooterBreadcrumb" id="breadcrumb-container"
+      class="breadcrumb-container" />
+    <top-menu v-if="hamburgerPotion == 'bottom' || !isshowFooterBreadcrumb" />
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <!--        <search id="header-search" class="right-menu-item" />
@@ -57,6 +58,7 @@ import useStore from '@/store';
 
 import TopMenu from '@/layout/components/TopMenu/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue';
+import Breadcrumb from '@/layout/components/Breadcrumb/index.vue';
 import Screenfull from '@/components/Screenfull/index.vue';
 import ThemeSelect from '@/layout/components/Settings/themeSelect.vue';
 
@@ -73,6 +75,8 @@ const device = computed(() => app.device);
 const avatar = computed(() => user.avatar);
 const nickname = computed(() => user.nickname);
 const isTagsView = computed(() => setting.tagsView);
+const isshowFooterBreadcrumb = computed(() => setting.showFooterBreadcrumb);
+const hamburgerPotion = computed(() => setting.breadcrumbPosition);
 
 function toggleSideBar() {
   app.toggleSidebar();
@@ -109,6 +113,22 @@ function logout() {
     // --el-dropdown-menuItem-hover-color: #333330
   }
 }
+
+.navbar {
+
+  .breadcrumb-container {
+    .el-breadcrumb__item {
+      a {
+        color: rgb(0, 0, 0)
+      }
+
+      .no-redirect {
+        color: #666;
+
+      }
+    }
+  }
+}
 </style>
 <style lang="scss" scoped>
 ul {
@@ -138,10 +158,13 @@ ul {
     &:hover {
       background: rgba(0, 0, 0, 0.025);
     }
+
   }
 
   .breadcrumb-container {
     float: left;
+    height: 100%;
+    line-height: 46px;
   }
 
   .right-menu {

@@ -4,8 +4,19 @@
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu :default-active="activeMenu" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false"
         mode="vertical">
-        <sidebar-item v-for="route in routes" :item="route" :key="route.path" :base-path="basePath + '/' + route.path"
-          :is-collapse="isCollapse" />
+
+        <div v-if="hamburgerPotion =='bottom' || !isshowFooterBreadcrumb">
+          <div v-for="route in routes" :item="route" :key="route.path">{{route.path}}</div>
+          <sidebar-item v-for="route in routes" :item="route" :key="route.path" :base-path="basePath + '/' + route.path"
+            :is-collapse="isCollapse" />
+        </div>
+
+        <div v-else>
+          <div v-for="route in allRoutes" :item="route" :key="route.path">{{route.path}}</div>
+          <sidebar-item v-for="route in allRoutes" :item="route" :key="route.path" :base-path="route.path"
+            :is-collapse="isCollapse" />
+        </div>
+
       </el-menu>
     </el-scrollbar>
   </div>
@@ -19,11 +30,14 @@ import SidebarItem from './SidebarItem.vue';
 import Logo from './Logo.vue';
 import variables from '@/styles/variables.module.scss';
 import useStore from '@/store';
+const hamburgerPotion = computed(() => setting.breadcrumbPosition)
+const isshowFooterBreadcrumb = computed(() => setting.showFooterBreadcrumb);
 
 const { permission, setting, app } = useStore();
 
 const route = useRoute();
 const routes: any = ref([]);
+const allRoutes = permission.routes;
 const basePath = ref("")
 const showLogo = computed(() => setting.sidebarLogo);
 const isCollapse = computed(() => !app.sidebar.opened);

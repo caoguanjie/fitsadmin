@@ -3,14 +3,27 @@ import { defineConfig } from 'vite';
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { path } from "@vuepress/utils";
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default defineConfig({
     plugins: [
         AutoImport({
             resolvers: [ElementPlusResolver()],
+            imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
+            dts: path.resolve(__dirname, '.temp/auto-imports.d.ts'),
         }),
         Components({
             resolvers: [ElementPlusResolver()],
+            dirs: path.resolve(__dirname, '../../src/components'),
+            dts: path.resolve(__dirname, '.temp/components.d.ts'),
+        }),
+        createSvgIconsPlugin({
+            // 指定需要缓存的图标文件夹
+            iconDirs: [path.resolve(__dirname, '../../src/assets/icons')],
+            // 指定symbolId格式
+            symbolId: 'icon-[dir]-[name]'
         }),
     ],
     css: {

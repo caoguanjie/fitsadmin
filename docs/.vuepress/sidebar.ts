@@ -24,6 +24,27 @@ export default sidebar({
       children: [{
         text: 'TreeSelect 树形选择',
         link: '/components/Form/TreeSelect'
+      }, {
+        text: 'IconSelect 图标选择',
+        link: '/components/Form/IconSelect'
+      }, {
+        text: 'CheckboxAll 全选',
+        link: '/components/Form/CheckboxAll'
+      }, {
+        text: 'FitsFormCreate 表单',
+        link: '/components/Form/FitsFormCreate'
+      }, {
+        text: 'FormType 表单弹窗',
+        link: '/components/Form/FormType'
+      }]
+    },{
+      text: 'Dialog',
+      children: [{
+        text: 'Dialog 弹窗',
+        link: '/components/Dialog/Dialog'
+      }, {
+        text: 'Drawer 侧边弹窗',
+        link: '/components/Dialog/Drawer'
       }]
     }],
   '/resources/': 'structure'

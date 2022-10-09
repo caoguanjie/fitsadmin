@@ -101,7 +101,6 @@ onBeforeMount(() => {
 
   .no-redirect {
     color: #fff;
-    cursor: text;
 
   }
 }

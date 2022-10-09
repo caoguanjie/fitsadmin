@@ -1,5 +1,6 @@
 <template>
     <div class="edit-password">
+        <div class="title">修改密码</div>
         <fits-form-create :form="form" ref="FormRef" />
     </div>
 </template>
@@ -18,27 +19,22 @@ const form = reactive(
     new FitsFormCreateModel({
         rule: [
             {
-                type: "div",
-                children: ["修改密码"],
-                class: "title",
-            },
-            {
                 type: "input",
                 field: "oldPwd",
                 title: "原密码",
-                value: '123456',
                 props: {
                     placeholder: "请输入原密码",
                     type: "password",
                     showPassword: true
                 },
-                $required: "请输入原密码"
+                validate: [
+                    { required: true, type: 'string', message: "请输入原密码" },
+                ],
             },
             {
                 type: "input",
                 field: "newPwd",
                 title: "新密码",
-                value: '123456wzl!',
                 props: {
                     placeholder: "请输入新密码",
                     type: "password",
@@ -59,7 +55,6 @@ const form = reactive(
                 type: "input",
                 field: "againPwd",
                 title: "确认新密码",
-                value: '123456wzl!',
                 props: {
                     placeholder: "再次确认新密码",
                     type: "password",
@@ -81,12 +76,9 @@ const form = reactive(
                 labelPosition: "top",
             },
             submitBtn: {
-                className: "saveBtn el-button el-button--medium",
                 innerText: "保存内容",
             },
             resetBtn: {
-                show: true,
-                className: "el-button el-button--medium",
                 innerText: "重置"
             },
             onSubmit: (formData: any) => {
@@ -111,8 +103,13 @@ async function saveUserPassword() {
     background: #fff;
     margin: 16px;
 
+    .FitsFormCreate {
+        width: 35%;
+        min-width: 480px;
+        margin-top: 32px;
+    }
+
     .el-input {
-        width: 480px;
         height: 32px;
     }
 
@@ -123,25 +120,32 @@ async function saveUserPassword() {
         font-size: 18px;
     }
 
-    .el-col-24 {
+    .el-col-24:last-child {
         margin-top: 28px;
     }
 
-    .el-button+.el-button {
-        margin-left: 16px;
+    .el-form-item {
+        min-width: 480px !important;
     }
 
-    button {
-        border-radius: 2px;
-        font-size: 12px;
-        padding: 0 20px;
-    }
+    @media screen and (max-width: 720px) {
+        .el-form-item {
+            min-width: 250px !important;
+            width: 100%;
+        }
 
-    .saveBtn {
-        padding: 0 24px;
+        .FormCreate {
+            width: 90% !important;
+        }
     }
 }
 </style>
 
 <style lang="scss" scoped>
+.edit-password {
+    .FormCreate {
+        margin-top: 32px;
+        width: 30%;
+    }
+}
 </style>

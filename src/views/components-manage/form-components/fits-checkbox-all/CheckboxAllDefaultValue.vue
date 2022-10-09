@@ -1,5 +1,5 @@
 <template>
-    <fits-checkbox-all :options="state" />
+    <fits-checkbox-all :options="state" :modelValue="['生态蔬菜', '新鲜水果']" />
 </template>
 
 <script lang="ts" setup>
@@ -8,7 +8,6 @@ import { FitsCheckboxAllModel } from '@/components/Form/model';
 import { reactive } from 'vue';
 
 const state = reactive(new FitsCheckboxAllModel({
-    modelValue: ['生态蔬菜', '新鲜水果'],
     option: [
         {
             label: "生态蔬菜",
@@ -24,9 +23,12 @@ const state = reactive(new FitsCheckboxAllModel({
         },
     ]
 }))
+
 </script>
 <style lang="scss" scoped>
+
 </style>
 
 <style lang="scss">
+
 </style>

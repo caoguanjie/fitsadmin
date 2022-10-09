@@ -17,7 +17,7 @@ export default function usePieEcharts(containerDom: Ref<HTMLElement | undefined>
      * 初始饼图
      */
     function initPieEchart(config: FitsEchartsProps) {
-        pieEchartsInstance.value = echarts.init(containerDom.value as HTMLElement);
+        pieEchartsInstance.value === undefined && (pieEchartsInstance.value = echarts.init(containerDom.value as HTMLElement));
         setPieOptions(config)
         onChartMouseEvents()
     }
@@ -70,7 +70,7 @@ export default function usePieEcharts(containerDom: Ref<HTMLElement | undefined>
                     }
                 }
             },
-            data: (config.data || []).map((item) => {
+            data: (config.data || []).map((item, index) => {
                 return Array.isArray(item) ? item : {
                     name: item.name,
                     value: item.value,
@@ -78,7 +78,7 @@ export default function usePieEcharts(containerDom: Ref<HTMLElement | undefined>
                         color: typeof item.color === "object" ? new echarts.graphic.LinearGradient(
                             0, 0, 0, 1,
                             item.color
-                        ) : (item.color || state.pieColors.shift())
+                        ) : (item.color || state.pieColors[index % 4])
                     }
                 }
             })
@@ -93,10 +93,11 @@ export default function usePieEcharts(containerDom: Ref<HTMLElement | undefined>
         const option = {
             // 设置echarts在容器的位置
             grid: {
-                left: 60,
-                right: 60,
-                bottom: 60,
-                top: 55,
+                left: 0,
+                right: 10,
+                bottom: 10,
+                top: 20,
+                containLabel: true
             },
             // 图例
             legend: {

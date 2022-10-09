@@ -31,6 +31,13 @@
       <el-switch v-model="showFooterBreadcrumb" class="drawer-switch" />
     </div>
 
+    <div class="drawer-item" v-if="showFooterBreadcrumb">
+      <span>面包屑导航位置</span>
+      <el-select v-model="switchBreadcrumb" style="float: right; width: 50%;">
+        <el-option v-for="item in switchBreadcrumbOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </div>
+
     <div class="drawer-item">
       <span>表单类型</span>
       <el-select v-model="formType" style="float: right; width: 50%;">
@@ -73,12 +80,13 @@ import useStore from '@/store';
 const { setting } = useStore();
 
 const state = reactive({
-  fixedHeader: setting.fixedHeader,
+  // fixedHeader: setting.fixedHeader,
   tagsView: setting.tagsView,
   sidebarLogo: setting.sidebarLogo,
   theme: setting.theme,
   showFooterBreadcrumb: setting.showFooterBreadcrumb,
   formType: setting.formType,
+  switchBreadcrumb: setting.breadcrumbPosition,
 });
 const themeColor = reactive([
   { value: 'white', label: "简约白" },
@@ -89,19 +97,23 @@ const formTypeOptions = reactive([
   { value: 'dialog', label: "弹窗" },
   { value: 'drawer', label: "抽屉" }
 ])
+const switchBreadcrumbOptions = reactive([
+  { value: 'bottom', label: "底部" },
+  { value: 'top', label: "顶部" }
+])
 
-const { fixedHeader, tagsView, sidebarLogo, theme, showFooterBreadcrumb, formType } = toRefs(state);
+const { tagsView, sidebarLogo, theme, showFooterBreadcrumb, switchBreadcrumb, formType } = toRefs(state);
 
 function themeChange(val: any) {
   setting.changeSetting({ key: 'theme', value: val });
 }
 
-watch(
-  () => state.fixedHeader,
-  value => {
-    setting.changeSetting({ key: 'fixedHeader', value: value });
-  }
-);
+// watch(
+//   () => state.fixedHeader,
+//   value => {
+//     setting.changeSetting({ key: 'fixedHeader', value: value });
+//   }
+// );
 
 watch(
   () => state.tagsView,
@@ -128,6 +140,13 @@ watch(
   () => state.showFooterBreadcrumb,
   value => {
     setting.changeSetting({ key: 'showFooterBreadcrumb', value: value });
+  }
+);
+
+watch(
+  () => state.switchBreadcrumb,
+  value => {
+    setting.changeSetting({ key: 'breadcrumbPosition', value: value });
   }
 );
 

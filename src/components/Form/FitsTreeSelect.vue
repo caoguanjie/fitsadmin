@@ -1,25 +1,26 @@
 <template>
     <div class="tree-search">
-        <el-select ref="selectInputRef" v-bind='select' v-model="selectedValue" @visible-change="VisibleChange"
-            @clear="clearSelected" :popper-class="`${select?.popperClass} tree-popper`" @remove-tag="RemoveTag">
+        <el-select v-bind='options.select' ref="selectInputRef" v-model="selectedValue" @visible-change="VisibleChange"
+            @clear="clearSelected" :popper-class="`${options.select?.popperClass} tree-popper`" @remove-tag="RemoveTag">
             <template #empty>
-                <el-scrollbar class="tree-scrollbar" max-height="30vh">
-                    <div class="custom-tree">
-                        <el-input v-bind='input?.elementProps' v-model="filterText" class="filterInput"
-                            v-show="input?.show" />
-                        <el-tree ref="treeRef" :highlightCurrent="true" :filter-node-method="filterNode" v-bind='tree'
-                            @node-click="nodeClick" @check="Check" class="tree" />
-                    </div>
-                </el-scrollbar>
+                <div style="padding: 10px;">
+                    <el-input placeholder="请输入关键字" v-bind='options.input' v-model="filterText" class="filterInput" />
+                    <el-scrollbar max-height="30vh">
+                        <div class="CustomTree">
+                            <el-tree ref="treeRef" :highlightCurrent="true" :filter-node-method="filterNode"
+                                empty-text="暂无数据" v-bind='options.tree' :expand-on-click-node="expandNode"
+                                @node-click="nodeClick" @check="Check" :indent="8" />
+                        </div>
+                    </el-scrollbar>
+                </div>
+
             </template>
         </el-select>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, toRefs, watch, useAttrs } from 'vue'
 import type Node from 'element-plus/es/components/tree/src/model/node'
-
 import { FitsTreeSelectModel } from './model';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';
 
@@ -29,15 +30,17 @@ const props = withDefaults(defineProps<{
     options: () => new FitsTreeSelectModel(),
 })
 
-const { input, select, tree }: any = toRefs(props.options)
+// 不结构options，是因为toRefs只能接收响应式对象，不能是普通对象。浏览器会警告
+const { options }: any = toRefs(props)
 
 const emit = defineEmits(["update:modelValue"])
 
 const state = reactive({
     filterText: '',
-    isMultiple: select.value.multiple
+    isMultiple: options.value.select.multiple,
+    expandNode: options.value.tree.showCheckbox ? !options.value.tree.checkOnClickNode : !options.value.tree.checkStrictly
 })
-const { filterText, isMultiple }: any = toRefs(state);
+const { filterText, isMultiple, expandNode }: any = toRefs(state);
 
 const selectedValue: any = isMultiple.value ? ref([]) : ref('')
 
@@ -104,8 +107,12 @@ function filterNode(value: string, data: TreeNodeData, node: Node) {
 }
 
 function nodeClick(node: TreeNodeData, option: Node, event: any) {
-    if (tree.value.showCheckbox) return
-    if (option.isLeaf) {
+    // 多选
+    if (options.value.tree.showCheckbox) {
+        return
+    }
+    const isCheckStrictly = options.value.tree.checkStrictly
+    if ((option.isLeaf && !isCheckStrictly) || isCheckStrictly) {
         selectedValue.value = node[event.props.props.label]
         selectInputRef.value.blur()
         emit('update:modelValue', node.id)
@@ -147,10 +154,14 @@ function RemoveTag(val: any) {
 <style lang="scss" scoped>
 .tree-search {
     width: 100%;
+
+    .el-select {
+        width: 100%;
+    }
 }
 
-.custom-tree {
-    padding: 10px;
+.CustomTree {
+    // padding: 0 10px 10px;
     display: inline-block;
     min-width: 100%;
     box-sizing: border-box;
@@ -163,30 +174,18 @@ function RemoveTag(val: any) {
 </style>
 
 <style lang="scss">
-.custom-tree {
+.filterInput {
+    // margin: 10px 10px 0;
 
-    .el-checkbox+.el-tree-node__label {
-        margin-left: 0 !important;
+    .el-input__wrapper,
+    .el-input__inner {
+        border-radius: 2px;
     }
+}
 
-    .el-checkbox+i {
-        width: 12px !important;
-    }
-
-    .el-checkbox {
-        margin-left: 5px !important;
-    }
-
-    .el-tree>.el-tree-node>.el-tree-node__content {
-        padding-left: 8px !important;
-    }
-
+.CustomTree {
     .el-tree-node__content {
         height: 32px;
-    }
-
-    .el-tree-node__expand-icon {
-        padding: 0;
     }
 
     .el-input__wrapper,
@@ -194,23 +193,12 @@ function RemoveTag(val: any) {
         cursor: pointer;
     }
 
-    .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+    .el-tree-node.is-current>.el-tree-node__content {
         background-color: #d9edff;
     }
 
-    .filterInput {
-
-        .el-input__wrapper,
-        .el-input__inner {
-            border-radius: 2px;
-        }
-    }
-
-    .is-leaf .el-tree-node__content {
-
-        .el-tree-node__label {
-            margin-left: 20px;
-        }
+    .el-tree {
+        user-select: none;
     }
 }
 </style>

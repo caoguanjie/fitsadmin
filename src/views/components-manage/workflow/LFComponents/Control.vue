@@ -18,10 +18,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, reactive } from 'vue';
+// import { onMounted, reactive } from 'vue';
 //引入默认节点数据
 import demoData from '../data.json';
-import { ElMessage } from 'element-plus';
+// import { ElMessage } from 'element-plus';
 
 const panelData = demoData;
 // 传配置项直接替换 + 数据
@@ -97,4 +97,5 @@ const clearData = (): void => {
 };
 </script>
 <style scoped>
+
 </style>

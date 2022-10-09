@@ -4,10 +4,6 @@ import { defineStore } from 'pinia';
 import { asyncRoutes, constantRoutes } from '@/router';
 import { RouteMeta, PermissionState } from '@/model/base/store';
 
-
-const modules = import.meta.glob('../../views/**/**.vue');
-export const Layout = () => import('@/layout/index.vue');
-
 const hasPermission = (roles: string[], route: any) => {
   if (route.meta && route.meta.roles) {
     return roles.some((role: any) => route.meta.roles.includes(role))

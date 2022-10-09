@@ -20,6 +20,7 @@ export default defineUserConfig({
   base: base,
   alias: {
     "@UiAssets": path.resolve(__dirname, "components/UiAssets.vue"),
+    "@": path.resolve(__dirname, '../../src')
   },
   theme,
   // 指定 vuepress build 命令的输出目录。
@@ -49,6 +50,30 @@ export default defineUserConfig({
       ssr: {
         noExternal: ['element-plus'],
       },
+      css: {
+        preprocessorOptions: {
+            scss: {
+                charset: false,
+                // 引入全局scss变量，不过这样有个坑，就是一定要下划线的scss文件路径才引入正常。
+                // additionalData: `@import "${path.resolve(__dirname, '../../src/styles/_global.scss')}";`,
+                additionalData: `@use "${path.resolve(__dirname, '../../src/styles/_global.scss')}" as *;`,
+            }
+        },
+        postcss: {
+            plugins: [
+                {
+                    postcssPlugin: 'internal:charset-removal',
+                    AtRule: {
+                        charset: (atRule) => {
+                            if (atRule.name === 'charset') {
+                                atRule.remove();
+                            }
+                        }
+                    }
+                }
+            ],
+        },
+    }
     }
   }),
 });

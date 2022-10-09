@@ -15,6 +15,8 @@ $tagsViewHeight: 40px;
 $footerHeight: 24px;
 // 列表搜索的区域的表单项的宽度
 $ListSearchFormItemWidth: 338px;
+// appmain的padding距离
+$basePadding: 16px;
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
@@ -30,5 +32,6 @@ $ListSearchFormItemWidth: 338px;
     tagsViewHeight: $tagsViewHeight;
     footerHeight: $footerHeight;
     footerHeight: $footerHeight;
+    basePadding: $basePadding;
     ListSearchFormItemWidth: $ListSearchFormItemWidth
 }

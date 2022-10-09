@@ -1,0 +1,1 @@
+declare module '@lazebird/vue3outline';

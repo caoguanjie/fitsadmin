@@ -44,7 +44,7 @@ const btnGroup: FitsFormItemProps = reactive({
     },
     on: {
         submit: () => {
-            console.log(fitsForm.value.fApi)
+            // console.log(fitsForm.value.fApi)
             fitsForm.value.fApi.submit((formData: any) => {
                 // 删除按钮btn的属性值
                 let { btn, ...data } = formData
@@ -77,16 +77,12 @@ useResizeObserver(document.body, () => {
 // 处理每个表单项应该显示几个
 function handleFormItemNumber(width: number) {
     const formItemWidth = parseInt(variables.ListSearchFormItemWidth);
-    console.log(width, formItemWidth)
-    console.log(Math.floor(width / formItemWidth))
     const { props: _props } = btnGroup as any;
     if (_props.isExpand) {
         option.formItem = [...props.formItem, btnGroup];
     } else {
         option.formItem = [...props.formItem.slice(0, Math.floor(width / formItemWidth) - 1), btnGroup]
     }
-
-    console.log(option.formItem)
 }
 
 
@@ -94,10 +90,6 @@ function handleFormItemNumber(width: number) {
 <style lang='scss' scoped>
 .list-search-wrap {
     padding: 18px 0 0;
-
-}
-
-.fitsForm {
     border-bottom: 8px solid #f3f5f6;
 }
 
@@ -105,5 +97,6 @@ function handleFormItemNumber(width: number) {
     display: inline-flex;
     vertical-align: middle;
     margin-right: 32px;
+
 }
 </style>

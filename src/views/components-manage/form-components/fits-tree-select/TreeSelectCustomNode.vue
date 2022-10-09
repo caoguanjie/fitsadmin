@@ -4,8 +4,6 @@
 
 <script lang="ts" setup>
 import { FitsTreeSelectModel } from '@/components/Form/model';
-import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue';
-import { reactive } from 'vue'
 
 const state = reactive(new FitsTreeSelectModel({
     tree: {
@@ -16,19 +14,19 @@ const state = reactive(new FitsTreeSelectModel({
         data: [
             {
                 id: '1',
-                label: 'Level 1',
+                label: '总经办',
                 children: [
                     {
                         id: '4',
-                        label: 'Level 1-1',
+                        label: '业务部',
                         children: [
                             {
                                 id: '9',
-                                label: 'Level 1-1-1'
+                                label: '业务A部'
                             },
                             {
                                 id: '11',
-                                label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
+                                label: '业务B部',
                             },
                         ],
                     },
@@ -36,49 +34,29 @@ const state = reactive(new FitsTreeSelectModel({
             },
             {
                 id: '21',
-                label: 'Level 2',
+                label: '研发部',
                 children: [
                     {
                         id: '5',
-                        label: 'Level 2-1',
-                        children: [
-                            {
-                                id: '91',
-                                label: 'Level 2-1-1',
-                            },
-                            {
-                                id: '111',
-                                label: 'Level 2-2-2',
-                            },
-                        ],
+                        label: '研发1部',
                     },
                     {
                         id: '6',
-                        label: 'Level 2-2',
+                        label: '研发2部',
                     },
                 ],
             },
             {
                 id: '3',
-                label: 'Level 3',
+                label: '财务部',
                 children: [
                     {
                         id: '7',
-                        label: 'Level 3-1',
+                        label: '财务1部',
                     },
                     {
                         id: '8',
-                        label: 'Level 3-2',
-                        children: [
-                            {
-                                id: '92',
-                                label: 'Level 3-2-1',
-                            },
-                            {
-                                id: '120',
-                                label: 'Level 3-2-2',
-                            },
-                        ],
+                        label: '财务2部',
                     },
                 ],
             },
@@ -151,8 +129,6 @@ function renderContent(
     )
 }
 </script>
-<style lang="scss" scoped>
-</style>
 
 <style lang="scss">
 .custom-tree-node {

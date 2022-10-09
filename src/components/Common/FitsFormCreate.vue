@@ -1,11 +1,12 @@
 <template>
-    <FormCreate v-model:api="fApi" v-model="formValue" :rule="rule" :option="form.option" class="FormCreate" />
+    <div class="FitsFormCreate">
+        <FormCreate v-model:api="fApi" v-model="formValue" :rule="rule" :option="form.option" class="FormCreate" />
+    </div>
 </template>
 
 <script lang="ts" setup>
 import formCreate from "@form-create/element-ui";
 import { FitsFormCreateModel } from "./model";
-import { onMounted, ref } from "vue";
 
 const props = defineProps<{
     form: FitsFormCreateModel;
@@ -19,7 +20,9 @@ const formValue = ref({});
 const fApi: any = ref({})
 
 // 解决切换表单展示形式时，浏览器的警告‘Maximum recursive updates exceeded...’ 
-const rule = computed(() => [...props.form.rule]);
+const rule = ref([...props.form.rule])
+
+const itemWidth = ref()
 
 defineExpose({
     fApi
@@ -27,16 +30,7 @@ defineExpose({
 
 onMounted(() => {
     if (props.form.col) {
-        fApi.value.updateOptions({
-            global: {
-                //设置所有组件
-                '*': {
-                    col: {
-                        span: 24 / props.form.col
-                    },
-                }
-            }
-        });
+        itemWidth.value = 100 / props.form.col + '%'
     }
 })
 
@@ -45,22 +39,48 @@ onMounted(() => {
 
 </style>
 <style lang="scss">
-.FormCreate {
-    label {
-        color: #303133;
+.el-form--inline.FormCreate {
+    .el-form-item {
+        padding: 0 40px;
+        box-sizing: border-box;
     }
+}
 
+.FormCreate {
     .el-input__wrapper {
         border-radius: 2px !important;
         width: 100%;
     }
 
-    .el-input {
+    .el-input,
+    .el-select {
         width: 100%;
     }
 
     .el-button {
         border-radius: 2px;
+        font-size: 12px;
+        padding: 0 20px;
+    }
+
+    .el-button+.el-button {
+        margin-left: 16px;
+    }
+
+    .el-form-item {
+        margin-right: 0;
+        margin-bottom: 28px;
+        width: v-bind(itemWidth);
+        min-width: 250px;
+        justify-content: center;
+
+        .el-form-item__label {
+
+            label,
+            span {
+                color: #303133;
+            }
+        }
     }
 }
 </style>

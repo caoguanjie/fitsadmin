@@ -206,6 +206,23 @@ export const businessRouter: RouteRecordRaw = {
                 },
             ],
         },
+        
+        {
+            path: "calendars",
+            name: "Calendars",
+            redirect: "/businessRouter/calendars/fullCalendar",
+            component: () => import("@/views/components-manage/index.vue"),
+            meta: { title: "日历功能", roles: ["admin", "editor"], icon: 'fits-calendars', alwaysShow: true },
+            children: [
+                {
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "full-calendar",
+                    name: "fullCalendar",
+                    component: () => import("@/views/components-manage/calendars/fullCalendarExample.vue"),
+                    meta: { title: "日历范例" },
+                },
+            ],
+        },
     ],
 };
 

@@ -28,7 +28,7 @@ export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>
      * 初始化柱状图
      */
     function initBarEchart(config: FitsEchartsProps) {
-        barEchartsInstance.value = echarts.init(containerDom.value as HTMLElement);
+        barEchartsInstance.value === undefined && (barEchartsInstance.value = echarts.init(containerDom.value as HTMLElement))
         setBarOptions(config)
     }
 
@@ -40,15 +40,18 @@ export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>
         const isShowLegend = config.legend?.show // 是否显示图例
         const legendLength = config.legend?.data?.length || 0 // 图例个数
         const xAxisLength = config.xAxisNames?.length || 0 // x轴项目个数
+        const isStack = config.isStack // 是否重叠
         const barWidth = 24 // 柱条宽度
         const barGap = 0.5 // 柱条间距 0.5 * barWidth = 12
-        // 图表容器宽度，还需要减去容器的left和right边距以及y轴宽度
-        const viewWidth = Math.max((barEchartsInstance.value?.getWidth() || 0) - 60 - 60 - 50, 0);
+        // 图表容器宽度，还需要减去容器的right边距以及y轴宽度
+        const viewWidth = Math.max((barEchartsInstance.value?.getWidth() || 0) - 10 - 50, 0);
         // 一个项目的宽度
-        const oneProjectWidth = legendLength * barWidth + Math.max(legendLength - 1, 0) * barWidth * barGap
+        const oneProjectWidth = isStack ? barWidth : legendLength * barWidth + Math.max(legendLength - 1, 0) * barWidth * barGap
         // 是否内容溢出，如果内容溢出则自动开启缩放组件（还需要减去容器的right和left，还需要减去y轴宽度）
         const isOverflow = (oneProjectWidth * xAxisLength) > viewWidth
-        const _end = getDataZoomEnd(barWidth, barWidth * barGap, legendLength, xAxisLength, viewWidth)
+        // 是否显示缩放组件
+        const isShowZoom = isOverflow || config.isShowZoom
+        const _end = getDataZoomEnd(barWidth, barWidth * barGap, legendLength, xAxisLength, viewWidth, isStack)
         const series = (config.legend?.data || []).map((item, index) => {
             const color = (typeof item.color === "string") ? item.color : new echarts.graphic.LinearGradient(
                 0, 0, 0, 1,
@@ -76,10 +79,11 @@ export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>
         const option = {
             // 设置echarts在容器的位置
             grid: {
-                left: 60,
-                right: 60,
-                bottom: isShowLegend && (legendPositon === "bottomCenter") ? 93 : 63, // 如果图例不显示到下方就63，显示到下方就93（设计稿的距离）
-                top: 55,
+                left: 0,
+                right: 10,
+                bottom: isShowLegend && (legendPositon === "bottomCenter") ? (isShowZoom ? 63 : 33) : (isShowZoom ? 33 : 10),
+                top: isShowLegend && (legendPositon !== "bottomCenter") ? 55 : 20,
+                containLabel: true
             },
             // 图例
             legend: {
@@ -92,10 +96,10 @@ export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>
                 },
                 show: isShowLegend, // 是否显示图例
                 // 图例位置
-                top: legendPositon === "bottomCenter" ? undefined : "16",
-                bottom: legendPositon === "bottomCenter" ? "24" : undefined,
-                left: legendPositon === "topLeft" ? "55" : legendPositon === "topRight" ? undefined : "center",
-                right: legendPositon === "topRight" ? "60" : undefined
+                top: legendPositon === "bottomCenter" ? undefined : "0",
+                bottom: legendPositon === "bottomCenter" ? (isShowZoom ? "30" : "0") : undefined,
+                left: legendPositon === "topLeft" ? "0" : legendPositon === "topRight" ? undefined : "center",
+                right: legendPositon === "topRight" ? "10" : undefined
             },
             // 提示组件
             tooltip: {
@@ -127,7 +131,7 @@ export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>
                         // 能占最大宽度
                         const _maxWidth = legendWith + gapWith - barWidth // 减去一个barWidth是为了好看
                         // 一行能占的文字个数
-                        const oneLineLength = Math.floor(_maxWidth / 12)
+                        const oneLineLength = Math.max(Math.floor(_maxWidth / 12), 3)
                         if (name && name.length > oneLineLength * 2) {
                             return `${name.substring(0, oneLineLength)}\n${name.substring(oneLineLength, oneLineLength * 2 - 1)}...`
                         } else if (name.length > oneLineLength && name.length <= oneLineLength * 2) {
@@ -163,7 +167,7 @@ export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>
                 },
                 {
                     type: 'slider', // 滑动条
-                    show: isOverflow ? true : config.isShowZoom, // 是否显示滑块组件（如果内容溢出则显示，否则看用户配置）
+                    show: isShowZoom, // 是否显示滑块组件（如果内容溢出则显示，否则看用户配置）
                     height: 18, // 滑块高度
                     showDataShadow: false, // 是否在滑块组件中显示数据阴影
                     zoomLock: false, // 是否锁定选择区域（或叫做数据窗口）的大小,如果设置为 true 则锁定选择区域的大小，也就是说，只能平移，不能缩放
@@ -187,10 +191,11 @@ export default function useBarEcharts(containerDom: Ref<HTMLElement | undefined>
      * @param barNum 一个项目有多少条柱子，应该传图例长度
      * @param dataLength  有多少个项目，应该传x轴长度
      * @param viewWidth  图表容器的宽度
+     * @param isStack  是否堆叠模式
    */
-    function getDataZoomEnd(barWidth: number, barGap: number, barNum: number, dataLength: number, viewWidth: number) {
+    function getDataZoomEnd(barWidth: number, barGap: number, barNum: number, dataLength: number, viewWidth: number, isStack = false) {
         // 一个项目占的宽度
-        const oneProjectWidth = barWidth * barNum + barGap * (barNum - 1)
+        const oneProjectWidth = isStack ? (barWidth + barGap) : (barWidth * barNum + barGap * (barNum - 1))
         if (oneProjectWidth * dataLength < viewWidth) {
             return dataLength - 1
         } else {

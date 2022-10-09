@@ -39,57 +39,28 @@ async function getUser() {
 <style lang="scss">
 .user-container {
     .form-create {
-        width: 60%;
+        // width: 85%;
         font-size: 14px;
+
+        .el-form-item {
+            // padding: 0 !important;
+        }
     }
 
-    .footerBtn {
-        border-radius: 0;
-    }
+    @media (max-width: 670px) {
 
-    .title {
-        padding: 8px;
-        color: #333;
-        font-weight: 700;
-        font-size: 16px;
-    }
+        .info-container,
+        .organization {
 
-    .el-row {
-        justify-content: space-between;
-    }
-
-    .el-form-item {
-        margin: 0;
-        margin-top: 28px;
-        min-width: 47%;
-    }
-
-    .el-input,
-    .el-select {
-        width: 100%;
-        height: 32px;
+            .el-form-item {
+                // padding-right: 0 !important;
+            }
+        }
     }
 
     .el-row>.el-form-item:last-child {
         margin-top: 56px;
         font-size: 18px;
-
-        .el-button+.el-button {
-            margin-left: 16px;
-        }
-
-        button {
-            border-radius: 2px;
-            font-size: 12px;
-        }
-
-        button:first-child {
-            padding: 8px 12px;
-        }
-
-        button:last-child {
-            padding: 8px 21px;
-        }
     }
 
     .el-tabs__nav.is-left {
@@ -121,7 +92,7 @@ async function getUser() {
     }
 
     .el-tabs__content {
-        padding: 0 30px 80px;
+        padding: 0 0 58px;
     }
 
     .el-tabs__item.is-left.is-active {
@@ -151,7 +122,4 @@ async function getUser() {
     }
 
 }
-</style>
-<style lang="scss" scoped>
-.user-container {}
 </style>

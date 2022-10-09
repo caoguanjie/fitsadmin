@@ -1,7 +1,8 @@
 <template>
     <div class="footeContainer">
         <div class="left">
-            <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+            <breadcrumb v-if="swicthhamburgerPotion == 'bottom' && isshowFooterBreadcrumb" id="breadcrumb-container"
+                class="breadcrumb-container" />
         </div>
         <div class="right">
             {{ title }}V{{ version }}
@@ -12,7 +13,11 @@
 <script lang='ts' setup>
 import ENV from '@/environment/index';
 import Breadcrumb from '@/layout/components/Breadcrumb/index.vue';
+import useStore from '@/store';
 const { project: { title, version } } = ENV
+const { setting } = useStore();
+const swicthhamburgerPotion = computed(() => setting.breadcrumbPosition);
+const isshowFooterBreadcrumb = computed(() => setting.showFooterBreadcrumb);
 </script>
 <style lang='scss' scoped>
 .footeContainer {

@@ -21,7 +21,7 @@ export default function useLineEcharts(containerDom: Ref<HTMLElement | undefined
      * 初始化折线图
      */
     function initLineEchart(config: FitsEchartsProps) {
-        lineEchartsInstance.value = echarts.init(containerDom.value as HTMLElement);
+        lineEchartsInstance.value === undefined && (lineEchartsInstance.value = echarts.init(containerDom.value as HTMLElement));
         setLineOptions(config)
     }
 
@@ -32,10 +32,12 @@ export default function useLineEcharts(containerDom: Ref<HTMLElement | undefined
         const legendPositon = config.legend?.positon // 图例定位
         const isShowLegend = config.legend?.show // 是否显示图例
         const xAxisLength = config.xAxisNames?.length || 0 // x轴项目个数
-        // 图表容器宽度，还需要减去容器的left和right边距以及y轴宽度
-        const viewWidth = Math.max((lineEchartsInstance.value?.getWidth() || 0) - 60 - 60 - 50, 0);
+        // 图表容器宽度，还需要减去容器的right边距以及y轴宽度
+        const viewWidth = Math.max((lineEchartsInstance.value?.getWidth() || 0) - 10 - 50, 0);
         // 是否内容溢出，如果内容溢出则自动开启缩放组件（12是字体大小，5是超过5个字就换行）
         const isOverflow = (12 * 5 * xAxisLength) > viewWidth
+        // 是否显示缩放组件
+        const isShowZoom = isOverflow || config.isShowZoom
         const _end = getDataZoomEnd(5, 12, xAxisLength, viewWidth)
         const series = (config.legend?.data || []).map((item, index) => {
             const color = (typeof item.color === "object") ? new echarts.graphic.LinearGradient(
@@ -66,10 +68,11 @@ export default function useLineEcharts(containerDom: Ref<HTMLElement | undefined
         const option = {
             // 设置echarts在容器的位置
             grid: {
-                left: 60,
-                right: 60,
-                bottom: isShowLegend && (legendPositon === "bottomCenter") ? 93 : 63, // 如果图例不显示到下方就63，显示到下方就93（设计稿的距离）
-                top: 55,
+                left: 0,
+                right: 10,
+                bottom: isShowLegend && (legendPositon === "bottomCenter") ? (isShowZoom ? 63 : 33) : (isShowZoom ? 33 : 10),
+                top: isShowLegend && (legendPositon !== "bottomCenter") ? 55 : 20,
+                containLabel: true
             },
             // 图例
             legend: {
@@ -82,10 +85,10 @@ export default function useLineEcharts(containerDom: Ref<HTMLElement | undefined
                 },
                 show: isShowLegend, // 是否显示图例
                 // 图例位置
-                top: legendPositon === "bottomCenter" ? undefined : "16",
-                bottom: legendPositon === "bottomCenter" ? "24" : undefined,
-                left: legendPositon === "topLeft" ? "55" : legendPositon === "topRight" ? undefined : "center",
-                right: legendPositon === "topRight" ? "60" : undefined
+                top: legendPositon === "bottomCenter" ? undefined : "0",
+                bottom: legendPositon === "bottomCenter" ? (isShowZoom ? "30" : "0") : undefined,
+                left: legendPositon === "topLeft" ? "0" : legendPositon === "topRight" ? undefined : "center",
+                right: legendPositon === "topRight" ? "10" : undefined
             },
             // 提示组件
             tooltip: {
@@ -147,7 +150,7 @@ export default function useLineEcharts(containerDom: Ref<HTMLElement | undefined
                 },
                 {
                     type: 'slider', // 滑动条
-                    show: isOverflow ? true : config.isShowZoom, // 是否显示滑块组件（如果内容溢出则显示，否则看用户配置）
+                    show: isShowZoom, // 是否显示滑块组件（如果内容溢出则显示，否则看用户配置）
                     height: 18, // 滑块高度
                     showDataShadow: false, // 是否在滑块组件中显示数据阴影
                     zoomLock: false, // 是否锁定选择区域（或叫做数据窗口）的大小,如果设置为 true 则锁定选择区域的大小，也就是说，只能平移，不能缩放

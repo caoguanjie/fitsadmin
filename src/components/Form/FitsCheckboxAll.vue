@@ -39,11 +39,13 @@ watch(() => _attrs.modelValue, () => {
 })
 
 watch(checkedValue, (val: any) => {
-    checkAll.value = val.length === option.value.length
-    isIndeterminate.value = val.length < option.value.length && val.length > 0
+    if (val === undefined) return
+    checkAll.value = val?.length === option.value.length
+    isIndeterminate.value = val?.length < option.value.length && val.length > 0
 })
 
 onMounted(() => {
+    if (!_attrs.modelValue) return
     checkedValue.value = _attrs.modelValue
 })
 
@@ -55,7 +57,9 @@ function handleCheckAllChange(val: CheckboxValueType) {
     if (val) {
         option.value.map((item: any) => checkedValue.value.push(item.label))
     }
-    emit('update:modelValue', checkedValue.value)
+    // 将Proxy对象结构，转为普通对象
+    emit('update:modelValue', [...checkedValue.value])
+
 }
 
 /**
@@ -64,6 +68,6 @@ function handleCheckAllChange(val: CheckboxValueType) {
 function handleCheckedChange(val: CheckboxValueType[]) {
     // 已选的个数 === 全部选项的个数
     checkAll.value = val.length === option.value.length
-    emit('update:modelValue', checkedValue)
+    emit('update:modelValue', [...checkedValue.value])
 }
 </script>

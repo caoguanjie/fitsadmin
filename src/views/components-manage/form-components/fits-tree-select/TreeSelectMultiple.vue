@@ -1,108 +1,101 @@
 <template>
     <div class="innerBox">
-        <span>
-            默认值多选<br>
-            <span class="describe">通过设置 modelValue 传递一个由节点的key组成的数组，设置多选默认值</span>
-        </span>
-        <fits-tree-select :options="state1" :modelValue="value" @update:model-value="getValue" />
+        <div>
+            默认值
+            <div class="describe">通过设置 modelValue 传递一个由节点的key组成的数组，设置多选默认值</div>
+        </div>
+        <fits-tree-select :options="state1" :modelValue="value" />
     </div>
     <div class="innerBox">
-        <span>多选项以文字形式展示</span>
+        <div>
+            多选项省略，以数字形式展示
+            <div class="describe">通过设置 collapseTags=true，折叠多选项内容</div>
+        </div>
         <fits-tree-select :options="state2" />
     </div>
 
     <div class="innerBox">
-        <span>鼠标悬浮文字出现多选项标签</span>
+        <div>
+            鼠标悬浮文字出现多选项标签
+            <div class="describe">通过设置 collapseTags=true 和 collapseTagsTooltip=true，鼠标悬浮在数字上时，显示折叠项</div>
+        </div>
         <fits-tree-select :options="state3" />
+    </div>
+
+    <div class="innerBox">
+        <div>
+            点击节点时选中
+            <div class="describe">设置 checkOnClickNode=true ，点击节点时勾选上，默认通过点击复选框才能勾选。</div>
+        </div>
+        <fits-tree-select :options="state4" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import { FitsTreeSelectModel } from '@/components/Form/model';
-import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue';
-import { reactive, ref } from 'vue'
 
 const value = ref(['91', '111'])
+
+const data = reactive([
+    {
+        id: '1',
+        label: '总经办',
+        children: [
+            {
+                id: '4',
+                label: '业务部',
+                children: [
+                    {
+                        id: '9',
+                        label: '业务A部'
+                    },
+                    {
+                        id: '11',
+                        label: '业务B部',
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: '21',
+        label: '研发部',
+        children: [
+            {
+                id: '5',
+                label: '研发1部',
+            },
+            {
+                id: '6',
+                label: '研发2部',
+            },
+        ],
+    },
+    {
+        id: '3',
+        label: '财务部',
+        children: [
+            {
+                id: '7',
+                label: '财务1部',
+            },
+            {
+                id: '8',
+                label: '财务2部',
+            },
+        ],
+    },
+])
 
 const state1 = reactive(new FitsTreeSelectModel({
     select: {
         multiple: true,
     },
     tree: {
-        // defaultCheckedKeys: ['91', '111'],
         nodeKey: "id",
         highlightCurrent: false,
         showCheckbox: true,
-        data: [
-            {
-                id: '1',
-                label: 'Level 1',
-                children: [
-                    {
-                        id: '4',
-                        label: 'Level 1-1',
-                        children: [
-                            {
-                                id: '9',
-                                label: 'Level 1-1-1'
-                            },
-                            {
-                                id: '11',
-                                label: '我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据我是超长的数据',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: '21',
-                label: 'Level 2',
-                children: [
-                    {
-                        id: '5',
-                        label: 'Level 2-1',
-                        children: [
-                            {
-                                id: '91',
-                                label: 'Level 2-1-1',
-                            },
-                            {
-                                id: '111',
-                                label: 'Level 2-2-2',
-                            },
-                        ],
-                    },
-                    {
-                        id: '6',
-                        label: 'Level 2-2',
-                    },
-                ],
-            },
-            {
-                id: '3',
-                label: 'Level 3',
-                children: [
-                    {
-                        id: '7',
-                        label: 'Level 3-1',
-                    },
-                    {
-                        id: '8',
-                        label: 'Level 3-2',
-                        children: [
-                            {
-                                id: '92',
-                                label: 'Level 3-2-1',
-                            },
-                            {
-                                id: '120',
-                                label: 'Level 3-2-2',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
+        data
     },
 }))
 
@@ -115,78 +108,7 @@ const state2 = reactive(new FitsTreeSelectModel({
         nodeKey: "id",
         highlightCurrent: false,
         showCheckbox: true,
-        data: [
-            {
-                id: 1,
-                label: 'Level 1',
-                children: [
-                    {
-                        id: 4,
-                        label: 'Level 1-1',
-                        // disabled: true,
-                        children: [
-                            {
-                                id: 9,
-                                label: 'Level 1-1-1',
-                                disabled: true
-                            },
-                            {
-                                id: 11,
-                                label: 'level 1-1-2',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: 21,
-                label: 'Level 2',
-                children: [
-                    {
-                        id: 5,
-                        label: 'Level 2-1',
-                        children: [
-                            {
-                                id: 91,
-                                label: 'Level 2-1-1',
-                            },
-                            {
-                                id: 111,
-                                label: 'Level 2-2-2',
-                            },
-                        ],
-                    },
-                    {
-                        id: 6,
-                        label: 'Level 2-2',
-                    },
-                ],
-            },
-            {
-                id: 3,
-                label: 'Level 3',
-                children: [
-                    {
-                        id: 7,
-                        label: 'Level 3-1',
-                    },
-                    {
-                        id: 8,
-                        label: 'Level 3-2',
-                        children: [
-                            {
-                                id: 92,
-                                label: 'Level 3-2-1',
-                            },
-                            {
-                                id: 120,
-                                label: 'Level 3-2-2',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
+        data
     },
 }))
 
@@ -200,102 +122,33 @@ const state3 = reactive(new FitsTreeSelectModel({
         nodeKey: "id",
         highlightCurrent: false,
         showCheckbox: true,
-        data: [
-            {
-                id: 1,
-                label: 'Level 1',
-                children: [
-                    {
-                        id: 4,
-                        label: 'Level 1-1',
-                        // disabled: true,
-                        children: [
-                            {
-                                id: 9,
-                                label: 'Level 1-1-1',
-                                disabled: true
-                            },
-                            {
-                                id: 11,
-                                label: 'level 1-1-2',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: 21,
-                label: 'Level 2',
-                children: [
-                    {
-                        id: 5,
-                        label: 'Level 2-1',
-                        children: [
-                            {
-                                id: 91,
-                                label: 'Level 2-1-1',
-                            },
-                            {
-                                id: 111,
-                                label: 'Level 2-2-2',
-                            },
-                        ],
-                    },
-                    {
-                        id: 6,
-                        label: 'Level 2-2',
-                    },
-                ],
-            },
-            {
-                id: 3,
-                label: 'Level 3',
-                children: [
-                    {
-                        id: 7,
-                        label: 'Level 3-1',
-                    },
-                    {
-                        id: 8,
-                        label: 'Level 3-2',
-                        children: [
-                            {
-                                id: 92,
-                                label: 'Level 3-2-1',
-                            },
-                            {
-                                id: 120,
-                                label: 'Level 3-2-2',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
+        data
     },
 }))
 
-function getValue(value: any) {
-    console.log(value);
-}
+const state4 = reactive(new FitsTreeSelectModel({
+    select: {
+        multiple: true,
+        collapseTags: true,
+        collapseTagsTooltip: true
+    },
+    tree: {
+        nodeKey: "id",
+        showCheckbox: true,
+        checkOnClickNode: true,
+        data
+    },
+}))
+
 </script>
 <style lang="scss" scoped>
 .innerBox {
-    margin-top: 20px;
+    margin-top: 16px;
 
     .describe {
         font-size: 14px;
+        margin: 4px 0;
     }
 }
-
-.innerBox:first-child {
-    margin-top: 0;
-}
-
-:deep(.el-select) {
-    width: 90%;
-}
 </style>
 
-<style lang="scss">
-</style>

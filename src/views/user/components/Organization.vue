@@ -169,9 +169,6 @@ const form = reactive(
                 props: {
                     placeholder: "请选择入职日期"
                 },
-                validate: [
-                    { required: true, message: "请选择入职日期", trigger: 'change' }
-                ]
             },
             {
                 type: "datePicker",
@@ -188,13 +185,13 @@ const form = reactive(
                 inline: true
             },
             submitBtn: {
-                className: "footerBtn el-button el-button--medium",
                 innerText: "保存信息",
             },
             onSubmit: (form: any) => {
                 saveUserDetail()
             }
-        }
+        },
+        col: 2
     })
 )
 
@@ -213,18 +210,31 @@ async function saveUserDetail() {
 
 <style lang="scss">
 .organization {
-    @media screen and (max-width: 580px) {
+    .FitsFormCreate {
+        width: 65%;
+
+        // .el-form-item {
+        //     min-width: 380px;
+        // }
+    }
+
+    @media screen and (max-width: 760px) {
         .el-form-item {
-            min-width: 250px !important;
+            width: 80%;
+            min-width: 380px;
         }
     }
 }
 </style>
 
 <style lang="scss" scoped>
-@media screen and (max-width: 980px) {
+.organization {
+    padding-top: 40px;
+}
+
+@media screen and (max-width: 1157px) {
     .organization {
-        .form-create {
+        .FitsFormCreate {
             width: 100%;
         }
     }

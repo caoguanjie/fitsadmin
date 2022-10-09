@@ -1,17 +1,7 @@
 <template>
     <div class="formType">
-        <fits-dialog v-if="setting.formType === 'dialog'" class="FormTypeDialog" :visible="option.visible"
-            :prop="option.myProp" @cancle="closeForm" @submit="submitForm" @open="openForm">
-            <template #body>
-                <div class="forms-container" v-for="(item, index) in option.forms" :key="index">
-                    <fits-module-name :model-value="item.title" v-if="item?.title" />
-                    <fits-form-create :form="item.form" ref="DialogRef" />
-                </div>
-            </template>
-        </fits-dialog>
-
-        <fits-drawer :visible="option.visible" :prop="option.myProp" @cancle="closeForm" @submit="submitForm"
-            @open="openForm" v-else>
+        <fits-drawer v-bind="option" @cancel="closeForm" @submit="submitForm" @open="openForm" class="FormTypeDrawer"
+            v-if="option.formType === 'drawer'">
             <div class="form-drawer-container" v-for="(item, index) in option.forms" :key="index">
                 <el-scrollbar>
                     <div class="title" v-show="item?.title">
@@ -22,6 +12,13 @@
                 </el-scrollbar>
             </div>
         </fits-drawer>
+        <fits-dialog class="FormTypeDialog" v-bind="option" @cancel="closeForm" @submit="submitForm" @open="openForm"
+            v-else>
+            <div class="form-dialog-container" v-for="(item, index) in option.forms" :key="index">
+                <form-title :model-value="item.title" v-if="item?.title" />
+                <fits-form-create :form="item.form" ref="DialogRef" />
+            </div>
+        </fits-dialog>
     </div>
 </template>
 
@@ -29,27 +26,20 @@
 import FitsDialog from '@/components/Dialog/FitsDialog.vue'
 import FitsDrawer from '@/components/Dialog/FitsDrawer.vue'
 import SvgIcon from '@/components/SvgIcon/index.vue'
-import useStore from '@/store';
 import { nextTick, ref } from 'vue';
 import { FitsFormTypeModel } from './model';
-import FitsModuleName from "@/components/Form/FitsModuleName.vue";
+import FormTitle from "@/components/Common/FormTitle.vue";
 import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
 
 const props = defineProps<{
-    option: FitsFormTypeModel
+    option: FitsFormTypeModel,
 }>();
 
-const emit = defineEmits(['cancle', 'submit'])
-
-const { setting } = useStore();
+const emit = defineEmits(['cancel', 'submit'])
 
 const DialogRef = ref()
 const DrawerRef = ref()
-const currentFormRef = computed(() => setting.formType === 'dialog' ? DialogRef.value : DrawerRef.value)
-
-defineExpose({
-    currentFormRef
-})
+const currentFormRef = computed(() => props.option.formType === 'drawer' ? DrawerRef.value : DialogRef.value)
 
 /**
  * @desc 打开窗口之前清空之前残留的验证
@@ -68,9 +58,8 @@ function openForm() {
 function closeForm() {
     currentFormRef.value.forEach((item: any) => {
         item.fApi.resetFields()
-        // item.fApi.reload()
     })
-    emit("cancle")
+    emit("cancel")
 }
 
 /**
@@ -110,7 +99,7 @@ function submitForm() {
     }
 
     .form-create {
-        margin-top: 16px;
+        // margin-top: 16px;
         width: 100%;
     }
 }
@@ -118,36 +107,50 @@ function submitForm() {
 .form-drawer-container:first-child {
     margin-left: 0;
 }
-
-.form-dialog-container {
-    margin-top: 4px;
-
-    .form-create {
-        margin-top: 24px;
-    }
-}
-
-.form-dialog-container:first-child {
-    margin-top: 0;
-}
 </style>
 
 <style lang="scss">
-.formType {
-    .FormTypeDialog {
-        .el-form-item {
-            margin-right: 22px;
-        }
+.form-drawer-container {
+    .FormCreate {
+        box-sizing: border-box;
+    }
+}
 
+.formType {
+    .el-form-item {
+        margin-right: 0;
+    }
+
+    .FormTypeDialog {
         .form-divider {
-            margin: 24px 0;
+            margin-bottom: 24px;
+            box-sizing: border-box;
         }
     }
 
-    .form-drawer-container {
-        .el-form-item {
-            margin-right: 22px;
+    .FormTypeDrawer {
+        .el-drawer__body {
+            display: flex;
         }
+
+        .FormCreate {
+            padding: 16px 22px 0 16px;
+
+            .el-form-item {
+                padding: 0;
+            }
+        }
+    }
+
+    .FormTypeDrawer,
+    .FormTypeDialog {
+        .sureBtn {
+            background-color: #007dff;
+        }
+    }
+
+    .el-drawer {
+        width: auto !important;
     }
 }
 </style>

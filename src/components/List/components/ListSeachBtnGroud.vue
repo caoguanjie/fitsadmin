@@ -38,6 +38,16 @@ const handleExpand = () => {
 
 
 </script>
+<style  lang='scss' >
+.searchBtns {
+
+    .el-button.el-button--primary {
+        background-color: var(--fits-menu-active-color);
+
+
+    }
+}
+</style>
 <style lang='scss' scoped>
 .searchBtns {
     text-align: center;
@@ -45,8 +55,9 @@ const handleExpand = () => {
 
 .search,
 .reset {
-    width: 66px;
+    width: 75px;
     margin-left: 16px;
+    font-size: 12px;
 }
 
 .expand {

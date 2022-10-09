@@ -28,7 +28,7 @@ const cachedViews = computed(() => tagsView.cachedViews);
   overflow: hidden;
 
   &>* {
-    margin: 16px 16px 0 16px;
+    margin: $basePadding $basePadding 0 $basePadding;
     // width: 100%;
     height: inherit;
   }

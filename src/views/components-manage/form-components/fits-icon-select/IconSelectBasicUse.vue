@@ -3,9 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import FitsIconSelect from '@/components/Form/FitsIconSelect.vue';
 import { FitsIconSelectModel } from '@/components/Form/model';
-import { reactive } from 'vue';
 
 const state = reactive(new FitsIconSelectModel({
     select: {
@@ -14,7 +12,9 @@ const state = reactive(new FitsIconSelectModel({
 }))
 </script>
 <style lang="scss" scoped>
+
 </style>
 
 <style lang="scss">
+
 </style>

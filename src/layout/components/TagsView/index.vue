@@ -345,6 +345,7 @@ function handleTabMore(value: boolean) {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.module.scss';
 $padding: 0 25px;
 $closeWidth: 12px;
 

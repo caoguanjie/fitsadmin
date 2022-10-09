@@ -9,7 +9,7 @@
         <navbar />
         <tags-view v-if="needTagsView" />
       </div>
-      <el-scrollbar :height="mainContent">
+      <el-scrollbar :height="mainContent" class="fits-main-layout">
         <app-main class="mainContentScrollbar" />
       </el-scrollbar>
       <RightPanel v-if="showSettings">
@@ -17,7 +17,7 @@
       </RightPanel>
     </div>
   </div>
-  <FitsFooter v-if="showFooterBreadcrumb" />
+  <FitsFooter />
 </template>
 
 <script setup lang="ts">
@@ -85,6 +85,7 @@ function handleClickOutside() {
 <style lang="scss" scoped>
 @import '@/styles/mixin.scss';
 @import '@/styles/variables.module.scss';
+
 
 .app-wrapper {
   @include clearfix;

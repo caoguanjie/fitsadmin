@@ -1,21 +1,27 @@
 <template>
     <div class="dialog">
-        <el-dialog ref="elDialogRef" v-model="isVisible" v-bind="prop"
-            :class="prop?.class ? prop.class + ' fits-dialog' : 'fits-dialog'" :close-on-click-modal="false"
-            :top="dialogMarginTop" draggable>
-            <div class="dialog-body" v-loading="loading" element-loading-text="拼命加载中"
-                element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
+        <el-dialog ref="elDialogRef" :class="props.class ? props.class + ' fits-dialog' : 'fits-dialog'"
+            :close-on-click-modal="false" v-bind="dialogProp" v-model="isVisible" :top="dialogMarginTop"
+            @close="emitcancel">
+            <!-- dialog的头部插槽 -->
+            <template #header="{ close, titleId, titleClass }">
+                <slot name="header" class="dialog-header" :close="close" :titleId="titleId" :titleClass="titleClass" />
+            </template>
+            <!-- v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)"-->
+            <!-- dialog的内容 -->
+            <div class="dialog-body">
                 <el-scrollbar :noresize="true">
-                    <slot name="body" />
+                    <slot />
                 </el-scrollbar>
             </div>
-            <template #footer>
-                <slot name="btnLeft" class="dialog-footer">
-                    <el-button size="small" @click="emitCancle">
-                        取 消
+            <!-- dialog的底部插槽 -->
+            <template #footer v-if="showFooter">
+                <slot name="footer">
+                    <el-button @click="emitcancel" class="cancelBtn">
+                        {{cancelText}}
                     </el-button>
-                    <el-button size="small" @click="emitSave" type="primary">
-                        确 定
+                    <el-button @click="emitSave" type="primary" class="sureBtn">
+                        {{submitText}}
                     </el-button>
                 </slot>
             </template>
@@ -24,20 +30,22 @@
 </template>
 
 <script lang="ts" setup>
-import useStore from "@/store";
-import { reactive, ref, toRefs, watch, nextTick } from "vue";
-
 const props = withDefaults(defineProps<{
     visible: boolean,
-    loading?: boolean,
-    prop?: any
+    submitText?: string,
+    cancelText?: string,
+    // loading?: boolean,
+    class?: string,
+    showFooter?: boolean,
+    dialogProp?: any
 }>(), {
     visible: false,
-    loading: false,
-    prop: {}
+    submitText: '确定',
+    cancelText: '取消',
+    showFooter: true
 })
 
-const emit = defineEmits(['cancle', 'submit', 'open'])
+const emit = defineEmits(['cancel', 'submit', 'open'])
 
 const state: any = reactive({
     isVisible: false,
@@ -45,14 +53,13 @@ const state: any = reactive({
 })
 const { isVisible, dialogMarginTop } = toRefs(state);
 
-const { setting } = useStore();
-
 const elDialogRef = ref()
 
 watch(() => props.visible, (newVal: boolean) => {
     isVisible.value = newVal
     newVal && emit('open')
-    !newVal && emit('cancle')
+    !newVal && emit('cancel')
+    // 调整弹窗的margin-top高度
     nextTick(() => {
         updatedWindowHeight();
     });
@@ -68,8 +75,8 @@ function emitSave() {
 /**
  * 关闭事件
  */
-function emitCancle() {
-    emit("cancle");
+function emitcancel() {
+    emit("cancel");
 }
 
 /**
@@ -77,7 +84,6 @@ function emitCancle() {
  * 当弹窗内容低于540高度的时候，marginTop: -10vh。也能达到大概居中的目的
  */
 function updatedWindowHeight() {
-    if (setting.formType !== 'dialog') return
     // 实际弹窗部分
     const dialogWindowHeight = elDialogRef.value.dialogContentRef.$el.getBoundingClientRect().height
     // 黑色阴影的div
@@ -100,7 +106,7 @@ function updatedWindowHeight() {
 <style lang="scss">
 .dialog {
     .el-dialog {
-        min-width: 700px;
+        min-width: 300px;
     }
 
     .el-overlay-dialog {
@@ -117,11 +123,9 @@ function updatedWindowHeight() {
     .el-dialog__body {
         overflow: hidden;
         padding: 0;
-        min-height: 300px;
 
         .dialog-body {
             height: 100%;
-            min-height: 300px;
         }
     }
 
@@ -134,7 +138,8 @@ function updatedWindowHeight() {
         border-radius: 8px 8px 0 0;
         margin-right: 0;
         padding: 12px 0 12px 16px;
-        height: 44px;
+        min-height: 44px;
+        box-sizing: border-box;
     }
 
     .el-dialog__title {
@@ -147,9 +152,8 @@ function updatedWindowHeight() {
         top: 0;
         height: 28px;
         width: 28px;
-        margin: 8px 16px 8px 0;
+        margin: 8px 8px 8px 0;
 
-        // font-size: 18px;
         svg {
             color: #666666;
         }
@@ -159,7 +163,6 @@ function updatedWindowHeight() {
         padding: 10px 24px;
         border-top: 1px solid #dcdfe6;
 
-        // text-align: center;
         .el-button {
             padding: 8px 24px;
             border-radius: 0;
@@ -177,7 +180,7 @@ function updatedWindowHeight() {
     }
 
     .el-scrollbar__view {
-        padding: 0 32px;
+        padding: 24px 32px 20px;
     }
 }
 </style>

@@ -1,45 +1,22 @@
 <template>
-    <div class="FitsCheckboxAll">
+    <div class="FitsCheckboxAllIndex">
 
-        <el-card class="box-card">
-            <template #header>
-                <div class="title">基础用法</div>
-                <div class="describe">
-                    基础的复选框组件展示
-                </div>
-            </template>
+        <fits-card title="基础用法" desc="基础的复选框组件展示">
             <checkbox-all-basic-use />
-        </el-card>
+        </fits-card>
 
-        <el-card class="box-card">
-            <template #header>
-                <div class="title">默认选中</div>
-                <div class="describe">
-                    通过设置 modelValue 属性可以传递默认值，该值为选项的 label 组成的数组
-                </div>
-            </template>
+        <fits-card title="默认选中" desc="通过设置 modelValue 属性可以传递默认值，该值为选项的 label 组成的数组">
             <checkbox-all-default-value />
-        </el-card>
+        </fits-card>
 
-        <el-card class="box-card">
-            <template #header>
-                <div class="title">禁用选项</div>
-                <div class="describe">
-                    为 option 中的选项设置 disabled = true ，即可禁用该选项
-                </div>
-            </template>
+        <fits-card title="禁用选项" desc="为 option 中的选项设置 disabled = true ，即可禁用该选项">
             <checkbox-all-disabled />
-        </el-card>
+        </fits-card>
 
-        <el-card class="box-card">
-            <template #header>
-                <div class="title">限制选择数量</div>
-                <div class="describe">
-                    设置 checkboxGroup.min 和 checkboxGroup.max 可以控制选项的最小和最大数量
-                </div>
-            </template>
+        <fits-card title="限制选择数量" desc="设置 checkboxGroup.min 和 checkboxGroup.max 可以控制选项的最小和最大数量">
             <checkbox-all-limit />
-        </el-card>
+        </fits-card>
+
     </div>
 </template>
 
@@ -50,39 +27,16 @@ import CheckboxAllDisabled from './CheckboxAllDisabled.vue';
 import CheckboxAllLimit from './CheckboxAllLimit.vue';
 </script>
 <style lang="scss" scoped>
-.FitsCheckboxAll {
+.FitsCheckboxAllIndex {
     padding: 16px;
     background: #fff;
-
-    .box-card {
-        width: 55vw;
-        margin-bottom: 30px;
-
-        .title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #606266;
-        }
-
-        .describe {
-            font-size: 14px;
-            color: #303133;
-            margin-top: 18px;
-        }
-    }
 }
 </style>
 
 <style lang="scss">
-.FitsCheckboxAll {
-    .box-card {
-        .el-card__header {
-            height: auto !important;
-        }
-
-        .el-select {
-            width: 70%;
-        }
+.FitsCheckboxAllIndex {
+    .fits-card {
+        min-width: 500px;
     }
 }
 </style>

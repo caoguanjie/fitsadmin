@@ -2,7 +2,9 @@ import { defineStore } from 'pinia';
 
 import { localStorage } from '@/utils/storage';
 import ENV from '@/environment/index';
-const { system: { showSettings, tagsView, fixedHeader, sidebarLogo, isInsensitivity, showFooterBreadcrumb, formType } } = ENV;
+const { system: { showSettings, tagsView, 
+  // fixedHeader, 
+  sidebarLogo, isInsensitivity, showFooterBreadcrumb,breadcrumbPosition, formType } } = ENV;
 const el = document.documentElement;
 
 export const useSettingStore = defineStore({
@@ -11,11 +13,12 @@ export const useSettingStore = defineStore({
     theme: 'white', // 主题配色样式
     showSettings: showSettings,
     tagsView: tagsView,
-    fixedHeader: fixedHeader,
+    // fixedHeader: fixedHeader,
     sidebarLogo: sidebarLogo,
     isShowSetting: false, // 是否打开右边的设置界面
     isInsensitivity: isInsensitivity,
     showFooterBreadcrumb: showFooterBreadcrumb,
+    breadcrumbPosition:breadcrumbPosition,
     formType: formType
   }),
   actions: {
@@ -34,9 +37,6 @@ export const useSettingStore = defineStore({
         case 'showSettings':
           this.showSettings = value;
           break;
-        case 'fixedHeader':
-          this.fixedHeader = value;
-          break;
         case 'tagsView':
           this.tagsView = value;
           localStorage.set('tagsView', value);
@@ -46,6 +46,9 @@ export const useSettingStore = defineStore({
           break;
         case 'showFooterBreadcrumb':
           this.showFooterBreadcrumb = value;
+          break;
+        case 'breadcrumbPosition':
+          this.breadcrumbPosition = value;
           break;
         case 'formType':
           this.formType = value;
@@ -60,7 +63,7 @@ export const useSettingStore = defineStore({
     strategies: [
       {
         storage: window.localStorage,
-        paths: ['theme', 'sidebarLogo', "fixedHeader", "tagsView", "formType"]
+        paths: ['theme', 'sidebarLogo', "tagsView", "formType","breadcrumbPosition"]
       }
     ]
   }

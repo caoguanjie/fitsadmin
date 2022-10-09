@@ -19,7 +19,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   return {
     base: mode !== 'dev' ? '/' : '/',
     plugins: [
-
       // 自动导入elment-plus
       AutoImport({
 

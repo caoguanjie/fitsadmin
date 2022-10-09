@@ -29,12 +29,14 @@ interface UserState {
 interface SettingState {
     theme: string;
     tagsView: boolean;
-    fixedHeader: boolean;
+    //fixedHeader: boolean;
     showSettings: boolean;
     sidebarLogo: boolean;
     isShowSetting: boolean;
     isInsensitivity: boolean
     showFooterBreadcrumb: boolean,
-    formType: FormType
+    //增加配置面包屑位置按钮
+    breadcrumbPosition:'top' | 'bottom',
+    formType: 'dialog' | 'drawer'
 }
 

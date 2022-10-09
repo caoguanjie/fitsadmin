@@ -31,6 +31,7 @@ export class FitsDefaultSetting implements FitsSetting {
             errorLog: true,
             coutDownTime: 30,
             showFooterBreadcrumb: true,
+            breadcrumbPosition: 'bottom',
             formType: 'dialog'
         }
     }

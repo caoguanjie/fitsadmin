@@ -1,20 +1,21 @@
 <template>
-    <div class="icon-select">
-        <el-select v-bind='select' v-model="selectedNames" ref="selectInputRef" @visible-change="VisibleChange"
-            @clear="clearSelected" :popper-class="`${select?.popperClass} icon-popper`" @remove-tag="RemoveTag">
+    <div class="IconSelect">
+        <el-select :filter-method="filterMethod" v-bind='options.select' v-model="selectedNames" ref="selectInputRef"
+            @visible-change="VisibleChange" @clear="clearSelected"
+            :popper-class="`${options.select?.popperClass} icon-popper`" @remove-tag="RemoveTag">
             <template #empty>
                 <el-scrollbar class="icon-scrollbar" max-height="30vh">
                     <div class="custom-icon">
-                        <el-input v-bind='input?.elementProps' v-model="filterText" class="filterInput"
-                            @input="filterMethod(filterText)" v-show="input?.show" />
-                        <div class="icon-select__list" v-if="iconList.length">
+                        <el-input v-bind='options.input' v-model="filterText" class="filterInput"
+                            @input="filterMethod(filterText)" v-show="options.showInput" />
+                        <div class="IconSelect__list" v-if="iconList.length">
                             <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)"
                                 class="icon-wrapper" :class="{ 'isSelected': item.isSelected }">
                                 <svg-icon color="#999" :icon-class="item.name" />
                                 <span>{{ item.name }}</span>
                             </div>
                         </div>
-                        <div class="no-data-text" v-else>{{ noListText }}</div>
+                        <div class="no-data-text" v-else>{{ options.noListText }}</div>
                     </div>
                 </el-scrollbar>
             </template>
@@ -23,14 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch, useAttrs } from 'vue';
-import SvgIcon from '@/components/SvgIcon/index.vue';
 import { FitsIconSelectModel } from './model';
 
-const props = withDefaults(defineProps<{ options: FitsIconSelectModel }>(), {
+const props = withDefaults(defineProps<{ options?: FitsIconSelectModel }>(), {
     options: () => new FitsIconSelectModel(),
 })
-const { noListText, select, input }: any = toRefs(props.options)
+
+// 不结构options，是因为toRefs只能接收响应式对象，不能是普通对象。浏览器会警告
+const { options }: any = toRefs(props)
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -47,7 +48,7 @@ for (const path in modules) {
 const state = reactive({
     filterText: '',
     iconList: icons,
-    isMultiple: select.value.multiple,
+    isMultiple: options.value.select.multiple,
 })
 const { filterText, iconList, isMultiple }: any = toRefs(state);
 
@@ -143,8 +144,12 @@ function clearSelected() {
 </script>
 
 <style lang="scss" scoped>
-.icon-select {
+.IconSelect {
     width: 100%;
+
+    .el-select {
+        width: 100%;
+    }
 
     &__list {
 
@@ -184,7 +189,7 @@ function clearSelected() {
         padding: 10px;
         box-sizing: border-box;
 
-        .icon-select__list {
+        .IconSelect__list {
             span {
                 vertical-align: middle;
             }

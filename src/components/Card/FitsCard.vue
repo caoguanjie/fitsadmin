@@ -1,7 +1,7 @@
 <template>
     <div :class="isActive ? 'fits-card active' : 'fits-card'">
+        <!-- 标题插槽,vue3outline会将注释也认为是目录内容 -->
         <h1>
-            <!-- 标题插槽 -->
             <slot name="title" :title="title">{{ title }}</slot>
         </h1>
         <div class="desc">
@@ -58,6 +58,7 @@ const { title, desc, isActive } = toRefs(props)
         color: #303133;
         font-weight: 400;
         margin-bottom: 8px;
+        margin-top: 0;
     }
 
     .desc {
