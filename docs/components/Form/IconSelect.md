@@ -5,18 +5,18 @@ author: wuzeling
 date: 2022-09-23
 ---
 
-# IconSelect
+# FitsIconSelect 图标选择
 
 ### 基本用法
 <demo src="../../../src/views/components-manage/form-components/fits-icon-select/IconSelectBasicUse.vue" title="基本用法" desc="基础的图标选择组件展示。组件默认开启内部输入框搜索过滤。"></demo>
 <br/>
 
 ### 默认值
-<demo src="../../../src/views/components-manage/form-components/fits-icon-select/IconSelectBasicUse.vue" title="默认值" desc="通过传递`modelValue`属性可以给图标选择组件传递默认值，该值必须是图标的名称。"></demo>
+<demo src="../../../src/views/components-manage/form-components/fits-icon-select/IconSelectDefaultValue.vue" title="默认值" desc="通过传递`modelValue`属性可以给图标选择组件传递默认值，该值必须是图标的名称。"></demo>
 <br/>
 
 ### 多选
-<demo src="../../../src/views/components-manage/form-components/fits-icon-select/IconSelectBasicUse.vue" title="多选" desc="通过设置`select.multiple`开启多选模式。多选模式下，默认会展示出所有的选项。可以通过设置`select.collapseTags`将选中值按文字的形式展示，设置`select.collapseTagsTooltip`决定鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。"></demo>
+<demo src="../../../src/views/components-manage/form-components/fits-icon-select/IconSelectMultiple.vue" title="多选" desc="通过设置`select.multiple`开启多选模式。多选模式下，默认会展示出所有的选项。可以通过设置`select.collapseTags`将选中值按文字的形式展示，设置`select.collapseTagsTooltip`决定鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。"></demo>
 <br/>
 
 ### 隐藏输入框

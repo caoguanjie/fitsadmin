@@ -5,7 +5,7 @@ author: wuzeling
 date: 2022-09-26
 ---
 
-# CheckboxAll
+# FitsCheckboxAll 全选
 
 ### 基本用法
 <demo src="../../../src/views/components-manage/form-components/fits-checkbox-all/CheckboxAllBasicUse.vue" title="基本用法" desc="基础的复选框组件展示。"></demo>

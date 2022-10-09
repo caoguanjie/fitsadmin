@@ -3,6 +3,7 @@ import { ElTooltip } from 'element-plus'
 import { VxeButton, VXETable } from 'vxe-table'
 import ToolbarCustomColumn from '@/components/List/components/ToolbarCustomColumn.vue'
 import ToolbarFullscreen from '@/components/List/components/ToolbarFullscreen.vue'
+import eventBus from '@/utils/base/EventBus'
 
 
 
@@ -10,13 +11,16 @@ import ToolbarFullscreen from '@/components/List/components/ToolbarFullscreen.vu
 
 // 创建工具栏-搜索工具
 VXETable.renderer.add('ToolbarSearch', {
+
     renderToolbarTool(renderOpts, params) {
         console.log(params)
         const { $grid }: any = params
-        const { events = {}, props = {} } = renderOpts
-
+        const { events = {}, props = {} } = renderOpts;
+        console.log(props.isShowSearchForm)
+        const placement = props.isShowSearchForm ? 'top' : 'bottom'
+        console.log(placement)
         return h(ElTooltip,
-            { effect: 'dark', placement: "top", content: props.msg ?? '是否关闭搜索', hideAfter: 0 },
+            { effect: 'dark', placement: placement, content: props.msg ?? '是否关闭搜索', hideAfter: 0 },
             {
                 // Vue3 使用h函数 推荐使用函数式插槽，以便获得更佳的性能。
                 default: () =>

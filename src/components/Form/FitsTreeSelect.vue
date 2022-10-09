@@ -65,6 +65,8 @@ watch(filterText, (val: string) => {
 })
 
 onMounted(() => {
+    console.log(_attrs.modelValue);
+
     initValue(_attrs.modelValue)
 })
 

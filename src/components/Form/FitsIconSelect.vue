@@ -69,6 +69,8 @@ watch(() => _attrs.modelValue, (val) => {
 })
 
 onMounted(() => {
+    console.log(_attrs);
+
     initData(_attrs.modelValue)
 })
 

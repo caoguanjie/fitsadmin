@@ -27,12 +27,12 @@ import FitsDialog from '@/components/Dialog/FitsDialog.vue'
 import FitsDrawer from '@/components/Dialog/FitsDrawer.vue'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 import { nextTick, ref } from 'vue';
-import { FitsFormTypeModel } from './model';
 import FormTitle from "@/components/Common/FormTitle.vue";
 import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
+import { FitsFormDialogModel } from './model';
 
 const props = defineProps<{
-    option: FitsFormTypeModel,
+    option: FitsFormDialogModel,
 }>();
 
 const emit = defineEmits(['cancel', 'submit'])

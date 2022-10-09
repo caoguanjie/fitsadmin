@@ -45,7 +45,7 @@
         </fits-card>
 
         <fits-card title="弹窗表单"
-            desc="调用表单弹窗需要使用 FormType 组件，传递的数据类型为 FitsFormTypeModel。必填项为 visible 和 forms，visible 控制弹窗是否显示，forms 由一个或多个子表单组成，类型为 FitsFormModuleModel 数组。fits框架的表单有两种展现形式，一种是dialog对话框式，另一种是drawer抽屉式。">
+            desc="调用表单弹窗需要使用 FitsFormDialog 组件，传递的数据类型为 FitsFormDialogModel。必填项为 visible 和 forms，visible 控制弹窗是否显示，forms 由一个或多个子表单组成，类型为 FitsFormModuleModel 数组。fits框架的表单有两种展现形式，一种是dialog对话框式，另一种是drawer抽屉式。">
             <dialog-form-example />
         </fits-card>
     </div>

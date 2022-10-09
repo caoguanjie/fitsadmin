@@ -20,30 +20,30 @@ export default sidebar({
       link: '/components/about'
     },
     {
-      text: 'Form',
+      text: 'Form 表单组件',
       children: [{
-        text: 'TreeSelect 树形选择',
+        text: 'FitsTreeSelect 树形选择',
         link: '/components/Form/TreeSelect'
       }, {
-        text: 'IconSelect 图标选择',
+        text: 'FitsIconSelect 图标选择',
         link: '/components/Form/IconSelect'
       }, {
-        text: 'CheckboxAll 全选',
+        text: 'FitsCheckboxAll 全选',
         link: '/components/Form/CheckboxAll'
       }, {
         text: 'FitsFormCreate 表单',
         link: '/components/Form/FitsFormCreate'
       }, {
-        text: 'FormType 表单弹窗',
-        link: '/components/Form/FormType'
+        text: 'FitsFormDialog 表单弹窗',
+        link: '/components/Form/FitsFormDialog'
       }]
     },{
-      text: 'Dialog',
+      text: 'Feedback 反馈组件',
       children: [{
-        text: 'Dialog 弹窗',
+        text: 'FitsDialog 弹窗',
         link: '/components/Dialog/Dialog'
       }, {
-        text: 'Drawer 侧边弹窗',
+        text: 'FitsDrawer 抽屉',
         link: '/components/Dialog/Drawer'
       }]
     }],

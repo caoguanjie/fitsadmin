@@ -4,7 +4,7 @@ author: wuzeling
 # 设置写作时间
 date: 2022-10-08
 ---
-# Dialog 弹窗
+# FitsDialog 弹窗
 
 ### 基础用法
 <demo src="../../../src/views/components-manage/dialog/BasicDialog.vue" title="基础用法" desc="需要设置 `visible` 属性，为 `true` 时显示。`dialogProp` 属性用于设置弹窗组件的配置。"></demo>

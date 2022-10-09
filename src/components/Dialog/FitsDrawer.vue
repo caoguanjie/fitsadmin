@@ -85,8 +85,8 @@ function submitDrawer() {
             height: 24px;
             width: 24px;
             padding: 0;
-            background: #e8e8eb;
-            border-radius: 12px;
+            // background: #e8e8eb;
+            // border-radius: 12px;
         }
     }
 

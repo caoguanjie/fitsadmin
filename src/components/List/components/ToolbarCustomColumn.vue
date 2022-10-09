@@ -1,5 +1,5 @@
 <template>
-    <el-tooltip class="box-item" effect="dark" :content="props.msg" placement="top">
+    <el-tooltip class="box-item" effect="dark" :content="props.msg" :placement="data.placement">
         <vxe-button icon="vxe-icon-custom-column" ref="buttonRef" v-click-outside="onClickOutside" />
     </el-tooltip>
 
@@ -33,6 +33,7 @@
 import { VxeButton, VxeGridConstructor, VxeTableDefines } from 'vxe-table'
 import { CheckboxValueType, ClickOutside as vClickOutside } from 'element-plus'
 import { VueDraggableNext } from 'vue-draggable-next'
+import eventBus from '@/utils/base/EventBus';
 
 const props = defineProps<{
     // 自定义提示信息
@@ -46,6 +47,7 @@ const data = reactive({
     checkAll: false,
     isIndeterminate: false,
     dragging: false,
+    placement: "top" as any
 
 })
 const buttonRef = ref()
@@ -58,6 +60,9 @@ function changeColumns() {
 }
 
 onMounted(() => {
+    eventBus.on('IsShowSearchForm', (isShowSearchForm: boolean) => {
+        data.placement = isShowSearchForm ? 'top' : 'bottom'
+    })
     setTimeout(() => {
         nextTick(() => {
             console.error(props.grid)

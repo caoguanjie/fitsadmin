@@ -2,7 +2,7 @@
     <el-button @click="openForm">
         打开表单
     </el-button>
-    <form-type :option="dialogOpt" @submit="submitDialogForm" @cancel="dialogOpt.visible = false"
+    <fits-form-dialog :option="dialogOpt" @submit="submitDialogForm" @cancel="dialogOpt.visible = false"
         class="dialogFormExample" ref="formtypeRef" />
 </template>
 

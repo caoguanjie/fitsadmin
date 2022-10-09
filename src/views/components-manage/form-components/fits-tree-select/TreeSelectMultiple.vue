@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import { FitsTreeSelectModel } from '@/components/Form/model';
 
-const value = ref(['91', '111'])
+const value = ref(['9', '11'])
 
 const data = reactive([
     {

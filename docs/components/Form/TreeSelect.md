@@ -5,7 +5,7 @@ author: wuzeling
 date: 2022-09-22
 ---
 
-# TreeSelect
+# FitsTreeSelect 树形选择
 
 ### 基本用法
 <demo src="../../../src/views/components-manage/form-components/fits-tree-select/TreeSelectBasicUse.vue" title="基本用法" desc="基础的树形筛选组件展示。当节点数据过长时，会通过滚动条的形式进行展示。默认只能选择叶子节点的数据。"></demo>

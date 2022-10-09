@@ -10,12 +10,10 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 export default defineConfig({
     plugins: [
         AutoImport({
-            resolvers: [ElementPlusResolver()],
             imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
             dts: path.resolve(__dirname, '.temp/auto-imports.d.ts'),
         }),
         Components({
-            resolvers: [ElementPlusResolver()],
             dirs: path.resolve(__dirname, '../../src/components'),
             dts: path.resolve(__dirname, '.temp/components.d.ts'),
         }),

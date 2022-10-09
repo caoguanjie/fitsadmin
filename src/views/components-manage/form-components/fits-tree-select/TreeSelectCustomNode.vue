@@ -9,7 +9,6 @@ const state = reactive(new FitsTreeSelectModel({
     tree: {
         nodeKey: "id",
         defaultExpandAll: true,
-        showCheckbox: true,
         expandOnClickNode: false,
         data: [
             {

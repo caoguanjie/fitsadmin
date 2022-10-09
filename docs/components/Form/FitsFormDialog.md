@@ -5,17 +5,17 @@ author: wuzeling
 date: 2022-09-30
 ---
 
-# FormType 表单弹窗
+# FitsFormDialog 表单弹窗
 
 ### 对话框表单
 <demo src="../../../src/views/components-manage/form/form-examples/DialogFormExample-docs.vue" title="对话框表单" desc="通过设置 `formType='dialog'` 开启对话框形式的表单弹窗。"></demo>
 <br/> 
 
-### 侧边栏表单
-<demo src="../../../src/views/components-manage/form/form-examples/DrawerFormExample-docs.vue" title="侧边栏表单" desc="通过设置 `formType='drawer'` 开启侧边栏形式的表单弹窗。"></demo>
+### 抽屉表单
+<demo src="../../../src/views/components-manage/form/form-examples/DrawerFormExample-docs.vue" title="抽屉表单" desc="通过设置 `formType='drawer'` 开启抽屉形式的表单弹窗。"></demo>
 <br/> 
 
-### FitsFormTypeModel 表单弹窗的属性
+### FitsFormDialogModel 表单弹窗的属性
 | 属性 | 说明 | 类型  | 默认值 |
 | :-- | :-- | :-- | :---- |
 | visible | 控制弹窗是否可见 | boolean | - |

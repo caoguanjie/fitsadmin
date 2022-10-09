@@ -14,7 +14,7 @@
         </el-button>
     </el-button-group>
     <fits-form-create :form="dynamicForm" ref="dynamicRef" />
-    <form-type :option="spliceOpt" @submit="submitSpliceForm" @cancel="spliceOpt.visible = false" />
+    <fits-form-dialog :option="spliceOpt" @submit="submitSpliceForm" @cancel="spliceOpt.visible = false" />
 </template>
 
 <script setup lang="ts">

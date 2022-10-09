@@ -14,6 +14,8 @@ import XEUtils from 'xe-utils';
 import variables from '@/styles/variables.module.scss';
 import { ComponentInternalInstance } from 'vue';
 import { FitsTableProps, FitsToolsBarConfig, FitstoolsOption, ToolsConfig } from './type';
+import eventBus from '@/utils/base/EventBus';
+import { fa } from 'element-plus/es/locale';
 const props = defineProps<{
     option: FitsTableProps,
 }>()
@@ -169,12 +171,17 @@ function setToolbarConfig() {
     const toolsBtn = {
         search: {
             toolRender: {
-                name: 'ToolbarSearch', events: {
+                name: 'ToolbarSearch',
+                props: {
+                    isShowSearchForm: state.isShowSearchForm
+                },
+                events: {
                     click: () => {
-                        state.isShowSearchForm = !state.isShowSearchForm
-
+                        state.isShowSearchForm = !state.isShowSearchForm;
+                        (state.gridOption.toolbarConfig as any).tools[0].toolRender.props.isShowSearchForm = 'false'
+                        console.error()
                         xGrid.value!.$el.querySelector('.vxe-grid--form-wrapper').style.display = state.isShowSearchForm ? 'block' : 'none';
-                        console.log('关闭搜索')
+                        eventBus.emit('IsShowSearchForm', state.isShowSearchForm)
                     }
                 }
             }

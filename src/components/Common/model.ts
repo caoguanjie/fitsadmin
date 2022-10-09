@@ -180,7 +180,7 @@ type FitsFormCreateBtnType = ButtonProps & {
  * @param prop 弹窗、抽屉的其他配置
  * @param formType 表单展现形式
  */
-export class FitsFormTypeModel {
+export class FitsFormDialogModel {
     visible: boolean
     forms: FitsFormModuleModel[]
     dialogProp?: any
