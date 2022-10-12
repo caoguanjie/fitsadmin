@@ -1,7 +1,7 @@
 import type {TreeComponentProps,} from 'element-plus/es/components/tree/src/tree.type'
 import { Component, markRaw } from 'vue'
-import { CaretTop, CircleClose } from '@element-plus/icons-vue'
-import { CheckboxProps, ElInput, IUseCheckboxGroupProps } from 'element-plus'
+import { CaretBottom } from '@element-plus/icons-vue'
+import { CheckboxProps, IUseCheckboxGroupProps } from 'element-plus'
 
 /**
  * （树筛选、图标选择）选择器select的配置
@@ -106,9 +106,9 @@ export class FitsSelectProps {
         this.popperClass = popperClass ?? '';
         this.teleported = teleported ?? true
         this.persistent = persistent ?? true;
-        this.clearIcon = clearIcon ?? markRaw(CircleClose)
+        this.clearIcon = clearIcon
         this.fitInputWidth = fitInputWidth ?? true;
-        this.suffixIcon = suffixIcon ?? markRaw(CaretTop)
+        this.suffixIcon = suffixIcon ?? h(CaretBottom)
         this.validateEvent = validateEvent ?? true;
         this.multiple = multiple ?? false
         this.collapseTags = collapseTags ?? false

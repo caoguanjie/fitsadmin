@@ -137,7 +137,7 @@ function updatedWindowHeight() {
         background-color: #e1e4e8;
         border-radius: 8px 8px 0 0;
         margin-right: 0;
-        padding: 12px 0 12px 16px;
+        padding: 12px 16px 12px 16px;
         min-height: 44px;
         box-sizing: border-box;
     }
@@ -149,10 +149,11 @@ function updatedWindowHeight() {
     }
 
     .el-dialog__headerbtn {
-        top: 0;
-        height: 28px;
-        width: 28px;
-        margin: 8px 8px 8px 0;
+        top: 16px;
+        height: 12px;
+        width: 12px;
+        right: 18px;
+        // margin: 8px 8px 8px 0;
 
         svg {
             color: #666666;

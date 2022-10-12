@@ -9,7 +9,7 @@
     <div class="innerBox">
         <div>
             多选项省略，以数字形式展示
-            <div class="describe">通过设置 collapseTags=true，折叠多选项内容</div>
+            <div class="describe">通过设置 select.collapseTags = true，折叠多选项内容</div>
         </div>
         <fits-tree-select :options="state2" />
     </div>
@@ -17,7 +17,8 @@
     <div class="innerBox">
         <div>
             鼠标悬浮文字出现多选项标签
-            <div class="describe">通过设置 collapseTags=true 和 collapseTagsTooltip=true，鼠标悬浮在数字上时，显示折叠项</div>
+            <div class="describe">通过设置 select.collapseTags = true 和 select.collapseTagsTooltip = true，鼠标悬浮在数字上时，显示折叠项
+            </div>
         </div>
         <fits-tree-select :options="state3" />
     </div>
@@ -25,7 +26,7 @@
     <div class="innerBox">
         <div>
             点击节点时选中
-            <div class="describe">设置 checkOnClickNode=true ，点击节点时勾选上，默认通过点击复选框才能勾选。</div>
+            <div class="describe">设置 tree.checkOnClickNode = true ，点击节点时勾选上，默认通过点击复选框才能勾选。</div>
         </div>
         <fits-tree-select :options="state4" />
     </div>

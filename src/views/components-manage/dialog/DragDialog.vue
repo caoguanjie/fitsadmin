@@ -28,9 +28,5 @@ const dialogProp = reactive({
 </style>
 
 <style lang="scss" scoped>
-// .drag-dialog {
-//     background: #fff;
-//     padding: 20px;
-//     width: 100%;
-// }
+
 </style>

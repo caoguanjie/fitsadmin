@@ -13,7 +13,6 @@
                         </div>
                     </el-scrollbar>
                 </div>
-
             </template>
         </el-select>
     </div>
@@ -65,8 +64,6 @@ watch(filterText, (val: string) => {
 })
 
 onMounted(() => {
-    console.log(_attrs.modelValue);
-
     initValue(_attrs.modelValue)
 })
 
@@ -78,8 +75,10 @@ function initValue(val: string) {
         selectedValue.value = treeRef.value.getNode(val)?.label
         emit('update:modelValue', val)
     } else {
-        // 多选
-        treeRef.value.setCheckedKeys(val)
+        // 多选，如果多选只传了字符串类型，需要做兼容
+        let arr = []
+        arr = typeof val === 'string' ? [val] : val
+        treeRef.value.setCheckedKeys(arr)
         selectedValue.value = []
         treeRef.value.getCheckedNodes(true).map((item: any) => selectedValue.value.push(item.label))
         emit('update:modelValue', treeRef.value.getCheckedKeys(true))

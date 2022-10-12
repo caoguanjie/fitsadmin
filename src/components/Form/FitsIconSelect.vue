@@ -4,19 +4,21 @@
             @visible-change="VisibleChange" @clear="clearSelected"
             :popper-class="`${options.select?.popperClass} icon-popper`" @remove-tag="RemoveTag">
             <template #empty>
-                <el-scrollbar class="icon-scrollbar" max-height="30vh">
-                    <div class="custom-icon">
-                        <el-input v-bind='options.input' v-model="filterText" class="filterInput"
-                            @input="filterMethod(filterText)" v-show="options.showInput" />
-                        <div class="IconSelect__list" v-if="iconList.length">
-                            <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)"
-                                class="icon-wrapper" :class="{ 'isSelected': item.isSelected }">
-                                <svg-icon color="#999" :icon-class="item.name" />
-                                <span>{{ item.name }}</span>
-                            </div>
-                        </div>
-                        <div class="no-data-text" v-else>{{ options.noListText }}</div>
+                <el-input v-bind='options.input' v-model="filterText" class="filterInput"
+                    @input="filterMethod(filterText)" v-show="options.showInput" />
+                <el-scrollbar class="icon-scrollbar" max-height="40vh">
+                    <div class="IconSelect__list" v-if="iconList.length">
+                        <el-card shadow="hover" v-for="(item, index) in iconList" :key="index"
+                            @click="selectedIcon(item)" class="icon-wrapper" :class="{ 'isSelected': item.isSelected }">
+                            <el-tooltip effect="dark" :content="item.name" placement="top">
+                                <div class="inner-content">
+                                    <svg-icon color="#999" :icon-class="item.name" />
+                                    <div :class="'itemName-' + item.name">{{ item.name }}</div>
+                                </div>
+                            </el-tooltip>
+                        </el-card>
                     </div>
+                    <div class="no-data-text" v-else>{{ options.noListText }}</div>
                 </el-scrollbar>
             </template>
         </el-select>
@@ -69,8 +71,6 @@ watch(() => _attrs.modelValue, (val) => {
 })
 
 onMounted(() => {
-    console.log(_attrs);
-
     initData(_attrs.modelValue)
 })
 
@@ -156,45 +156,45 @@ function clearSelected() {
     &__list {
 
         .icon-wrapper {
-            cursor: pointer;
-            width: 33.3%;
             display: inline-block;
-        }
+            cursor: pointer;
+            width: calc(25% - 20px);
+            min-width: 50px;
+            margin: 10px;
+            max-height: 60px;
 
-        .icon-wrapper:hover {
-            background: #f3f3f3;
+            .inner-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
         .icon-wrapper.isSelected {
             background: #e8f4ff;
-        }
-
-        span {
-            display: inline-block;
-            vertical-align: -0.15em;
-            fill: currentColor;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 70%;
         }
     }
 }
 </style>
 <style lang="scss">
 .icon-popper {
-    .el-scrollbar__wrap {
-        max-height: 30vh;
+    .el-card__body {
+        padding: 5px 20px;
     }
 
-    .custom-icon {
+    .filterInput {
         padding: 10px;
-        box-sizing: border-box;
+    }
 
-        .IconSelect__list {
-            span {
-                vertical-align: middle;
-            }
+    .inner-content {
+
+        div {
+            vertical-align: middle;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
         }
     }
 
@@ -207,9 +207,8 @@ function clearSelected() {
     }
 
     .svg-icon {
-        margin-right: 10px;
         height: 30px;
-        width: 16px;
+        width: 22px;
         vertical-align: middle;
     }
 }

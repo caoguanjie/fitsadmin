@@ -46,7 +46,7 @@ export const businessRouter: RouteRecordRaw = {
             path: "Table",
             name: "Table",
             redirect: "/businessRouter/Table/DynamicTable",
-            component: () => import("@/views/ready/index.vue"),
+            component: () => import("@/views/business-example/index.vue"),
             meta: { title: "复杂表格", roles: ["admin", "editor"], icon: "fits-table-menu" },
             children: [
                 {
@@ -89,7 +89,7 @@ export const businessRouter: RouteRecordRaw = {
                 {
                     path: "AllTable",
                     name: "AllTable",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/table/ComprehensiveTable.vue"),
                     meta: { title: "综合表格" },
                 },
             ],
@@ -212,7 +212,7 @@ export const businessRouter: RouteRecordRaw = {
             name: "Calendars",
             redirect: "/businessRouter/calendars/fullCalendar",
             component: () => import("@/views/components-manage/index.vue"),
-            meta: { title: "日历功能", roles: ["admin", "editor"], icon: 'fits-calendars', alwaysShow: true },
+            meta: { title: "日历功能", roles: ["admin", "editor"], icon: 'fits-calendars' },
             children: [
                 {
                     // path (kebab-case) 是fitsAdmin的路由命名规范
@@ -220,6 +220,13 @@ export const businessRouter: RouteRecordRaw = {
                     name: "fullCalendar",
                     component: () => import("@/views/components-manage/calendars/fullCalendarExample.vue"),
                     meta: { title: "日历范例" },
+                },
+                {
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "task-view",
+                    name: "taskView",
+                    component: () => import("@/views/components-manage/calendars/taskViewExample.vue"),
+                    meta: { title: "任务视图" },
                 },
             ],
         },

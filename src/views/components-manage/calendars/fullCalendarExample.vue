@@ -1,18 +1,20 @@
 <template>
     <div class="cal-container">
         <div style="height:30px;">
-            <div class="change-button" @click="changeVis()"> 切换视图</div>
+            <div class="change-button" @click="changeView()"> 切换视图</div>
         </div>
         <div class="card" id="cal" />
-        <el-dialog v-model="dialogTableVisible" :show-close="false">
-            <template #header="{ close }">
+        <div id="picker" style="visibility: hidden;">
+            <el-date-picker class="click_date" v-model="pickedDate" type="date" placeholder="请选择日期"
+                @change="clickDate()" />
+        </div>
+        <div id="dialogOuter" style="visibility:hidden;display: flex;height: 0px;">
+            <div id="dialogBox" class="dialog-contain dialogBox">
                 <div class="my-header">
-                    <img class="dialong-button" src="/src/assets/calendar-icon/edit.png" @click="edit">
+                    <img class="dialong-button" src="/src/assets/calendar-icon/edit.png" @click="editDialong">
                     <img class="dialong-button" src="/src/assets/calendar-icon/delete.png">
-                    <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="close">
+                    <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="closeDialong">
                 </div>
-            </template>
-            <div class="dialog-contain">
                 <div class="item" v-for="(data,key) in dialongData" :key="key">
                     <div class="item-title">
                         {{data.title}}
@@ -31,23 +33,18 @@
                     </div>
                 </div>
             </div>
-        </el-dialog>
-        <div id="picker" style="visibility: hidden;">
-            <el-date-picker class="click_date" v-model="pickDate" type="date" placeholder="请选择日期"
-                @change="dateChanage()" />
         </div>
     </div>
 </template>
 <script setup lang="ts">
+
 import '@fullcalendar/core/vdom'// 解决插件在顶级库前加载的报错
-import { Calendar, CalendarRoot } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid';
 import ResourceTimeLine from '@fullcalendar/resource-timeline'
 import interactionPlugin from '@fullcalendar/interaction'
 
-let gridData = ref("空")
-let dialogTableVisible = ref(false)
-let calendar: any
+//事件
 let events = [
     {
         id: '1',
@@ -147,6 +144,7 @@ let events = [
         textColor: "#216e39"
     },
 ]
+//左侧资源
 let resources = [
     {
         id: '1',
@@ -162,8 +160,9 @@ let resources = [
         id: '5',
         groupId: '5',
         name: '赵宵蕙'
-    }
+    },
 ]
+//弹窗数据
 let dialongData = ref([
     {
         title: "所属项目",
@@ -203,16 +202,77 @@ let dialongData = ref([
         detail: "进行中"
     },
 ])
-let initialView = 'dayGridMonth'
-let dateOpt = {
-    key: 1
+//获取日期是当月的第几周
+const getMonthWeek = (a: any, b: any, c: any) => {
+    var date = new Date(a, parseInt(b) - 1, c),
+        w = date.getDay(),
+        d = date.getDate();
+    if (w == 0) {
+        w = 7;
+    }
+    var config = {
+        getMonth: date.getMonth() + 1,
+        getYear: date.getFullYear(),
+        getWeek: Math.ceil((d + 6 - w) / 7),
+    }
+    return config
 }
-let pickDate = ref()
+//阿拉伯数字转中文数字
+const alaboToChinese = (num: string) => {
+    switch (num) {
+        case '1':
+            return '一';
+        case '2':
+            return '二';
+        case '3':
+            return '三';
+        case '4':
+            return '四';
+        case '5':
+            return '五';
+        case '6':
+            return '六';
+        case '7':
+            return '七';
+        case '8':
+            return '八';
+        case '9':
+            return '九';
+        case '10':
+            return '十';
+        case '11':
+            return '十一';
+        case '12':
+            return '十二';
+    }
+}
+
+//获取今天是当月的第几周
+let todayDate = getMonthWeek(moment().format('YYYY'), moment().format('M'), moment().format('D'));
+let pickedDate = ref()
 let isEdit = ref(false)
-let datePick: any
+let dateChooser: any //日期选择器
+let calendar: any //日历的实例
+let cal: any //日历的div
+let dialog: any
+
+onMounted(() => {
+    cal = document.getElementById('cal')
+    calendar = new Calendar(cal, calOptions)
+    calendar.render();
+    //获取日期选择器
+    dateChooser = document.getElementsByClassName("click_date")
+    //获取标题的父节点
+    let parent = document.querySelector(".fc-mtitleButton-button")?.parentNode
+    //在标题父节点中追加节点
+    parent?.appendChild(dateChooser[0])
+})
+//日历配置
 let calOptions: any = {
+    // dayMaxEventRows: 0,
+    // eventMaxStack: 0,
     locale: 'zh-cn',
-    initialView: initialView,//，默认月视图
+    initialView: 'dayGridMonth',//，默认月视图
     initialDate: moment().format('YYYY-MM-DD'),//初始显示位置
     // initialView: 'resourceTimelineWeek',//资源视图
     plugins: [
@@ -223,80 +283,18 @@ let calOptions: any = {
     //头部按钮
     headerToolbar: {
         left: 'mPrevButton',
-        center: 'titleButton',
+        center: 'mtitleButton',
         right: 'mNextButton'
     },
-    buttonText: {
-        prev: "< 上一周",
-        next: "下一周 >",
-    },
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',//隐藏版权提示
-    customButtons: {
-        mPrevButton: {
-            text: "< " + moment().add(-1, 'M').format("M月,YYYY"),
-            click: function () {
-                //获取到日期选择器的dom
-                datePick = document.getElementsByClassName("click_date")
-                let picker = document.getElementById("picker")
-                picker?.appendChild(datePick[0])
-                calendar.destroy()
-                calOptions.initialDate = moment(calendar.currentData.currentDate).add(-1, 'M').format('YYYY-MM-DD')
-                calOptions.customButtons.titleButton.text = moment(calendar.currentData.currentDate).add(-1, 'M').format("M月,YYYY")
-                calOptions.customButtons.mNextButton.text = moment(calendar.currentData.currentDate).format("M月,YYYY") + " >"
-                calOptions.customButtons.mPrevButton.text = "< " + moment(calendar.currentData.currentDate).add(-2, 'M').format("M月,YYYY")
-                let cal: any = document.getElementById('cal')
-                calendar = new Calendar(cal, calOptions)
-                calendar.render();//创建新的日历
-                //获取标题的父节点
-                let parent = document.querySelector(".fc-titleButton-button")?.parentNode
-                //在标题父节点中追加节点
-                parent?.appendChild(datePick[0])
-            }
-        },
-        mNextButton: {
-            text: moment().add(1, 'M').format("M月,YYYY") + ">",
-            click: function () {
-                //获取到日期选择器的dom
-                datePick = document.getElementsByClassName("click_date")
-                let picker = document.getElementById("picker")
-                picker?.appendChild(datePick[0])
-                calendar.destroy()
-                calOptions.initialDate = moment(calendar.currentData.currentDate).add(1, 'M').format('YYYY-MM-DD')
-                calOptions.customButtons.titleButton.text = moment(calendar.currentData.currentDate).add(1, 'M').format("M月,YYYY")
-                calOptions.customButtons.mNextButton.text = moment(calendar.currentData.currentDate).add(2, 'M').format("M月,YYYY") + " >"
-                calOptions.customButtons.mPrevButton.text = "< " + moment(calendar.currentData.currentDate).format("M月,YYYY")
-                let cal: any = document.getElementById('cal')
-                calendar = new Calendar(cal, calOptions)
-                calendar.render();//创建新的日历
-                //获取标题的父节点
-                let parent = document.querySelector(".fc-titleButton-button")?.parentNode
-                //在标题父节点中追加节点
-                parent?.appendChild(datePick[0])
-            }
-        },
-        wPrevButton: {
-            text: "< 上一周",
-            click: function () {
-                calendar.prev()
-            }
-        },
-        wNextButton: {
-            text: "下一周 >",
-            click: function () {
-                calendar.next()
-            }
-        },
-        titleButton: {
-            text: moment().format("M月,YYYY")
-        }
-    },
     //工作日，0-周日
     businessHours: {
         daysOfWeek: [1, 2, 3, 4, 5], // Monday - Friday
         startTime: '00:00:00',
         endTime: '24:00:00',
     },
-    aspectRatio: 2.4,//日历宽高比
+    contentHeight: "auto",
+    // aspectRatio: 2.4,//日历宽高比
     events: events,//事件源
     resources: resources,//左侧资源
     eventTextColor: '#4c74ed',
@@ -316,9 +314,41 @@ let calOptions: any = {
             headerContent: ''//标题内容
         }
     ],
+    customButtons: {//自定义按钮
+        mPrevButton: {
+            text: "< " + alaboToChinese(moment().add(-1, 'M').format("M")) + moment().format('月,YYYY'),
+            click: function () {
+                clickButton('month', 'prev')
+            }
+        },
+        mNextButton: {
+            text: alaboToChinese(moment().add(1, 'M').format("M")) + moment().format('月,YYYY') + ">",
+            click: function () {
+                clickButton('month', 'next')
+            }
+        },
+        mtitleButton: {
+            text: alaboToChinese(moment().format("M")) + moment().format('月,YYYY')
+        },
+        wPrevButton: {
+            text: "< 上一周",
+            click: function () {
+                clickButton('week', 'prev')
+            }
+        },
+        wNextButton: {
+            text: "下一周 >",
+            click: function () {
+                clickButton('week', 'next')
+            }
+        },
+        wtitleButton: {
+            text: todayDate.getYear + "年" + alaboToChinese(todayDate.getMonth.toString()) + "月" + ",第" + alaboToChinese(todayDate.getWeek.toString()) + "周"
+        }
+    },
     //单元格渲染函数
     dayCellContent(arg: any) {
-        dayCellMount(arg)
+        changeDaystyle(arg)
     },
     //单元格增加classname
     dayCellClassNames(arg: any) {
@@ -340,89 +370,149 @@ let calOptions: any = {
     },
     //事件点击
     eventClick(arg: any) {
-        dialogTableVisible.value = true
-        gridData.value = arg.event.title
+        clickEvent(arg)
     },
-    dateClick(arg: any) {
-        dialogTableVisible.value = true
-        gridData.value = arg.dateStr
-    }
 }
-onMounted(() => {
-    let cal: any = document.getElementById('cal')
-    calendar = new Calendar(cal, calOptions)
-    calendar.render();
-    //获取到日期选择器的dom
-    let date_click = document.getElementsByClassName("click_date")
-    //获取标题的父节点
-    let parent = document.querySelector(".fc-titleButton-button")?.parentNode
-    //在标题父节点中追加节点
-    parent?.appendChild(date_click[0])
-})
 
-const dayCellMount = (arg: any) => {
+//日历中日期显示格式修改
+const changeDaystyle = (arg: any) => {
     let date = moment(arg.date).format('DD')
     arg.dayNumberText = date//修改显示的日期格式
 }
+
+//事件点击
+const clickEvent = (arg: any) => {
+
+}
+
 //切换视图按钮
-const changeVis = () => {
-    //获取到日期选择器的dom
-    datePick = document.getElementsByClassName("click_date")
+const changeView = () => {
+
+    //获取日期选择器
+    dateChooser = document.getElementsByClassName("click_date")
     let picker = document.getElementById("picker")
-    picker?.appendChild(datePick[0])
+    let year = moment().format('月,YYYY')
+    picker?.appendChild(dateChooser[0])
     calendar.destroy();//销毁原来的日历
+    pickedDate.value = ""
     calOptions.initialDate = moment().format('YYYY-MM-DD')
-    if (calOptions.initialView !== 'resourceTimelineWeek') {
+    //月视图换周视图
+    if (calOptions.initialView == 'dayGridMonth') {
         calOptions.initialView = 'resourceTimelineWeek'
         calOptions.height = 'auto'//周视图需要设置高度为auto
         calOptions.headerToolbar.left = "wPrevButton"
         calOptions.headerToolbar.right = "wNextButton"
-        calOptions.headerToolbar.center = "title"
-        let cal: any = document.getElementById('cal')
-        calendar = new Calendar(cal, calOptions)
-        calendar.render();//创建新视图的日历
-    } else {
-        calOptions.customButtons.titleButton.text = moment().format("M月,YYYY")
-        calOptions.customButtons.mNextButton.text = moment().add(1, 'M').format("M月,YYYY") + " >"
-        calOptions.customButtons.mPrevButton.text = "< " + moment().add(-1, 'M').format("M月,YYYY")
-        calOptions.headerToolbar.left = "mPrevButton"
-        calOptions.headerToolbar.right = "mNextButton"
-        calOptions.headerToolbar.center = "titleButton"
-        calOptions.initialView = 'dayGridMonth'
-        delete calOptions.height//月视图不需要设置高度
-        let cal: any = document.getElementById('cal')
+        calOptions.headerToolbar.center = "wtitleButton"
+        calOptions.customButtons.wtitleButton.text = todayDate.getYear + "年" + alaboToChinese(todayDate.getMonth.toString()) + "月" + ",第" + alaboToChinese(todayDate.getWeek.toString()) + "周"
         calendar = new Calendar(cal, calOptions)
         calendar.render();//创建新视图的日历
         //获取标题的父节点
-        let parent = document.querySelector(".fc-titleButton-button")?.parentNode
+        let parent = document.querySelector(".fc-wtitleButton-button")?.parentNode
         //在标题父节点中增加日期选择器
-        parent?.appendChild(datePick[0])
+        parent?.appendChild(dateChooser[0])
+    }
+    //周视图换月视图
+    else {
+        calOptions.initialView = 'dayGridMonth'
+        calOptions.customButtons.mtitleButton.text = alaboToChinese(moment().format("M")) + year
+        calOptions.customButtons.mNextButton.text = alaboToChinese(moment().add(1, 'M').format("M")) + year + " >"
+        calOptions.customButtons.mPrevButton.text = "< " + alaboToChinese(moment().add(-1, 'M').format("M")) + year
+        calOptions.headerToolbar.left = "mPrevButton"
+        calOptions.headerToolbar.right = "mNextButton"
+        calOptions.headerToolbar.center = "mtitleButton"
+        delete calOptions.height//月视图不需要设置高度
+        calendar = new Calendar(cal, calOptions)
+        calendar.render();//创建新视图的日历
+        //获取标题的父节点
+        let parent = document.querySelector(".fc-mtitleButton-button")?.parentNode
+        //在标题父节点中增加日期选择器
+        parent?.appendChild(dateChooser[0])
     }
 }
 
-const dateChanage = () => {
-    //获取到日期选择器的dom
-    datePick = document.getElementsByClassName("click_date")
+//日期选择框选择日期
+const clickDate = () => {
+
+    //获取日期选择器
+    dateChooser = document.getElementsByClassName("click_date")
     let picker = document.getElementById("picker")
-    picker?.appendChild(datePick[0])
-    dateOpt.key = 1
+    picker?.appendChild(dateChooser[0])
+    let calendarType = calendar.view.type
+    let year = moment(pickedDate.value).format('月,YYYY')
     calendar.destroy();//销毁原来的日历
-    calOptions.initialDate = moment(pickDate.value).format('YYYY-MM-DD')
-    calOptions.customButtons.titleButton.text = moment(pickDate.value).format("M月,YYYY")
-    calOptions.customButtons.mNextButton.text = moment(pickDate.value).add(1, 'M').format("M月,YYYY年") + " >"
-    calOptions.customButtons.mPrevButton.text = "< " + moment(pickDate.value).add(-1, 'M').format("M月,YYYY年")
-    let cal: any = document.getElementById('cal')
+    calOptions.initialDate = moment(pickedDate.value).format('YYYY-MM-DD')
+    calOptions.customButtons.mtitleButton.text = alaboToChinese(moment(pickedDate.value).format("M")) + year
+    calOptions.customButtons.mNextButton.text = alaboToChinese(moment(pickedDate.value).add(1, 'M').format("M")) + year + " >"
+    calOptions.customButtons.mPrevButton.text = "< " + alaboToChinese(moment(pickedDate.value).add(-1, 'M').format("M")) + year
+    let date = getMonthWeek(moment(pickedDate.value).format("YYYY"), moment(pickedDate.value).format("M"), moment(pickedDate.value).format("D"))
+    calOptions.customButtons.wtitleButton.text = date.getYear + "年" + alaboToChinese(date.getMonth.toString()) + "月" + ",第" + alaboToChinese(date.getWeek.toString()) + "周"
     calendar = new Calendar(cal, calOptions)
     calendar.render();//创建新的日历
-    pickDate.value = ""
-    //获取标题的父节点
-    let parent = document.querySelector(".fc-titleButton-button")?.parentNode
-    //在标题父节点中增加日期选择器
-    parent?.appendChild(datePick[0])
+    // pickedDate.value = ""
+    if (calendarType == 'dayGridMonth') {
+        //获取标题的父节点
+        let parent = document.querySelector(".fc-mtitleButton-button")?.parentNode
+        //在标题父节点中增加日期选择器
+        parent?.appendChild(dateChooser[0])
+    }
+    else {
+        //获取标题的父节点
+        let parent = document.querySelector(".fc-wtitleButton-button")?.parentNode
+        //在标题父节点中增加日期选择器
+        parent?.appendChild(dateChooser[0])
+
+    }
 }
 
-const edit = () => {
+const editDialong = () => {
     isEdit.value = !isEdit.value
+}
+
+const clickButton = (type: string, operation: string) => {
+    //获取日期选择器
+    dateChooser = document.getElementsByClassName("click_date")
+    let picker = document.getElementById("picker")
+    picker?.appendChild(dateChooser[0])
+    calendar.destroy()
+    let year = moment(calendar.currentData.currentDate).format("月,YYYY")
+    pickedDate.value = ""//切换视图将日期选择器的时间清空
+    //周视图按钮
+    if (type == 'week') {
+        let calNowDate = ""
+        if (operation == 'prev') {
+            calNowDate = moment(calendar.currentData.currentDate).add(-7, 'd').format('YYYY-MM-DD')
+        }
+        else {
+            calNowDate = moment(calendar.currentData.currentDate).add(7, 'd').format('YYYY-MM-DD')
+        }
+        calOptions.initialDate = moment(calNowDate).format('YYYY-MM-DD')
+        let date = getMonthWeek(moment(calNowDate).format("YYYY"), moment(calNowDate).format("M"), moment(calNowDate).format("D"))
+        calOptions.customButtons.wtitleButton.text = date.getYear + "年" + alaboToChinese(date.getMonth.toString()) + "月" + ",第" + alaboToChinese(date.getWeek.toString()) + "周"
+    }
+    //月视图按钮
+    else if (type == 'month') {
+        if (operation == 'prev') {
+            calOptions.initialDate = moment(calendar.currentData.currentDate).add(-1, 'M').format('YYYY-MM-DD')
+            calOptions.customButtons.mNextButton.text = alaboToChinese(moment(calendar.currentData.currentDate).format("M")) + year + " >"
+            calOptions.customButtons.mtitleButton.text = alaboToChinese(moment(calendar.currentData.currentDate).add(-1, 'M').format("M")) + year
+            calOptions.customButtons.mPrevButton.text = "< " + alaboToChinese(moment(calendar.currentData.currentDate).add(-2, 'M').format("M")) + year
+        }
+        else {
+            calOptions.initialDate = moment(calendar.currentData.currentDate).add(1, 'M').format('YYYY-MM-DD')
+            calOptions.customButtons.mNextButton.text = alaboToChinese(moment(calendar.currentData.currentDate).add(2, 'M').format("M")) + year + " >"
+            calOptions.customButtons.mtitleButton.text = alaboToChinese(moment(calendar.currentData.currentDate).add(1, 'M').format("M")) + year
+            calOptions.customButtons.mPrevButton.text = "< " + alaboToChinese(moment(calendar.currentData.currentDate).format("M")) + year
+        }
+    }
+    calendar = new Calendar(cal, calOptions)
+    calendar.render();//创建新的日历
+    if (type == 'month') {
+        let parent = document.querySelector(".fc-mtitleButton-button")?.parentNode
+        parent?.appendChild(dateChooser[0])
+    } else {
+        let parent = document.querySelector(".fc-wtitleButton-button")?.parentNode
+        parent?.appendChild(dateChooser[0])
+    }
 }
 
 </script>
@@ -431,7 +521,7 @@ const edit = () => {
 .cal-container {
     font-family: Microsoft YaHei;
     // background-color: skyblue;
-    // height: 100vh;
+    height: auto;
     padding: 10px;
     position: relative;
 
@@ -449,11 +539,13 @@ const edit = () => {
     .my-header {
         display: flex;
         justify-content: end;
+        margin-bottom: 10px;
 
         .dialong-button {
             margin-left: 22px;
             width: 16px;
             height: 16px;
+            cursor: pointer;
         }
     }
 
@@ -538,7 +630,9 @@ const edit = () => {
 
 //边框
 :deep(.fc-theme-standard th) {
-    border: 1px solid #dcdcdc80;
+    border: 0px solid #dcdcdc80;
+    border-left: 1px solid rgba(220, 220, 220, 0.5019607843);
+    border-right: 1px solid rgba(220, 220, 220, 0.5019607843);
 }
 
 //修改今天单元格样式
@@ -566,7 +660,12 @@ const edit = () => {
     justify-content: center;
 }
 
-:deep(.fc-titleButton-button) {
+:deep(.fc-mtitleButton-button) {
+    color: #000000 !important;
+    font-size: 1.75em;
+}
+
+:deep(.fc-wtitleButton-button) {
     color: #000000 !important;
     font-size: 1.75em;
 }
@@ -644,5 +743,74 @@ const edit = () => {
 
 :deep(.fc-day-today .fc-timeline-slot-frame) {
     color: #4c74ed;
+}
+
+:deep(.fc-event-title) {
+    padding-left: 10px;
+}
+
+:deep(.el-input__suffix-inner) {
+    display: none;
+}
+
+:deep(.fc-daygrid-day-events) {
+    min-height: 7em !important;
+}
+
+:deep(.popoverBox1) {
+    position: absolute;
+    z-index: 10;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 20px 0px #bbbbbb;
+}
+
+:deep(.popoverBox2) {
+    position: fixed;
+    z-index: 10;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 20px 0px #bbbbbb;
+}
+
+:deep(.fc-timeline-events) {
+    position: initial;
+}
+</style>
+<style lang="scss">
+.cal-container {
+    .dialog-contain {
+        padding: 20px;
+        width: 620px;
+
+        .item {
+            display: flex;
+            margin-bottom: 14px;
+
+            .item-title {
+                width: 70px;
+                margin-right: 24px;
+                color: #999999;
+            }
+
+            .item-detail {
+                flex-grow: 1;
+            }
+
+            .number {
+                display: flex;
+
+                .number-item {
+                    display: flex;
+                    padding-right: 20px;
+
+                    .number-photo {
+                        width: 20px;
+                        height: 20px;
+                        margin-right: 8px;
+                    }
+                }
+            }
+        }
+    }
+
 }
 </style>

@@ -9,10 +9,16 @@ import { App } from 'vue';
 
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
+
+// vxe-table插件，整合了element组件库
+import VXETablePluginElement from 'vxe-table-plugin-element'
+import 'vxe-table-plugin-element/dist/style.css'
 //自动生成导航菜单
 import { useOutline } from '@lazebird/vue3outline';
 
 formCreate.use(install)
+
+VXETable.use(VXETablePluginElement)
 
 function setupOtherImports(app: App) {
     app
