@@ -1,6 +1,6 @@
 <template>
-    <el-tooltip class="box-item" effect="dark" :content="props.msg" :placement="placement">
-        <vxe-button :icon="icon" ref="buttonRef" @click="zoom" />
+    <el-tooltip class="box-item" effect="dark" :content="props.msg" :placement="placement" :hide-after="0">
+        <vxe-button :icon="icon" ref="buttonRef" v-bind="$attrs" />
     </el-tooltip>
 </template>
 
@@ -11,22 +11,25 @@ import eventBus from '@/utils/base/EventBus';
 const props = defineProps<{
     // 自定义提示信息
     msg?: string,
+    isShowSearchForm?: boolean,
     // 表格公共的api
     grid: VxeGridConstructor
 }>()
 const icon = ref('vxe-icon-fullscreen')
 const isFullscreen = ref(false)
+const isShowSearchForm = ref(props.isShowSearchForm)
 const placement = ref<any>('top')
-function zoom() {
-    isFullscreen.value = !isFullscreen.value
-    props.grid.zoom();
-}
 watch(isFullscreen, (value) => {
     icon.value = value ? 'vxe-icon-minimize' : 'vxe-icon-fullscreen'
 })
 onMounted(() => {
-    eventBus.on('IsShowSearchForm', (isShowSearchForm: boolean) => {
-        placement.value = isShowSearchForm ? 'top' : 'bottom'
+    eventBus.on('IsShowSearchForm', (_isShowSearchForm: boolean) => {
+        isShowSearchForm.value = _isShowSearchForm
+        placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
+    })
+    eventBus.on('isFullscreen', () => {
+        isFullscreen.value = !isFullscreen.value
+        placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
     })
 })
 </script>

@@ -3,6 +3,7 @@ import useAppStore from './base/app';
 import usePermissionStore from './base/permission';
 import useSettingStore from './base/settings';
 import useTagsViewStore from './base/tagsView';
+import useUserHabitsStorage from './base/storage';
 import { createPinia } from 'pinia';
 import piniaPluginPersist from 'pinia-plugin-persist'
 import { App } from 'vue';
@@ -15,7 +16,8 @@ const useStore = () => ({
   app: useAppStore(),
   permission: usePermissionStore(),
   setting: useSettingStore(),
-  tagsView: useTagsViewStore()
+  tagsView: useTagsViewStore(),
+  userHabits: useUserHabitsStorage()
 });
 
 export function setupStore(app: App) {

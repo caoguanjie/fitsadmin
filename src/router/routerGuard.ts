@@ -6,13 +6,13 @@ import { RouteLocationNormalized, Router } from 'vue-router'
 import useStore from '@/store';
 NProgress.configure({ showSpinner: false })
 import ENV from '@/environment/index';
+import { error } from 'console';
 const whiteList = ['/login', '/404']
 export const createRouterGuards = (router: Router) => {
     router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized, next: any) => {
         // 开启进度条
         NProgress.start()
-        const { user } = useStore();
-        const { permission } = useStore();
+        const { user, permission, userHabits } = useStore();
 
         // 确定用户是否已登录
         if (user && user.token) {
@@ -32,7 +32,8 @@ export const createRouterGuards = (router: Router) => {
                         asscessRoutes.forEach((route: any) => {
                             router.addRoute(route);
                         });
-
+                        // 根据用户的id初始化用户习惯的数据库存储
+                        userHabits.store === null && userHabits.initDB((user.userInfo as any).id)
                         // Set the replace: true, 因此导航不会留下历史记录
                         next({ ...to, replace: true })
                     } catch (err: any) {
@@ -44,6 +45,7 @@ export const createRouterGuards = (router: Router) => {
                     }
                 } else {
                     next()
+
                 }
             }
         } else {

@@ -1,5 +1,5 @@
 <template>
-    <el-tooltip class="box-item" effect="dark" :content="props.msg" :placement="data.placement">
+    <el-tooltip class="box-item" effect="dark" :content="props.msg" :placement="data.placement" :hide-after="0">
         <vxe-button icon="vxe-icon-custom-column" ref="buttonRef" v-click-outside="onClickOutside" />
     </el-tooltip>
 

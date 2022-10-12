@@ -4,11 +4,10 @@
         <fits-table :option="gridOptions" ref="xGrid">
 
             <template #operate="{ row }">
-                <el-button type="primary">{{row}}</el-button>
-                <el-button type="success">Success</el-button>
-                <el-button type="info">Info</el-button>
-                <el-button type="warning">Warning</el-button>
-                <el-button type="danger">Danger</el-button>
+                <el-button type="success">编辑</el-button>
+                <el-button type="info">删除</el-button>
+                <!-- <el-button type="warning">Warning</el-button>
+                <el-button type="danger">Danger</el-button> -->
             </template>
 
         </fits-table>
@@ -16,9 +15,12 @@
 </template>
 
 <script lang='ts' setup>
+import { getMenuList } from '@/api/base/system';
 import { FitsFormItemProps } from '@/components/Form/type';
 import { FitsTableProps } from '@/components/List/type';
+import { AxiosResponse } from 'axios';
 import { VxeGridInstance, VxeGridProps } from 'vxe-table';
+import XEUtils from 'xe-utils';
 // import FitsTable from '@/components/List/FitsTable'
 const xGrid = ref<VxeGridInstance>()
 const formItem: FitsFormItemProps[] = [
@@ -151,27 +153,27 @@ const gridOptions = reactive<FitsTableProps>({
     },
     formConfig: {
         data: {
-            name: '1',
-            nickname: '2',
-            sex: '0',
-            role: '',
-            age: 22,
-            val1: [],
-            val2: false,
-            val3: '',
-            flag: false
+            keyword: '1',
+            // nickname: '2',
+            // sex: '0',
+            // role: '',
+            // age: 22,
+            // val1: [],
+            // val2: false,
+            // val3: '',
+            // flag: false
         },
         items: [
-            { field: 'name', span: 3, title: '名称', titlePrefix: { content: '名称', icon: '' }, itemRender: { name: 'input', props: { placeholder: '请输入名称', type: 'password', onFocus: () => console.log(1111) } } },
-            { field: 'sex', span: 3, title: '性别', itemRender: { name: '$select', options: [{ value: '0', label: '女' }, { value: '1', label: '男' }], props: { placeholder: '请选择性别' } } },
-            { field: 'role', span: 3, title: '角色', itemRender: { name: '$input', props: { placeholder: '请输入角色' } } },
-            { field: 'age1', span: 3, title: '年龄1', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            { field: 'age2', span: 3, title: '年龄2', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            { field: 'age3', span: 3, title: '年龄3', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            { field: 'age4', span: 3, title: '年龄5', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            { field: 'age5', span: 3, title: '年龄5', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            { field: 'age6', span: 3, title: '年龄6', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            { field: 'flag', span: 3, title: '开关', itemRender: { name: '$switch', props: { openLabel: '是', closeLabel: '否' } } },
+            { field: 'keyword', span: 3, title: '模糊搜索', itemRender: { name: 'input', props: { placeholder: '请输入菜单关键字、权限标识、路径' } } },
+            // { field: 'sex', span: 3, title: '性别', itemRender: { name: '$select', options: [{ value: '0', label: '女' }, { value: '1', label: '男' }], props: { placeholder: '请选择性别' } } },
+            // { field: 'role', span: 3, title: '角色', itemRender: { name: '$input', props: { placeholder: '请输入角色' } } },
+            // { field: 'age1', span: 3, title: '年龄1', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
+            // { field: 'age2', span: 3, title: '年龄2', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
+            // { field: 'age3', span: 3, title: '年龄3', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
+            // { field: 'age4', span: 3, title: '年龄5', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
+            // { field: 'age5', span: 3, title: '年龄5', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
+            // { field: 'age6', span: 3, title: '年龄6', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
+            // { field: 'flag', span: 3, title: '开关', itemRender: { name: '$switch', props: { openLabel: '是', closeLabel: '否' } } },
         ]
     },
     importConfig: {},
@@ -186,12 +188,16 @@ const gridOptions = reactive<FitsTableProps>({
     },
     columns: [
         { field: 'Checkbox', type: 'checkbox', title: '多选', width: 50 },
-        { field: 'Indexes', title: '序号', type: 'seq', width: 160 },
-        { field: 'name', title: '姓名', width: 160 },
-        { field: 'nickname', title: '昵称', width: 160 },
-        { field: 'role', title: '角色', width: 160 },
-        { field: 'address', title: '地址', width: 100 },
-        { field: 'Operation', title: '操作列', width: 200, slots: { default: 'operate' }, fixed: 'right' }
+        { field: 'Indexes', title: '序号', type: 'seq', width: 50 },
+        { field: 'Title', title: '菜单标题', width: 130, treeNode: true },
+        { field: 'Icon', title: '图标', width: 100 },
+        { field: 'Sort', title: '排序', width: 160 },
+        { field: 'Type', title: '权限标识', width: 100 },
+        { field: 'ComponentPath', title: '组件路径', width: 100 },
+        { field: 'IsUrL', title: '外链', width: 100 },
+        { field: 'IsCache', title: '缓存', width: 100 },
+        { field: 'CreateTime', title: '创建日期', width: 130 },
+        { field: 'Operation', title: '操作列', minWidth: 150, slots: { default: 'operate' }, fixed: 'right' }
         // { field: 'Operation', title: '操作列', width: 200, fixed: 'right', contentRender: { name: 'TableOpeate' } }
     ],
 
@@ -262,6 +268,48 @@ const gridOptions = reactive<FitsTableProps>({
     },
     customConfig: {
         storage: true,
+    },
+    treeConfig: {
+        transform: true,
+        rowField: 'Id',
+        parentField: 'PId',
+    },
+    proxyConfig: {
+        form: true, // 启用表单代理
+        ajax: {
+            query: ({ page, form }) => {
+
+                return new Promise(resolve => {
+                    // 整合分页参数
+                    const pageParam = {
+                        pageIndex: page.currentPage,
+                        pageSize: page.pageSize,
+                    }
+                    getMenuList(form, pageParam).then((result: AxiosResponse) => {
+                        const { ReturnData } = result;
+                        if (!ReturnData) {
+                            // 当接口不给力，随便返回null的时候，我们要初始化值
+                            resolve({
+                                result: [],
+                                page: {
+                                    total: 0
+                                }
+                            })
+                            return;
+                        }
+                        console.log(XEUtils.toTreeArray(ReturnData.TableList))
+                        resolve({
+                            result: XEUtils.toTreeArray(ReturnData.TableList),
+                            page: {
+                                total: ReturnData.ItemCount
+                            }
+                        })
+
+                    })
+                })
+
+            }
+        }
     },
 })
 

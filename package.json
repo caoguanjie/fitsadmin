@@ -23,6 +23,7 @@
         "@fullcalendar/daygrid": "^5.11.3",
         "@fullcalendar/interaction": "^5.11.3",
         "@fullcalendar/resource-timeline": "^5.11.3",
+        "@ionic/storage": "^3.0.6",
         "@lazebird/vue3outline": "^0.1.8",
         "@logicflow/core": "^1.1.26",
         "@logicflow/extension": "^1.1.26",

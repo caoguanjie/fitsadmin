@@ -15,23 +15,30 @@ import variables from '@/styles/variables.module.scss';
 import { ComponentInternalInstance } from 'vue';
 import { FitsTableProps, FitsToolsBarConfig, FitstoolsOption, ToolsConfig } from './type';
 import eventBus from '@/utils/base/EventBus';
-import { fa } from 'element-plus/es/locale';
+import useStore from '@/store';
 const props = defineProps<{
     option: FitsTableProps,
 }>()
 
 const xGrid = ref<VxeGridInstance>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-
-
+// 提取用户习惯
+const { userHabits } = useStore();
+// 数据库存储的键值
+const storageID = computed(() => props.option.id ?? 'FitsTable')
 const state = reactive({
     // 动态插槽的名字数组
     dynamicSlotNameArray: [] as string[],
     // 这里有个大坑，需要把props的proxy对象先做一个深拷贝，变成一个js普通对象，不然props里面复杂的proxy对象嵌套，随便修改都会会让属性失去响应
     gridOption: XEUtils.clone(props.option as VxeGridProps, true),
     // 是否显示搜索表单
-    isShowSearchForm: true
+    isShowSearchForm: true,
 })
+const userHabitState = reactive({
+    isShowSearchForm: true,
+})
+
+
 /**
  * 导出实例化的方法
  */
@@ -64,8 +71,21 @@ const gridEvents: VxeGridListeners = {
 // 初始化默认配置
 initDefaultConfig()
 
-onMounted(() => {
+onMounted(async () => {
     console.log(xGrid.value?.$el)
+    // 常用查询功能，监听表单项是否显示
+    setFormConfigItemVisible();
+
+    const storage = await userHabits.get(storageID.value)
+    // console.error(storage.isShowSearchForm)
+    if (storage === null) {
+        userHabits.set(storageID.value, userHabitState)
+    } else {
+        console.error(storage)
+        XEUtils.merge(userHabitState, storage)
+        console.error(userHabitState)
+    }
+
 })
 
 function initDefaultConfig() {
@@ -76,6 +96,10 @@ function initDefaultConfig() {
     // 设置工具栏的默认配置
     setToolbarConfig();
 }
+
+// function saveUserHabits() {
+//     XEUtils.merge
+// }
 
 function setDefaultOption() {
     const _gridOption = XEUtils.clone(props.option as VxeGridProps, true)
@@ -123,18 +147,27 @@ function checkAllSlots() {
 
 // 处理每个表单项应该显示几个
 function handleFormItemNumber(width: number) {
-    // 每一个表单项的初始宽度，默认338px
-    const formItemWidth = parseInt(variables.ListSearchFormItemWidth);
+    if (XEUtils.isPlainObject(state.gridOption.formConfig) && state.gridOption.formConfig?.items?.length) {
 
-    const lineItem = width < 768 ? 2 : Math.ceil(width / formItemWidth);
-    // 默认的配置 
-    const items = state.gridOption.formConfig?.items as VxeFormItemProps[]
-    state.gridOption.formConfig!.items = items.map((element: VxeFormItemProps, index: number) => {
-        element.span = Math.floor(24 / lineItem)
-        !element.className && (element.folding = index >= lineItem - 1)
-        return element
-    })
+        // 每一个表单项的初始宽度，默认338px
+        const formItemWidth = parseInt(variables.ListSearchFormItemWidth);
 
+        const lineItem = width < 768 ? 2 : Math.ceil(width / formItemWidth);
+        // 默认的配置 
+        const items = state.gridOption.formConfig?.items as VxeFormItemProps[];
+        const visibleArray = items.filter((item: VxeFormItemProps) => {
+            item.visible = item.visible ?? true;
+            return item.visible === false && item.folding === false
+        })
+        // 这里是因为可能表单搜索项过少时，能给予最大的空间
+        // const targetItem = lineItem <= items.length ? lineItem : items.length
+        state.gridOption.formConfig!.items = items.map((element: VxeFormItemProps, index: number) => {
+            element.span = Math.floor(24 / lineItem);
+            element.className !== 'searchBtns' && (element.folding = index >= lineItem - 1 + visibleArray.length)
+            return element
+        })
+        console.log(state.gridOption.formConfig!.items)
+    }
 }
 
 
@@ -172,16 +205,14 @@ function setToolbarConfig() {
         search: {
             toolRender: {
                 name: 'ToolbarSearch',
-                props: {
-                    isShowSearchForm: state.isShowSearchForm
-                },
                 events: {
                     click: () => {
-                        state.isShowSearchForm = !state.isShowSearchForm;
-                        (state.gridOption.toolbarConfig as any).tools[0].toolRender.props.isShowSearchForm = 'false'
-                        console.error()
-                        xGrid.value!.$el.querySelector('.vxe-grid--form-wrapper').style.display = state.isShowSearchForm ? 'block' : 'none';
-                        eventBus.emit('IsShowSearchForm', state.isShowSearchForm)
+                        userHabitState.isShowSearchForm = !userHabitState.isShowSearchForm;
+                        // xGrid.value!.$el.querySelector('.vxe-grid--form-wrapper').style.display = userHabitState.isShowSearchForm ? 'block' : 'none';
+                        // 这步主要是解决各个工具栏被放大后，提示框被挡住的问题，可以把提示框方向变成bottom属性
+                        // eventBus.emit('IsShowSearchForm', userHabitState.isShowSearchForm)
+                        // 这里主要解决放大化，如果隐藏搜索区域时，列表高度无法自动计算高度的问题，可以利用vxetable的内置方法，触发页面计算高度。
+                        // userHabits.set(storageID.value, userHabitState)
                     }
                 }
             }
@@ -200,7 +231,20 @@ function setToolbarConfig() {
             }
         },
         fullscreen: {
-            toolRender: { name: 'ToolbarFullscreen' }
+            toolRender: {
+                name: 'ToolbarFullscreen',
+                props: {
+                    isShowSearchForm: userHabitState.isShowSearchForm
+                },
+                events: {
+                    click: () => {
+                        xGrid.value?.zoom()
+                        eventBus.emit('IsShowSearchForm', userHabitState.isShowSearchForm)
+                        eventBus.emit('isFullscreen', null)
+
+                    }
+                },
+            }
         },
         custom: {
             toolRender: {
@@ -240,20 +284,28 @@ function setToolbarConfig() {
         ...state.gridOption.toolbarConfig,
     }
 }
+/**
+ * 工具栏-常用查询-是否显示表单的某一项
+ */
+function setFormConfigItemVisible() {
+    eventBus.on('changFromItemStatus', (target: VxeFormItemProps) => {
+        const items = state.gridOption.formConfig?.items as VxeFormItemProps[]
+        items.find((item: VxeFormItemProps) => item.field === target.field && (item.visible = target.visible))
+        handleFormItemNumber(xGrid.value?.$el.clientWidth)
+    })
+}
+
+
 // 监听浏览器的变化事件
 useResizeObserver(document.body, (entries) => {
     const entry = entries[0]
-    if (XEUtils.isPlainObject(state.gridOption.formConfig) && state.gridOption.formConfig?.items?.length) {
-        // 如果有表单配置才执行计算方法
-        handleFormItemNumber(xGrid.value?.$el.clientWidth)
-    }
+    // 如果有表单配置才执行计算方法
+    handleFormItemNumber(xGrid.value?.$el.clientWidth)
     const padding = parseInt(variables.basePadding);
     const mainContentHeight = entry.target.querySelector('.fits-main-layout')?.clientHeight ?? 0;
     state.gridOption.height = props.option?.autoHeight && (mainContentHeight - padding) > 0 ? (mainContentHeight - padding) : 600;
-    console.log(variables.basePadding)
-    // console.error(entry.target.querySelector(props.option?.className)?.clientHeight)
-    // state.gridOption.height = mainContentHeight;
 })
+
 
 /**
  * 监听外界的表格配置项的变化，重新初始化默认配置项
@@ -264,6 +316,15 @@ watch(() => props.option, (newValue) => {
     initDefaultConfig()
 }, { deep: true })
 
+
+/**
+ * 监听搜索区域是否显示
+ */
+watch(() => userHabitState.isShowSearchForm, (newValue) => {
+    xGrid.value!.$el.querySelector('.vxe-grid--form-wrapper').style.display = newValue ? 'block' : 'none';
+    // 这步主要是解决各个工具栏被放大后，提示框被挡住的问题，可以把提示框方向变成bottom属性
+    eventBus.emit('IsShowSearchForm', userHabitState.isShowSearchForm)
+})
 </script>
 <style lang='scss' >
 .fits-grid.is--maximize {
@@ -324,15 +385,15 @@ watch(() => props.option, (newValue) => {
             border-radius: 0 !important;
         }
 
-        & button:hover,
-        & button:focus {
+        & .vxe-button:hover,
+        & .vxe-button:focus {
             z-index: 1;
             color: var(--fits-base-color) !important;
             border-color: var(--fits-button-border-focus-color) !important;
             background-color: var(--fits-base-background-color) !important;
         }
 
-        & button:active {
+        & .vxe-button:active {
             z-index: 1;
             // background-color: var(--fits-menu-hover-text-color) !important;
             border-color: #0202e8 !important
