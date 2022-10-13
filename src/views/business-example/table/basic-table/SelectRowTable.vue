@@ -4,6 +4,7 @@
 
 <script lang='ts' setup>
 import { FitsTableProps } from '@/components/List/type';
+import { ElMessage } from 'element-plus';
 
 const gridOptions = reactive<FitsTableProps>({
     columns: [

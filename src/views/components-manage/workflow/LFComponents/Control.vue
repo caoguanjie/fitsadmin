@@ -20,6 +20,7 @@
 <script lang="ts" setup>
 // import { onMounted, reactive } from 'vue';
 //引入默认节点数据
+import { ElMessage } from 'element-plus';
 import demoData from '../data.json';
 // import { ElMessage } from 'element-plus';
 

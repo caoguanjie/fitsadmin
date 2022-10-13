@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue';
 import { useClipboard } from '@vueuse/core';
+import { ElMessage } from 'element-plus';
 
 const icons: any = []; // 指定路径下的所有icons名称数组
 let isSearchList = false;// 是否查询

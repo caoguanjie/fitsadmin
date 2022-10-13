@@ -12,6 +12,7 @@ export default defineConfig({
         AutoImport({
             imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
             dts: path.resolve(__dirname, '.temp/auto-imports.d.ts'),
+            dirs: [path.resolve(__dirname, '../../src')],
         }),
         Components({
             dirs: path.resolve(__dirname, '../../src/components'),
