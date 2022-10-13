@@ -1,39 +1,37 @@
 <template>
-    <div class="cal-container-task">
-        <div class="card" id="cal2" />
-        <div id="picker" style="visibility: hidden;">
-            <el-date-picker class="click_date" v-model="pickDate" type="date" placeholder="请选择日期"
-                @change="changeDate()" />
-        </div>
-        <div id="dialogOuter" style="visibility:hidden;display: flex;height: 0px;">
-            <div id="dialogBox" class="dialog-contain dialogBox">
-                <div class="my-header">
-                    <div>
-                        <div class="title-week">{{dailongTitle.week}}</div>
-                        <div class="title-date">{{dailongTitle.date}}</div>
+    <el-scrollbar @scroll="scroll" always>
+        <div class="cal-container-task" id="cal-container-task">
+            <el-popover popper-class="cal2-popover" :virtual-ref="buttonRef" :visible="isVisible" :show-arrow="false"
+                :popper-options="popperOptions" width="350px" virtual-triggering>
+                <div id="dialogBox" class="dialog-contain-style dialogBox">
+                    <div class="my-header2">
+                        <div class="headerTitle">
+                            <div class="titleWeek">{{eventDate.week}}</div>
+                            <div class="titleDate">{{eventDate.date}}</div>
+                        </div>
+                        <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="closeDialong">
                     </div>
-                    <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="closeDialong">
-                </div>
-                <div class="item" v-for="(data,key) in dialongData" :key="key">
-                    <div class="item-title">
-                        {{data.title}}
-                    </div>
-                    <div class="item-detail" v-if="typeof(data.detail) == 'string' && !isEdit">
-                        {{data.detail}}
-                    </div>
-                    <div class="item-detail" v-else-if="typeof(data.detail) == 'string' && isEdit">
-                        <el-input v-model="data.detail" />
-                    </div>
-                    <div class="member" v-else>
-                        <div class="member-item" v-for="(data2,key2) in data.detail" :key="key2">
-                            <img class="member-photo" :src=data2.src>
-                            <div>{{data2.name}}</div>
+                    <div class="item" v-for="(data,key) in dialongData" :key="key">
+                        <div class="item-title">
+                            {{data.title}}
+                        </div>
+                        <div class="item-detail" v-if="typeof(data.detail) == 'string' && !isEdit">
+                            {{data.detail}}
+                        </div>
+                        <div class="item-detail" v-else-if="typeof(data.detail) == 'string' && isEdit">
+                            <el-input v-model="data.detail" />
                         </div>
                     </div>
                 </div>
+            </el-popover>
+            <el-button ref="buttonRef" style="height:0;visibility:hidden" />
+            <div class="card" id="cal2" />
+            <div id="picker" style="visibility: hidden;">
+                <el-date-picker class="click_date" v-model="pickDate" type="date" placeholder="请选择日期"
+                    @change="changeDate()" />
             </div>
         </div>
-    </div>
+    </el-scrollbar>
 </template>
 <script setup lang="ts">
 
@@ -42,8 +40,19 @@ import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
+const buttonRef = ref()
+let popperOptions = ref()
+let isVisible = ref(false)
+let scrollTop = 0
 let calendar: any
 let cal2: any
+let eventDate = {
+    date: "",
+    week: ""
+}
+let pickDate = ref()
+let isEdit = ref(false)
+let dateChooser: any
 //事件
 let events = [
     {
@@ -154,14 +163,6 @@ const alaboToChinese = (num: string) => {
             return '十二';
     }
 }
-let pickDate = ref()
-let isEdit = ref(false)
-let dateChooser: any
-let dailongTitle = ref({
-    week: "",
-    date: "",
-})
-let dialog: any
 //日历配置
 let calOptions: any = {
     locale: 'zh-cn',
@@ -178,7 +179,7 @@ let calOptions: any = {
         right: 'NextButton'
     },
     contentHeight: "auto",
-    // aspectRatio: 1.7,
+    // aspectRatio: 1.7,//日历宽高比
     //工作日，0-周日
     businessHours: {
         daysOfWeek: [1, 2, 3, 4, 5], // Monday - Friday
@@ -205,7 +206,7 @@ let calOptions: any = {
         },
         TitleButton: {
             text: alaboToChinese(moment().format("M")) + moment().format('月,YYYY')
-        },
+        }
     },
     //单元格增加classname
     dayCellClassNames(arg: any) {
@@ -232,7 +233,6 @@ let calOptions: any = {
         arg.text = "展开" + arg.num + "个工时"
     }
 }
-
 onMounted(() => {
     cal2 = document.getElementById('cal2')
     calendar = new Calendar(cal2, calOptions)
@@ -243,15 +243,32 @@ onMounted(() => {
     let parent = document.querySelector(".fc-TitleButton-button")?.parentNode
     //在标题父节点中追加节点
     parent?.appendChild(date_click[0])
+    document.body.addEventListener('click', onClick, true)
 })
-
+onBeforeUnmount(() => {
+    document.body.removeEventListener('click', onClick, false)
+})
+//判断点击是否在弹窗内
+const onClick = (event: any) => {
+    //减少判断，在弹窗内点击的节点少于15个
+    if (event.path.length < 15) {
+        for (let i = 0; i < event.path.length; i++) {
+            //如果有id为dialogBox则点击的节点是弹窗内的
+            if (event.path[i].id == 'dialogBox') {
+                return
+            }
+        }
+    } else {
+        closeDialong()
+    }
+}
 //日历中日期显示格式修改
 const dayCellMount = (arg: any) => {
     let date = moment(arg.date).format('DD')
     arg.dayNumberText = date//修改显示的日期格式
 }
-
 const changeDate = () => {
+    closeDialong()
     //保存日期选择器
     saveDateChooser()
     let year = moment(pickDate.value).format('月,YYYY')
@@ -266,9 +283,9 @@ const changeDate = () => {
     let parent = document.querySelector(".fc-TitleButton-button")?.parentNode
     //在标题父节点中增加日期选择器
     parent?.appendChild(dateChooser[0])
-
 }
 const clickButton = (operation: string) => {
+    closeDialong()
     //保存日期选择器
     saveDateChooser()
     calendar.destroy()
@@ -291,7 +308,6 @@ const clickButton = (operation: string) => {
     let parent = document.querySelector(".fc-TitleButton-button")?.parentNode
     parent?.appendChild(dateChooser[0])
 }
-
 //日期单元格渲染
 const mountDaycell = (arg: any) => {
     let top = arg.el.children[0].children[0] //显示日期的div
@@ -320,52 +336,60 @@ const mountDaycell = (arg: any) => {
         arg.el.childNodes[0].children[1].innerHTML += outter
     }
 }
-
 //事件点击
 const clickEvent = (arg: any) => {
+    eventDate.date = moment(arg.event.start).format('DD')
+    eventDate.week = '周' + alaboToChinese(moment(arg.event.start).day().toString())
+    //必须确保上一个弹窗关闭，并且造成的高度变化清除之后才能打开新的弹窗，否则会导致位置错误
+    isVisible.value = true
+    //弹窗位置配置
+    let eventPosition = arg.el.getBoundingClientRect()
+    let x = arg.jsEvent.clientX
+    let y = eventPosition.bottom - 137 + scrollTop
+    let box = document.getElementById('cal-container-task')
+    let boxY = box?.getBoundingClientRect().height
+    if (boxY && y + 276 > boxY + scrollTop) {
+        //如果弹窗超出盒子的话，上移超出的高度
+        y = y - (y + 276 - (boxY + scrollTop))
+    }
+    popperOptions.value = {
+        modifiers: [
+            {
+                name: 'offset',
+                options: {
+                    offset: [x, y]
+                }
+            }
+        ]
+    }
 }
-
+const closeDialong = () => {
+    isVisible.value = false
+}
 //保存日期选择器
 const saveDateChooser = () => {
     dateChooser = document.getElementsByClassName("click_date")
     let picker = document.getElementById("picker")
     picker?.appendChild(dateChooser[0])
 }
-
+let timer: any
+//获取滚动高度
+const scroll = (data: any) => {
+    if (timer) {
+        clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+        scrollTop = data.scrollTop
+    }, 100)
+}
 </script>
 
 <style lang="scss" scoped>
 .cal-container-task {
     font-family: Microsoft YaHei;
-    // background-color: skyblue;
-    // height: 100vh;
-    padding: 10px;
+    padding: 10px 15px;
     position: relative;
-
-    .my-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        padding: 20px;
-        background-color: #c9d5fa;
-
-        .dialong-button {
-            margin-left: 22px;
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .title-week {
-            color: #666666;
-        }
-
-        .title-date {
-            color: #666666;
-            font-size: 25px;
-            font-weight: 600;
-        }
-    }
+    height: 85vh;
 
 }
 
@@ -382,7 +406,7 @@ const saveDateChooser = () => {
 :deep(.fc-header-toolbar) {
     border: 2px solid rgba(220, 220, 220, 0.5019607843);
     border-bottom: 0px;
-    padding: 20px 21px 11px 21px;
+    padding: 8px 21px;
     margin-bottom: 0px !important;
 }
 
@@ -392,7 +416,8 @@ const saveDateChooser = () => {
     font-family: Microsoft YaHei;
     color: #999999;
     font-weight: bolder;
-    line-height: 50px;
+    line-height: 46px;
+    cursor: default;
 }
 
 //单元格日期样式
@@ -402,6 +427,7 @@ const saveDateChooser = () => {
     color: #999999;
     font-weight: bolder;
     margin: 8px;
+    cursor: default;
 }
 
 //灰色单元格样式
@@ -436,8 +462,10 @@ const saveDateChooser = () => {
 
 :deep(.fc-TitleButton-button) {
     color: #000000 !important;
-    font-size: 1.75em;
+    cursor: default !important;
+    font-size: 16px !important;
 }
+
 
 :deep(.fc-button) {
     padding: 0;
@@ -446,7 +474,7 @@ const saveDateChooser = () => {
 :deep(.fc-button-primary) {
     color: #999999;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     background-color: #2c3e5000;
     border-color: #2c3e5000;
 }
@@ -476,7 +504,7 @@ const saveDateChooser = () => {
 }
 
 :deep(.fc .fc-datagrid-header .fc-datagrid-cell-frame) {
-    min-height: 60px !important;
+    min-height: 50px !important;
 }
 
 :deep(.fc-datagrid-cell-frame) {
@@ -588,51 +616,66 @@ const saveDateChooser = () => {
     box-sizing: content-box;
     padding-top: 15px;
 }
-
-
-:deep(.popoverBox) {
-    position: absolute;
-    z-index: 10;
-    background-color: #ffffff;
-    box-shadow: 0px 0px 20px 0px #bbbbbb;
-}
 </style>
 <style lang="scss">
-.cal-container-task {
-    .dialog-contain {
-        width: 350px;
+.dialog-contain-style {
 
-        .item {
-            display: flex;
-            margin-bottom: 14px;
-            padding: 0 20px;
+    .my-header2 {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #c9d5fa;
 
-            .item-title {
-                width: 80px;
-                margin-right: 24px;
-                color: #999999;
+        .headerTitle {
+            .titleWeek {
+                color: #666666;
             }
 
-            .item-detail {
-                width: 200px;
+            .titleDate {
+                font-size: 25px;
+                color: #666666;
+                font-weight: 600;
             }
+        }
 
-            .member {
-                display: flex;
+        .dialong-button {
+            margin-left: 22px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
 
-                .member-item {
-                    display: flex;
-                    padding-right: 20px;
+        .title-week {
+            color: #666666;
+        }
 
-                    .member-photo {
-                        width: 20px;
-                        height: 20px;
-                        margin-right: 8px;
-                    }
-                }
-            }
+        .title-date {
+            color: #666666;
+            font-size: 25px;
+            font-weight: 600;
         }
     }
 
+    .item {
+        display: flex;
+        margin-bottom: 14px;
+        padding: 0 20px;
+
+        .item-title {
+            width: 80px;
+            margin-right: 24px;
+            color: #999999;
+        }
+
+        .item-detail {
+            width: 200px;
+        }
+    }
+}
+
+.cal2-popover {
+    padding: 0 !important;
+    z-index: 10000 !important;
 }
 </style>

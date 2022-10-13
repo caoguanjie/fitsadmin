@@ -50,17 +50,29 @@ export const businessRouter: RouteRecordRaw = {
             meta: { title: "复杂表格", roles: ["admin", "editor"], icon: "fits-table-menu" },
             children: [
                 {
-                    path: "DynamicTable",
-                    name: "DynamicTable",
-                    component: () =>
-                        import("@/views/ready/index.vue"),
-                    meta: { title: "动态表格" },
+                    path: "BasicTable",
+                    name: "BasicTable",
+                    component: () => import("@/views/business-example/table/basic-table/index.vue"),
+                    meta: { title: "基础表格" },
                 },
                 {
                     path: "ComplexTable",
                     name: "ComplexTable",
                     component: () => import("@/views/ready/index.vue"),
                     meta: { title: "复杂表头" },
+                },
+                {
+                    path: "SlotTable",
+                    name: "SlotTable",
+                    component: () => import("@/views/business-example/table/slot-table/index.vue"),
+                    meta: { title: "插槽表格" },
+                },
+                {
+                    path: "DynamicTable",
+                    name: "DynamicTable",
+                    component: () =>
+                        import("@/views/ready/index.vue"),
+                    meta: { title: "动态表格" },
                 },
                 {
                     path: "DrapTable",
@@ -75,12 +87,6 @@ export const businessRouter: RouteRecordRaw = {
                     meta: { title: "table内编辑" },
                 },
                 {
-                    path: "ComplexReport",
-                    name: "ComplexReport",
-                    component: () => import("@/views/ready/index.vue"),
-                    meta: { title: "复杂报表" },
-                },
-                {
                     path: "VirtualScroll",
                     name: "VirtualScroll",
                     component: () => import("@/views/ready/index.vue"),
@@ -91,6 +97,12 @@ export const businessRouter: RouteRecordRaw = {
                     name: "AllTable",
                     component: () => import("@/views/business-example/table/ComprehensiveTable.vue"),
                     meta: { title: "综合表格" },
+                },
+                {
+                    path: "ComplexReport",
+                    name: "ComplexReport",
+                    component: () => import("@/views/ready/index.vue"),
+                    meta: { title: "复杂报表" },
                 },
             ],
         },

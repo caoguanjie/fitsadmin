@@ -1,40 +1,44 @@
 <template>
-    <div class="cal-container">
-        <div style="height:30px;">
-            <div class="change-button" @click="changeView()"> 切换视图</div>
-        </div>
-        <div class="card" id="cal" />
-        <div id="picker" style="visibility: hidden;">
-            <el-date-picker class="click_date" v-model="pickedDate" type="date" placeholder="请选择日期"
-                @change="clickDate()" />
-        </div>
-        <div id="dialogOuter" style="visibility:hidden;display: flex;height: 0px;">
-            <div id="dialogBox" class="dialog-contain dialogBox">
-                <div class="my-header">
-                    <img class="dialong-button" src="/src/assets/calendar-icon/edit.png" @click="editDialong">
-                    <img class="dialong-button" src="/src/assets/calendar-icon/delete.png">
-                    <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="closeDialong">
-                </div>
-                <div class="item" v-for="(data,key) in dialongData" :key="key">
-                    <div class="item-title">
-                        {{data.title}}
+    <el-scrollbar @scroll="scroll" always>
+        <div class="cal-container" id="cal-container">
+            <div style="height:30px;">
+                <div class="change-button" @click="changeView()"> 切换视图</div>
+            </div>
+            <el-popover popper-class="cal-popover" :virtual-ref="buttonRef" :visible="isVisible" :show-arrow="false"
+                :popper-options="popperOptions" width="620px" virtual-triggering>
+                <div id="dialogBox" class="dialog-contain-style dialogBox">
+                    <div class="my-header">
+                        <img class="dialong-button" src="/src/assets/calendar-icon/edit.png" @click="editDialong">
+                        <img class="dialong-button" src="/src/assets/calendar-icon/delete.png">
+                        <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="closeDialong">
                     </div>
-                    <div class="item-detail" v-if="typeof(data.detail) == 'string' && !isEdit">
-                        {{data.detail}}
-                    </div>
-                    <div class="item-detail" v-else-if="typeof(data.detail) == 'string' && isEdit">
-                        <el-input v-model="data.detail" />
-                    </div>
-                    <div class="number" v-else>
-                        <div class="number-item" v-for="(data2,key2) in data.detail" :key="key2">
-                            <img class="number-photo" :src=data2.src>
-                            <div>{{data2.name}}</div>
+                    <div class="item" v-for="(data,key) in dialongData" :key="key">
+                        <div class="item-title">
+                            {{data.title}}
+                        </div>
+                        <div class="item-detail" v-if="typeof(data.detail) == 'string' && !isEdit">
+                            {{data.detail}}
+                        </div>
+                        <div class="item-detail" v-else-if="typeof(data.detail) == 'string' && isEdit">
+                            <el-input v-model="data.detail" />
+                        </div>
+                        <div class="member" v-else>
+                            <div class="member-item" v-for="(data2,key2) in data.detail" :key="key2">
+                                <img class="member-photo" :src=data2.src>
+                                <div>{{data2.name}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </el-popover>
+            <el-button ref="buttonRef" style="height:0;visibility:hidden" />
+            <div class="card" id="cal" />
+            <div id="picker" style="visibility: hidden;">
+                <el-date-picker class="click_date" v-model="pickedDate" type="date" placeholder="请选择日期"
+                    @change="clickDate()" />
             </div>
         </div>
-    </div>
+    </el-scrollbar>
 </template>
 <script setup lang="ts">
 
@@ -44,6 +48,16 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import ResourceTimeLine from '@fullcalendar/resource-timeline'
 import interactionPlugin from '@fullcalendar/interaction'
 
+const buttonRef = ref()
+let popperOptions = ref()
+let isVisible = ref(false)
+let pickedDate = ref()
+let isEdit = ref(false)
+let dateChooser: any //日期选择器
+let calendar: any //日历的实例
+let cal: any //日历的div
+let scrollTop = 0
+
 //事件
 let events = [
     {
@@ -51,7 +65,7 @@ let events = [
         resourceId: '1',//对应资源id
         title: '50h 任务1',
         start: '2022-08-28',
-        end: '2022-09-15',
+        end: '2022-09-01',
         backgroundColor: "#216e394d",
         textColor: "#216e39"
     },
@@ -60,7 +74,7 @@ let events = [
         resourceId: '2',
         title: '50h 任务2',
         start: '2022-09-04',
-        end: '2022-09-20',
+        end: '2022-09-07',
         backgroundColor: "#40c4634d",
         textColor: "#40c463"
     },
@@ -69,7 +83,7 @@ let events = [
         resourceId: '3',
         title: '50h 任务3',
         start: '2022-09-11',
-        end: '2022-09-25',
+        end: '2022-09-16',
         backgroundColor: "#ff3a3a4d",
         textColor: "#ff3a3a"
     },
@@ -87,14 +101,14 @@ let events = [
         resourceId: '5',
         title: '50h 任务5 ',
         start: '2022-10-7',
-        end: '2022-10-20',
+        end: '2022-10-11',
     },
     {
         id: '6',
         resourceId: '5',
         title: '0h 任务6 ',
         start: '2022-09-26',
-        end: '2022-10-5',
+        end: '2022-10-01',
         backgroundColor: "#40c4634d",
         textColor: "#40c463",
     },
@@ -103,7 +117,7 @@ let events = [
         resourceId: '5',
         title: '0h 任务6 ',
         start: '2022-09-29',
-        end: '2022-10-15',
+        end: '2022-10-02',
         backgroundColor: "#40c4634d",
         textColor: "#40c463",
     },
@@ -117,20 +131,11 @@ let events = [
         textColor: "#40c463",
     },
     {
-        id: '6',
-        resourceId: '5',
-        title: '0h 任务6 ',
-        start: '2022-09-26',
-        end: '2022-09-30',
-        backgroundColor: "#40c4634d",
-        textColor: "#40c463",
-    },
-    {
         id: '1',
         resourceId: '1',
         title: '0h 任务4',
         start: '2022-10-01',
-        end: '2022-10-20',
+        end: '2022-10-07',
         backgroundColor: "#ff3a3a4d",
         textColor: "#ff3a3a"
     },
@@ -138,8 +143,8 @@ let events = [
         id: '1',
         resourceId: '2',//对应资源id
         title: '50h 任务7',
-        start: '2022-10-9',
-        end: '2022-09-15',
+        start: '2022-10-29',
+        end: '2022-11-01',
         backgroundColor: "#216e394d",
         textColor: "#216e39"
     },
@@ -217,6 +222,8 @@ const getMonthWeek = (a: any, b: any, c: any) => {
     }
     return config
 }
+//获取今天是当月的第几周
+let todayDate = getMonthWeek(moment().format('YYYY'), moment().format('M'), moment().format('D'));
 //阿拉伯数字转中文数字
 const alaboToChinese = (num: string) => {
     switch (num) {
@@ -247,15 +254,6 @@ const alaboToChinese = (num: string) => {
     }
 }
 
-//获取今天是当月的第几周
-let todayDate = getMonthWeek(moment().format('YYYY'), moment().format('M'), moment().format('D'));
-let pickedDate = ref()
-let isEdit = ref(false)
-let dateChooser: any //日期选择器
-let calendar: any //日历的实例
-let cal: any //日历的div
-let dialog: any
-
 onMounted(() => {
     cal = document.getElementById('cal')
     calendar = new Calendar(cal, calOptions)
@@ -264,9 +262,60 @@ onMounted(() => {
     dateChooser = document.getElementsByClassName("click_date")
     //获取标题的父节点
     let parent = document.querySelector(".fc-mtitleButton-button")?.parentNode
-    //在标题父节点中追加节点
+    //在标题父节点中增加日期选择器
     parent?.appendChild(dateChooser[0])
+    document.body.addEventListener('click', onClick, true)
 })
+onBeforeUnmount(() => {
+    document.body.removeEventListener('click', onClick, false)
+})
+//判断点击是否在弹窗内
+const onClick = (event: any) => {
+    //减少循环判断，在弹窗内点击的节点少于15个
+    if (event.path.length < 15) {
+        for (let i = 0; i < event.path.length; i++) {
+            //如果有id为dialogBox则点击的节点是弹窗内的
+            if (event.path[i].id == 'dialogBox') {
+                return
+            }
+        }
+    } else {
+        closeDialong()
+    }
+}
+//自定义按钮
+let myButtons = {
+    mPrevButton: {
+        text: "< " + alaboToChinese(moment().add(-1, 'M').format("M")) + moment().format('月,YYYY'),
+        click: function () {
+            clickButton('month', 'prev')
+        }
+    },
+    mNextButton: {
+        text: alaboToChinese(moment().add(1, 'M').format("M")) + moment().format('月,YYYY') + " >",
+        click: function () {
+            clickButton('month', 'next')
+        }
+    },
+    mtitleButton: {
+        text: alaboToChinese(moment().format("M")) + moment().format('月,YYYY')
+    },
+    wPrevButton: {
+        text: "< 上一周",
+        click: function () {
+            clickButton('week', 'prev')
+        }
+    },
+    wNextButton: {
+        text: "下一周 >",
+        click: function () {
+            clickButton('week', 'next')
+        }
+    },
+    wtitleButton: {
+        text: todayDate.getYear + "年" + alaboToChinese(todayDate.getMonth.toString()) + "月" + ",第" + alaboToChinese(todayDate.getWeek.toString()) + "周"
+    }
+}
 //日历配置
 let calOptions: any = {
     // dayMaxEventRows: 0,
@@ -286,6 +335,7 @@ let calOptions: any = {
         center: 'mtitleButton',
         right: 'mNextButton'
     },
+    customButtons: myButtons,//自定义按钮
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',//隐藏版权提示
     //工作日，0-周日
     businessHours: {
@@ -314,38 +364,6 @@ let calOptions: any = {
             headerContent: ''//标题内容
         }
     ],
-    customButtons: {//自定义按钮
-        mPrevButton: {
-            text: "< " + alaboToChinese(moment().add(-1, 'M').format("M")) + moment().format('月,YYYY'),
-            click: function () {
-                clickButton('month', 'prev')
-            }
-        },
-        mNextButton: {
-            text: alaboToChinese(moment().add(1, 'M').format("M")) + moment().format('月,YYYY') + ">",
-            click: function () {
-                clickButton('month', 'next')
-            }
-        },
-        mtitleButton: {
-            text: alaboToChinese(moment().format("M")) + moment().format('月,YYYY')
-        },
-        wPrevButton: {
-            text: "< 上一周",
-            click: function () {
-                clickButton('week', 'prev')
-            }
-        },
-        wNextButton: {
-            text: "下一周 >",
-            click: function () {
-                clickButton('week', 'next')
-            }
-        },
-        wtitleButton: {
-            text: todayDate.getYear + "年" + alaboToChinese(todayDate.getMonth.toString()) + "月" + ",第" + alaboToChinese(todayDate.getWeek.toString()) + "周"
-        }
-    },
     //单元格渲染函数
     dayCellContent(arg: any) {
         changeDaystyle(arg)
@@ -365,7 +383,7 @@ let calOptions: any = {
         arg.el.children[0].children[0].appendChild(img)
     },
     //左侧资源列增加类名
-    resourceLabelClassNames(arg: any) {
+    resourceLabelClassNames() {
         return ["isResource"]
     },
     //事件点击
@@ -373,21 +391,39 @@ let calOptions: any = {
         clickEvent(arg)
     },
 }
-
 //日历中日期显示格式修改
 const changeDaystyle = (arg: any) => {
     let date = moment(arg.date).format('DD')
     arg.dayNumberText = date//修改显示的日期格式
 }
-
 //事件点击
 const clickEvent = (arg: any) => {
+    isVisible.value = true
+    //弹窗位置配置
+    let eventPosition = arg.el.getBoundingClientRect()
+    let x = arg.jsEvent.clientX
+    let y = eventPosition.bottom - 168 + scrollTop
+    let box = document.getElementById('cal-container')
+    let boxY = box?.getBoundingClientRect().height
+    if (boxY && y + 390 > boxY + scrollTop) {
+        //如果弹窗超出日历高度+滚动高度的话，上移超出的高度
+        y = y - (y + 390 - (boxY + scrollTop))
+    }
+    popperOptions.value = {
+        modifiers: [
+            {
+                name: 'offset',
+                options: {
+                    offset: [x, y],
+                }
+            }
+        ]
+    }
 
 }
-
 //切换视图按钮
 const changeView = () => {
-
+    closeDialong()
     //获取日期选择器
     dateChooser = document.getElementsByClassName("click_date")
     let picker = document.getElementById("picker")
@@ -429,10 +465,9 @@ const changeView = () => {
         parent?.appendChild(dateChooser[0])
     }
 }
-
 //日期选择框选择日期
 const clickDate = () => {
-
+    closeDialong()
     //获取日期选择器
     dateChooser = document.getElementsByClassName("click_date")
     let picker = document.getElementById("picker")
@@ -463,12 +498,14 @@ const clickDate = () => {
 
     }
 }
-
 const editDialong = () => {
     isEdit.value = !isEdit.value
 }
-
+const closeDialong = () => {
+    isVisible.value = false
+}
 const clickButton = (type: string, operation: string) => {
+    closeDialong()
     //获取日期选择器
     dateChooser = document.getElementsByClassName("click_date")
     let picker = document.getElementById("picker")
@@ -514,14 +551,23 @@ const clickButton = (type: string, operation: string) => {
         parent?.appendChild(dateChooser[0])
     }
 }
-
+let timer: any
+//获取滚动高度
+const scroll = (data: any) => {
+    if (timer) {
+        clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+        scrollTop = data.scrollTop
+    }, 100)
+}
 </script>
 
 <style lang="scss" scoped>
 .cal-container {
     font-family: Microsoft YaHei;
     // background-color: skyblue;
-    height: auto;
+    height: 85vh;
     padding: 10px;
     position: relative;
 
@@ -534,51 +580,7 @@ const clickButton = (type: string, operation: string) => {
         top: 10px;
         line-height: 26px;
         color: #ffffff;
-    }
-
-    .my-header {
-        display: flex;
-        justify-content: end;
-        margin-bottom: 10px;
-
-        .dialong-button {
-            margin-left: 22px;
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-    }
-
-    .dialog-contain {
-        .item {
-            display: flex;
-            margin-bottom: 14px;
-
-            .item-title {
-                width: 70px;
-                margin-right: 24px;
-                color: #999999;
-            }
-
-            .item-detail {
-                flex-grow: 1;
-            }
-
-            .number {
-                display: flex;
-
-                .number-item {
-                    display: flex;
-                    padding-right: 20px;
-
-                    .number-photo {
-                        width: 20px;
-                        height: 20px;
-                        margin-right: 8px;
-                    }
-                }
-            }
-        }
+        cursor: pointer;
     }
 
 }
@@ -596,7 +598,7 @@ const clickButton = (type: string, operation: string) => {
 :deep(.fc-header-toolbar) {
     border: 2px solid rgba(220, 220, 220, 0.5019607843);
     border-bottom: 0px;
-    padding: 20px 21px 11px 21px;
+    padding: 8px 21px;
     margin-bottom: 0px !important;
 }
 
@@ -606,7 +608,9 @@ const clickButton = (type: string, operation: string) => {
     font-family: Microsoft YaHei;
     color: #999999;
     font-weight: bolder;
-    line-height: 50px;
+    line-height: 46px;
+    height: 46px;
+    cursor: default;
 }
 
 //单元格日期样式
@@ -616,6 +620,11 @@ const clickButton = (type: string, operation: string) => {
     color: #999999;
     font-weight: bolder;
     margin: 8px;
+    cursor: default;
+}
+
+:deep(.fc-timeline-slot-cushion) {
+    cursor: default;
 }
 
 //灰色单元格样式
@@ -662,12 +671,14 @@ const clickButton = (type: string, operation: string) => {
 
 :deep(.fc-mtitleButton-button) {
     color: #000000 !important;
-    font-size: 1.75em;
+    cursor: default !important;
+    font-size: 16px !important;
 }
 
 :deep(.fc-wtitleButton-button) {
     color: #000000 !important;
-    font-size: 1.75em;
+    cursor: default !important;
+    font-size: 16px !important;
 }
 
 :deep(.fc-button) {
@@ -677,7 +688,7 @@ const clickButton = (type: string, operation: string) => {
 :deep(.fc-button-primary) {
     color: #999999;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     background-color: #2c3e5000;
     border-color: #2c3e5000;
 }
@@ -707,17 +718,17 @@ const clickButton = (type: string, operation: string) => {
 }
 
 :deep(.fc .fc-datagrid-header .fc-datagrid-cell-frame) {
-    min-height: 60px !important;
+    min-height: 50px !important;
 }
 
 :deep(.fc-datagrid-cell-frame) {
     display: flex;
     justify-content: center !important;
-    min-height: 60px !important;
+    min-height: 50px !important;
 }
 
 :deep(.fc-timeline-slot-frame) {
-    min-height: 60px;
+    min-height: 50px;
     justify-content: center !important;
     font-family: Microsoft YaHei;
     font-size: 16px;
@@ -771,46 +782,58 @@ const clickButton = (type: string, operation: string) => {
     box-shadow: 0px 0px 20px 0px #bbbbbb;
 }
 
-:deep(.fc-timeline-events) {
-    position: initial;
+:deep(.fc-timeline-event-harness) {
+    z-index: 9;
+}
+
+:deep(.fc-datagrid-cell-main) {
+    font-size: 12px;
 }
 </style>
 <style lang="scss">
-.cal-container {
-    .dialog-contain {
-        padding: 20px;
-        width: 620px;
+.cal-popover {
+    padding: 22px !important;
 
-        .item {
+    .my-header {
+        display: flex !important;
+        justify-content: end !important;
+        padding-bottom: 15px !important;
+
+        .dialong-button {
+            width: 15px !important;
+            margin-left: 36px !important;
+            cursor: pointer;
+        }
+    }
+
+    .item {
+        display: flex;
+        margin-bottom: 14px;
+
+        .item-title {
+            width: 70px;
+            margin-right: 24px;
+            color: #999999;
+        }
+
+        .item-detail {
+            flex-grow: 1;
+        }
+
+        .member {
             display: flex;
-            margin-bottom: 14px;
 
-            .item-title {
-                width: 70px;
-                margin-right: 24px;
-                color: #999999;
-            }
-
-            .item-detail {
-                flex-grow: 1;
-            }
-
-            .number {
+            .member-item {
                 display: flex;
+                padding-right: 20px;
 
-                .number-item {
-                    display: flex;
-                    padding-right: 20px;
-
-                    .number-photo {
-                        width: 20px;
-                        height: 20px;
-                        margin-right: 8px;
-                    }
+                .member-photo {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
                 }
             }
         }
     }
-
 }
 </style>
