@@ -15,31 +15,34 @@ import variables from '@/styles/variables.module.scss';
 import { ComponentInternalInstance } from 'vue';
 import { FitsTableProps, FitsToolsBarConfig, FitstoolsOption, ToolsConfig } from './type';
 import eventBus from '@/utils/base/EventBus';
-import useStore from '@/store';
+import { useUserHabits } from '@/utils/base/storage-persist';
 const props = defineProps<{
     option: FitsTableProps,
 }>()
 
 const xGrid = ref<VxeGridInstance>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-// 提取用户习惯
-const { userHabits } = useStore();
-// 数据库存储的键值
-const storageID = computed(() => props.option.id ?? 'FitsTable')
+
+const _gridOption = XEUtils.clone(props.option, true)
 const state = reactive({
     // 动态插槽的名字数组
     dynamicSlotNameArray: [] as string[],
     // 这里有个大坑，需要把props的proxy对象先做一个深拷贝，变成一个js普通对象，不然props里面复杂的proxy对象嵌套，随便修改都会会让属性失去响应
-    gridOption: XEUtils.clone(props.option as VxeGridProps, true),
-    // 是否显示搜索表单
-    isShowSearchForm: true,
-})
-const userHabitState = reactive({
-    isShowSearchForm: true,
+    gridOption: _gridOption as VxeGridProps,
 })
 
+// 统一放一个数据表内
+const _userHabitState = XEUtils.merge(_gridOption.storage, { dataSheet: 'FitsTableComponent' })
+// 需要双向绑定什么值，就传入什么值
+const { store } = useUserHabits({
+    ..._userHabitState,
+    store: {
+        isShowSearchForm: true,
+        customQueryArray: []
+    }
+})
 
-/**
+/** 
  * 导出实例化的方法
  */
 defineExpose({
@@ -74,17 +77,7 @@ initDefaultConfig()
 onMounted(async () => {
     console.log(xGrid.value?.$el)
     // 常用查询功能，监听表单项是否显示
-    setFormConfigItemVisible();
-
-    const storage = await userHabits.get(storageID.value)
-    // console.error(storage.isShowSearchForm)
-    if (storage === null) {
-        userHabits.set(storageID.value, userHabitState)
-    } else {
-        console.error(storage)
-        XEUtils.merge(userHabitState, storage)
-        console.error(userHabitState)
-    }
+    setFormConfigItemVisible()
 
 })
 
@@ -97,9 +90,7 @@ function initDefaultConfig() {
     setToolbarConfig();
 }
 
-// function saveUserHabits() {
-//     XEUtils.merge
-// }
+
 
 function setDefaultOption() {
     const _gridOption = XEUtils.clone(props.option as VxeGridProps, true)
@@ -207,12 +198,7 @@ function setToolbarConfig() {
                 name: 'ToolbarSearch',
                 events: {
                     click: () => {
-                        userHabitState.isShowSearchForm = !userHabitState.isShowSearchForm;
-                        // xGrid.value!.$el.querySelector('.vxe-grid--form-wrapper').style.display = userHabitState.isShowSearchForm ? 'block' : 'none';
-                        // 这步主要是解决各个工具栏被放大后，提示框被挡住的问题，可以把提示框方向变成bottom属性
-                        // eventBus.emit('IsShowSearchForm', userHabitState.isShowSearchForm)
-                        // 这里主要解决放大化，如果隐藏搜索区域时，列表高度无法自动计算高度的问题，可以利用vxetable的内置方法，触发页面计算高度。
-                        // userHabits.set(storageID.value, userHabitState)
+                        store.isShowSearchForm = !store.isShowSearchForm;
                     }
                 }
             }
@@ -224,7 +210,6 @@ function setToolbarConfig() {
             toolRender: {
                 name: 'ToolbarExport', events: {
                     click: () => {
-
                         xGrid.value?.openExport()
                     }
                 },
@@ -234,14 +219,12 @@ function setToolbarConfig() {
             toolRender: {
                 name: 'ToolbarFullscreen',
                 props: {
-                    isShowSearchForm: userHabitState.isShowSearchForm
+                    isShowSearchForm: store.isShowSearchForm
                 },
                 events: {
                     click: () => {
                         xGrid.value?.zoom()
-                        eventBus.emit('IsShowSearchForm', userHabitState.isShowSearchForm)
-                        eventBus.emit('isFullscreen', null)
-
+                        eventBus.emit('isFullscreen', store.isShowSearchForm)
                     }
                 },
             }
@@ -320,10 +303,16 @@ watch(() => props.option, (newValue) => {
 /**
  * 监听搜索区域是否显示
  */
-watch(() => userHabitState.isShowSearchForm, (newValue) => {
-    xGrid.value!.$el.querySelector('.vxe-grid--form-wrapper').style.display = newValue ? 'block' : 'none';
+watch(() => store.isShowSearchForm, (newValue) => {
+    const _xGrid: any = xGrid.value
+    _xGrid.$el.querySelector('.vxe-grid--form-wrapper').style.display = newValue ? 'block' : 'none';
     // 这步主要是解决各个工具栏被放大后，提示框被挡住的问题，可以把提示框方向变成bottom属性
-    eventBus.emit('IsShowSearchForm', userHabitState.isShowSearchForm)
+    eventBus.emit('IsShowSearchForm', store.isShowSearchForm)
+    if (document.body.querySelector('.is--maximize')) {
+        // 这里主要解决放大化，如果隐藏搜索区域时，列表高度无法自动计算高度的问题，可以利用vxetable的内置方法，触发页面计算高度。
+        xGrid.value?.reloadColumn(state.gridOption.columns as any)
+    }
+
 })
 </script>
 <style lang='scss' >

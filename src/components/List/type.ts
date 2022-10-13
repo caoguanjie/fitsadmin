@@ -1,3 +1,4 @@
+import { StorageStrategy } from '@/utils/base/storage-persist';
 import { VxeGridProps, VxeGridPropTypes, VxeTableProps } from 'vxe-table';
 /**
  * 工具栏的工具
@@ -117,4 +118,6 @@ export type FitsTableProps<D = any> = VxeTableProps<D> & {
     pagerConfig?: VxeGridPropTypes.PagerConfig
     proxyConfig?: VxeGridPropTypes.ProxyConfig
     zoomConfig?: VxeGridPropTypes.ZoomConfig
+    storage?: StorageStrategy
 }
+

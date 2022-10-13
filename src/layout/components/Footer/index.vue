@@ -23,7 +23,7 @@ const isshowFooterBreadcrumb = computed(() => setting.showFooterBreadcrumb);
 .footeContainer {
     position: fixed;
     bottom: 0;
-    z-index: 1002;
+    z-index: 1001;
     height: 24px;
     background-color: #333333;
     width: 100%;

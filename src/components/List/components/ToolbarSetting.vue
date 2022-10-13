@@ -12,7 +12,7 @@
                     <template v-if="state.customQuery.length">
                         <div class="query-item" v-for="(item, index) in state.customQuery" :key="index">
                             <span class="name clickRipple">{{item.name}}</span>
-                            <el-button :icon="Delete" link text class="delete" />
+                            <el-button :icon="Delete" link text class="delete" @click="deleteItem(index)" />
                         </div>
                     </template>
                     <div class="nodata" v-else>
@@ -23,8 +23,18 @@
                 </div>
 
                 <div class="save-query">
-                    <el-input v-model="state.inputValue" placeholder="请输入查询值名称,10个字以内" maxLength="10" />
-                    <el-button type="primary" class="addBtn" plain>添加</el-button>
+                    <el-form :inline="true" :model="state" class="save-query-form" :rules="state.rule"
+                        ref="ruleFormRef">
+                        <el-form-item prop="inputValue">
+                            <el-input v-model="state.inputValue" placeholder="请输入查询值名称,10个字以内" maxLength="10" />
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" class="addBtn" plain @click="submitForm(ruleFormRef)">添加
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                    <!-- <el-input v-model="state.inputValue" placeholder="请输入查询值名称,10个字以内" maxLength="10" />
+                    <el-button type="primary" class="addBtn" plain @click="submit">添加</el-button> -->
                 </div>
             </div>
             <div class="searchItem">
@@ -44,6 +54,8 @@
 import { VxeFormItemProps, VxeGridConstructor } from 'vxe-table';
 import eventBus from '@/utils/base/EventBus';
 import { Delete } from '@element-plus/icons-vue'
+import { ElMessage, FormInstance } from 'element-plus';
+import XEUtils from 'xe-utils';
 const props = defineProps<{
     // 自定义提示信息
     msg?: string,
@@ -51,7 +63,9 @@ const props = defineProps<{
     grid: VxeGridConstructor
 }>()
 const placement = ref<any>('top')
-
+const isFullscreen = ref(false)
+const ruleFormRef = ref<FormInstance>()
+const isShowSearchForm = ref(true)
 const state = reactive({
     visible: false,
     dialogProp: {
@@ -63,13 +77,21 @@ const state = reactive({
 
     ] as any,
     inputValue: '',
-    formConfigItem: props.grid.props.formConfig?.items ?? []
+    formConfigItem: props.grid.props.formConfig?.items ?? [],
+    rule: {
+        inputValue: [{ validator: checkInput, trigger: 'blur' }]
+    }
 })
 
 onMounted(() => {
-    console.error(props.grid)
-    eventBus.on('IsShowSearchForm', (isShowSearchForm: boolean) => {
-        placement.value = isShowSearchForm ? 'top' : 'bottom'
+
+    eventBus.on('IsShowSearchForm', (_isShowSearchForm: boolean) => {
+        isShowSearchForm.value = _isShowSearchForm
+        placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
+    })
+    eventBus.on('isFullscreen', () => {
+        isFullscreen.value = !isFullscreen.value
+        placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
     })
 })
 function changeFormConfigItems(item: VxeFormItemProps) {
@@ -79,8 +101,40 @@ function changeFormConfigItems(item: VxeFormItemProps) {
     eventBus.emit('changFromItemStatus', item)
 }
 
+
+function checkInput(rule: any, value: any, callback: any) {
+    if (!value) {
+        return callback(new Error('常用查询的关键字不能为空'))
+    }
+
+    if (XEUtils.find(state.customQuery, item => item.name === value)) {
+        callback(new Error('当前关键字已存在，请重新输入'))
+    } else {
+        callback()
+    }
+
+}
 function openWindow() {
     state.visible = true;
+}
+/**
+ * 
+ * @param params 添加常用设置的关键字
+ */
+function submitForm(formEl: FormInstance | undefined) {
+
+    if (!formEl) return
+    formEl.validate((valid) => {
+        if (valid) {
+            state.customQuery.push({ name: state.inputValue, formdata: (props.grid.props as any).formConfig.data })
+        } else {
+            console.log('error submit!')
+            return false
+        }
+    })
+}
+function deleteItem(index: number) {
+    state.customQuery.sp
 }
 </script>
 <style lang='scss' scoped>
@@ -139,7 +193,7 @@ function openWindow() {
 }
 
 .save-query {
-    margin: 10px 8px;
+    margin: 10px 8px 16px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,6 +203,15 @@ function openWindow() {
     & .addBtn {
         margin-left: 8px;
     }
+}
+
+:deep(.el-form--inline .el-form-item) {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+:deep(.el-input) {
+    min-width: 220px;
 }
 
 .use-query {

@@ -18,10 +18,12 @@
 import { getMenuList } from '@/api/base/system';
 import { FitsFormItemProps } from '@/components/Form/type';
 import { FitsTableProps } from '@/components/List/type';
+import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance, VxeGridProps } from 'vxe-table';
 import XEUtils from 'xe-utils';
 // import FitsTable from '@/components/List/FitsTable'
+const { user } = useStore();
 const xGrid = ref<VxeGridInstance>()
 const formItem: FitsFormItemProps[] = [
 
@@ -150,6 +152,11 @@ const gridOptions = reactive<FitsTableProps>({
     autoHeight: true,
     rowConfig: {
         height: 40
+    },
+    storage: {
+        enabled: true,
+        key: 'SystemManageMenuList',
+        dataBase: (user.userInfo as any).id,
     },
     formConfig: {
         data: {

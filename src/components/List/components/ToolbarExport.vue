@@ -15,10 +15,16 @@ const props = defineProps<{
     grid: VxeGridConstructor
 }>()
 const placement = ref<any>('top')
-
+const isFullscreen = ref(false)
+const isShowSearchForm = ref(true)
 onMounted(() => {
-    eventBus.on('IsShowSearchForm', (isShowSearchForm: boolean) => {
-        placement.value = isShowSearchForm ? 'top' : 'bottom'
+    eventBus.on('IsShowSearchForm', (_isShowSearchForm: boolean) => {
+        isShowSearchForm.value = _isShowSearchForm
+        placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
+    })
+    eventBus.on('isFullscreen', () => {
+        isFullscreen.value = !isFullscreen.value
+        placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
     })
 })
 </script>

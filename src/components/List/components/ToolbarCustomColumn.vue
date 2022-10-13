@@ -41,6 +41,8 @@ const props = defineProps<{
     // 表格公共的api
     grid: VxeGridConstructor
 }>()
+const isFullscreen = ref(false)
+const isShowSearchForm = ref(true)
 const data = reactive({
     columns: [] as VxeTableDefines.ColumnInfo[],
     checkedList: [] as any,
@@ -60,8 +62,13 @@ function changeColumns() {
 }
 
 onMounted(() => {
-    eventBus.on('IsShowSearchForm', (isShowSearchForm: boolean) => {
-        data.placement = isShowSearchForm ? 'top' : 'bottom'
+    eventBus.on('IsShowSearchForm', (_isShowSearchForm: boolean) => {
+        isShowSearchForm.value = _isShowSearchForm
+        data.placement = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
+    })
+    eventBus.on('isFullscreen', () => {
+        isFullscreen.value = !isFullscreen.value
+        data.placement = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
     })
     setTimeout(() => {
         nextTick(() => {
