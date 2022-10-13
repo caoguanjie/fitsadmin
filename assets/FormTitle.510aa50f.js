@@ -1,0 +1,1 @@
+import{J as o,G as t,K as _,L as a,a6 as r}from"./clientConfigs.e3e1ea31.js";const s={class:"form-divider"},l=t({__name:"FormTitle",props:{modelValue:null},setup(e){return(i,n)=>(_(),a("div",s,r(e.modelValue),1))}});var m=o(l,[["__scopeId","data-v-3697d638"],["__file","FormTitle.vue"]]);export{m as F};
