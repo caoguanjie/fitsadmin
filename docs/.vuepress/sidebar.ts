@@ -46,6 +46,12 @@ export default sidebar({
         text: 'FitsDrawer 抽屉',
         link: '/components/Dialog/Drawer'
       }]
+    },{
+      text: 'Table 表格组件',
+      children: [{
+        text: 'FitsGroupTable 分组表格',
+        link: '/components/Table/GroupTable'
+      }]
     }],
   '/resources/': 'structure'
 })

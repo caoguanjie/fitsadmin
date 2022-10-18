@@ -243,25 +243,25 @@ onMounted(() => {
     let parent = document.querySelector(".fc-TitleButton-button")?.parentNode
     //在标题父节点中追加节点
     parent?.appendChild(date_click[0])
-    document.body.addEventListener('click', onClick, true)
 })
 onBeforeUnmount(() => {
     document.body.removeEventListener('click', onClick, false)
 })
+onDeactivated(() => {
+    document.removeEventListener('click', onClick, true)
+})
 //判断点击是否在弹窗内
 const onClick = (event: any) => {
-    //减少判断，在弹窗内点击的节点少于15个
-    if (event.path.length < 15) {
-        for (let i = 0; i < event.path.length; i++) {
-            //如果有id为dialogBox则点击的节点是弹窗内的
-            if (event.path[i].id == 'dialogBox') {
-                return
-            }
-        }
+    if (event.target.closest(".cal2-popover")) {
+        // 点击弹窗内
+        return
+
     } else {
         closeDialong()
+        document.removeEventListener('click', onClick, true)
     }
 }
+
 //日历中日期显示格式修改
 const dayCellMount = (arg: any) => {
     let date = moment(arg.date).format('DD')
@@ -338,6 +338,7 @@ const mountDaycell = (arg: any) => {
 }
 //事件点击
 const clickEvent = (arg: any) => {
+    document.body.addEventListener('click', onClick, true)
     eventDate.date = moment(arg.event.start).format('DD')
     eventDate.week = '周' + alaboToChinese(moment(arg.event.start).day().toString())
     //必须确保上一个弹窗关闭，并且造成的高度变化清除之后才能打开新的弹窗，否则会导致位置错误

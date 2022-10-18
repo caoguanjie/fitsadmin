@@ -1,16 +1,39 @@
 <template>
-    <fits-table :option="gridOptions" class="FixColumnTable" />
+    <fits-table :option="gridOptions" />
 </template>
 
 <script lang='ts' setup>
 import { FitsTableProps } from '@/components/List/type';
+import { ElButton } from 'element-plus';
+
+const slots = {
+    default: () => [
+        h(
+            ElButton,
+            {
+                size: 'small',
+                type: 'primary'
+            },
+            () => h('span', '编辑')
+        ),
+        h(
+            ElButton,
+            {
+                size: 'small',
+                type: 'danger'
+            },
+            () => h('span', '删除')
+        ),
+    ]
+}
 
 const gridOptions = reactive<FitsTableProps>({
     columns: [
-        { field: 'name', title: '姓名', width: 200 },
-        { field: 'phone', title: '电话', width: 300 },
-        { field: 'birth', title: '出生日期', width: 250 },
-        { field: 'address', title: '地址', width: 300, fixed: 'right' },
+        { field: 'name', title: '姓名', },
+        { field: 'phone', title: '电话', },
+        { field: 'birth', title: '出生日期' },
+        { field: 'address', title: '地址', width: 320 },
+        { field: 'operation', title: '操作', slots },
     ],
     data: [
         { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },
@@ -23,19 +46,7 @@ const gridOptions = reactive<FitsTableProps>({
 
 </script>
 <style lang='scss' scoped>
-.FixColumnTable {
-    :deep(.warning-row) {
-        background-color: #fdf6ec;
-    }
 
-    :deep(.success-row) {
-        background: #f0f9eb;
-    }
-
-    :deep(.operation) {
-        display: flex;
-    }
-}
 </style>
 
 <style lang="scss">

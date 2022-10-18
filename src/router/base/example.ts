@@ -104,6 +104,12 @@ export const businessRouter: RouteRecordRaw = {
                     component: () => import("@/views/ready/index.vue"),
                     meta: { title: "复杂报表" },
                 },
+                {
+                    path: "GroupTable",
+                    name: "GroupTable",
+                    component: () => import("@/views/business-example/table/group-table/index.vue"),
+                    meta: { title: "分组表格" },
+                },
             ],
         },
 

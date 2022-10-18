@@ -413,10 +413,10 @@ watch(() => store.customColumnArray, () => {
             align-items: center;
             justify-content: center;
             height: 32px;
-            border-radius: var(--fits-button-border-radius);
+            border-radius: 2px;
             padding: 0 1.5em;
             border: solid 1px #c0c4cc;
-            color: var(--fits-button-text-color)
+            color: #333
         }
     }
 
@@ -428,35 +428,34 @@ watch(() => store.customColumnArray, () => {
             width: 36px;
             height: 32px;
             margin: 0 -1px 0 0;
-            color: var(--fits-button-text-color);
-            border-color: var(--fits-button-border-base-color);
+            color: #333;
+            border-color: #ccc;
             border-radius: 0 !important;
         }
 
         & .vxe-button:hover,
         & .vxe-button:focus {
             z-index: 1;
-            color: var(--fits-base-color) !important;
-            border-color: var(--fits-button-border-focus-color) !important;
-            background-color: var(--fits-base-background-color) !important;
+            color: #0e84ff !important;
+            border-color: #409eff !important;
+            background-color: #e8f4ff !important;
         }
 
         & .vxe-button:active {
             z-index: 1;
-            // background-color: var(--fits-menu-hover-text-color) !important;
             border-color: #0202e8 !important
         }
     }
 
     .vxe-tools--wrapper {
         &>.vxe-tool--item:first-child>button {
-            border-top-left-radius: var(--fits-button-border-radius) !important;
-            border-bottom-left-radius: var(--fits-button-border-radius) !important;
+            border-top-left-radius: 2px !important;
+            border-bottom-left-radius: 2px !important;
         }
 
         &>.vxe-tool--item:last-child>button {
-            border-top-right-radius: var(--fits-button-border-radius) !important;
-            border-bottom-right-radius: var(--fits-button-border-radius) !important;
+            border-top-right-radius: 2px !important;
+            border-bottom-right-radius: 2px !important;
         }
 
         .vxe-tool--item+.vxe-tool--item {
@@ -474,8 +473,8 @@ watch(() => store.customColumnArray, () => {
 
     .vxe-button.type--button.theme--primary {
         color: #fff;
-        background-color: var(--fits-menu-hover-text-color);
-        border-color: var(--fits-menu-hover-text-color)
+        background-color: #007dff;
+        border-color: #007dff
     }
 
     .vxe-button.type--button.theme--primary:not(.is--disabled) {
@@ -489,8 +488,8 @@ watch(() => store.customColumnArray, () => {
         }
 
         &:active {
-            background-color: var(--fits-menu-hover-text-color);
-            border-color: var(--fits-menu-hover-text-color)
+            background-color: #007dff;
+            border-color: #007dff
         }
 
     }
@@ -538,7 +537,7 @@ watch(() => store.customColumnArray, () => {
     .vxe-table--render-default {
 
         .vxe-cell {
-            color: var(--fits-button-text-color);
+            color: #333;
             font-size: 12px;
         }
 
@@ -551,7 +550,7 @@ watch(() => store.customColumnArray, () => {
             margin-top: 12px;
             border: 1px solid #ebeef5;
             box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-            border-radius: var(--fits-button-border-radius);
+            border-radius: 2px;
             font-size: 14px;
         }
 
@@ -584,13 +583,13 @@ watch(() => store.customColumnArray, () => {
 
     // 下面是页脚的样式
     .vxe-pager {
-        color: var(--fits-button-text-color);
+        color: #333;
         font-size: 12px;
         height: 50px;
 
         .vxe-input--inner {
-            border-radius: var(--fits-button-border-radius);
-            color: var(--fits-button-text-color);
+            border-radius: 2px;
+            color: #333;
             font-size: 12px;
         }
 
@@ -603,18 +602,46 @@ watch(() => store.customColumnArray, () => {
             font-size: 10px;
             width: 30px;
             height: 30px;
-            border-radius: var(--fits-button-border-radius);
+            border-radius: 2px;
         }
 
-        .vxe-pager--goto {
-            border-radius: var(--fits-button-border-radius);
-            color: var(--fits-button-text-color);
-            font-size: 12px;
-            width: 54px;
+        .vxe-pager--jump-next,
+        .vxe-pager--jump-prev,
+        .vxe-pager--next-btn,
+        .vxe-pager--num-btn,
+        .vxe-pager--prev-btn .vxe-pager--goto {
+            width: 30px;
             height: 30px;
-            margin: 0 .3em;
+            border-radius: 2px;
+            font-size: 10px;
         }
     }
+
+    .vxe-pager.is--background .vxe-pager--jump-next:not(.is--disabled).is--active,
+    .vxe-pager.is--background .vxe-pager--jump-prev:not(.is--disabled).is--active,
+    .vxe-pager.is--background .vxe-pager--num-btn:not(.is--disabled).is--active,
+    .vxe-pager.is--perfect .vxe-pager--jump-next:not(.is--disabled).is--active,
+    .vxe-pager.is--perfect .vxe-pager--jump-prev:not(.is--disabled).is--active,
+    .vxe-pager.is--perfect .vxe-pager--num-btn:not(.is--disabled).is--active {
+        background-color: #007dff;
+    }
+
+    .vxe-pager .vxe-pager--jump-next:not(.is--disabled):hover,
+    .vxe-pager .vxe-pager--jump-prev:not(.is--disabled):hover,
+    .vxe-pager .vxe-pager--next-btn:not(.is--disabled):hover,
+    .vxe-pager .vxe-pager--num-btn:not(.is--disabled):hover,
+    .vxe-pager .vxe-pager--prev-btn:not(.is--disabled):hover {
+        // color: #007dff;
+    }
+
+    .vxe-pager .vxe-pager--jump-next:not(.is--disabled):focus,
+    .vxe-pager .vxe-pager--jump-prev:not(.is--disabled):focus,
+    .vxe-pager .vxe-pager--next-btn:not(.is--disabled):focus,
+    .vxe-pager .vxe-pager--num-btn:not(.is--disabled):focus,
+    .vxe-pager .vxe-pager--prev-btn:not(.is--disabled):focus {
+        box-shadow: none;
+    }
+
 
     // 表单的部分
 
@@ -631,7 +658,7 @@ watch(() => store.customColumnArray, () => {
         }
 
         .vxe-button.type--button:not(.is--round) {
-            border-radius: var(--fits-button-border-radius);
+            border-radius: 2px;
         }
 
         .vxe-button.type--button {

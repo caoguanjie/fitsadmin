@@ -1,29 +1,31 @@
 <template>
-    <div class="slot-table ">
+    <div class="group-table-example">
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
-                <fits-card title="自定义列模板"
-                    desc="通过给 columns 里的对象设置 slots.default 属性，可以实现自定义列（显示内容）模板。该属性返回一个字符串或由节点组成的数组。">
-                    <custom-content-table />
+                <fits-card title="基础分组表格"
+                    desc="必须传入headers属性（表头配置，和vxe-columns属性一致）以及ajax.query属性。groupConditions属性（分组条件）可传可不传，defaultChecked属性表示默认选中哪个分组。">
+                    <base-group-table />
                 </fits-card>
-
-                <fits-card title="自定义表头" desc="通过给 columns 里的对象设置 slots.header 属性，可以实现自定义表头模板。">
-                    <custom-header-table />
+                <fits-card title="插槽分组表格"
+                    desc="可通过插槽去重写表格单元格的内容（插槽名是字段名），另外还提供了额外的插槽：query表格查询条件插槽、noData暂无数据插槽、right组头右侧插槽、groupName组名插槽、expand展开行插槽。">
+                    <slot-group-table />
                 </fits-card>
-
-                <fits-card title="展开行"
-                    desc="给 columns 里的对象配置 type=expand 开启展开行，并给该对象设置 slots.content 属性，返回字符串或由节点组成的数组，自定义展开行的展示内容。">
-                    <expand-row-table />
+                <fits-card title="默认展开分组表格"
+                    desc="通过设置expandGroupsNum属性表示默认展开多少个分组，默认展开的分组第一次请求时会返回表格数据，其余分组表格的数据通过分段请求返回（会在组头开启loading图标）。但expandGroupsNum属性的值必须大于1（后端规定的）。">
+                    <expand-group-table />
+                </fits-card>
+                <fits-card title="分段请求分组表格"
+                    desc="如果当前页的分组表格个数大于默认展开分组表格的个数，剩余的分组表格会开启分段请求（会在组头开启loading图标）。可以通过requestGroupNums属性设置多少个表格为一组去分段请求。">
+                    <subsection-group-table />
                 </fits-card>
             </div>
         </el-scrollbar>
-
         <div class="right">
             <div class="menu">
                 <div class="menu-title">此页内容</div>
-                <div v-for="(i,k) in navTree" :class="{'active':menuData.num===k}" :key="k" :id="'menuItem' + k"
-                    @click.stop="jumpToAnchor(i.el,k)" class="defaultStyle">
-                    {{i.title}}
+                <div v-for="(i, k) in navTree" :class="{ 'active': menuData.num === k }" :key="k" :id="'menuItem' + k"
+                    @click.stop="jumpToAnchor(i.el, k)" class="defaultStyle">
+                    {{ i.title }}
                 </div>
             </div>
         </div>
@@ -31,11 +33,10 @@
 </template>
 
 <script lang='ts' setup>
-import CustomContentTable from './CustomContentTable.vue'
-import CustomHeaderTable from './CustomHeaderTable.vue'
-import ExpandRowTable from './ExpandRowTable.vue'
-
-
+import BaseGroupTable from "./components/BaseGroupTable.vue"
+import ExpandGroupTable from "./components/ExpandGroupTable.vue"
+import SubsectionGroupTable from "./components/SubsectionGroupTable.vue"
+import SlotGroupTable from "./components/SlotGroupTable.vue"
 //锚点目录所需数据
 const navTree: any = ref([]);
 const menuData = reactive({
@@ -94,7 +95,7 @@ const removeHeigthLight = (k: number) => {
 </script>
 
 <style lang="scss" scoped>
-.slot-table {
+.group-table-example {
     padding: 0 16px;
     display: flex;
 
@@ -147,7 +148,7 @@ const removeHeigthLight = (k: number) => {
 </style>
 
 <style lang="scss">
-.slot-table {
+.basic-table {
     .fits-card {
         min-width: 500px;
     }

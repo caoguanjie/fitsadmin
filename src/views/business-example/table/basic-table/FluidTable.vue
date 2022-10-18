@@ -21,14 +21,15 @@ const gridOptions = reactive<FitsTableProps>({
         { name: '李萌萌', phone: '18712458736', birth: '1879-12-13', address: '广东省广州市海珠区五山路幸福小区6号楼101 ' },
         { name: '张兴', phone: '18924584265', birth: '1954-03-25', address: '广东省广州市海珠区五山路幸福小区7号楼102 ' },
         { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },
-        { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },
-        { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },
     ],
     toolbarConfig: {
         buttons: [
             { name: '添加数据', code: 'insert', icon: 'vxe-icon-search', status: 'primary', },
             { name: '删除数据', code: 'remove', icon: 'vxe-icon-delete', },
         ],
+    },
+    checkboxConfig: {
+        range: true,
     },
 })
 

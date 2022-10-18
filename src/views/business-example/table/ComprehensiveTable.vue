@@ -1,19 +1,17 @@
 <template>
-    <div class="comprehensive-table">
-        <!-- @cellMouseenter -->
-        <fits-table :option="gridOptions" ref="xGrid" @cell-click="cellClick" @cellMouseleave="isVisible = false" />
+    <div class="comprehensive-table" id="cal-container">
+        <fits-table :option="gridOptions" ref="xGrid" @cell-click="cellClick" />
         <!-- 隐藏按钮，用于虚拟触发popper提示框 -->
         <el-button ref="buttonRef" style="display:none">Click me</el-button>
 
         <el-popover :virtual-ref="buttonRef" :visible="isVisible" :show-arrow="false" :popper-options="popperOptions"
-            width="450px" popper-class="popContent" virtual-triggering>
-            <el-descriptions :column="2" size="small">
+            popper-class="popContent" virtual-triggering>
+            <el-descriptions :column="2" size="small" id="dialogBox">
                 <el-descriptions-item label="项目">三水农庄设施运维</el-descriptions-item>
                 <el-descriptions-item label="服务">佛山中小型场地集成服务</el-descriptions-item>
                 <el-descriptions-item label="工单历时">390天23小时50分钟</el-descriptions-item>
                 <el-descriptions-item label="服务时长">3小时1分钟</el-descriptions-item>
                 <el-descriptions-item label="响应SLA">未超时</el-descriptions-item>
-                <el-descriptions-item label="解决SLA">未超时</el-descriptions-item>
             </el-descriptions>
         </el-popover>
     </div>
@@ -30,10 +28,10 @@ const buttonRef = ref()
 
 const state = reactive({
     isVisible: false,
-    popContent: {},
-    popperOptions: {}
+    popperOptions: {},
 })
-const { isVisible, popContent, popperOptions }: any = toRefs(state);
+const { isVisible, popperOptions }: any = toRefs(state);
+
 
 // 自定义节点内容
 const renderContent = (
@@ -207,21 +205,20 @@ const shortcuts = [
         value: () => [moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'), moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')]
     },
 ]
-
+//  90 + 16
 const gridOptions = reactive<FitsTableProps>({
     keepSource: true,
-    id: 'toolbar_demo_1',
-    height: 530,
-    autoHeight: true,
+    // height: 700,
+    // maxHeight: '100%',
     rowConfig: {
         height: 40,
         isHover: true,
         useKey: true,
-        keyField: 'myName'
     },
     formConfig: {
         data: {
-            number: 2
+            status: ['2'],
+            number: '1'
         },
         items: [
             {
@@ -453,27 +450,54 @@ const gridOptions = reactive<FitsTableProps>({
     customConfig: {
         storage: true,
     },
-    tooltipConfig: {
-        showAll: true,
-    },
-    showOverflow: "ellipsis",
+    tooltipConfig: {},
+    showOverflow: "tooltip",
     align: 'center',
 })
 
 const cellClick = ((e: any) => {
+    document.addEventListener('click', onClick, true)
     isVisible.value = true
-    popperOptions.value = {
-        modifiers: [
-            {
-                name: 'offset',
-                options: {
-                    offset: [e.$event.pageX, e.$event.pageY + 15],
-                },
-            }
-        ]
-    }
-    popContent.value = e.row
+    // 点击单元格的位置
+    let eventPosition = e.cell.getBoundingClientRect()
+    // 点击事件的横坐标
+    let x = e.$event.clientX
+    // 点击单元格的底部
+    let y = eventPosition.bottom
+    // 悬浮框的高度
+    nextTick(() => {
+        const popHeight = document.querySelector('.popContent')?.getBoundingClientRect().height || 0
+        // popHeight为悬浮框的高度
+        if (y + popHeight > document.body.clientHeight) {
+            y = document.body.clientHeight - popHeight
+        }
+        popperOptions.value = {
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [x, y],
+                    }
+                }
+            ]
+        }
+    })
 })
+
+onBeforeUnmount(() => {
+    document.removeEventListener('click', onClick, true)
+})
+onDeactivated(() => {
+    document.removeEventListener('click', onClick, true)
+})
+//判断点击是否在弹窗内
+const onClick = (e: any) => {
+    if (!e.target.closest(".popContent")) {
+        //点击非当前元素，需要执行的代码
+        isVisible.value = false
+        document.removeEventListener('click', onClick, true)
+    }
+}
 
 </script>
 <style lang='scss' scoped>
@@ -484,5 +508,7 @@ const cellClick = ((e: any) => {
 </style>
 
 <style lang="scss">
-
+.popContent {
+    width: auto !important;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions" class="FixColumnTable" />
+    <fits-table :option="gridOptions" />
 </template>
 
 <script lang='ts' setup>
@@ -7,10 +7,11 @@ import { FitsTableProps } from '@/components/List/type';
 
 const gridOptions = reactive<FitsTableProps>({
     columns: [
-        { field: 'name', title: '姓名', width: 200 },
-        { field: 'phone', title: '电话', width: 300 },
-        { field: 'birth', title: '出生日期', width: 250 },
-        { field: 'address', title: '地址', width: 300, fixed: 'right' },
+        { field: 'seq', type: 'seq', },
+        { field: 'name', title: '姓名', },
+        { field: 'phone', title: '电话', },
+        { field: 'birth', title: '出生日期' },
+        { field: 'address', title: '地址', width: 320 },
     ],
     data: [
         { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },
@@ -19,23 +20,17 @@ const gridOptions = reactive<FitsTableProps>({
         { name: '李萌萌', phone: '18712458736', birth: '1879-12-13', address: '广东省广州市海珠区五山路幸福小区6号楼101 ' },
         { name: '张兴', phone: '18924584265', birth: '1954-03-25', address: '广东省广州市海珠区五山路幸福小区7号楼102 ' },
     ],
+    seqConfig: {
+        // 自定义序列号，序列间隔为2
+        seqMethod: ({ rowIndex }) => {
+            return 2 * rowIndex
+        }
+    }
 })
 
 </script>
 <style lang='scss' scoped>
-.FixColumnTable {
-    :deep(.warning-row) {
-        background-color: #fdf6ec;
-    }
 
-    :deep(.success-row) {
-        background: #f0f9eb;
-    }
-
-    :deep(.operation) {
-        display: flex;
-    }
-}
 </style>
 
 <style lang="scss">

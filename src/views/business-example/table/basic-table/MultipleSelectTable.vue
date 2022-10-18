@@ -1,11 +1,16 @@
 <template>
-    <fits-table :option="gridOptions" @checkbox-change="checkboxChange" @checkbox-all="checkboxAll" />
+    <fits-table :option="gridOptions" @checkbox-change="checkboxChange" @toolbar-button-click="toolbarButtonClick"
+        ref="xGrid" />
 </template>
 
 <script lang='ts' setup>
 import { FitsTableProps } from '@/components/List/type';
+import { ElButton } from 'element-plus';
+
+const xGrid = ref()
 
 const gridOptions = reactive<FitsTableProps>({
+    id: 'table2',
     columns: [
         { field: 'Checkbox', type: 'checkbox', width: 50 },
         { field: 'name', title: '姓名' },
@@ -21,18 +26,68 @@ const gridOptions = reactive<FitsTableProps>({
         { name: '张兴', phone: '18924584265', birth: '1954-03-25', address: '广东省广州市海珠区五山路幸福小区7号楼102 ' },
     ],
     checkboxConfig: {
-        range: true
-    }
+        range: true,
+        checkMethod
+    },
+    toolbarConfig: {
+        slots: {
+            buttons: () => [
+                h(
+                    ElButton,
+                    {
+                        class: 'el-button',
+                        onClick: () => {
+                            xGrid.value.xGrid.setAllCheckboxRow(true)
+                        }
+                    },
+                    () => h('span', '选中所有可选行')
+                ),
+                h(
+                    ElButton,
+                    {
+                        class: 'el-button',
+                        onClick: () => {
+                            xGrid.value.xGrid.setAllCheckboxRow(false)
+                        }
+                    },
+                    () => h('span', '清除所有选中行')
+                ),
+                // h(
+                //     'button',
+                //     {
+                //         class: 'el-button',
+                //         onClick: setChecked
+                //     },
+                //     '设置第三、四行选中'
+                // ),
+            ]
+        }
+    },
 })
 
 // 手动勾选行的复选框时触发
-function checkboxChange() {
+function checkboxChange({ rowIndex }: any) {
     console.log('checkboxChange');
+    ElMessage({
+        message: `你选中了第 ${rowIndex + 1} 条数据`,
+        type: 'success',
+    })
 }
 
-// 手动勾选全选复选框时触发
-function checkboxAll() {
-    console.log('checkboxAll');
+
+function toolbarButtonClick({ code, button, $event }: any) {
+    console.log($event);
+}
+
+function setChecked() {
+    console.log(xGrid.value.xGrid);
+    xGrid.value.xGrid.setCheckboxRow(gridOptions?.data, true)
+    console.log(xGrid.value.xGrid.getCheckboxRecords(true))
+}
+
+function checkMethod({ row }: any) {
+    // 禁用地址在“幸福小区”的勾选项
+    return row.address.indexOf('幸福小区') === -1
 }
 
 </script>

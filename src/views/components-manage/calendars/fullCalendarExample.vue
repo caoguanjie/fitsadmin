@@ -24,7 +24,7 @@
                         </div>
                         <div class="member" v-else>
                             <div class="member-item" v-for="(data2,key2) in data.detail" :key="key2">
-                                <img class="member-photo" :src=data2.src>
+                                <div class="member-photo" />
                                 <div>{{data2.name}}</div>
                             </div>
                         </div>
@@ -122,15 +122,6 @@ let events = [
         textColor: "#40c463",
     },
     {
-        id: '6',
-        resourceId: '5',
-        title: '任务6 ',
-        start: '50h 2022-09-26',
-        end: '2022-09-30',
-        backgroundColor: "#40c4634d",
-        textColor: "#40c463",
-    },
-    {
         id: '1',
         resourceId: '1',
         title: '0h 任务4',
@@ -138,6 +129,15 @@ let events = [
         end: '2022-10-07',
         backgroundColor: "#ff3a3a4d",
         textColor: "#ff3a3a"
+    },
+    {
+        id: '6',
+        resourceId: '5',
+        title: '任务6 ',
+        start: '50h 2022-09-26',
+        end: '2022-09-30',
+        backgroundColor: "#40c4634d",
+        textColor: "#40c463",
     },
     {
         id: '1',
@@ -264,25 +264,25 @@ onMounted(() => {
     let parent = document.querySelector(".fc-mtitleButton-button")?.parentNode
     //在标题父节点中增加日期选择器
     parent?.appendChild(dateChooser[0])
-    document.body.addEventListener('click', onClick, true)
 })
 onBeforeUnmount(() => {
-    document.body.removeEventListener('click', onClick, false)
+    document.removeEventListener('click', onClick, true)
+})
+onDeactivated(() => {
+    document.removeEventListener('click', onClick, true)
 })
 //判断点击是否在弹窗内
 const onClick = (event: any) => {
-    //减少循环判断，在弹窗内点击的节点少于15个
-    if (event.path.length < 15) {
-        for (let i = 0; i < event.path.length; i++) {
-            //如果有id为dialogBox则点击的节点是弹窗内的
-            if (event.path[i].id == 'dialogBox') {
-                return
-            }
-        }
+    if (event.target.closest(".cal-popover")) {
+        // 点击弹窗内
+        return
+
     } else {
         closeDialong()
+        document.removeEventListener('click', onClick, true)
     }
 }
+
 //自定义按钮
 let myButtons = {
     mPrevButton: {
@@ -379,7 +379,7 @@ let calOptions: any = {
     //左侧资源渲染函数
     resourceLabelDidMount(arg: any) {
         let img = document.createElement('div')
-        img.innerHTML = '<img class="head_icon" src="/src/assets/calendar-icon/header.png"></img>'
+        img.innerHTML = '<div class="head_icon"/>'
         arg.el.children[0].children[0].appendChild(img)
     },
     //左侧资源列增加类名
@@ -398,6 +398,7 @@ const changeDaystyle = (arg: any) => {
 }
 //事件点击
 const clickEvent = (arg: any) => {
+    document.addEventListener('click', onClick, true)
     isVisible.value = true
     //弹窗位置配置
     let eventPosition = arg.el.getBoundingClientRect()
@@ -658,6 +659,10 @@ const scroll = (data: any) => {
 
 :deep(.head_icon) {
     width: 30px;
+    height: 30px;
+    margin-bottom: 9px;
+    background: url(@/assets/calendar-icon/header.png) no-repeat;
+    background-size: auto 100%;
 }
 
 :deep(.isResource) {
@@ -686,27 +691,31 @@ const scroll = (data: any) => {
 }
 
 :deep(.fc-button-primary) {
-    color: #999999;
-    font-weight: 600;
-    font-size: 14px;
-    background-color: #2c3e5000;
-    border-color: #2c3e5000;
+    color: #999999 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    background-color: #2c3e5000 !important;
+    border-color: #2c3e5000 !important;
 }
 
 :deep(.fc-button-primary:not(:disabled):active) {
-    box-shadow: 0 0 0 0.2rem rgb(76 91 106 / 0%);
+    box-shadow: 0 0 0 0.2rem rgb(76 91 106 / 0%) !important;
 }
 
 :deep(.fc-button-primary:not(:disabled):hover) {
-    background-color: #1e2b3700;
-    border-color: #1e2b3700;
-    color: #999999;
-    font-weight: 600;
+    background-color: #1e2b3700 !important;
+    border-color: #1e2b3700 !important;
+    color: #999999 !important;
+    font-weight: 600 !important;
 }
 
 :deep(.fc .fc-button-primary:focus) {
     box-shadow: 0 0 0 0.2rem rgba(76, 77, 106, 0) !important;
-    border-color: #1e2b3700;
+    border-color: #1e2b3700 !important;
+}
+
+:deep(.fc-h-event) {
+    display: flex !important;
 }
 
 :deep(.fc-theme-standard th) {
@@ -831,6 +840,8 @@ const scroll = (data: any) => {
                     width: 20px;
                     height: 20px;
                     margin-right: 8px;
+                    background: url(@/assets/calendar-icon/header.png) no-repeat;
+                    background-size: auto 100%;
                 }
             }
         }
