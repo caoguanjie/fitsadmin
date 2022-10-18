@@ -59,9 +59,9 @@ VXETable.renderer.add('ToolbarSetting', {
             {
                 msg: props.msg ?? '常用查询设置',
                 grid: $grid,
-                // onClick: () => {
-                //     events.click()
-                // }
+                onClick: () => {
+                    events.click()
+                }
             }
         )
     }
@@ -110,7 +110,10 @@ VXETable.renderer.add('ToolbarCustomColumn', {
         return h(ToolbarCustomColumn,
             {
                 msg: props.msg ?? '自定义列显示',
-                grid: $grid
+                grid: $grid,
+                onClick: () => {
+                    events.click()
+                }
             }
             // { effect: 'dark', placement: "top", content: props.msg ?? '自定义列显示', hideAfter: 0 },
             // {

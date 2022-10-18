@@ -1,32 +1,40 @@
 <template>
     <el-tooltip class="box-item" effect="dark" :content="props.msg" :hide-after="0" :placement="placement">
-        <vxe-button icon="vxe-icon-setting" v-bind="$attrs" @click="openWindow" />
+        <vxe-button icon="vxe-icon-setting" v-bind="$attrs" />
     </el-tooltip>
 
-    <fits-dialog :visible="state.visible" :dialogProp="state.dialogProp" @cancel="state.visible=false"
-        @submit="state.visible=false">
+    <fits-dialog :visible="state.visible" :dialogProp="state.dialogProp" @cancel="confirmSubmit(false)"
+        @submit="confirmSubmit(true)" v-bind="$attrs">
         <div class="setting-wrap">
             <div class="queryItem">
-                <div class="title">常用查询项</div>
+                <div class="title">常用查询项（双击立即选择）
+                </div>
                 <div class="use-query">
                     <template v-if="state.customQuery.length">
-                        <div class="query-item" v-for="(item, index) in state.customQuery" :key="index">
-                            <span class="name clickRipple">{{item.name}}</span>
-                            <el-button :icon="Delete" link text class="delete" @click="deleteItem(index)" />
+                        <div class="query-item" v-for="(item, index) in state.customQuery" :key="index"
+                            :style="{background: !item.isSelected ? 'transparent' : '#e8f4ff'}"
+                            @dblclick="dbclick(item)">
+                            <span class="name clickRipple" @click="selectQuery(item)">{{item.name}}</span>
+                            <el-popconfirm title="是否删除该关键字" confirm-button-text="确定" cancel-button-text="取消"
+                                @confirm="deleteItem(index)">
+                                <template #reference>
+                                    <el-button :icon="Delete" link text class="delete" />
+                                </template>
+                            </el-popconfirm>
                         </div>
                     </template>
                     <div class="nodata" v-else>
                         <SvgIcon icon-class="nodata" />
                         <div class="text">暂无数据</div>
                     </div>
-
                 </div>
 
                 <div class="save-query">
                     <el-form :inline="true" :model="state" class="save-query-form" :rules="state.rule"
                         ref="ruleFormRef">
                         <el-form-item prop="inputValue">
-                            <el-input v-model="state.inputValue" placeholder="请输入查询值名称,10个字以内" maxLength="10" />
+                            <el-input v-model="state.inputValue" placeholder="请输入查询值名称,10个字以内" maxLength="10"
+                                :validate-event="false" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" class="addBtn" plain @click="submitForm(ruleFormRef)">添加
@@ -56,6 +64,13 @@ import eventBus from '@/utils/base/EventBus';
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, FormInstance } from 'element-plus';
 import XEUtils from 'xe-utils';
+
+interface customQueryModal {
+    name: string,
+    isSelected: boolean;
+    form: any
+}
+
 const props = defineProps<{
     // 自定义提示信息
     msg?: string,
@@ -66,6 +81,7 @@ const placement = ref<any>('top')
 const isFullscreen = ref(false)
 const ruleFormRef = ref<FormInstance>()
 const isShowSearchForm = ref(true)
+
 const state = reactive({
     visible: false,
     dialogProp: {
@@ -75,12 +91,14 @@ const state = reactive({
     },
     customQuery: [
 
-    ] as any,
+    ] as customQueryModal[],
     inputValue: '',
     formConfigItem: props.grid.props.formConfig?.items ?? [],
     rule: {
         inputValue: [{ validator: checkInput, trigger: 'blur' }]
-    }
+    },
+    // 当前选择的值
+    currentSelectedQuery: null
 })
 
 onMounted(() => {
@@ -93,6 +111,12 @@ onMounted(() => {
         isFullscreen.value = !isFullscreen.value
         placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
     })
+
+    eventBus.on('customQuery', (arr: any[]) => {
+        state.visible = true;
+        // 做深拷贝就是为了拜托双向绑定的影响
+        state.customQuery = XEUtils.clone(arr, true)
+    })
 })
 function changeFormConfigItems(item: VxeFormItemProps) {
 
@@ -100,7 +124,15 @@ function changeFormConfigItems(item: VxeFormItemProps) {
 
     eventBus.emit('changFromItemStatus', item)
 }
+/**
+ * 选中当前的关键字查询
+ */
+function selectQuery(item: any) {
+    state.customQuery.forEach(element => element.isSelected = false)
+    item.isSelected = !item.isSelected;
+    item.isSelected && (state.currentSelectedQuery = item)
 
+}
 
 function checkInput(rule: any, value: any, callback: any) {
     if (!value) {
@@ -114,28 +146,46 @@ function checkInput(rule: any, value: any, callback: any) {
     }
 
 }
-function openWindow() {
-    state.visible = true;
-}
+
 /**
  * 
  * @param params 添加常用设置的关键字
  */
 function submitForm(formEl: FormInstance | undefined) {
-
     if (!formEl) return
+    const data = props.grid?.getProxyInfo()
     formEl.validate((valid) => {
         if (valid) {
-            state.customQuery.push({ name: state.inputValue, formdata: (props.grid.props as any).formConfig.data })
-        } else {
-            console.log('error submit!')
-            return false
+            state.customQuery.push({ name: state.inputValue, form: data?.form, isSelected: false })
         }
     })
 }
+/**
+ * 删除常用查询的某些关键词
+ * @param index 
+ */
 function deleteItem(index: number) {
-    state.customQuery.sp
+    XEUtils.remove(state.customQuery, index)
 }
+// 双击确定事件
+function dbclick(item: any) {
+    confirmSubmit(true)
+    eventBus.emit('setCustomQuerySelected', item)
+}
+
+function confirmSubmit(isConfirm: boolean) {
+    state.visible = false;
+    state.inputValue = ''
+    ruleFormRef.value?.clearValidate('inputValue')
+    state.customQuery.forEach(element => element.isSelected = false)
+    // 按确定的按钮，一般是新增
+    isConfirm && eventBus.emit('setCustomQueryData', XEUtils.clone(state.customQuery, true))
+    // 选中某个常用查询的值
+    if (XEUtils.findIndexOf(state.customQuery, item => item.isSelected) > 0 && isConfirm) {
+        eventBus.emit('setCustomQuerySelected', state.currentSelectedQuery)
+    }
+    state.currentSelectedQuery = null
+}   
 </script>
 <style lang='scss' scoped>
 :deep(.fits-dialog .el-scrollbar__view) {

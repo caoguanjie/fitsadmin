@@ -1,10 +1,10 @@
 <template>
     <el-tooltip class="box-item" effect="dark" :content="props.msg" :placement="data.placement" :hide-after="0">
-        <vxe-button icon="vxe-icon-custom-column" ref="buttonRef" v-click-outside="onClickOutside" />
+        <vxe-button icon="vxe-icon-custom-column" ref="buttonRef" v-click-outside="onClickOutside" v-bind="$attrs" />
     </el-tooltip>
 
     <el-popover ref="popoverRef" :virtual-ref="buttonRef" popper-class="toolsPoper" trigger="click" virtual-triggering
-        width="200px">
+        width="200px" v-bind="$attrs" @before-leave="closeWindow">
         <el-scrollbar max-height="500px">
             <el-checkbox-group v-model="data.checkedList" @change="handleCheckChange">
                 <vue-draggable-next class="dragArea list-group w-full" :list="data.columns" @change="changeColumns"
@@ -34,6 +34,7 @@ import { VxeButton, VxeGridConstructor, VxeTableDefines } from 'vxe-table'
 import { CheckboxValueType, ClickOutside as vClickOutside } from 'element-plus'
 import { VueDraggableNext } from 'vue-draggable-next'
 import eventBus from '@/utils/base/EventBus';
+import XEUtils from 'xe-utils';
 
 const props = defineProps<{
     // 自定义提示信息
@@ -43,14 +44,15 @@ const props = defineProps<{
 }>()
 const isFullscreen = ref(false)
 const isShowSearchForm = ref(true)
+// 恢复预设的值
+let recoveryData: VxeTableDefines.ColumnInfo[] = []
 const data = reactive({
     columns: [] as VxeTableDefines.ColumnInfo[],
     checkedList: [] as any,
     checkAll: false,
     isIndeterminate: false,
     dragging: false,
-    placement: "top" as any
-
+    placement: "top" as any,
 })
 const buttonRef = ref()
 const popoverRef = ref()
@@ -70,21 +72,23 @@ onMounted(() => {
         isFullscreen.value = !isFullscreen.value
         data.placement = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
     })
+    eventBus.on('initCustomColumnData', (customColumnArray: VxeTableDefines.ColumnInfo[]) => {
+        initColumn(customColumnArray);
+    })
     setTimeout(() => {
         nextTick(() => {
-            console.error(props.grid)
-            // 获取所有列数据
-            initColumn();
+            // 保存需要恢复的队列
+            recoveryData = XEUtils.clone(props.grid.getTableColumn().fullColumn)
         })
-    }, 100)
+    }, 50)
 })
 
 /**
  * 初始化列的配置项
  */
-function initColumn() {
+function initColumn(customColumnArray: VxeTableDefines.ColumnInfo[] = []) {
     const _checkedList: string[] = []
-    data.columns = [...props.grid.getTableColumn().fullColumn]
+    data.columns = customColumnArray.length ? customColumnArray : XEUtils.clone(props.grid.getTableColumn().fullColumn, true)
     data.columns.forEach((item: VxeTableDefines.ColumnInfo) => {
         if (item.visible) {
             _checkedList.push(item.field)
@@ -109,7 +113,6 @@ function handleCheckAllChange(val: CheckboxValueType) {
 }
 // 处理每个复选框的变化
 function handleCheckChange(value: CheckboxValueType[]) {
-    console.log(value)
     const checkedCount = value.length
     data.checkAll = checkedCount === data.columns.length
     data.isIndeterminate = checkedCount > 0 && checkedCount < data.columns.length;
@@ -118,8 +121,8 @@ function handleCheckChange(value: CheckboxValueType[]) {
 }
 // 重置自定义列，恢复全选
 function resetColumn() {
-    props.grid.resetColumn();
-    initColumn()
+    initColumn(recoveryData)
+    props.grid.reloadColumn(recoveryData);
 }
 // 刷新列的配置项
 function refreshColumn() {
@@ -130,7 +133,7 @@ function refreshColumn() {
             item.visible = data.checkedList.includes(item.field)
         }
     })
-    props.grid.refreshColumn();
+    props.grid.reloadColumn(data.columns);
 }
 
 /**
@@ -138,13 +141,17 @@ function refreshColumn() {
  * @param evt 
  */
 function checkMove(evt: any) {
-    return !handleCheckAndOperation(evt.draggedContext.element)
+    return !handleCheckAndOperation(evt.draggedContext.element) && !handleCheckAndOperation(evt.relatedContext.element)
 }
 /**
  * 处理操作列和复选框的判断
  */
 function handleCheckAndOperation(item: VxeTableDefines.ColumnInfo) {
     return item.field === undefined || ['Checkbox', 'Operation'].includes(item.field)
+}
+
+function closeWindow() {
+    eventBus.emit('setCustomColumnData', data.columns)
 }
 </script>
 <style lang='scss' scoped>

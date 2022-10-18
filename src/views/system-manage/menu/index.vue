@@ -24,7 +24,7 @@ import { VxeGridInstance, VxeGridProps } from 'vxe-table';
 import XEUtils from 'xe-utils';
 // import FitsTable from '@/components/List/FitsTable'
 const { user } = useStore();
-const xGrid = ref<VxeGridInstance>()
+const xGrid = ref<VxeGridInstance | any>()
 const formItem: FitsFormItemProps[] = [
 
     {
@@ -148,8 +148,6 @@ const gridOptions = reactive<FitsTableProps>({
     // border: true,
     keepSource: true,
     id: 'toolbar_demo_1',
-    height: 530,
-    autoHeight: true,
     rowConfig: {
         height: 40
     },
@@ -159,19 +157,12 @@ const gridOptions = reactive<FitsTableProps>({
         dataBase: (user.userInfo as any).id,
     },
     formConfig: {
-        data: {
-            keyword: '1',
-            // nickname: '2',
-            // sex: '0',
-            // role: '',
-            // age: 22,
-            // val1: [],
-            // val2: false,
-            // val3: '',
-            // flag: false
-        },
+        // data: {
+        //     keyword: '1',
+        //     number: '2',
+        // },
         items: [
-            { field: 'keyword', span: 3, title: '模糊搜索', itemRender: { name: 'input', props: { placeholder: '请输入菜单关键字、权限标识、路径' } } },
+            { field: 'keyword', title: '模糊搜索', itemRender: { name: 'ElInput', props: { placeholder: '请输入菜单关键字、权限标识、路径' } } },
             // { field: 'sex', span: 3, title: '性别', itemRender: { name: '$select', options: [{ value: '0', label: '女' }, { value: '1', label: '男' }], props: { placeholder: '请选择性别' } } },
             // { field: 'role', span: 3, title: '角色', itemRender: { name: '$input', props: { placeholder: '请输入角色' } } },
             // { field: 'age1', span: 3, title: '年龄1', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
@@ -208,16 +199,16 @@ const gridOptions = reactive<FitsTableProps>({
         // { field: 'Operation', title: '操作列', width: 200, fixed: 'right', contentRender: { name: 'TableOpeate' } }
     ],
 
-    data: [
-        { id: 10001, name: 'Test1', nickname: 'T1', role: 'Develop', sex: 'Man', age: 28, address: 'Shenzhen' },
-        { id: 10002, name: 'Test2', nickname: 'T2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-        { id: 10003, name: 'Test3', nickname: 'T3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-        { id: 10004, name: 'Test4', nickname: 'T4', role: 'Designer', sex: 'Women', age: 23, address: 'Shenzhen' },
-        { id: 10005, name: 'Test5', nickname: 'T5', role: 'Develop', sex: 'Women', age: 30, address: 'Shanghai' },
-        { id: 10006, name: 'Test6', nickname: 'T6', role: 'Designer', sex: 'Women', age: 21, address: 'Shenzhen' },
-        { id: 10007, name: 'Test7', nickname: 'T7', role: 'Test', sex: 'Man', age: 29, address: 'Shenzhen' },
-        { id: 10008, name: 'Test8', nickname: 'T8', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen' }
-    ],
+    // data: [
+    //     { id: 10001, name: 'Test1', nickname: 'T1', role: 'Develop', sex: 'Man', age: 28, address: 'Shenzhen' },
+    //     { id: 10002, name: 'Test2', nickname: 'T2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+    //     { id: 10003, name: 'Test3', nickname: 'T3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+    //     { id: 10004, name: 'Test4', nickname: 'T4', role: 'Designer', sex: 'Women', age: 23, address: 'Shenzhen' },
+    //     { id: 10005, name: 'Test5', nickname: 'T5', role: 'Develop', sex: 'Women', age: 30, address: 'Shanghai' },
+    //     { id: 10006, name: 'Test6', nickname: 'T6', role: 'Designer', sex: 'Women', age: 21, address: 'Shenzhen' },
+    //     { id: 10007, name: 'Test7', nickname: 'T7', role: 'Test', sex: 'Man', age: 29, address: 'Shenzhen' },
+    //     { id: 10008, name: 'Test8', nickname: 'T8', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen' }
+    // ],
     toolbarConfig: {
         buttons: [
             { code: 'myadd', name: '新增', status: 'primary', onClick: () => { alert(1) } },
@@ -226,7 +217,7 @@ const gridOptions = reactive<FitsTableProps>({
             { code: 'myExport', name: '导出' },
             { code: 'remove', name: '批量删除' }
         ],
-
+        tools: false,
         // refresh: {
         //     // 刷新
         //     icon: 'vxe-icon-refresh'
@@ -283,15 +274,18 @@ const gridOptions = reactive<FitsTableProps>({
     },
     proxyConfig: {
         form: true, // 启用表单代理
+        autoLoad: true,
+
         ajax: {
             query: ({ page, form }) => {
-
                 return new Promise(resolve => {
                     // 整合分页参数
                     const pageParam = {
                         pageIndex: page.currentPage,
                         pageSize: page.pageSize,
                     }
+                    // formConfig?.data和proxyConfig不能同时存在，会报【参数 "grid.data" 与 "grid.proxy-config" 有冲突】这个错误信息，所以需要把data这个默认值赋值给form变量
+                    XEUtils.merge(form, gridOptions.formConfig?.data)
                     getMenuList(form, pageParam).then((result: AxiosResponse) => {
                         const { ReturnData } = result;
                         if (!ReturnData) {
@@ -303,13 +297,13 @@ const gridOptions = reactive<FitsTableProps>({
                                 }
                             })
                             return;
+
                         }
-                        console.log(XEUtils.toTreeArray(ReturnData.TableList))
                         resolve({
-                            result: XEUtils.toTreeArray(ReturnData.TableList),
+                            result: XEUtils.toTreeArray(ReturnData.TableList, { clear: true }),
                             page: {
                                 total: ReturnData.ItemCount
-                            }
+                            },
                         })
 
                     })
@@ -323,7 +317,9 @@ const gridOptions = reactive<FitsTableProps>({
 
 onMounted(() => {
     console.warn(xGrid)
-
+    nextTick(() => {
+        // xGrid.value?.xGrid?.commitProxy('query')
+    })
     setTimeout(() => {
 
         // gridOptions.id = 'test'

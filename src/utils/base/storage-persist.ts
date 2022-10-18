@@ -2,6 +2,7 @@
 import { Drivers, Storage as IonicStorage } from '@ionic/storage';
 import XEUtils from 'xe-utils';
 import AwaitToTask from './awaitToTask';
+import { useLogger } from './logger';
 export interface StorageStrategy {
     /**
      * @description 是否开启数据缓存
@@ -29,6 +30,7 @@ export interface StorageStrategy {
 
 export const useUserHabits = (params: StorageStrategy) => {
     const store = reactive(params.store)
+    const { log } = useLogger();
     if (params.enabled) {
         const storage = new IonicStorage({
             name: params.dataBase ?? 'FitsAdmin',
@@ -48,6 +50,7 @@ export const useUserHabits = (params: StorageStrategy) => {
         watch(() => store, async (newValue) => {
             const [err] = await AwaitToTask(storage.set(params.key, XEUtils.toJSONString(newValue)))
             if (err) throw new Error(`保存数据失败, 失败原因：${err}`)
+            log.success('FitsTable组件数据变化', newValue)
         }, { deep: true })
     }
 

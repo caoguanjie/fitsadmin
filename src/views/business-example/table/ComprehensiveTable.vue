@@ -221,6 +221,7 @@ const gridOptions = reactive<FitsTableProps>({
     },
     formConfig: {
         data: {
+            number: 2
         },
         items: [
             {

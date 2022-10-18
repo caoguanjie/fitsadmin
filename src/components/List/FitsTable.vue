@@ -8,7 +8,7 @@
 </template>
 
 <script lang='ts' setup>
-import { VxeFormItemProps, VxeGridInstance, VxeGridListeners, VxeGridProps, VxeGridPropTypes, VxeToolbarPropTypes } from 'vxe-table';
+import { VxeFormItemProps, VxeGridInstance, VxeGridListeners, VxeGridProps, VxeGridPropTypes, VxeTableDefines, VxeToolbarPropTypes } from 'vxe-table';
 import "./renderer/index"
 import XEUtils from 'xe-utils';
 import variables from '@/styles/variables.module.scss';
@@ -22,7 +22,8 @@ const props = defineProps<{
 
 const xGrid = ref<VxeGridInstance>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-
+// 监听了自定义列的数据变化，只执行一次，需要个变量辅助控制
+let customColumnArrayOnce = true;
 const _gridOption = XEUtils.clone(props.option, true)
 const state = reactive({
     // 动态插槽的名字数组
@@ -37,8 +38,12 @@ const _userHabitState = XEUtils.merge(_gridOption.storage, { dataSheet: 'FitsTab
 const { store } = useUserHabits({
     ..._userHabitState,
     store: {
+        // 是否关闭搜索条件
         isShowSearchForm: true,
-        customQueryArray: []
+        // 常用查询的数据
+        customQueryArray: [],
+        // 自定义列的数据
+        customColumnArray: [] as VxeTableDefines.ColumnInfo[]
     }
 })
 
@@ -75,10 +80,9 @@ const gridEvents: VxeGridListeners = {
 initDefaultConfig()
 
 onMounted(async () => {
-    console.log(xGrid.value?.$el)
+    console.log(xGrid.value)
     // 常用查询功能，监听表单项是否显示
     setFormConfigItemVisible()
-
 })
 
 function initDefaultConfig() {
@@ -88,9 +92,32 @@ function initDefaultConfig() {
     setDefaultFormConfig();
     // 设置工具栏的默认配置
     setToolbarConfig();
+    // 监听常用查询的数据要保存本地的数据回传
+    setCustomQueryData()
+    // 监听并保存用户操作习惯的自定义列的数据到本地
+    setCustomColumnData()
+}
+
+// 监听并保存用户操作习惯的自定义列的数据到本地
+function setCustomColumnData() {
+    eventBus.on('setCustomColumnData', (arr: VxeTableDefines.ColumnInfo[]) => {
+        store.customColumnArray = XEUtils.clone(arr, true);
+    })
 }
 
 
+// 监听常用查询的数据要保存本地的数据回传
+function setCustomQueryData() {
+    eventBus.on('setCustomQueryData', (arr: any[]) => {
+        store.customQueryArray = [...arr];
+    })
+    eventBus.on('setCustomQuerySelected', (formConfigData: any) => {
+        const data = xGrid.value?.getProxyInfo()
+        XEUtils.merge(data?.form, formConfigData.form)
+        xGrid.value?.commitProxy('query')
+
+    })
+}
 
 function setDefaultOption() {
     const _gridOption = XEUtils.clone(props.option as VxeGridProps, true)
@@ -104,8 +131,6 @@ function setDefaultOption() {
             // 只对 show-overflow 有效，每一行的高度
             height: 40
         },
-        // 默认最低600px
-        height: 600,
     }
 }
 
@@ -134,7 +159,6 @@ function checkAllSlots() {
     });
     state.dynamicSlotNameArray = [...arr];
 }
-
 
 // 处理每个表单项应该显示几个
 function handleFormItemNumber(width: number) {
@@ -191,80 +215,99 @@ function setDefaultFormConfig() {
  * 获取默认的工具栏配置
  */
 function setToolbarConfig() {
-
-    const toolsBtn = {
-        search: {
-            toolRender: {
-                name: 'ToolbarSearch',
-                events: {
-                    click: () => {
-                        store.isShowSearchForm = !store.isShowSearchForm;
+    if (XEUtils.isPlainObject(state.gridOption.toolbarConfig) && JSON.stringify(state.gridOption.toolbarConfig) !== '{}') {
+        const toolsBtn = {
+            search: {
+                toolRender: {
+                    name: 'ToolbarSearch',
+                    events: {
+                        click: () => {
+                            store.isShowSearchForm = !store.isShowSearchForm;
+                        }
                     }
                 }
-            }
-        },
-        query: { toolRender: { name: 'ToolbarSetting' } },
-        refresh: { toolRender: { name: 'ToolbarRefresh' } },
-
-        export: {
-            toolRender: {
-                name: 'ToolbarExport', events: {
-                    click: () => {
-                        xGrid.value?.openExport()
+            },
+            query: {
+                toolRender: {
+                    name: 'ToolbarSetting', events: {
+                        click: () => {
+                            eventBus.emit('customQuery', store.customQueryArray)
+                        }
                     }
-                },
-            }
-        },
-        fullscreen: {
-            toolRender: {
-                name: 'ToolbarFullscreen',
-                props: {
-                    isShowSearchForm: store.isShowSearchForm
-                },
-                events: {
-                    click: () => {
-                        xGrid.value?.zoom()
-                        eventBus.emit('isFullscreen', store.isShowSearchForm)
+                }
+            },
+            refresh: {
+                toolRender: {
+                    name: 'ToolbarRefresh', events: {
+                        click: () => {
+                            xGrid.value?.commitProxy('query')
+                        }
                     }
-                },
-            }
-        },
-        custom: {
-            toolRender: {
-                name: 'ToolbarCustomColumn', events: {
-                    click: () => {
-                        console.log(111);
+                }
+            },
 
-                    }
-                },
+            export: {
+                toolRender: {
+                    name: 'ToolbarExport', events: {
+                        click: () => {
+                            xGrid.value?.openExport()
+                        }
+                    },
+                }
+            },
+            fullscreen: {
+                toolRender: {
+                    name: 'ToolbarFullscreen',
+                    props: {
+                        isShowSearchForm: store.isShowSearchForm
+                    },
+                    events: {
+                        click: () => {
+                            xGrid.value?.zoom()
+                            eventBus.emit('isFullscreen', store.isShowSearchForm)
+                        }
+                    },
+                }
+            },
+            custom: {
+                toolRender: {
+                    name: 'ToolbarCustomColumn', events: {
+                        click: () => {
+                            eventBus.emit('initCustomColumnData', XEUtils.clone(store.customColumnArray, true))
+                        }
+                    },
 
+                }
+            },
+        }
+        const _tools: any = state.gridOption.toolbarConfig?.tools;
+        let arr: any = [];
+        if (XEUtils.isPlainObject(_tools)) {
+            arr = _tools
+        } else {
+            if (_tools !== false) {
+                const tool: any = state.gridOption.toolbarConfig;
+                tool?.search !== false && arr.push(toolsBtn['search']);
+                tool?.query !== false && arr.push(toolsBtn['query']);
+                tool?.refresh !== false && arr.push(toolsBtn['refresh']);
+                tool?.export !== false && arr.push(toolsBtn['export']);
+                tool?.fullscreen !== false && arr.push(toolsBtn['fullscreen']);
+                tool?.custom !== false && arr.push(toolsBtn['custom']);
             }
-        },
-    }
-    const _tools = state.gridOption.toolbarConfig?.tools;
-    const arr: any = [];
-    if (XEUtils.isPlainObject(_tools)) {
-        XEUtils.each(toolsBtn, (obj: any, method: any) => {
-            if ((_tools as any)[method] !== false) {
-                arr.push(obj)
-            }
-        });
-    } else {
-        XEUtils.each(toolsBtn, (obj: any) => {
-            arr.push(obj)
-        });
-    }
 
-    const defaultToolbarConfig: VxeGridPropTypes.ToolbarConfig = {
-        zoom: false,
-        export: false,
-        custom: false,
-        buttons: state.gridOption.toolbarConfig?.buttons,
-        tools: arr as VxeToolbarPropTypes.Tools,
-    }
-    state.gridOption.toolbarConfig = {
-        ...defaultToolbarConfig,
-        ...state.gridOption.toolbarConfig,
+        }
+
+        const defaultToolbarConfig: VxeGridPropTypes.ToolbarConfig = {
+            zoom: false,
+            export: false,
+            custom: false,
+            buttons: state.gridOption.toolbarConfig?.buttons,
+            tools: arr as VxeToolbarPropTypes.Tools,
+        }
+        state.gridOption.toolbarConfig = {
+            ...defaultToolbarConfig,
+            ...state.gridOption.toolbarConfig,
+        }
     }
 }
 /**
@@ -284,9 +327,11 @@ useResizeObserver(document.body, (entries) => {
     const entry = entries[0]
     // 如果有表单配置才执行计算方法
     handleFormItemNumber(xGrid.value?.$el.clientWidth)
+    // 页面高度-标签栏-margin-底部状态栏
     const padding = parseInt(variables.basePadding);
-    const mainContentHeight = entry.target.querySelector('.fits-main-layout')?.clientHeight ?? 0;
-    state.gridOption.height = props.option?.autoHeight && (mainContentHeight - padding) > 0 ? (mainContentHeight - padding) : 600;
+    const headerHeight = entry.target.querySelector('.fits-head')?.clientHeight ?? 0;
+    const footerHeight = entry.target.querySelector('.footeContainer')?.clientHeight ?? 0;
+    state.gridOption.maxHeight = props.option?.maxHeight ?? (entry.contentRect.height - headerHeight - padding - footerHeight)
 })
 
 
@@ -312,8 +357,18 @@ watch(() => store.isShowSearchForm, (newValue) => {
         // 这里主要解决放大化，如果隐藏搜索区域时，列表高度无法自动计算高度的问题，可以利用vxetable的内置方法，触发页面计算高度。
         xGrid.value?.reloadColumn(state.gridOption.columns as any)
     }
-
 })
+/**
+ * 监听第一次从本地数据库获取自定义列数据的时候，需要重新刷新列的展示
+ */
+watch(() => store.customColumnArray, () => {
+
+    if (customColumnArrayOnce) {
+        xGrid.value?.reloadColumn(store.customColumnArray);
+        customColumnArrayOnce = false
+    }
+}, { deep: true })
+
 </script>
 <style lang='scss' >
 .fits-grid.is--maximize {
@@ -343,7 +398,11 @@ watch(() => store.isShowSearchForm, (newValue) => {
     }
 
     .vxe-toolbar {
-        padding: 16px 0;
+
+        .vxe-buttons--wrapper:not(:empty),
+        .vxe-tools--wrapper:not(:empty) {
+            padding: 16px 0;
+        }
 
         & .vxe-checkbox--icon {
             font-size: 16px;
@@ -458,11 +517,7 @@ watch(() => store.isShowSearchForm, (newValue) => {
     // 下面是表格的样式
     .vxe-header--column,
     .vxe-body--column {
-        padding: 10px 0 !important;
-        background-image: linear-gradient(#e4e7ed, #e4e7ed) !important;
-        background-repeat: no-repeat !important;
-        background-size: 100% 1px !important;
-        background-position: 100% 100% !important;
+
 
         & .vxe-checkbox--icon {
             font-size: 16px;
@@ -590,7 +645,36 @@ watch(() => store.isShowSearchForm, (newValue) => {
 
 
     }
+
+    .vxe-table--render-default.border--default .vxe-body--column,
+    .vxe-table--render-default.border--default .vxe-footer--column,
+    .vxe-table--render-default.border--default .vxe-header--column,
+    .vxe-table--render-default.border--inner .vxe-body--column,
+    .vxe-table--render-default.border--inner .vxe-footer--column,
+    .vxe-table--render-default.border--inner .vxe-header--column {
+        padding: 10px 0;
+        background-image: linear-gradient(#e4e7ed, #e4e7ed);
+        background-repeat: no-repeat;
+        background-size: 100% 1px;
+        background-position: 100% 100%;
+
+    }
+
+    .vxe-table--render-default.border--full .vxe-body--column,
+    .vxe-table--render-default.border--full .vxe-footer--column,
+    .vxe-table--render-default.border--full .vxe-header--column {
+        padding: 10px 0;
+        background-image: linear-gradient(#e4e7ed, #e4e7ed), linear-gradient(#e4e7ed, #e4e7ed);
+        background-repeat: no-repeat;
+        background-size: 1px 100%, 100% 1px;
+        background-position: 100% 0, 100% 100%;
+    }
+
 }
+
+
+
+
 
 /*滚动条整体部分*/
 .fits-grid ::-webkit-scrollbar {

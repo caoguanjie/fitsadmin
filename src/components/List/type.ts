@@ -80,20 +80,19 @@ export interface FitstoolsOption {
      * @default {true} 
      */
     query?: boolean;
-
+    /**
+     * @description 关闭所有功能栏
+     */
+    tools?: boolean
 }
 /**
  * 
  */
-export interface FitsToolsBarConfig {
+export interface FitsToolsBarConfig extends FitstoolsOption {
     /**
      * @description 左侧按钮组列表
      */
     buttons: FitsToolsBtnConfig[],
-    /**
-     * @description 右侧工具栏列表
-     */
-    tools: FitstoolsOption,
     /**
     * @description 左右侧都可以自定义插槽
     */
@@ -107,11 +106,7 @@ export interface FitsToolsBarConfig {
  * 表格的配置类型
  */
 export type FitsTableProps<D = any> = VxeTableProps<D> & {
-    /**
-    * @description  是否自动高度，如果列表页一定要开启这个属性，会自动列表页的高度。
-    * @default {false} 
-    */
-    autoHeight?: boolean
+
     toolbarConfig?: FitsToolsBarConfig | VxeGridPropTypes.ToolbarConfig
     formConfig?: VxeGridPropTypes.FormConfig
     columns?: VxeGridPropTypes.Columns
