@@ -617,6 +617,14 @@ watch(() => store.customColumnArray, () => {
         }
     }
 
+    .vxe-pager .vxe-pager--jump .vxe-pager--goto {
+        border-radius: 2px;
+        min-width: 50px;
+        font-size: 10px;
+        line-height: 30px;
+        height: 30px;
+    }
+
     .vxe-pager.is--background .vxe-pager--jump-next:not(.is--disabled).is--active,
     .vxe-pager.is--background .vxe-pager--jump-prev:not(.is--disabled).is--active,
     .vxe-pager.is--background .vxe-pager--num-btn:not(.is--disabled).is--active,

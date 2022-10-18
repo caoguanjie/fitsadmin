@@ -3,7 +3,7 @@
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
                 <fits-card title="基础分组表格"
-                    desc="必须传入headers属性（表头配置，和vxe-columns属性一致）以及ajax.query属性。groupConditions属性（分组条件）可传可不传，defaultChecked属性表示默认选中哪个分组。">
+                    desc="传入headers属性声明列配置。然后传入ajax.query属性，通过promise的形式返回组件表格的数据，传入result属性中即可。groupConditions属性（分组条件）可传可不传，defaultChecked属性表示默认选中哪个分组。">
                     <base-group-table />
                 </fits-card>
                 <fits-card title="插槽分组表格"

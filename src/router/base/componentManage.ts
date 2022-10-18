@@ -42,7 +42,7 @@ const componentRouter: RouteRecordRaw = {
                 {
                     path: "tinymce",
                     name: "Tinymce",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/wangEditor/index.vue"),
                     meta: { title: "富文本编辑器", roles: ["admin", "editor"] },
                 },
                 {
