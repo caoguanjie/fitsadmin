@@ -58,7 +58,7 @@ export const businessRouter: RouteRecordRaw = {
                 {
                     path: "ComplexTable",
                     name: "ComplexTable",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/table/complex-header-table/index.vue"),
                     meta: { title: "复杂表头" },
                 },
                 {
@@ -70,32 +70,31 @@ export const businessRouter: RouteRecordRaw = {
                 {
                     path: "DynamicTable",
                     name: "DynamicTable",
-                    component: () =>
-                        import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/table/dynamic-table/index.vue"),
                     meta: { title: "动态表格" },
                 },
                 {
                     path: "DrapTable",
                     name: "DrapTable",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/table/drag-table/index.vue"),
                     meta: { title: "拖拽table" },
                 },
                 {
                     path: "EditTable",
                     name: "EditTable",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/table/edit-table/index.vue"),
                     meta: { title: "table内编辑" },
                 },
                 {
                     path: "VirtualScroll",
                     name: "VirtualScroll",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/table/virtual-scroll-table/index.vue"),
                     meta: { title: "虚拟滚动" },
                 },
                 {
                     path: "AllTable",
                     name: "AllTable",
-                    component: () => import("@/views/business-example/table/ComprehensiveTable.vue"),
+                    component: () => import("@/views/business-example/table/comprehensive-table/ComprehensiveTable.vue"),
                     meta: { title: "综合表格" },
                 },
                 {
@@ -156,13 +155,13 @@ export const businessRouter: RouteRecordRaw = {
             path: "PDF",
             name: "PDF",
             redirect: "/businessRouter/PDF/PreviewPDF",
-            component: () => import("@/views/ready/index.vue"),
+            component: () => import("@/views/components-manage/index.vue"),
             meta: { title: "pdf功能", roles: ["admin", "editor"], icon: 'fits-pdf' },
             children: [
                 {
                     path: "PreviewPDF",
                     name: "PreviewPDF",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/pdf/previewPdf.vue"),
                     meta: { title: "预览pdf" },
                 },
                 {

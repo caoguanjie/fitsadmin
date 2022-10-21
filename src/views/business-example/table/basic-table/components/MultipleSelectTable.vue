@@ -1,6 +1,15 @@
 <template>
     <fits-table :option="gridOptions" @checkbox-change="checkboxChange" @toolbar-button-click="toolbarButtonClick"
-        ref="xGrid" />
+        ref="xGrid">
+        <template #myButtons>
+            <el-button @click="setAllChecked(true)">
+                选中所有可选行
+            </el-button>
+            <el-button @click="setAllChecked(false)">
+                清楚所有勾选行
+            </el-button>
+        </template>
+    </fits-table>
 </template>
 
 <script lang='ts' setup>
@@ -31,36 +40,10 @@ const gridOptions = reactive<FitsTableProps>({
     },
     toolbarConfig: {
         slots: {
-            buttons: () => [
-                h(
-                    ElButton,
-                    {
-                        class: 'el-button',
-                        onClick: () => {
-                            xGrid.value.xGrid.setAllCheckboxRow(true)
-                        }
-                    },
-                    () => h('span', '选中所有可选行')
-                ),
-                h(
-                    ElButton,
-                    {
-                        class: 'el-button',
-                        onClick: () => {
-                            xGrid.value.xGrid.setAllCheckboxRow(false)
-                        }
-                    },
-                    () => h('span', '清除所有选中行')
-                ),
-                // h(
-                //     'button',
-                //     {
-                //         class: 'el-button',
-                //         onClick: setChecked
-                //     },
-                //     '设置第三、四行选中'
-                // ),
-            ]
+            buttons: 'myButtons'
+        },
+        tools: {
+            enabled: false
         }
     },
 })
@@ -79,15 +62,13 @@ function toolbarButtonClick({ code, button, $event }: any) {
     console.log($event);
 }
 
-function setChecked() {
-    console.log(xGrid.value.xGrid);
-    xGrid.value.xGrid.setCheckboxRow(gridOptions?.data, true)
-    console.log(xGrid.value.xGrid.getCheckboxRecords(true))
-}
-
 function checkMethod({ row }: any) {
     // 禁用地址在“幸福小区”的勾选项
     return row.address.indexOf('幸福小区') === -1
+}
+
+function setAllChecked(isChecked: boolean) {
+    xGrid.value.fitsTablePro.setAllCheckboxRow(isChecked)
 }
 
 </script>

@@ -26,7 +26,7 @@
         </div>
         <div v-show="isExpand && data.hideLoading">
             <vxe-table ref="myTable" :data="tableData" :show-header="false" border="inner" :loading="false"
-                empty-text=" " show-overflow :row-config="{ isHover: true }" class="group-table"
+                empty-text=" " show-overflow :row-config="{ isHover: true }"
                 @toggle-row-expand="emit('expandChange', $event)" @checkbox-change="rowCheckboxChange">
                 <vxe-column v-for="(item, index) in headers" :key="index" v-bind="item">
                     <template #content="scoped" v-if="item.type === 'expand'">
@@ -261,12 +261,6 @@ defineExpose({
 
         .el-checkbox {
             margin-left: 20px;
-        }
-    }
-
-    .group-table {
-        .vxe-table--body-wrapper {
-            overflow: hidden;
         }
     }
 

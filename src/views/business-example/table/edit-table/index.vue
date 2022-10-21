@@ -1,25 +1,18 @@
 <template>
-    <div class="slot-table ">
+    <div class="edit-table ">
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
-                <fits-card title="自定义列模板"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为default，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义列模板。">
-                    <custom-content-table />
+                <fits-card title="编辑模式" desc="给 columns 里的对象配置 editRender 属性设置渲染器名称等，即可开启可编辑功能。">
+                    <edit-mode-table></edit-mode-table>
                 </fits-card>
 
-                <fits-card title="自定义表头"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为header，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义表头模板。本例还演示了给columns中的对象设置headerClassName表头类名。">
-                    <custom-header-table />
+                <fits-card title="点击触发编辑"
+                    desc="通过配置 editConfig.trigger 设置编辑器的触发方式。可以通过单击、双击和手动方式触发。本例演示了切换单击和双击的触发方式，手动触发请移步下一个例子。">
+                    <edit-trigger-table></edit-trigger-table>
                 </fits-card>
 
-                <fits-card title="展开行"
-                    desc="给 columns 里的对象配置 type=expand 开启展开行，并通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为content，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义列模板。">
-                    <expand-row-table />
-                </fits-card>
-
-                <fits-card title="自定义按钮区域"
-                    desc="通过配置 toolbarConfig.slots 属性可以使用插槽。该属性是一个对象，其中键为 buttons，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义工具栏左侧的按钮区域。">
-                    <custom-buttons-table />
+                <fits-card title="手动触发编辑" desc="手动的触发方式需要配置 editConfig.trigger='manual'，且只对 editConfig.mode='row'有效。">
+                    <manual-edit-table></manual-edit-table>
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -37,10 +30,9 @@
 </template>
 
 <script lang='ts' setup>
-import CustomContentTable from './components/CustomContentTable.vue'
-import CustomHeaderTable from './components/CustomHeaderTable.vue'
-import ExpandRowTable from './components/ExpandRowTable.vue'
-import CustomButtonsTable from './components/CustomButtonsTable.vue'
+import EditModeTable from './components/EditModeTable.vue'
+import EditTriggerTable from './components/EditTriggerTable.vue'
+import ManualEditTable from './components/ManualEditTable.vue'
 
 
 //锚点目录所需数据
@@ -101,7 +93,7 @@ const removeHeigthLight = (k: number) => {
 </script>
 
 <style lang="scss" scoped>
-.slot-table {
+.edit-table {
     padding: 0 16px;
     display: flex;
 
@@ -154,7 +146,7 @@ const removeHeigthLight = (k: number) => {
 </style>
 
 <style lang="scss">
-.slot-table {
+.edit-table {
     .fits-card {
         min-width: 500px;
     }

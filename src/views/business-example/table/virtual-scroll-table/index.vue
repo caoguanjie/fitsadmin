@@ -1,25 +1,10 @@
 <template>
-    <div class="slot-table ">
+    <div class="virtual-table ">
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
-                <fits-card title="自定义列模板"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为default，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义列模板。">
-                    <custom-content-table />
-                </fits-card>
-
-                <fits-card title="自定义表头"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为header，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义表头模板。本例还演示了给columns中的对象设置headerClassName表头类名。">
-                    <custom-header-table />
-                </fits-card>
-
-                <fits-card title="展开行"
-                    desc="给 columns 里的对象配置 type=expand 开启展开行，并通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为content，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义列模板。">
-                    <expand-row-table />
-                </fits-card>
-
-                <fits-card title="自定义按钮区域"
-                    desc="通过配置 toolbarConfig.slots 属性可以使用插槽。该属性是一个对象，其中键为 buttons，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义工具栏左侧的按钮区域。">
-                    <custom-buttons-table />
+                <fits-card title="虚拟滚动" desc="默认情况下，如果设置了 height、maxHeight，则会根据触发规则自动启用虚拟渲染（触发规则由 scroll-x.gt | scroll-y.gt 设置）。虚拟滚动启用后只会渲染指定范围内的可视区数据，其他的数据将被卷去收起，当滚动到可视区时才被渲染出来。
+                    注意：根据官网配置显示，一旦启用虚拟滚动就无法使用展开行、树结构等特殊功能。">
+                    <virtual-scroll-table />
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -37,10 +22,7 @@
 </template>
 
 <script lang='ts' setup>
-import CustomContentTable from './components/CustomContentTable.vue'
-import CustomHeaderTable from './components/CustomHeaderTable.vue'
-import ExpandRowTable from './components/ExpandRowTable.vue'
-import CustomButtonsTable from './components/CustomButtonsTable.vue'
+import VirtualScrollTable from './components/VirtualScrollTable.vue'
 
 
 //锚点目录所需数据
@@ -101,7 +83,7 @@ const removeHeigthLight = (k: number) => {
 </script>
 
 <style lang="scss" scoped>
-.slot-table {
+.virtual-table {
     padding: 0 16px;
     display: flex;
 
@@ -154,7 +136,7 @@ const removeHeigthLight = (k: number) => {
 </style>
 
 <style lang="scss">
-.slot-table {
+.virtual-table {
     .fits-card {
         min-width: 500px;
     }

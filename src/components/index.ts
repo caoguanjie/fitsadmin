@@ -10,6 +10,7 @@ import FitsCard from './Card/FitsCard.vue'
 import FitsEcharts from './Card/FitsEcharts.vue'
 import FitsForm from './Form/FitsForm.vue'
 import FitsListSearch from './List/FitsListSearch.vue'
+import FitsNoData from './Common/FitsNoData.vue'
 import type { App } from 'vue'
 
 const FitAdminUI = {
@@ -26,6 +27,7 @@ const FitAdminUI = {
         app.component('FitsEcharts', FitsEcharts);
         app.component('FitsForm', FitsForm);
         app.component('FitsListSearch', FitsListSearch);
+        app.component('FitsNoData', FitsNoData);
     }
 }
 

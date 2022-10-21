@@ -1,25 +1,9 @@
 <template>
-    <div class="slot-table ">
+    <div class="complex-header-table">
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
-                <fits-card title="自定义列模板"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为default，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义列模板。">
-                    <custom-content-table />
-                </fits-card>
-
-                <fits-card title="自定义表头"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为header，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义表头模板。本例还演示了给columns中的对象设置headerClassName表头类名。">
-                    <custom-header-table />
-                </fits-card>
-
-                <fits-card title="展开行"
-                    desc="给 columns 里的对象配置 type=expand 开启展开行，并通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为content，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义列模板。">
-                    <expand-row-table />
-                </fits-card>
-
-                <fits-card title="自定义按钮区域"
-                    desc="通过配置 toolbarConfig.slots 属性可以使用插槽。该属性是一个对象，其中键为 buttons，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义工具栏左侧的按钮区域。">
-                    <custom-buttons-table />
+                <fits-card title="复杂表头" desc="">
+                    <fits-table :option="fitsTablePro" ref="xGrid" />
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -37,12 +21,48 @@
 </template>
 
 <script lang='ts' setup>
-import CustomContentTable from './components/CustomContentTable.vue'
-import CustomHeaderTable from './components/CustomHeaderTable.vue'
-import ExpandRowTable from './components/ExpandRowTable.vue'
-import CustomButtonsTable from './components/CustomButtonsTable.vue'
+import { useFitsTablePro } from '@/components/List/FitsTableProHook';
+import { FitsTableProps } from '@/components/List/type';
+import { VxeGridInstance } from 'vxe-table';
 
-
+const gridOptions: FitsTableProps = {
+    border: true,
+    columns: [
+        { type: 'seq', field: "Index", width: 50, title: '序号' },
+        {
+            title: '基本信息',
+            field: "basic",
+            children: [
+                { field: 'name', title: '姓名' },
+                {
+                    title: '其他信息',
+                    field: "other",
+                    children: [
+                        { field: 'phone', title: '电话' },
+                        { field: 'birth', title: '生日' }
+                    ]
+                },
+                { field: 'sex', title: '性别' }
+            ]
+        },
+        { field: 'mark', title: '备注', sortable: true, showOverflow: true },
+    ],
+    data: [
+        { name: '王五', phone: '13224452121', birth: '1999-10-08', sex: '男', mark: '下周五入住201房' },
+        { name: '李晓明', phone: '13754456492', birth: '2015-05-18', sex: '男', mark: '无' },
+        { name: '王大陆', phone: '13324459856', birth: '2000-01-05', sex: '女', mark: '已离职，归还设备' },
+        { name: '李萌萌', phone: '18712458736', birth: '1879-12-13', sex: '女', mark: '此人不存在 ' },
+        { name: '张兴', phone: '18924584265', birth: '1954-03-25', sex: '男', mark: '办理手续、护照、签证 、身份汇总' },
+    ],
+    headerAlign: 'center',
+    toolbarConfig: {
+        tools: {
+            enabled: true
+        }
+    }
+}
+const xGrid = ref<VxeGridInstance | any>()
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 //锚点目录所需数据
 const navTree: any = ref([]);
 const menuData = reactive({
@@ -101,7 +121,7 @@ const removeHeigthLight = (k: number) => {
 </script>
 
 <style lang="scss" scoped>
-.slot-table {
+.complex-header-table {
     padding: 0 16px;
     display: flex;
 
@@ -154,9 +174,13 @@ const removeHeigthLight = (k: number) => {
 </style>
 
 <style lang="scss">
-.slot-table {
+.complex-header-table {
     .fits-card {
         min-width: 500px;
+    }
+
+    .fits-grid {
+        // height: 500px;
     }
 }
 </style>

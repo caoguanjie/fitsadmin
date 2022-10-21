@@ -1,9 +1,9 @@
 <template>
     <div class="menu-manage">
         <!-- <fits-list-seach :formItem='formItem' /> -->
-        <fits-table :option="gridOptions" ref="xGrid">
+        <fits-table :option="fitsTablePro" ref="xGrid">
 
-            <template #operate="{ row }">
+            <template #operate>
                 <el-button type="success">编辑</el-button>
                 <el-button type="info">删除</el-button>
                 <!-- <el-button type="warning">Warning</el-button>
@@ -17,8 +17,10 @@
 <script lang='ts' setup>
 import { getMenuList } from '@/api/base/system';
 import { FitsFormItemProps } from '@/components/Form/type';
+import { useFitsTablePro } from '@/components/List/FitsTableProHook';
 import { FitsTableProps } from '@/components/List/type';
 import useStore from '@/store';
+import eventBus from '@/utils/base/EventBus';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance, VxeGridProps } from 'vxe-table';
 import XEUtils from 'xe-utils';
@@ -144,9 +146,10 @@ const formItem: FitsFormItemProps[] = [
 ]
 
 // console.warn(FitsTable.props)
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     // border: true,
     keepSource: true,
+    showOverflow: false,
     id: 'toolbar_demo_1',
     rowConfig: {
         height: 40
@@ -175,14 +178,12 @@ const gridOptions = reactive<FitsTableProps>({
         ]
     },
     importConfig: {},
-    exportConfig: {},
+    // exportConfig: {},
     columnConfig: {
         // resizable: true [PrevJump, PrevPage, Jump, PageCount, NextPage, NextJump, Sizes, Total]
     },
     pagerConfig: {
-        layouts: ['Total', 'Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump'],
-        pageSizes: [10, 15, 20, 50, 100],
-        background: true,
+        enabled: true
     },
     columns: [
         { field: 'Checkbox', type: 'checkbox', title: '多选', width: 50 },
@@ -196,7 +197,7 @@ const gridOptions = reactive<FitsTableProps>({
         { field: 'IsCache', title: '缓存', width: 100 },
         { field: 'CreateTime', title: '创建日期', width: 130 },
         { field: 'Operation', title: '操作列', minWidth: 150, slots: { default: 'operate' }, fixed: 'right' }
-        // { field: 'Operation', title: '操作列', width: 200, fixed: 'right', contentRender: { name: 'TableOpeate' } }
+        // { field: 'Operati on', title: '操作列', width: 200, fixed: 'right', contentRender: { name: 'TableOpeate' } }
     ],
 
     // data: [
@@ -217,7 +218,9 @@ const gridOptions = reactive<FitsTableProps>({
             { code: 'myExport', name: '导出' },
             { code: 'remove', name: '批量删除' }
         ],
-        tools: false,
+        tools: {
+            enabled: true
+        },
         // refresh: {
         //     // 刷新
         //     icon: 'vxe-icon-refresh'
@@ -264,28 +267,25 @@ const gridOptions = reactive<FitsTableProps>({
         //     },
         // ],
     },
-    customConfig: {
-        storage: true,
-    },
-    treeConfig: {
-        transform: true,
-        rowField: 'Id',
-        parentField: 'PId',
-    },
+
+    // treeConfig: {
+    //     transform: true,
+    //     rowField: 'Id',
+    //     parentField: 'PId',
+    // },
     proxyConfig: {
         form: true, // 启用表单代理
-        autoLoad: true,
-
+        autoLoad: false,
         ajax: {
-            query: ({ page, form }) => {
+            query: ({ form }) => {
                 return new Promise(resolve => {
                     // 整合分页参数
                     const pageParam = {
-                        pageIndex: page.currentPage,
-                        pageSize: page.pageSize,
+                        pageIndex: 11,
+                        pageSize: 23,
                     }
                     // formConfig?.data和proxyConfig不能同时存在，会报【参数 "grid.data" 与 "grid.proxy-config" 有冲突】这个错误信息，所以需要把data这个默认值赋值给form变量
-                    XEUtils.merge(form, gridOptions.formConfig?.data)
+                    // XEUtils.merge(form, gridOptions.formConfig?.data)
                     getMenuList(form, pageParam).then((result: AxiosResponse) => {
                         const { ReturnData } = result;
                         if (!ReturnData) {
@@ -312,12 +312,14 @@ const gridOptions = reactive<FitsTableProps>({
             }
         }
     },
-})
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 
 onMounted(() => {
-    console.warn(xGrid)
+
     nextTick(() => {
+
         // xGrid.value?.xGrid?.commitProxy('query')
     })
     setTimeout(() => {
@@ -326,6 +328,8 @@ onMounted(() => {
         // gridOptions.formConfig = {}
     }, 2000)
 })
+
+
 </script>
 <style lang='scss' scoped>
 .menu-manage {

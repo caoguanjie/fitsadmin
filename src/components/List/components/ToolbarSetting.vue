@@ -1,6 +1,6 @@
 <template>
     <el-tooltip class="box-item" effect="dark" :content="props.msg" :hide-after="0" :placement="placement">
-        <vxe-button icon="vxe-icon-setting" v-bind="$attrs" />
+        <vxe-button icon="vxe-icon-setting" v-bind="$attrs" @click="handleClick()" />
     </el-tooltip>
 
     <fits-dialog :visible="state.visible" :dialogProp="state.dialogProp" @cancel="confirmSubmit(false)"
@@ -62,7 +62,7 @@
 import { VxeFormItemProps, VxeGridConstructor } from 'vxe-table';
 import eventBus from '@/utils/base/EventBus';
 import { Delete } from '@element-plus/icons-vue'
-import { ElMessage, FormInstance } from 'element-plus';
+import { FormInstance } from 'element-plus';
 import XEUtils from 'xe-utils';
 
 interface customQueryModal {
@@ -74,13 +74,14 @@ interface customQueryModal {
 const props = defineProps<{
     // 自定义提示信息
     msg?: string,
+    event: any,
     // 表格公共的api
     grid: VxeGridConstructor
 }>()
 const placement = ref<any>('top')
 const isFullscreen = ref(false)
 const ruleFormRef = ref<FormInstance>()
-const isShowSearchForm = ref(true)
+const isShowSearchForm = ref(props.grid.props.formConfig ? true : false)
 
 const state = reactive({
     visible: false,
@@ -100,7 +101,7 @@ const state = reactive({
     // 当前选择的值
     currentSelectedQuery: null
 })
-
+const emit = defineEmits(['ChangFromItemStatus', 'SetCustomQueryData', 'SetCustomQuerySelected'])
 onMounted(() => {
 
     eventBus.on('IsShowSearchForm', (_isShowSearchForm: boolean) => {
@@ -112,17 +113,25 @@ onMounted(() => {
         placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
     })
 
-    eventBus.on('customQuery', (arr: any[]) => {
-        state.visible = true;
-        // 做深拷贝就是为了拜托双向绑定的影响
-        state.customQuery = XEUtils.clone(arr, true)
-    })
+    // eventBus.on('customQuery', (arr: any[]) => {
+    //     state.visible = true;
+    //     // 做深拷贝就是为了拜托双向绑定的影响
+    //     state.customQuery = XEUtils.clone(arr, true)
+    // })
 })
+
+function handleClick() {
+    state.visible = true;
+    // 做深拷贝就是为了拜托双向绑定的影响
+    state.customQuery = XEUtils.clone(props.event.get(), true)
+}
+
+
 function changeFormConfigItems(item: VxeFormItemProps) {
 
     item.visible = !item.visible
 
-    eventBus.emit('changFromItemStatus', item)
+    emit('ChangFromItemStatus', item)
 }
 /**
  * 选中当前的关键字查询
@@ -170,7 +179,7 @@ function deleteItem(index: number) {
 // 双击确定事件
 function dbclick(item: any) {
     confirmSubmit(true)
-    eventBus.emit('setCustomQuerySelected', item)
+    emit('SetCustomQuerySelected', item)
 }
 
 function confirmSubmit(isConfirm: boolean) {
@@ -179,10 +188,10 @@ function confirmSubmit(isConfirm: boolean) {
     ruleFormRef.value?.clearValidate('inputValue')
     state.customQuery.forEach(element => element.isSelected = false)
     // 按确定的按钮，一般是新增
-    isConfirm && eventBus.emit('setCustomQueryData', XEUtils.clone(state.customQuery, true))
+    isConfirm && emit('SetCustomQueryData', XEUtils.clone(state.customQuery, true))
     // 选中某个常用查询的值
     if (XEUtils.findIndexOf(state.customQuery, item => item.isSelected) > 0 && isConfirm) {
-        eventBus.emit('setCustomQuerySelected', state.currentSelectedQuery)
+        emit('SetCustomQuerySelected', state.currentSelectedQuery)
     }
     state.currentSelectedQuery = null
 }   

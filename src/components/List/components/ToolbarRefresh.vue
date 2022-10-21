@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 const placement = ref<any>('top')
 const isFullscreen = ref(false)
-const isShowSearchForm = ref(true)
+const isShowSearchForm = ref(props.grid.props.formConfig ? true : false)
 onMounted(() => {
     eventBus.on('IsShowSearchForm', (_isShowSearchForm: boolean) => {
         isShowSearchForm.value = _isShowSearchForm

@@ -1,9 +1,19 @@
 <template>
-    <fits-table :option="gridOptions" />
+    <fits-table :option="gridOptions">
+        <template #operation_default>
+            <el-button size="small" type="primary">
+                编辑
+            </el-button>
+            <el-button size="small" type="danger">
+                删除
+            </el-button>
+        </template>
+    </fits-table>
 </template>
 
 <script lang='ts' setup>
 import { FitsTableProps } from '@/components/List/type';
+import { ElButton } from 'element-plus';
 
 const gridOptions = reactive<FitsTableProps>({
     columns: [
@@ -11,6 +21,7 @@ const gridOptions = reactive<FitsTableProps>({
         { field: 'phone', title: '电话', },
         { field: 'birth', title: '出生日期' },
         { field: 'address', title: '地址', width: 320 },
+        { field: 'operation', title: '操作', slots: { default: 'operation_default' } },
     ],
     data: [
         { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },

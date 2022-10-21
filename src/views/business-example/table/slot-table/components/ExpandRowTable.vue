@@ -1,39 +1,28 @@
 <template>
-    <fits-table :option="gridOptions" />
+    <fits-table :option="gridOptions" class="expandRowTable">
+        <template #expand="{row, name}">
+            <el-descriptions title="User Info">
+                <el-descriptions-item label="姓名">{{row.name}}</el-descriptions-item>
+                <el-descriptions-item label="电话">{{row.phone}}</el-descriptions-item>
+                <el-descriptions-item label="出生日期">{{row.birth}}</el-descriptions-item>
+                <el-descriptions-item label="地址">{{row.address}}</el-descriptions-item>
+            </el-descriptions>
+        </template>
+    </fits-table>
 </template>
 
 <script lang='ts' setup>
 import { FitsTableProps } from '@/components/List/type';
-import { ElButton } from 'element-plus';
-
-const slots = {
-    default: () => [
-        h(
-            ElButton,
-            {
-                size: 'small',
-                type: 'primary'
-            },
-            () => h('span', '编辑')
-        ),
-        h(
-            ElButton,
-            {
-                size: 'small',
-                type: 'danger'
-            },
-            () => h('span', '删除')
-        ),
-    ]
-}
+import { ElDescriptions, ElDescriptionsItem } from 'element-plus';
 
 const gridOptions = reactive<FitsTableProps>({
     columns: [
-        { field: 'name', title: '姓名', },
+        { field: 'expand', type: 'expand', slots: { content: 'expand' } },
+        { field: 'name', title: '姓名' },
         { field: 'phone', title: '电话', },
         { field: 'birth', title: '出生日期' },
         { field: 'address', title: '地址', width: 320 },
-        { field: 'operation', title: '操作', slots },
+        { field: 'operation', title: '操作' },
     ],
     data: [
         { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },
@@ -42,11 +31,22 @@ const gridOptions = reactive<FitsTableProps>({
         { name: '李萌萌', phone: '18712458736', birth: '1879-12-13', address: '广东省广州市海珠区五山路幸福小区6号楼101 ' },
         { name: '张兴', phone: '18924584265', birth: '1954-03-25', address: '广东省广州市海珠区五山路幸福小区7号楼102 ' },
     ],
+    expandConfig: {
+
+    }
 })
 
 </script>
 <style lang='scss' scoped>
+.expandRowTable {
+    :deep(.myDescriptions) {
+        margin: 20px;
+    }
+}
 
+.el-descriptions {
+    margin: 20px;
+}
 </style>
 
 <style lang="scss">

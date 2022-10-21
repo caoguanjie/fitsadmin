@@ -1,25 +1,16 @@
 <template>
-    <div class="slot-table ">
+    <div class="drag-table">
+
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
-                <fits-card title="自定义列模板"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为default，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义列模板。">
-                    <custom-content-table />
+                <fits-card title="拖拽行"
+                    desc="vxe-table 表格不支持拖动功能；可以结合 sortablejs 实现拖动效果。由于直接操作了 Dom 节点，需要与 Vue 的数据同步，必须设置 rowConfig.useKey=true ，并且根据 vue 的规则自行实现数据同步。">
+                    <drag-row-table></drag-row-table>
                 </fits-card>
 
-                <fits-card title="自定义表头"
-                    desc="通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为header，值为自定义插槽名称。之后在FitsTable组件中通过<template #自定义插槽名称>的形式即可自定义表头模板。本例还演示了给columns中的对象设置headerClassName表头类名。">
-                    <custom-header-table />
-                </fits-card>
-
-                <fits-card title="展开行"
-                    desc="给 columns 里的对象配置 type=expand 开启展开行，并通过给 columns 里的对象设置 slots 属性，该属性是一个对象，其中键为content，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义列模板。">
-                    <expand-row-table />
-                </fits-card>
-
-                <fits-card title="自定义按钮区域"
-                    desc="通过配置 toolbarConfig.slots 属性可以使用插槽。该属性是一个对象，其中键为 buttons，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义工具栏左侧的按钮区域。">
-                    <custom-buttons-table />
+                <fits-card title="拖拽列"
+                    desc="vxe-table 表格不支持拖动功能；可以结合 sortablejs 实现拖动效果。由于直接操作了 Dom 节点，需要与 Vue 的数据同步，必须设置 columnConfig.useKey=true ，并且根据 vue 的规则自行实现数据同步。">
+                    <drag-col-table></drag-col-table>
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -37,10 +28,8 @@
 </template>
 
 <script lang='ts' setup>
-import CustomContentTable from './components/CustomContentTable.vue'
-import CustomHeaderTable from './components/CustomHeaderTable.vue'
-import ExpandRowTable from './components/ExpandRowTable.vue'
-import CustomButtonsTable from './components/CustomButtonsTable.vue'
+import DragRowTable from './components/DragRowTable.vue'
+import DragColTable from './components/DragColTable.vue'
 
 
 //锚点目录所需数据
@@ -101,7 +90,7 @@ const removeHeigthLight = (k: number) => {
 </script>
 
 <style lang="scss" scoped>
-.slot-table {
+.drag-table {
     padding: 0 16px;
     display: flex;
 
@@ -154,7 +143,7 @@ const removeHeigthLight = (k: number) => {
 </style>
 
 <style lang="scss">
-.slot-table {
+.drag-table {
     .fits-card {
         min-width: 500px;
     }

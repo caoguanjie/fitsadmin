@@ -1,66 +1,36 @@
 <template>
-    <fits-table :option="gridOptions" ref="xGrid" />
+    <fits-table :option="gridOptions" ref="xGrid">
+        <template #name_header="{name, row}">
+            姓名
+            <el-button size="small" type="primary">
+                按钮
+            </el-button>
+        </template>
+        <template #birth_header="{name, row}">
+            出生日期
+            <span class="vxe-icon-chart-bar-y"></span>
+        </template>
+        <template #operation_header="{name, row}">
+            <el-input placeholder='自定义' v-model="opeInput" />
+        </template>
+    </fits-table>
 </template>
 
 <script lang='ts' setup>
 import { FitsTableProps } from '@/components/List/type';
 import { ElButton, ElInput } from 'element-plus';
 
-const name = ref('')
-
 const xGrid = ref()
 
-const operationSlot = {
-    header: () => [
-        h(
-            ElInput,
-            {
-                placeholder: '自定义表头',
-                modelValue: name.value,
-                onInput: (value: string) => {
-                    name.value = value
-                },
-            },
-        ),
-    ]
-}
-
-const birthSlot = {
-    header: () => [
-        h(
-            'div',
-            [
-                h('span', '出生日期'),
-                h('icon', { class: 'vxe-icon-chart-bar-y', style: 'margin-left: 5px' })
-            ]
-        ),
-    ]
-}
-
-const nameSlot = {
-    header: () => [
-        h(
-            'div',
-            [
-                h('span', '姓名'),
-                h(ElButton,
-                    {
-                        size: 'small'
-                    },
-                    () => h('span', '按钮')
-                )
-            ]
-        ),
-    ]
-}
+const opeInput = ref('')
 
 const gridOptions = reactive<FitsTableProps>({
     columns: [
-        { field: 'name', title: '姓名', slots: nameSlot },
+        { field: 'name', title: '姓名', slots: { header: 'name_header' } },
         { field: 'phone', title: '电话', },
-        { field: 'birth', title: '出生日期', slots: birthSlot },
+        { field: 'birth', title: '出生日期', slots: { header: 'birth_header' }, headerClassName: 'birthHeader' },
         { field: 'address', title: '地址', width: 320 },
-        { field: 'operation', title: '操作', slots: operationSlot },
+        { field: 'operation', title: '操作', slots: { header: 'operation_header' } },
     ],
     data: [
         { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },
@@ -73,7 +43,9 @@ const gridOptions = reactive<FitsTableProps>({
 
 </script>
 <style lang='scss' scoped>
-
+:deep(.birthHeader) span {
+    color: red;
+}
 </style>
 
 <style lang="scss">

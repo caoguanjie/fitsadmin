@@ -31,6 +31,7 @@ export interface StorageStrategy {
 export const useUserHabits = (params: StorageStrategy) => {
     const store = reactive(params.store)
     const { log } = useLogger();
+
     if (params.enabled) {
         const storage = new IonicStorage({
             name: params.dataBase ?? 'FitsAdmin',

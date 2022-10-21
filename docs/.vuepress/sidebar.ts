@@ -52,6 +52,12 @@ export default sidebar({
         text: 'FitsGroupTable 分组表格',
         link: '/components/Table/GroupTable'
       }]
+    },{
+      text: '其他组件',
+      children: [{
+        text: 'FitsEditor富文本编辑器',
+        link: '/components/Editor/Editor'
+      }]
     }],
   '/resources/': 'structure'
 })

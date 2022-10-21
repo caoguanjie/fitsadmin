@@ -6,6 +6,10 @@
                     通过 data 配置表格的数据，对象的键与列字段名相对应。">
                     <basic-table />
                 </fits-card>
+                <fits-card title="悬浮提示"
+                    desc="当内容过长时，通过配置 showOverflow=true 和 showHeaderOverflow=true 可以全局开启内容和表头悬浮提示。如果只需要个别列开启悬浮提示，则只为 columns 中的对象添加该属性即可。">
+                    <show-overflow-table />
+                </fits-card>
                 <fits-card title="斑马纹表格" desc="通过 stripe=true 开启斑马纹。另外，通过配置 rowConfig.isHover=true 开启当鼠标移到行时，高亮当前行。">
                     <stripe-table />
                 </fits-card>
@@ -53,7 +57,7 @@
                     desc="通过配置 showFooter=true 开启表尾行。 再通过 footerMethod 定义表尾的数据获取方法，返回一个二维数组。另外，可以通过设置 footerRowClassName 给表尾行添加类名。">
                     <summary-table />
                 </fits-card>
-                <fits-card title="合并行、列" desc="通过配置 mergeCells 合并指定的单元格。">
+                <fits-card title="合并行、列" desc="通过配置 mergeCells 合并指定的单元格，该值为一个对象数组，对象的属性包括row、col、rowspan、colspan。">
                     <merge-table />
                 </fits-card>
                 <fits-card title="自定义索引"
@@ -76,21 +80,22 @@
 </template>
 
 <script lang='ts' setup>
-import BasicTable from './BasicTable.vue'
-import StripeTable from './StripeTable.vue'
-import BorderTable from './BorderTable.vue'
-import StatusTable from './StatusTable.vue'
-import FixColumnTable from './FixColumnTable.vue'
-import FluidTable from './FluidTable.vue'
-import SelectRowTable from './SelectRowTable.vue'
-import MultipleSelectTable from './MultipleSelectTable.vue'
-import SortTable from './SortTable.vue'
-import FilterTable from './FilterTable.vue'
-import TreeTable from './TreeTable.vue'
-import TreeLazyTable from './TreeLazyTable.vue'
-import SummaryTable from './SummaryTable.vue'
-import MergeTable from './MergeTable.vue'
-import CustomIndexTable from './CustomIndexTable.vue'
+import BasicTable from './components/BasicTable.vue'
+import ShowOverflowTable from './components/ShowOverflowTable.vue'
+import StripeTable from './components/StripeTable.vue'
+import BorderTable from './components/BorderTable.vue'
+import StatusTable from './components/StatusTable.vue'
+import FixColumnTable from './components/FixColumnTable.vue'
+import FluidTable from './components/FluidTable.vue'
+import SelectRowTable from './components/SelectRowTable.vue'
+import MultipleSelectTable from './components/MultipleSelectTable.vue'
+import SortTable from './components/SortTable.vue'
+import FilterTable from './components/FilterTable.vue'
+import TreeTable from './components/TreeTable.vue'
+import TreeLazyTable from './components/TreeLazyTable.vue'
+import SummaryTable from './components/SummaryTable.vue'
+import MergeTable from './components/MergeTable.vue'
+import CustomIndexTable from './components/CustomIndexTable.vue'
 
 //锚点目录所需数据
 const navTree: any = ref([]);

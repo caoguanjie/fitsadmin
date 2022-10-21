@@ -1,8 +1,8 @@
 <template>
     <!-- 只要vxe-grid组件带上 class="fits-grid"，样式就是通用的 -->
-    <vxe-grid ref="fitsTablePro" id="fitstable" v-bind="state.gridOption" v-on="props.gridEvents" class="fits-grid">
+    <vxe-grid ref="xGrid" id="fitstable" v-bind="state.gridOption" v-on="props.gridEvents" class="fits-grid">
         <template v-for="(item , index) in state.dynamicSlotNameArray" :key="index" v-slot:[item]="slotProps">
-            <slot :name="item" :slotProps="slotProps" />
+            <slot :name="item" :row="slotProps.row" />
         </template>
         <template #empty>
             <fits-no-data />
@@ -16,6 +16,8 @@ import "./renderer/index"
 import XEUtils from 'xe-utils';
 import variables from '@/styles/variables.module.scss';
 import { FitsTableProps } from './type';
+import eventBus from '@/utils/base/EventBus';
+import { useUserHabits } from '@/utils/base/storage-persist';
 import { useLogger } from '@/utils/base/logger'
 const props = withDefaults(defineProps<{
     option: FitsTableProps,
@@ -25,8 +27,9 @@ const props = withDefaults(defineProps<{
 })
 
 // 实例化vxetable的组件，里面有vxe-grid的所有api，详情：https://vxetable.cn/#/grid/api
-const fitsTablePro = ref<VxeGridInstance>()
-
+const xGrid = ref<VxeGridInstance>()
+// 监听了自定义列的数据变化，只执行一次，需要个变量辅助控制
+let customColumnArrayOnce = true;
 
 const _gridOption = XEUtils.clone(props.option, true)
 const state = reactive({
@@ -36,18 +39,34 @@ const state = reactive({
     gridOption: _gridOption as VxeGridProps,
 })
 
+// 统一放一个数据表内，所有用户习惯都放这个表名内
+const _userHabitState = XEUtils.merge(_gridOption.storage, { dataSheet: 'FitsTableComponent' })
+// 需要双向绑定什么值，就传入什么值
+const { store } = useUserHabits({
+    ..._userHabitState,
+    store: {
+        // 是否关闭搜索条件
+        isShowSearchForm: true,
+        // 常用查询的数据
+        customQueryArray: [],
+        // 自定义列的数据
+        customColumnArray: [] as VxeTableDefines.ColumnInfo[]
+    }
+})
 
 /** 
  * 导出实例化的方法
  */
 defineExpose({
-    fitsTablePro,
-    handleFormItemNumber
+    fitsTablePro: xGrid
 })
 
 // 初始化默认配置
 initDefaultConfig()
 
+onMounted(async () => {
+    console.log(xGrid.value)
+})
 
 function initDefaultConfig() {
     // 检查所有的卡槽
@@ -64,6 +83,26 @@ function initDefaultConfig() {
     // setFormConfigItemVisible()
 }
 
+// 监听并保存用户操作习惯的自定义列的数据到本地
+function setCustomColumnData() {
+    eventBus.on('setCustomColumnData', (arr: VxeTableDefines.ColumnInfo[]) => {
+        store.customColumnArray = XEUtils.clone(arr, true);
+    })
+}
+
+
+// 监听常用查询的数据要保存本地的数据回传
+function setCustomQueryData() {
+    eventBus.on('setCustomQueryData', (arr: any[]) => {
+        store.customQueryArray = [...arr];
+    })
+    eventBus.on('setCustomQuerySelected', (formConfigData: any) => {
+        const data = xGrid.value?.getProxyInfo()
+        XEUtils.merge(data?.form, formConfigData.form)
+        xGrid.value?.commitProxy('query')
+
+    })
+}
 
 
 /**
@@ -109,7 +148,7 @@ function checkAllSlots() {
     });
     state.dynamicSlotNameArray = [...arr];
     const { log } = useLogger()
-    arr.length && log.primary('FitsTable组件已有插槽', state.dynamicSlotNameArray)
+    log.primary('FitsTable组件已有插槽', state.dynamicSlotNameArray)
 }
 
 // 处理每个表单项应该显示几个
@@ -137,17 +176,171 @@ function handleFormItemNumber(width: number) {
             element.className === 'searchBtns' && isShowExpand && (element.collapseNode = false)
             return element
         })
-        // console.log(state.gridOption.formConfig!.items)
+        console.log(state.gridOption.formConfig!.items)
     }
 }
 
+
+/**
+ * 设置默认的表格配置项
+ */
+function setDefaultFormConfig() {
+    if (XEUtils.isPlainObject(state.gridOption.formConfig) && JSON.stringify(state.gridOption.formConfig) !== '{}') {
+        // 默认搜索、重置按钮
+        const btnGroup: VxeFormItemProps = { align: 'center', className: "searchBtns", collapseNode: true, itemRender: { name: '$buttons', children: [{ props: { type: 'submit', content: '搜索', icon: 'vxe-icon-search', status: 'primary' } }, { props: { type: 'reset', content: '重置', icon: 'vxe-icon-repeat' } }] } }
+        state.gridOption.formConfig?.items?.push(btnGroup)
+        const defaultFormConfig: VxeGridPropTypes.FormConfig = {
+            // 全局设置，每一行的栅格数
+            titleAlign: "right",
+            titleWidth: '100px',
+            titleOverflow: true,
+            items: []
+        }
+        state.gridOption.formConfig = {
+            ...defaultFormConfig,
+            ...state.gridOption.formConfig
+        }
+        // XEUtils.merge(gridOption.formConfig, defaultFormConfig)
+    }
+
+}
+
+
+/**
+ * 获取默认的工具栏配置
+ */
+function setToolbarConfig() {
+    if (XEUtils.isPlainObject(state.gridOption.toolbarConfig) && JSON.stringify(state.gridOption.toolbarConfig) !== '{}') {
+        const toolsBtn = {
+            search: {
+                toolRender: {
+                    name: 'ToolbarSearch',
+                    events: {
+                        click: () => {
+                            store.isShowSearchForm = !store.isShowSearchForm;
+                        }
+                    }
+                }
+            },
+            query: {
+                toolRender: {
+                    name: 'ToolbarSetting', events: {
+                        click: () => {
+                            eventBus.emit('customQuery', store.customQueryArray)
+                        }
+                    }
+                }
+            },
+            refresh: {
+                toolRender: {
+                    name: 'ToolbarRefresh', events: {
+                        click: () => {
+                            xGrid.value?.commitProxy('query')
+                        }
+                    }
+                }
+            },
+
+            export: {
+                toolRender: {
+                    name: 'ToolbarExport', events: {
+                        click: () => {
+                            xGrid.value?.openExport()
+                        }
+                    },
+                }
+            },
+            fullscreen: {
+                toolRender: {
+                    name: 'ToolbarFullscreen',
+                    props: {
+                        isShowSearchForm: store.isShowSearchForm
+                    },
+                    events: {
+                        click: () => {
+                            console.log(XEUtils.find(state.gridOption.toolbarConfig?.tools, item => item.toolRender.name === 'ToolbarFullscreen'))
+                            const abc = XEUtils.find(state.gridOption.toolbarConfig?.tools, item => item.toolRender.name === 'ToolbarFullscreen')
+
+                            xGrid.value?.zoom()
+                            // eventBus.emit('isFullscreen', store.isShowSearchForm)
+                        }
+                    },
+                }
+            },
+            custom: {
+                toolRender: {
+                    name: 'ToolbarCustomColumn',
+                    events: {
+                        click: () => {
+                            return XEUtils.clone(store.customColumnArray, true)
+                            // eventBus.emit('initCustomColumnData', XEUtils.clone(store.customColumnArray, true))
+                        },
+                        setCustomColumnData: (arr: VxeTableDefines.ColumnInfo[]) => {
+                            store.customColumnArray = XEUtils.clone(arr, true);
+                        }
+                    },
+
+                }
+            },
+        }
+        const _tools: any = state.gridOption.toolbarConfig?.tools;
+        let arr: any = [];
+        console.log(111)
+        if (XEUtils.isPlainObject(_tools)) {
+            const tool: any = _tools;
+            if (tool.enabled !== false) {
+                tool?.search !== false && arr.push(toolsBtn['search']);
+                tool?.query !== false && arr.push(toolsBtn['query']);
+                tool?.refresh !== false && arr.push(toolsBtn['refresh']);
+                tool?.export !== false && arr.push(toolsBtn['export']);
+                tool?.fullscreen !== false && arr.push(toolsBtn['fullscreen']);
+                tool?.custom !== false && arr.push(toolsBtn['custom']);
+            }
+            state.gridOption.toolbarConfig.tools = arr
+        } else {
+            if (_tools === undefined) {
+                _tools?.search !== false && arr.push(toolsBtn['search']);
+                _tools?.query !== false && arr.push(toolsBtn['query']);
+                _tools?.refresh !== false && arr.push(toolsBtn['refresh']);
+                _tools?.export !== false && arr.push(toolsBtn['export']);
+                _tools?.fullscreen !== false && arr.push(toolsBtn['fullscreen']);
+                _tools?.custom !== false && arr.push(toolsBtn['custom']);
+            } else {
+                arr = _tools
+
+            }
+        }
+
+        const defaultToolbarConfig: VxeGridPropTypes.ToolbarConfig = {
+            zoom: false,
+            export: false,
+            custom: false,
+            buttons: state.gridOption.toolbarConfig?.buttons,
+            tools: arr as VxeToolbarPropTypes.Tools,
+        }
+        state.gridOption.toolbarConfig = {
+            ...defaultToolbarConfig,
+            ...state.gridOption.toolbarConfig,
+        }
+    }
+}
+/**
+ * 工具栏-常用查询-是否显示表单的某一项
+ */
+function setFormConfigItemVisible() {
+    eventBus.on('changFromItemStatus', (target: VxeFormItemProps) => {
+        const items = state.gridOption.formConfig?.items as VxeFormItemProps[]
+        items.find((item: VxeFormItemProps) => item.field === target.field && (item.visible = target.visible))
+        handleFormItemNumber(xGrid.value?.$el.clientWidth)
+    })
+}
 
 
 // 监听浏览器的变化事件
 useResizeObserver(document.body, (entries) => {
     const entry = entries[0]
     // 如果有表单配置才执行计算方法
-    handleFormItemNumber(fitsTablePro.value?.$el.clientWidth)
+    handleFormItemNumber(xGrid.value?.$el.clientWidth)
     // 页面高度-标签栏-margin-底部状态栏
     const padding = parseInt(variables.basePadding);
     const headerHeight = entry.target.querySelector('.fits-head')?.clientHeight ?? 0;
@@ -160,13 +353,35 @@ useResizeObserver(document.body, (entries) => {
  * 监听外界的表格配置项的变化，重新初始化默认配置项
  */
 watch(() => props.option, (newValue) => {
-    //当option有变化时，要重新深拷贝，重新赋值
+    // 当option有变化时，要重新深拷贝，重新赋值
     state.gridOption = XEUtils.clone(newValue as VxeGridProps, true)
     initDefaultConfig()
 }, { deep: true })
 
 
+/**
+ * 监听搜索区域是否显示
+ */
+watch(() => store.isShowSearchForm, (newValue) => {
+    const _xGrid: any = xGrid.value
+    _xGrid.$el.querySelector('.vxe-grid--form-wrapper').style.display = newValue ? 'block' : 'none';
+    // 这步主要是解决各个工具栏被放大后，提示框被挡住的问题，可以把提示框方向变成bottom属性
+    eventBus.emit('IsShowSearchForm', store.isShowSearchForm)
+    if (document.body.querySelector('.is--maximize')) {
+        // 这里主要解决放大化，如果隐藏搜索区域时，列表高度无法自动计算高度的问题，可以利用vxetable的内置方法，触发页面计算高度。
+        xGrid.value?.reloadColumn(state.gridOption.columns as any)
+    }
+})
+/**
+ * 监听第一次从本地数据库获取自定义列数据的时候，需要重新刷新列的展示
+ */
+watch(() => store.customColumnArray, () => {
 
+    if (customColumnArrayOnce) {
+        xGrid.value?.reloadColumn(store.customColumnArray);
+        customColumnArrayOnce = false
+    }
+}, { deep: true })
 
 </script>
 <style lang='scss' >
