@@ -20,9 +20,8 @@ import { FitsFormItemProps } from '@/components/Form/type';
 import { useFitsTablePro } from '@/components/List/FitsTableProHook';
 import { FitsTableProps } from '@/components/List/type';
 import useStore from '@/store';
-import eventBus from '@/utils/base/EventBus';
 import { AxiosResponse } from 'axios';
-import { VxeGridInstance, VxeGridProps } from 'vxe-table';
+import { VxeGridInstance } from 'vxe-table';
 import XEUtils from 'xe-utils';
 // import FitsTable from '@/components/List/FitsTable'
 const { user } = useStore();
@@ -178,10 +177,7 @@ const gridOptions: FitsTableProps = {
         ]
     },
     importConfig: {},
-    // exportConfig: {},
-    columnConfig: {
-        // resizable: true [PrevJump, PrevPage, Jump, PageCount, NextPage, NextJump, Sizes, Total]
-    },
+    exportConfig: {},
     pagerConfig: {
         enabled: true
     },
