@@ -1,7 +1,6 @@
 
 
 import http from '@/utils/http';
-import request from '@/utils/request';
 
 /**
  * 图片上传
@@ -30,6 +29,17 @@ export function uploadImg(file: File) {
     url: '/uploadvideo',
     method: 'post',
     data: formData,
+  });
+}
+
+/**
+ * 文件下载
+ *
+ */
+ export function uploadDoc() {
+  return http({
+    url: '/download',
+    method: 'get',
   });
 }
 

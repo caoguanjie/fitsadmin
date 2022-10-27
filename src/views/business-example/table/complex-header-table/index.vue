@@ -2,7 +2,7 @@
     <div class="complex-header-table">
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
-                <fits-card title="复杂表头" desc="">
+                <fits-card title="复杂表头" desc="通过给 columns 中的对象传递 children 属性定义子列，即可实现表头分组。">
                     <fits-table :option="fitsTablePro" ref="xGrid" />
                 </fits-card>
             </div>
@@ -21,8 +21,8 @@
 </template>
 
 <script lang='ts' setup>
-import { useFitsTablePro } from '@/components/List/FitsTableProHook';
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { VxeGridInstance } from 'vxe-table';
 
 const gridOptions: FitsTableProps = {

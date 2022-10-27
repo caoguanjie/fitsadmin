@@ -1,12 +1,16 @@
 <template>
-    <fits-table :option="gridOptions" @current-change="currentChange" />
+    <fits-table :option="fitsTablePro" @current-change="currentChange" ref="xGrid" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { ElMessage } from 'element-plus';
+import { VxeGridInstance } from 'vxe-table';
 
-const gridOptions = reactive<FitsTableProps>({
+const xGrid = ref<VxeGridInstance | any>()
+
+const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', type: 'seq' },
         { field: 'name', title: '姓名' },
@@ -24,7 +28,8 @@ const gridOptions = reactive<FitsTableProps>({
     rowConfig: {
         isCurrent: true
     }
-})
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 function currentChange({ rowIndex }: any) {
     ElMessage({

@@ -3,7 +3,8 @@ import { Drivers, Storage as IonicStorage } from '@ionic/storage';
 import XEUtils from 'xe-utils';
 import AwaitToTask from './awaitToTask';
 import { useLogger } from './logger';
-export interface StorageStrategy {
+import { reactive, watch } from 'vue'
+export declare interface StorageStrategy {
     /**
      * @description 是否开启数据缓存
      */

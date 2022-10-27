@@ -23,12 +23,12 @@
 </template>
 
 <script lang="ts" setup>
-import FitsDialog from '@/components/Dialog/FitsDialog.vue'
-import FitsDrawer from '@/components/Dialog/FitsDrawer.vue'
-import SvgIcon from '@/components/SvgIcon/index.vue'
+import FitsDialog from '../Dialog/FitsDialog.vue'
+import FitsDrawer from '../Dialog/FitsDrawer.vue'
+import SvgIcon from '../SvgIcon/index.vue'
 import { nextTick, ref } from 'vue';
-import FormTitle from "@/components/Common/FormTitle.vue";
-import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
+import FormTitle from "../Common/FormTitle.vue";
+import FitsFormCreate from '../Common/FitsFormCreate.vue';
 import { FitsFormDialogModel } from './model';
 
 const props = defineProps<{
@@ -40,6 +40,10 @@ const emit = defineEmits(['cancel', 'submit'])
 const DialogRef = ref()
 const DrawerRef = ref()
 const currentFormRef = computed(() => props.option.formType === 'drawer' ? DrawerRef.value : DialogRef.value)
+
+defineExpose({
+    formRef: currentFormRef
+});
 
 /**
  * @desc 打开窗口之前清空之前残留的验证

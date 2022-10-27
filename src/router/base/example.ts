@@ -98,9 +98,9 @@ export const businessRouter: RouteRecordRaw = {
                     meta: { title: "综合表格" },
                 },
                 {
-                    path: "ComplexReport",
-                    name: "ComplexReport",
-                    component: () => import("@/views/ready/index.vue"),
+                    path: "ComplexReportTable",
+                    name: "ComplexReportTable",
+                    component: () => import("@/views/business-example/table/complex-report-table/ComplexReportTable.vue"),
                     meta: { title: "复杂报表" },
                 },
                 {
@@ -167,13 +167,13 @@ export const businessRouter: RouteRecordRaw = {
                 {
                     path: "UploadPDF",
                     name: "UploadPDF",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/pdf/uploadPdf.vue"),
                     meta: { title: "上传pdf" },
                 },
                 {
                     path: "DownloadPDF",
                     name: "DownloadPDF",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/components-manage/pdf/downloadPdf.vue"),
                     meta: { title: "下载pdf" },
                 },
             ],

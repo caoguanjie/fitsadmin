@@ -1,6 +1,6 @@
 <template>
     <div class="comprehensive-table" id="cal-container">
-        <fits-table :option="gridOptions" ref="xGrid" @cell-click="cellClick" />
+        <fits-table :option="fitsTablePro" ref="xGrid" @cell-click="cellClick" />
         <!-- 隐藏按钮，用于虚拟触发popper提示框 -->
         <el-button ref="buttonRef" style="display:none">Click me</el-button>
 
@@ -19,11 +19,13 @@
 
 <script lang='ts' setup>
 import { FitsTreeSelectModel } from '@/components/Form/model';
-import { FitsTableProps } from '@/components/List/type';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { VxeGridInstance } from 'vxe-table';
 import { Folder, Document } from '@element-plus/icons-vue'
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
 
-const xGrid = ref<VxeGridInstance>()
+const xGrid = ref<VxeGridInstance | any>()
+
 const buttonRef = ref()
 
 const state = reactive({
@@ -206,7 +208,7 @@ const shortcuts = [
     },
 ]
 //  90 + 16
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     keepSource: true,
     // height: 700,
     // maxHeight: '100%',
@@ -453,8 +455,8 @@ const gridOptions = reactive<FitsTableProps>({
     tooltipConfig: {},
     showOverflow: "tooltip",
     align: 'center',
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 const cellClick = ((e: any) => {
     document.addEventListener('click', onClick, true)
     isVisible.value = true

@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions" ref="xGrid">
+    <fits-table :option="fitsTablePro" ref="xGrid">
         <template #operation_default="{row}">
             <el-button @click="editRow(row)">
                 编辑
@@ -9,11 +9,11 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const xGrid = ref()
-
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     keepSource: true,
     columns: [
         {
@@ -58,8 +58,9 @@ const gridOptions = reactive<FitsTableProps>({
             enabled: false
         }
     },
-})
-
+}
+const xGrid = ref<VxeGridInstance | any>()
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 function editRow(row: any) {
     xGrid.value.fitsTablePro.setEditRow(row)
 }

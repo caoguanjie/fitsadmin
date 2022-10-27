@@ -1,18 +1,18 @@
 <template>
-    <fits-table :option="gridOptions" ref="xGrid" />
+    <fits-table :option="fitsTablePro" ref="xGrid" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { VxeGridInstance } from 'vxe-table';
 
-const xGrid = ref<VxeGridInstance>()
-
+const xGrid = ref<VxeGridInstance | any>()
 const state = reactive({
 })
 const { }: any = toRefs(state);
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     stripe: true,
     rowConfig: {
         isHover: true,
@@ -30,8 +30,8 @@ const gridOptions = reactive<FitsTableProps>({
         { name: '李萌萌', phone: '18712458736', birth: '1879-12-13', address: '广东省广州市海珠区五山路幸福小区6号楼101 ' },
         { name: '张兴', phone: '18924584265', birth: '1954-03-25', address: '广东省广州市海珠区五山路幸福小区7号楼102 ' },
     ],
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>
 <style lang='scss' scoped>
 .basic-table {

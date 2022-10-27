@@ -17,11 +17,10 @@
 <script lang='ts' setup>
 import { getMenuList } from '@/api/base/system';
 import { FitsFormItemProps } from '@/components/Form/type';
-import { useFitsTablePro } from '@/components/List/FitsTableProHook';
-import { FitsTableProps } from '@/components/List/type';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance } from 'vxe-table';
+import { FitsTable, useFitsTablePro, FitsTableProps } from '../../../../FitsAdminUI/es/fits-components'
 import XEUtils from 'xe-utils';
 // import FitsTable from '@/components/List/FitsTable'
 const { user } = useStore();

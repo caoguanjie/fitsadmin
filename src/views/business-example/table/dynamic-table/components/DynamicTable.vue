@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions" ref="xGrid">
+    <fits-table :option="fitsTablePro" ref="xGrid">
         <template #buttons>
             <el-button @click="getData">
                 获取数据
@@ -10,7 +10,7 @@
         </template>
         <template #addDefault>
             <el-button @click="insertItem">
-                <i class="vxe-icon-add"></i>
+                <i class="vxe-icon-add" />
             </el-button>
         </template>
         <template #requiredHeader="{slotProps:{column}}">
@@ -87,7 +87,7 @@
 
         <template #deleteDefault="{slotProps:{row}}">
             <el-button @click="removeItem(row)">
-                <i class="vxe-icon-delete"></i>
+                <i class="vxe-icon-delete" />
             </el-button>
         </template>
     </fits-table>
@@ -98,16 +98,16 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const xGrid = ref()
 const instance = ref()
 const tableData = ref([])
 const dateObj: any = ref({})
 const rowID = ref()
 const dateRef = ref()
-
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     keepSource: true,
     columns: [
         { field: 'add', title: '操作', width: 80, slots: { default: 'addDefault' } },
@@ -139,8 +139,9 @@ const gridOptions = reactive<FitsTableProps>({
     columnConfig: {
         useKey: true
     },
-})
-
+}
+const xGrid = ref<VxeGridInstance | any>()
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 // 项目数据源
 const project_Arr: any = ref([
     { value: '丰德开发框架项目' },

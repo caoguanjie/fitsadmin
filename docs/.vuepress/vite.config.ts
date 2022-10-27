@@ -5,7 +5,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { path } from "@vuepress/utils";
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
-
+import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default defineConfig({
     plugins: [
@@ -24,6 +24,7 @@ export default defineConfig({
             // 指定symbolId格式
             symbolId: 'icon-[dir]-[name]'
         }),
+        vueSetupExtend(),
     ],
     css: {
         preprocessorOptions: {

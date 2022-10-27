@@ -13,7 +13,6 @@
                 <fits-card title="斑马纹表格" desc="通过 stripe=true 开启斑马纹。另外，通过配置 rowConfig.isHover=true 开启当鼠标移到行时，高亮当前行。">
                     <stripe-table />
                 </fits-card>
-                <!-- 设置inner和outer无效果 -->
                 <fits-card title="无边框表格"
                     desc="通过 border='none' 去掉表格的所有边框。可选值还有default（默认）, full（完整边框）, outer（外边框）, inner（内边框）。">
                     <border-table />

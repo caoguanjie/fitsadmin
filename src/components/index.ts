@@ -1,35 +1,24 @@
-import FitsTreeSelect from './Form/FitsTreeSelect.vue';
-import FitsIconSelect from './Form/FitsIconSelect.vue';
-import FitsCheckboxAll from './Form/FitsCheckboxAll.vue'
-import FitsFormCreate from './Common/FitsFormCreate.vue'
-import FitsDialog from './Dialog/FitsDialog.vue'
-import FitsDrawer from './Dialog/FitsDrawer.vue'
-import FitsFormDialog from './Common/FitsFormDialog.vue'
-import FormTitle from './Common/FormTitle.vue'
-import FitsCard from './Card/FitsCard.vue'
-import FitsEcharts from './Card/FitsEcharts.vue'
-import FitsForm from './Form/FitsForm.vue'
-import FitsListSearch from './List/FitsListSearch.vue'
-import FitsNoData from './Common/FitsNoData.vue'
-import type { App } from 'vue'
+// import FitsTreeSelect from './Form/FitsTreeSelect.vue';
+// import FitsIconSelect from './Form/FitsIconSelect.vue';
+// import FitsCheckboxAll from './Form/FitsCheckboxAll.vue'
+// import FitsFormCreate from './Common/FitsFormCreate.vue'
+// import FitsDialog from './Dialog/FitsDialog.vue'
+// import FitsDrawer from './Dialog/FitsDrawer.vue'
+// import FitsFormDialog from './Common/FitsFormDialog.vue'
+// import FormTitle from './Common/FormTitle.vue'
+// import FitsCard from './Card/FitsCard.vue'
+// import FitsEcharts from './Echarts/FitsEcharts.vue'
+// import FitsForm from './Form/FitsForm.vue'
+// import FitsListSearch from './FitsTablePro/FitsTable/FitsListSeach.vue'
+// import FitsNoData from './Common/FitsNoData.vue'
+export { FitsTable, useFitsTablePro } from './FitsTablePro/FitsTable'
+// import ListSeachBtnGroud from './FitsTablePro/FitsTable/components/ListSeachBtnGroud.vue'
+// import ToolbarCustomColumn from './FitsTablePro/FitsTable/components/ToolbarCustomColumn.vue'
+// import ToolbarExport from './FitsTablePro/FitsTable/components/ToolbarExport.vue'
+// import ToolbarFullScreen from './FitsTablePro/FitsTable/components/ToolbarFullScreen.vue'
+// import ToolbarRefresh from './FitsTablePro/FitsTable/components/ToolbarRefresh.vue'
+// import ToolbarSearch from './FitsTablePro/FitsTable/components/ToolbarSearch.vue'
+// import ToolbarSetting from './FitsTablePro/FitsTable/components/ToolbarSetting.vue'
+export { FitsEditor } from './WangEditor'
 
-const FitAdminUI = {
-    install: (app: App<Element>) => {
-        app.component('FitsTreeSelect', FitsTreeSelect);
-        app.component('FitsIconSelect', FitsIconSelect);
-        app.component('FitsCheckboxAll', FitsCheckboxAll);
-        app.component('FitsFormCreate', FitsFormCreate);
-        app.component('FitsDialog', FitsDialog);
-        app.component('FitsDrawer', FitsDrawer);
-        app.component('FitsFormDialog', FitsFormDialog);
-        app.component('FormTitle', FormTitle);
-        app.component('FitsCard', FitsCard);
-        app.component('FitsEcharts', FitsEcharts);
-        app.component('FitsForm', FitsForm);
-        app.component('FitsListSearch', FitsListSearch);
-        app.component('FitsNoData', FitsNoData);
-    }
-}
-
-
-export default FitAdminUI
+export * from './FitsTablePro/FitsTable/type'

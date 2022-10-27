@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions" ref="xTable1">
+    <fits-table :option="fitsTablePro" ref="xGrid">
         <template #dragDefault>
             <span class="drag-btn">
                 <i class="vxe-icon-num-list"></i>
@@ -9,14 +9,16 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import Sortable from 'sortablejs';
+import { VxeGridInstance } from 'vxe-table';
 
 const sortable = ref()
 
-const xTable1 = ref()
+const xGrid = ref<VxeGridInstance | any>()
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', title: '姓名' },
         { field: 'phone', title: '电话', },
@@ -33,14 +35,16 @@ const gridOptions = reactive<FitsTableProps>({
     rowConfig: {
         useKey: true
     }
-})
+}
+
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 onMounted(() => {
     setDrag()
 })
 
 function setDrag() {
-    const el = xTable1.value.fitsTablePro.$el.querySelector(".body--wrapper>.vxe-table--body tbody")
+    const el = document.querySelector(".body--wrapper>.vxe-table--body tbody")
     sortable.value = Sortable.create(el, {
         onEnd: (evt: any) => {
             if (evt.oldIndex === evt.newIndex) return

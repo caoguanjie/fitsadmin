@@ -1,11 +1,14 @@
 <template>
-    <fits-table :option="gridOptions" />
+    <fits-table :option="fitsTablePro" ref="xGrid" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const gridOptions = reactive<FitsTableProps>({
+const xGrid = ref<VxeGridInstance | any>()
+const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', title: '部门', width: 200, treeNode: true },
         { field: 'level', title: '绩效', },
@@ -96,8 +99,8 @@ const gridOptions = reactive<FitsTableProps>({
         iconOpen: 'vxe-icon-square-minus',
         iconClose: 'vxe-icon-square-plus',
     },
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 
 </script>

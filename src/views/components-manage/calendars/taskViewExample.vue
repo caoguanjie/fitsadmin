@@ -6,19 +6,19 @@
                 <div id="dialogBox" class="dialog-contain-style dialogBox">
                     <div class="my-header2">
                         <div class="headerTitle">
-                            <div class="titleWeek">{{eventDate.week}}</div>
-                            <div class="titleDate">{{eventDate.date}}</div>
+                            <div class="titleWeek">{{ eventDate.week }}</div>
+                            <div class="titleDate">{{ eventDate.date }}</div>
                         </div>
-                        <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="closeDialong">
+                        <img class="dialong-button" :src="images" @click="closeDialong">
                     </div>
-                    <div class="item" v-for="(data,key) in dialongData" :key="key">
+                    <div class="item" v-for="(data, key) in dialongData" :key="key">
                         <div class="item-title">
-                            {{data.title}}
+                            {{ data.title }}
                         </div>
-                        <div class="item-detail" v-if="typeof(data.detail) == 'string' && !isEdit">
-                            {{data.detail}}
+                        <div class="item-detail" v-if="typeof (data.detail) == 'string' && !isEdit">
+                            {{ data.detail }}
                         </div>
-                        <div class="item-detail" v-else-if="typeof(data.detail) == 'string' && isEdit">
+                        <div class="item-detail" v-else-if="typeof (data.detail) == 'string' && isEdit">
                             <el-input v-model="data.detail" />
                         </div>
                     </div>
@@ -53,6 +53,8 @@ let eventDate = {
 let pickDate = ref()
 let isEdit = ref(false)
 let dateChooser: any
+
+const images = new URL(`../../../assets/calendar-icon/close.png`, import.meta.url).href
 //事件
 let events = [
     {

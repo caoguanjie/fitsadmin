@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions" @checkbox-change="checkboxChange" @toolbar-button-click="toolbarButtonClick"
+    <fits-table :option="fitsTablePro" @checkbox-change="checkboxChange" @toolbar-button-click="toolbarButtonClick"
         ref="xGrid">
         <template #myButtons>
             <el-button @click="setAllChecked(true)">
@@ -13,12 +13,13 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { ElButton } from 'element-plus';
+import { VxeGridInstance } from 'vxe-table';
 
-const xGrid = ref()
-
-const gridOptions = reactive<FitsTableProps>({
+const xGrid = ref<VxeGridInstance | any>()
+const gridOptions: FitsTableProps = {
     id: 'table2',
     columns: [
         { field: 'Checkbox', type: 'checkbox', width: 50 },
@@ -42,12 +43,12 @@ const gridOptions = reactive<FitsTableProps>({
         slots: {
             buttons: 'myButtons'
         },
-        tools: {
-            enabled: false
-        }
+        // tools: {
+        //     enabled: false
+        // }
     },
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 // 手动勾选行的复选框时触发
 function checkboxChange({ rowIndex }: any) {
     console.log('checkboxChange');

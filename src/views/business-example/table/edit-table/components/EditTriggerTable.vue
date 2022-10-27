@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions" ref="xGrid">
+    <fits-table :option="fitsTablePro" ref="xGrid">
         <template #myBtn>
             <el-button @click="changeTrigger('click')">
                 切换单击触发
@@ -12,11 +12,13 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const xGrid = ref()
+const xGrid = ref<VxeGridInstance | any>()
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     keepSource: true,
     columns: [
         {
@@ -63,10 +65,10 @@ const gridOptions = reactive<FitsTableProps>({
             enabled: false
         }
     },
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 function changeTrigger(t: any) {
-    gridOptions.editConfig!.trigger = t
+    fitsTablePro.editConfig!.trigger = t
 }
 </script>
 <style lang='scss' scoped>

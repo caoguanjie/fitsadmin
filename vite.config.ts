@@ -7,7 +7,7 @@ import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
+import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
@@ -44,6 +44,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
       vue(),
       svgLoader(),
+      // 命名组件名字的插件
+      vueSetupExtend(),
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],

@@ -1,13 +1,15 @@
 <template>
-    <fits-table :option="gridOptions" />
+    <fits-table :option="fitsTablePro" ref="xGrid" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
 const data: any = reactive([])
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     height: 500,
     columns: [
         { field: 'name', title: '姓名', },
@@ -19,8 +21,9 @@ const gridOptions = reactive<FitsTableProps>({
     scrollY: {
         gt: 20
     }
-})
-
+}
+const xGrid = ref<VxeGridInstance | any>()
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 onMounted(() => {
     getData()
 })

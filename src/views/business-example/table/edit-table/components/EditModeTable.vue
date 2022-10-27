@@ -1,6 +1,5 @@
 <template>
-    <!-- 切换row、cell、 manual -->
-    <fits-table :option="gridOptions">
+    <fits-table :option="fitsTablePro" ref="xGrid">
         <template #myBtn>
             <el-button @click="changeMode('cell')">
                 切换单元格模式
@@ -13,9 +12,11 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     columns: [
         {
             field: 'name', title: '姓名',
@@ -58,10 +59,11 @@ const gridOptions = reactive<FitsTableProps>({
             buttons: 'myBtn'
         }
     },
-})
-
+}
+const xGrid = ref<VxeGridInstance | any>()
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 function changeMode(m: string) {
-    gridOptions.editConfig!.mode = m
+    fitsTablePro.editConfig!.mode = m
 }
 
 </script>

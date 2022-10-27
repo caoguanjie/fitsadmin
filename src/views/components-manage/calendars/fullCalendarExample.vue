@@ -8,24 +8,24 @@
                 :popper-options="popperOptions" width="620px" virtual-triggering>
                 <div id="dialogBox" class="dialog-contain-style dialogBox">
                     <div class="my-header">
-                        <img class="dialong-button" src="/src/assets/calendar-icon/edit.png" @click="editDialong">
-                        <img class="dialong-button" src="/src/assets/calendar-icon/delete.png">
-                        <img class="dialong-button" src="/src/assets/calendar-icon/close.png" @click="closeDialong">
+                        <img class="dialong-button" :src="images.img1" @click="editDialong">
+                        <img class="dialong-button" :src="images.img2">
+                        <img class="dialong-button" :src="images.img3" @click="closeDialong">
                     </div>
-                    <div class="item" v-for="(data,key) in dialongData" :key="key">
+                    <div class="item" v-for="(data, key) in dialongData" :key="key">
                         <div class="item-title">
-                            {{data.title}}
+                            {{ data.title }}
                         </div>
-                        <div class="item-detail" v-if="typeof(data.detail) == 'string' && !isEdit">
-                            {{data.detail}}
+                        <div class="item-detail" v-if="typeof (data.detail) == 'string' && !isEdit">
+                            {{ data.detail }}
                         </div>
-                        <div class="item-detail" v-else-if="typeof(data.detail) == 'string' && isEdit">
+                        <div class="item-detail" v-else-if="typeof (data.detail) == 'string' && isEdit">
                             <el-input v-model="data.detail" />
                         </div>
                         <div class="member" v-else>
-                            <div class="member-item" v-for="(data2,key2) in data.detail" :key="key2">
+                            <div class="member-item" v-for="(data2, key2) in data.detail" :key="key2">
                                 <div class="member-photo" />
-                                <div>{{data2.name}}</div>
+                                <div>{{ data2.name }}</div>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,11 @@ let dateChooser: any //日期选择器
 let calendar: any //日历的实例
 let cal: any //日历的div
 let scrollTop = 0
-
+const images = {
+    img1: new URL(`../../../assets/calendar-icon/edit.png`, import.meta.url).href,
+    img2: new URL(`../../../assets/calendar-icon/delete.png`, import.meta.url).href,
+    img3: new URL(`../../../assets/calendar-icon/close.png`, import.meta.url).href,
+}
 //事件
 let events = [
     {
@@ -805,7 +809,7 @@ const scroll = (data: any) => {
 
     .my-header {
         display: flex !important;
-        justify-content: end !important;
+        justify-content: flex-end !important;
         padding-bottom: 15px !important;
 
         .dialong-button {

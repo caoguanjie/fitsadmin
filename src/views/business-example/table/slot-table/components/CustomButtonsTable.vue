@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions">
+    <fits-table :option="fitsTablePro" ref="xGrid">
         <template #buttons>
             <fits-input-search></fits-input-search>
         </template>
@@ -7,10 +7,12 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import FitsInputSearch from '@/components/Common/FitsInputSearch.vue'
+import { VxeGridInstance } from 'vxe-table';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', title: '姓名', },
         { field: 'phone', title: '电话', },
@@ -29,8 +31,9 @@ const gridOptions = reactive<FitsTableProps>({
             buttons: 'buttons'
         }
     }
-})
-
+}
+const xGrid = ref<VxeGridInstance | any>()
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>
 <style lang='scss' scoped>
 

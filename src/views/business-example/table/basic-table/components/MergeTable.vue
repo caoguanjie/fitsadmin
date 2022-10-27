@@ -1,11 +1,15 @@
 <template>
-    <fits-table :option="gridOptions" />
+    <fits-table :option="fitsTablePro" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const gridOptions = reactive<FitsTableProps>({
+const xGrid = ref<VxeGridInstance | any>()
+
+const gridOptions: FitsTableProps = {
     border: 'full',
     columns: [
         { field: 'name', title: '姓名', },
@@ -24,8 +28,8 @@ const gridOptions = reactive<FitsTableProps>({
         { row: 0, col: 2, rowspan: 2, colspan: 1 },
         { row: 4, col: 1, rowspan: 1, colspan: 2 }
     ]
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>
 <style lang='scss' scoped>
 

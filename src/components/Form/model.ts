@@ -1,4 +1,4 @@
-import type {TreeComponentProps,} from 'element-plus/es/components/tree/src/tree.type'
+import type { TreeComponentProps, } from 'element-plus/es/components/tree/src/tree.type'
 import { Component, markRaw } from 'vue'
 import { CaretBottom } from '@element-plus/icons-vue'
 import { CheckboxProps, IUseCheckboxGroupProps } from 'element-plus'
@@ -119,7 +119,7 @@ export class FitsSelectProps {
 /**
  * @desc FitsTreeSelect组件的类
  */
-export class FitsTreeSelectModel{
+export class FitsTreeSelectModel {
     /**
      * @desc 树组件的配置
      */
@@ -146,7 +146,7 @@ export class FitsTreeSelectModel{
 /**
  * @desc FitsIconSelect组件的类
  */
-export class FitsIconSelectModel{
+export class FitsIconSelectModel {
     /**
      * @desc 选择器的属性配置
      */
@@ -181,7 +181,7 @@ export class FitsIconSelectModel{
 /**
  * @desc FitsTreeSelect组件的类
  */
-export class FitsCheckboxAllModel{
+export class FitsCheckboxAllModel {
     /**
      * @desc 选项数据
      */
@@ -202,7 +202,7 @@ export class FitsCheckboxAllModel{
     }: any = {}) {
         this.option = option
         // this.modelValue = modelValue ?? []
-        this.checkboxGroup = checkboxGroup 
+        this.checkboxGroup = checkboxGroup
     }
 }
 

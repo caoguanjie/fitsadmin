@@ -1,6 +1,6 @@
 <template>
-    <fits-table :option="gridOptions" class="expandRowTable">
-        <template #expand="{row, name}">
+    <fits-table :option="fitsTablePro" class="expandRowTable" ref="xGrid">
+        <template #expand="{slotProps:{row}}">
             <el-descriptions title="User Info">
                 <el-descriptions-item label="姓名">{{row.name}}</el-descriptions-item>
                 <el-descriptions-item label="电话">{{row.phone}}</el-descriptions-item>
@@ -12,10 +12,12 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus';
+import { VxeGridInstance } from 'vxe-table';
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     columns: [
         { field: 'expand', type: 'expand', slots: { content: 'expand' } },
         { field: 'name', title: '姓名' },
@@ -34,8 +36,9 @@ const gridOptions = reactive<FitsTableProps>({
     expandConfig: {
 
     }
-})
-
+}
+const xGrid = ref<VxeGridInstance | any>()
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>
 <style lang='scss' scoped>
 .expandRowTable {

@@ -1,11 +1,11 @@
 <template>
-    <div class="nodata" :style="{height: props.height}">
+    <div class="nodata" :style="{ height: props.height }">
         <SvgIcon icon-class="nodata" />
         <div class="text">暂无数据</div>
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="FitsNoData">
 // 默认是300px
 const props = withDefaults(defineProps<{
     height?: string,

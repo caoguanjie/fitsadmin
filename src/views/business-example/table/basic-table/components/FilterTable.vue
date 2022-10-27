@@ -1,15 +1,17 @@
 <template>
-    <fits-table :option="gridOptions" ref="xGrid" />
+    <fits-table :option="fitsTablePro" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
 const filters = ref([{ data: '' }])
 
-const xGrid = ref()
+const xGrid = ref<VxeGridInstance | any>()
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', title: '姓名', filters: [{ label: '名字长度=2', value: '1' }, { label: '名字长度>=3', value: '2' }], filterMethod: filterNameMethod },
         { field: 'phone', title: '电话', filters: [{ label: '开头为137', value: '1' }, { label: '开头为132', value: '2' }, { label: '其他', value: '3' }], filterMethod: filterPhoneMethod },
@@ -18,7 +20,6 @@ const gridOptions = reactive<FitsTableProps>({
             field: 'address', title: '地址', width: 320, filters: filters.value,
             filterRender: {
                 name: 'ElInput',
-
                 attrs: {
                     ref: 'inputRef',
                 },
@@ -37,9 +38,8 @@ const gridOptions = reactive<FitsTableProps>({
         { name: '李萌萌', phone: '13712458736', birth: '1879-12-13', address: '广东省广州市海珠区五山路幸福小区6号楼101 ' },
         { name: '张兴', phone: '18924584265', birth: '1954-03-25', address: '广东省广州市海珠区五山路幸福小区7号楼102 ' },
     ],
-})
-
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 // 定义筛选名字列的返回方法
 function filterNameMethod({ value, option, cellValue, row, column }: any) {
@@ -64,8 +64,6 @@ function filterPhoneMethod({ value, cellValue }: any) {
 }
 
 function filterAddressMethod({ value, option, cellValue, row, column }: any) {
-    // console.log(option, 'option');
-    // console.log(cellValue, 'cellValue');
     return cellValue.indexOf(option.data) !== -1
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="gridOptions" ref="xTable1">
+    <fits-table :option="fitsTablePro" ref="xGrid">
         <template #dragDefault>
             <span class="drag-btn">
                 <i class="vxe-icon-num-list"></i>
@@ -9,14 +9,16 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import Sortable from 'sortablejs';
+import { VxeGridInstance } from 'vxe-table';
 
 const sortable = ref()
 
-const xTable1 = ref()
+const xGrid = ref<VxeGridInstance | any>()
 
-const gridOptions = reactive<FitsTableProps>({
+const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', title: '姓名' },
         { field: 'phone', title: '电话', },
@@ -33,21 +35,19 @@ const gridOptions = reactive<FitsTableProps>({
     columnConfig: {
         useKey: true
     }
-})
+}
 
-onMounted(() => {
-    setDrag()
-})
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 function setDrag() {
-    const el = xTable1.value.fitsTablePro.$el.querySelector(".body--wrapper>.vxe-table--header .vxe-header--row")
+    const el = xGrid.value.fitsTablePro.$el.querySelector(".body--wrapper>.vxe-table--header .vxe-header--row")
     sortable.value = Sortable.create(el, {
         onEnd: (sortableEvent: any) => {
             if (sortableEvent.oldIndex === sortableEvent.newIndex) return
             const targetThElem = sortableEvent.item
             const newIndex = sortableEvent.newIndex as number
             const oldIndex = sortableEvent.oldIndex as number
-            const { fullColumn, tableColumn } = xTable1.value.fitsTablePro.getTableColumn()
+            const { fullColumn, tableColumn } = xGrid.value.fitsTablePro.getTableColumn()
             const wrapperElem = targetThElem.parentNode as HTMLElement
             const newColumn = fullColumn[newIndex]
             if (newColumn.fixed) {
@@ -66,16 +66,19 @@ function setDrag() {
                 return
             }
             // 获取列索引 columnIndex > fullColumn
-            const oldColumnIndex = xTable1.value.fitsTablePro.getColumnIndex(tableColumn[oldIndex])
-            const newColumnIndex = xTable1.value.fitsTablePro.getColumnIndex(tableColumn[newIndex])
+            const oldColumnIndex = xGrid.value.fitsTablePro.getColumnIndex(tableColumn[oldIndex])
+            const newColumnIndex = xGrid.value.fitsTablePro.getColumnIndex(tableColumn[newIndex])
             // 移动到目标列
             const currRow = fullColumn.splice(oldColumnIndex, 1)[0]
             fullColumn.splice(newColumnIndex, 0, currRow)
-            xTable1.value.fitsTablePro.loadColumn(fullColumn)
+            xGrid.value.fitsTablePro.loadColumn(fullColumn)
         }
     });
 }
 
+onMounted(() => {
+    setDrag()
+})
 </script>
 <style lang='scss' scoped>
 

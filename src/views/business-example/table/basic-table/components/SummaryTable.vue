@@ -1,11 +1,15 @@
 <template>
-    <fits-table :option="gridOptions" class="SummaryTable" />
+    <fits-table :option="fitsTablePro" class="SummaryTable" ref="xGrid" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const gridOptions = reactive<FitsTableProps>({
+const xGrid = ref<VxeGridInstance | any>()
+
+const gridOptions: FitsTableProps = {
     showFooter: true,
     footerMethod,
     footerRowClassName: 'footerRowClass',
@@ -21,8 +25,8 @@ const gridOptions = reactive<FitsTableProps>({
         { name: '饮料', price: 12, number: 5 },
         { name: '蛋糕', price: 50, number: 6 },
     ],
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 function footerMethod({ data }: any) {
     let priceSum = 0
     let numberSum = 0

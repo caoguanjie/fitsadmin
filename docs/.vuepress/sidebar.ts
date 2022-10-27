@@ -56,7 +56,11 @@ export default sidebar({
       text: '其他组件',
       children: [{
         text: 'FitsEditor富文本编辑器',
-        link: '/components/Editor/Editor'
+        link: '/components/Other/Editor'
+      },
+      {
+        text: 'FitsUpload文件上传',
+        link: '/components/Other/Pdf'
       }]
     }],
   '/resources/': 'structure'

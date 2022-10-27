@@ -3,6 +3,8 @@ node_modules
 dist
 FitsAdmin
 FitsAdminDocs
+FitsAdminUI
+libs
 .eslintrc-auto-import.json
 auto-imports.d.ts
 components.d.ts

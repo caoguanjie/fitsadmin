@@ -1,11 +1,15 @@
 <template>
-    <fits-table :option="gridOptions" />
+    <fits-table :option="fitsTablePro" />
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/List/type';
+import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
+import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { VxeGridInstance } from 'vxe-table';
 
-const gridOptions = reactive<FitsTableProps>({
+const xGrid = ref<VxeGridInstance | any>()
+
+const gridOptions: FitsTableProps = {
     maxHeight: 600,
     columns: [
         { field: 'Checkbox', type: 'checkbox', width: 50 },
@@ -34,15 +38,15 @@ const gridOptions = reactive<FitsTableProps>({
         // slots: {
 
         // },
-        tools: {
-            enabled: false
-        }
+        // tools: {
+        //     enabled: false
+        // }
     },
     checkboxConfig: {
         range: true,
     },
-})
-
+}
+const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>
 <style lang='scss' scoped>
 
