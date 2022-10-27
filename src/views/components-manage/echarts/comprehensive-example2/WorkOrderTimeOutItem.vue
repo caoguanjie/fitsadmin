@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsEchartsProps } from '@/components/Echarts/type';
+import { FitsEcharts, FitsEchartsProps } from "@/fits-components";
 import TitleItem from "./TitleItem.vue"
 
 const state = reactive({

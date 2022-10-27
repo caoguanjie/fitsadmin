@@ -5,7 +5,7 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsFormItemProps, FitsFormModel } from '@/components/Form/type.d';
+import { FitsFormItemProps, FitsFormModel } from '../../Form/FormCreate/type';
 import { ListSeachBtnGroud } from './components/index'
 import { ComponentInternalInstance, getCurrentInstance, shallowRef, reactive, ref, onMounted } from 'vue';
 import variables from '@/styles/variables.module.scss';

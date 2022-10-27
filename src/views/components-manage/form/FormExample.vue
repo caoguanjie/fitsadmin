@@ -60,7 +60,7 @@ import DynamicFormExample from './form-examples/DynamicFormExample.vue';
 import CustomFormExample from './form-examples/CustomFormExample.vue';
 import SlotFormExample from './form-examples/SlotFormExample.vue';
 import DialogFormExample from './form-examples/DialogFormExample.vue';
-
+import FitsCard from '@/components/Card/FitsCard.vue';
 
 </script>
 

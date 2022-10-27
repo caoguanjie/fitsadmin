@@ -4,18 +4,14 @@
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
-import FormTitle from '@/components/Common/FormTitle.vue'
-import FitsCheckboxAll from '@/components/Form/FitsCheckboxAll.vue'
-import { FitsCheckboxAllModel } from '@/components/Form/model';
-import { FitsFormCreateModel } from '@/components/Common/model'
-import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
+import { FitsCheckboxAllModel, FitsFormCreateModel, FitsFormCreate, FitsCheckboxAll, FitsFormTitle } from '@/fits-components';
 
 const simpleForm = reactive(
     new FitsFormCreateModel({
         rule: [
             {
                 type: 'title',
-                component: markRaw(FormTitle),
+                component: markRaw(FitsFormTitle),
                 field: "divider",
                 value: '输入控件',
                 style: "background:#F2F2F2;color:#303133;line-height:32px;padding-left:16px;"
@@ -41,7 +37,7 @@ const simpleForm = reactive(
             },
             {
                 type: 'title',
-                component: markRaw(FormTitle),
+                component: markRaw(FitsFormTitle),
                 field: "divider",
                 value: '选择控件',
                 style: "background:#F2F2F2;color:#303133;line-height:32px;padding-left:16px;"
@@ -157,7 +153,7 @@ const simpleForm = reactive(
             },
             {
                 type: 'title',
-                component: markRaw(FormTitle),
+                component: markRaw(FitsFormTitle),
                 field: "divider",
                 value: '开关控件',
                 style: "background:#F2F2F2;color:#303133;line-height:32px;padding-left:16px;"
@@ -193,7 +189,7 @@ const simpleForm = reactive(
             },
             {
                 type: 'title',
-                component: markRaw(FormTitle),
+                component: markRaw(FitsFormTitle),
                 field: "divider",
                 value: '日期、时间控件',
                 style: "background:#F2F2F2;color:#303133;line-height:32px;padding-left:16px;"
@@ -267,7 +263,7 @@ const simpleForm = reactive(
             },
             {
                 type: 'title',
-                component: markRaw(FormTitle),
+                component: markRaw(FitsFormTitle),
                 field: "divider",
                 value: '复选框控件',
                 style: "background:#F2F2F2;color:#303133;line-height:32px;padding-left:16px;"

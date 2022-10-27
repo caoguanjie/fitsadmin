@@ -3,7 +3,7 @@ import path from 'path';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
-
+import AutoImport from 'unplugin-auto-import/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
@@ -21,6 +21,10 @@ export default defineConfig({
                 'src/types/**/*.ts',
                 'src/types/**/*.d.ts',
             ]
+        }),
+        AutoImport({
+            imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
+            dts: './FitsAdminUI/auto-imports.d.ts',
         }),
 
     ],
@@ -63,7 +67,8 @@ export default defineConfig({
         // },
         rollupOptions: {
 
-            external: ['vue', 'vxe-table'],
+            // external: ['vue'],
+            external: ['vue', 'vxe-table', '@form-create/element-ui', 'element-plus'],
             input: ['src/fits-components/index.ts'],
             output: [
                 // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量

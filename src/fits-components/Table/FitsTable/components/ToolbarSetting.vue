@@ -24,8 +24,7 @@
                         </div>
                     </template>
                     <div class="nodata" v-else>
-                        <SvgIcon icon-class="nodata" />
-                        <div class="text">暂无数据</div>
+                        <fits-empty />
                     </div>
                 </div>
 
@@ -66,7 +65,7 @@ import { FormInstance } from 'element-plus';
 import XEUtils from 'xe-utils';
 import { FitsDialog } from '../../../FeedBack/Dialog'
 import { onMounted, reactive, ref } from 'vue';
-
+import { FitsEmpty } from '../../../Data/FitsEmpty'
 interface customQueryModal {
     name: string,
     isSelected: boolean;

@@ -24,9 +24,8 @@ import { isPhoneNumber, isHomeNumber, isEmail, isShortNumber } from "@/utils/is"
 import { postUserDetail, postUserAvator } from '@/api/base/user';
 import { ResultEnum } from '@/utils/http/types';
 import { ElMessage, UploadRequestOptions } from 'element-plus';
-import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
-import { FitsFormCreateModel } from '@/components/Common/model';
-
+// import FitsFormCreate from '@/fits-components/Form/FormCreate/FitsFormCreate.vue';
+import { FitsFormCreate, FitsFormCreateModel } from '@/fits-components';
 const props = defineProps<{
     userDetail: any
 }>();

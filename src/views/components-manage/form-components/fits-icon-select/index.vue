@@ -26,6 +26,7 @@ import IconSelectBasicUse from './IconSelectBasicUse.vue';
 import IconSelectDefaultValue from './IconSelectDefaultValue.vue';
 import IconSelectMultiple from './IconSelectMultiple.vue';
 import IconSelectFilter from './IconSelectFilter.vue';
+import FitsCard from '@/components/Card/FitsCard.vue'
 </script>
 <style lang="scss" scoped>
 .FitsIconSelectIndex {

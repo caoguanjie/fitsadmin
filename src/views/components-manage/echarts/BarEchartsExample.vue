@@ -26,6 +26,7 @@ import ShowZoomExample from "./bar-examples/ShowZoomExample.vue"
 import RadiusExample from "./bar-examples/RadiusExample.vue"
 import ColorExample from "./bar-examples/ColorExample.vue"
 import StackExample from "./bar-examples/StackExample.vue"
+import FitsCard from '@/components/Card/FitsCard.vue'
 
 const examples = shallowRef([
     { component: BaseExample, title: "基础用法", desc: "基础柱状图展示，需要传入legend.data：图例数组、xAxisNames：x轴数据以及图表数据：data" },

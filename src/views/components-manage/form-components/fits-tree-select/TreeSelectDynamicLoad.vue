@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import type Node from 'element-plus/es/components/tree/src/model/node'
-import { FitsTreeSelectModel } from '@/components/Form/model';
+import { FitsTreeSelectModel, FitsTreeSelect } from '@/fits-components';
 
 const state = reactive(new FitsTreeSelectModel({
     tree: {

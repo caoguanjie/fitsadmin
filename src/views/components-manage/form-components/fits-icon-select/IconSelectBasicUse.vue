@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsIconSelectModel } from '@/components/Form/model';
+import { FitsIconSelectModel, FitsIconSelect } from '@/fits-components';
 
 const state = reactive(new FitsIconSelectModel({
     select: {

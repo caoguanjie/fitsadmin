@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { FitsFormCreateModel } from '@/components/Common/model'
+import { FitsFormCreateModel, FitsFormDialog } from '@/fits-components';
 import { isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
 
 const formtypeRef = ref()
@@ -188,7 +188,7 @@ const dialogOpt = reactive({
 })
 
 function openForm() {
-    dialogOpt.forms.map(item => item.form.col = 1)
+    dialogOpt.forms.map((item: any) => item.form.col = 1)
     dialogOpt.visible = true
 }
 

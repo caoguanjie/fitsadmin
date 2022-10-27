@@ -156,7 +156,9 @@ useResizeObserver(document.body, (entries) => {
     const padding = parseInt(variables.basePadding);
     const headerHeight = entry.target.querySelector('.fits-head')?.clientHeight ?? 0;
     const footerHeight = entry.target.querySelector('.footeContainer')?.clientHeight ?? 0;
-    state.gridOption.maxHeight = props.option?.maxHeight ?? (entry.contentRect.height - headerHeight - padding - footerHeight)
+    const tableFooterHeight = entry.target.querySelector('.vxe-table--footer-wrapper')?.clientHeight ?? 0;
+    const pagerHeight = entry.target.querySelector('.vxe-grid--pager-wrapper') ? 0 : 10
+    state.gridOption.maxHeight = props.option?.maxHeight ?? (entry.contentRect.height - headerHeight - padding - footerHeight - tableFooterHeight - pagerHeight)
 })
 
 

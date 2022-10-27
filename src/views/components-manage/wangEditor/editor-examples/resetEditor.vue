@@ -3,6 +3,7 @@
 </template>
   
 <script setup lang="ts">
+import FitsEditor from '@/fits-components/Other/WangEditor/FitsEditor.vue'
 let containerHtml = ref("")
 let toolbarKeys = [
     "bold",//粗体

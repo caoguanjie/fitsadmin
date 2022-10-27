@@ -12,11 +12,11 @@
   
 <script setup lang="ts">
 import useDownloadPdf from "@/utils/base/downloadPdf"
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { ElButton } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 import Axios from "axios";
+import { FitsTable, FitsTableProps, useFitsTablePro } from "@/fits-components";
+
 const data = {
     //pdf下载地址
     data: {},

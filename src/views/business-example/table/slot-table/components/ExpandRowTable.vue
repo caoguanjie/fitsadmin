@@ -1,19 +1,18 @@
 <template>
     <fits-table :option="fitsTablePro" class="expandRowTable" ref="xGrid">
-        <template #expand="{slotProps:{row}}">
+        <template #expand="{ slotProps: { row } }">
             <el-descriptions title="User Info">
-                <el-descriptions-item label="姓名">{{row.name}}</el-descriptions-item>
-                <el-descriptions-item label="电话">{{row.phone}}</el-descriptions-item>
-                <el-descriptions-item label="出生日期">{{row.birth}}</el-descriptions-item>
-                <el-descriptions-item label="地址">{{row.address}}</el-descriptions-item>
+                <el-descriptions-item label="姓名">{{ row.name }}</el-descriptions-item>
+                <el-descriptions-item label="电话">{{ row.phone }}</el-descriptions-item>
+                <el-descriptions-item label="出生日期">{{ row.birth }}</el-descriptions-item>
+                <el-descriptions-item label="地址">{{ row.address }}</el-descriptions-item>
             </el-descriptions>
         </template>
     </fits-table>
 </template>
 
 <script lang='ts' setup>
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 

@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsTreeSelectModel } from '@/components/Form/model';
+import { FitsTreeSelectModel, FitsTreeSelect } from '@/fits-components';
 
 const value = ref(['9', '11'])
 

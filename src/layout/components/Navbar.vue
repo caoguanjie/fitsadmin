@@ -59,12 +59,9 @@ import useStore from '@/store';
 import TopMenu from '@/layout/components/TopMenu/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue';
 import Breadcrumb from '@/layout/components/Breadcrumb/index.vue';
-import Screenfull from '@/components/Screenfull/index.vue';
+import Screenfull from '@/components/ScreenFull/index.vue'
 import ThemeSelect from '@/layout/components/Settings/themeSelect.vue';
-
-// 图标依赖
-import SvgIcon from '@/components/SvgIcon/index.vue';
-
+import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 
 const { app, user, tagsView, setting } = useStore();
 const route = useRoute();

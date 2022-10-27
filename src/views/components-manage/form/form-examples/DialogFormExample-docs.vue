@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { FitsFormCreateModel } from '@/components/Common/model'
+import { FitsFormCreateModel, FitsFormDialog } from '@/fits-components';
 import { isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
 
 const formtypeRef = ref()

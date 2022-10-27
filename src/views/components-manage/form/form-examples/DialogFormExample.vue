@@ -7,12 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { FitsFormCreateModel } from '@/components/Common/model'
-import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue'
-import FitsIconSelect from '@/components/Form/FitsIconSelect.vue'
 import useStore from '@/store';
-import { FitsIconSelectModel, FitsTreeSelectModel } from '@/components/Form/model';
 import { isEmail, isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
+import { FitsFormCreateModel, FitsIconSelectModel, FitsTreeSelectModel, FitsIconSelect, FitsTreeSelect, FitsFormDialog } from '@/fits-components';
 
 const { setting } = useStore();
 
@@ -369,7 +366,7 @@ const dialogOpt = reactive({
 watch(() => setting.formType, (val: any) => {
     colNum = val === 'dialog' ? 2 : 1
     dialogOpt.formType = val
-    dialogOpt.forms.map(item => item.form.col = colNum)
+    dialogOpt.forms.map((item: any) => item.form.col = colNum)
 })
 
 function submitDialogForm(formValue: any) {

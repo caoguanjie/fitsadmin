@@ -6,8 +6,7 @@
 
 <script lang="ts" setup>
 import { getWorkOrderType } from "@/api/work-order";
-import FitsEcharts from "@/components/Echarts/FitsEcharts.vue"
-import { FitsEchartsProps } from "@/components/Echarts/type";
+import { FitsEcharts, FitsEchartsProps } from "@/fits-components";
 import { reactive } from "vue";
 
 const state = reactive({

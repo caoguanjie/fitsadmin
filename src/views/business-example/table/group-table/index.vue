@@ -37,6 +37,7 @@ import BaseGroupTable from "./components/BaseGroupTable.vue"
 import ExpandGroupTable from "./components/ExpandGroupTable.vue"
 import SubsectionGroupTable from "./components/SubsectionGroupTable.vue"
 import SlotGroupTable from "./components/SlotGroupTable.vue"
+import FitsCard from '@/components/Card/FitsCard.vue'
 //锚点目录所需数据
 const navTree: any = ref([]);
 const menuData = reactive({

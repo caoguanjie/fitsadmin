@@ -5,7 +5,7 @@
 </template>
 
 <script lang='ts' setup>
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 import useStore from '@/store';
 
 const { setting } = useStore();

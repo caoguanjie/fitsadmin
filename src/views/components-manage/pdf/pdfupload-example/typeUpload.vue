@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import FitsUpload from '@/components/DocumentsUpload/FitsUpload.vue';
 const type = "image/png"
 </script>
 

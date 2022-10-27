@@ -19,7 +19,7 @@
       </el-col>
       <el-col :xs="6" :sm="8" :md="3" :lg="2" :xl="2" v-for="(item, index) in iconList.data" :key="index">
         <el-card shadow="hover" @click="copyIconCode(item.name)">
-          <svg-icon color="#999" :icon-class="item.name" :style="{fontSize:iconSize+'px'}" />
+          <svg-icon color="#999" :icon-class="item.name" :style="{ fontSize: iconSize + 'px' }" />
         </el-card>
         <div class="icon-text" @click="copyIconCode(item.name)">
           {{ item.name }}
@@ -33,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 import { Search } from '@element-plus/icons-vue';
 import { useClipboard } from '@vueuse/core';
 import { ElMessage } from 'element-plus';

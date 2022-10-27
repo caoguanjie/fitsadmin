@@ -3,11 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-import FitsIconSelect from '@/components/Form/FitsIconSelect.vue';
+import { FitsIconSelect } from '@/fits-components';
 
 </script>
 <style lang="scss" scoped>
+
 </style>
 
 <style lang="scss">
+
 </style>

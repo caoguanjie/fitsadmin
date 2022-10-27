@@ -44,6 +44,7 @@ import uploadEditor from '@/views/components-manage/wangEditor/editor-examples/u
 import noscrollEditor from '@/views/components-manage/wangEditor/editor-examples/noscrollEditor.vue'
 import ispreviewEditor from '@/views/components-manage/wangEditor/editor-examples/isPreviewEditor.vue'
 import istoolbarEidtor from '@/views/components-manage/wangEditor/editor-examples/istoolbarEditor.vue'
+import FitsCard from '@/components/Card/FitsCard.vue'
 </script>
 
 <style lang="scss" scoped>

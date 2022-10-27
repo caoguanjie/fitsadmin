@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+import FitsUpload from '@/components/DocumentsUpload/FitsUpload.vue';
 const url = "http://192.168.32.108:3000/mock/78/api/uploadPDF"
 </script>
 

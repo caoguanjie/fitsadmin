@@ -11,11 +11,11 @@
             </template>
         </fits-table>
         <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="false" @cancel="onClose"
-            @submit="visible=false">
+            @submit="visible = false">
             <vue-pdf-embed :source="doloadUrl" class="vue-pdf-embed" :style="scaleFun" :page="pdfPages" />
         </fits-dialog>
-        <fits-dialog :visible="visible2" :dialogProp="dialogProp" :showFooter="false" @cancel="visible2=false"
-            @submit="visible2=false">
+        <fits-dialog :visible="visible2" :dialogProp="dialogProp" :showFooter="false" @cancel="visible2 = false"
+            @submit="visible2 = false">
             <iframe :src="props.url" height="100%" />
         </fits-dialog>
     </div>
@@ -23,10 +23,10 @@
 
 <script setup lang="ts">
 import VuePdfEmbed from "vue-pdf-embed"
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
 import { ElButton } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
+import { FitsDialog, FitsTable, FitsTableProps, useFitsTablePro } from "@/fits-components";
+
 const props = defineProps({
     url: {
         type: String,

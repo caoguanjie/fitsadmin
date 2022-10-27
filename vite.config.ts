@@ -8,8 +8,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
-
-
+// import fullImportPlugin from 'src/utils/base/fullImportPlugin'
+import type { Plugin, ResolvedConfig } from 'vite'
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
@@ -24,11 +24,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
         imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
         dts: './src/auto-imports.d.ts',
-        // imports: [
-        //   { 'fits-admin-ui': ['FitsAdmin'] }
-        // ],
-        resolvers: [
-          ElementPlusResolver()],
+        resolvers: [ElementPlusResolver()],
         eslintrc: {
           enabled: true, // Default `false`
           filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
@@ -36,8 +32,9 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
 
       }),
-      Components({
+      mode === 'dev' ? fullImportPlugin() : Components({
         dts: './src/components.d.ts',
+        dirs: '',
         resolvers: [ElementPlusResolver()],
       }),
 
@@ -109,3 +106,27 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 };
 
 
+function fullImportPlugin() {
+  let config: ResolvedConfig
+  return <Plugin>{
+    name: 'fullImportElementPlus',
+    async configResolved(conf) {
+      config = conf
+    },
+    transform(code, id) {
+      // 判断当前处理的是否是 _src/main.ts_
+      if (path.join(config.root, 'src/main.ts') === id) {
+        const name = 'ElementPlus'
+
+        // 引入 ElementPlus 和 样式
+        const prepend = `import ${name} from 'element-plus';\nimport 'element-plus/dist/index.css';\n`
+
+        // 通过匹配字符串来使用 ElementPlus （此处替换规则根据 main.ts 的情况而定）
+        // 相当于将字符串 `app.use(router).mount('#app')` 替换成 `app.use(router).use(ElementPlus).mount('#app')`
+        code = code.replace('.mount(', ($1) => `.use(${name})` + $1)
+        return prepend + code
+      }
+      return code
+    }
+  }
+}

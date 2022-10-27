@@ -25,6 +25,7 @@ import CheckboxAllBasicUse from './CheckboxAllBasicUse.vue';
 import CheckboxAllDefaultValue from './CheckboxAllDefaultValue.vue';
 import CheckboxAllDisabled from './CheckboxAllDisabled.vue';
 import CheckboxAllLimit from './CheckboxAllLimit.vue';
+import FitsCard from '@/components/Card/FitsCard.vue'
 </script>
 <style lang="scss" scoped>
 .FitsCheckboxAllIndex {

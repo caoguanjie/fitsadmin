@@ -23,6 +23,7 @@ import baseUpload from "@/views/components-manage/pdf/pdfupload-example/baseUplo
 import typeUpload from "@/views/components-manage/pdf/pdfupload-example/typeUpload.vue"
 import slotUpload from "@/views/components-manage/pdf/pdfupload-example/slotUpload.vue"
 import emitUpload from "@/views/components-manage/pdf/pdfupload-example/emitUpload.vue"
+import FitsCard from '@/components/Card/FitsCard.vue'
 </script>
 
 <style lang="scss" scoped>

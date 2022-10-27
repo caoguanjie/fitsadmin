@@ -1,25 +1,23 @@
 <template>
     <fits-table :option="fitsTablePro" ref="xGrid">
-        <template #name_header="{name, row}">
+        <template #name_header="{ name, row }">
             姓名
             <el-button size="small" type="primary">
                 按钮
             </el-button>
         </template>
-        <template #birth_header="{name, row}">
+        <template #birth_header="{ name, row }">
             出生日期
             <span class="vxe-icon-chart-bar-y"></span>
         </template>
-        <template #operation_header="{name, row}">
+        <template #operation_header="{ name, row }">
             <el-input placeholder='自定义' v-model="opeInput" />
         </template>
     </fits-table>
 </template>
 
 <script lang='ts' setup>
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
-import { ElButton, ElInput } from 'element-plus';
+import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import { VxeGridInstance } from 'vxe-table';
 
 const opeInput = ref('')

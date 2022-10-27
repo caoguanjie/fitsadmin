@@ -7,13 +7,10 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 import { isHomeNumber, isPhoneNumber } from '@/utils/is';
-import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue'
 import { postUserDetail } from '@/api/base/user';
 import { ResultEnum } from '@/utils/http/types';
-import { FitsFormCreateModel } from '@/components/Common/model';
-import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
-import { FitsTreeSelectModel } from '@/components/Form/model';
 import { ElMessage } from 'element-plus';
+import { FitsFormCreateModel, FitsTreeSelect, FitsTreeSelectModel, FitsFormCreate } from '@/fits-components';
 
 const props = defineProps<{
     userDetail: any

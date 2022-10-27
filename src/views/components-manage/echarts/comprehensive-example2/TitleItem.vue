@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsEchartsProps } from '@/components/Echarts/type';
+import { FitsEchartsProps } from "@/fits-components";
 import { Refresh } from '@element-plus/icons-vue';
 
 const emit = defineEmits(["refreshData"])

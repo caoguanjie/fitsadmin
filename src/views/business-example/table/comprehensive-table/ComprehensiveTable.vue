@@ -18,11 +18,9 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTreeSelectModel } from '@/components/Form/model';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { FitsTableProps, FitsTreeSelectModel, useFitsTablePro, FitsTable } from '@/fits-components';
 import { VxeGridInstance } from 'vxe-table';
 import { Folder, Document } from '@element-plus/icons-vue'
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
 
 const xGrid = ref<VxeGridInstance | any>()
 

@@ -11,9 +11,9 @@
         <div class="right">
             <div class="menu">
                 <div class="menu-title">此页内容</div>
-                <div v-for="(i,k) in navTree" :class="{'active':menuData.num===k}" :key="k" :id="'menuItem' + k"
-                    @click.stop="jumpToAnchor(i.el,k)" class="defaultStyle">
-                    {{i.title}}
+                <div v-for="(i, k) in navTree" :class="{ 'active': menuData.num === k }" :key="k" :id="'menuItem' + k"
+                    @click.stop="jumpToAnchor(i.el, k)" class="defaultStyle">
+                    {{ i.title }}
                 </div>
             </div>
         </div>
@@ -21,9 +21,9 @@
 </template>
 
 <script lang='ts' setup>
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import { VxeGridInstance } from 'vxe-table';
+import FitsCard from '@/components/Card/FitsCard.vue'
 
 const gridOptions: FitsTableProps = {
     border: true,

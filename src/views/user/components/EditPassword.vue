@@ -7,12 +7,11 @@
 
 <script setup lang="ts">
 import { postUserDetail } from '@/api/base/user';
-import { FitsFormCreateModel } from '@/components/Common/model';
 import { ResultEnum } from '@/utils/http/types';
 import { isPassword } from '@/utils/is';
 import { reactive, ref } from 'vue';
-import FitsFormCreate from '@/components/Common/FitsFormCreate.vue';
 import { ElMessage } from 'element-plus';
+import { FitsFormCreate, FitsFormCreateModel } from '@/fits-components';
 
 const FormRef: any = ref(null)
 

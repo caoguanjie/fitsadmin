@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsTreeSelectModel } from '@/components/Form/model';
+import { FitsTreeSelectModel, FitsTreeSelect } from '@/fits-components';
 
 const state = reactive(new FitsTreeSelectModel({
     select: {

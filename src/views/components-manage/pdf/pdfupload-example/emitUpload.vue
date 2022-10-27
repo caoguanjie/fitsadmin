@@ -6,6 +6,7 @@
 </template>
 
 <script setup lang="ts">
+import FitsUpload from '@/components/DocumentsUpload/FitsUpload.vue';
 const Change = (data: any) => {
     console.log("文件状态改变", data)
 }

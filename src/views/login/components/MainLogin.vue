@@ -9,8 +9,7 @@
       </el-form-item>
       <el-form-item prop="password">
         <el-input :type="passwordType" ref="passwordRef" tabindex="2" auto-complete="on" v-model="loginForm.password"
-          placeholder="请输入密码" class="logininput pwd" @keyup.enter="submitForm">
-        </el-input>
+          placeholder="请输入密码" class="logininput pwd" @keyup.enter="submitForm" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eyeclose' : 'eyeopen'" />
         </span>
@@ -18,7 +17,7 @@
       <el-form-item prop="code">
         <el-input v-model="loginForm.code" tabindex="3" auto-complete="on" placeholder="请输入验证码"
           @keyup.enter="submitForm" clearable>
-          <template #append> <img :src="captchaBase64" @click="handleCaptchaGenerate" class="captcha" /></template>
+          <template #append> <img :src="captchaBase64" @click="handleCaptchaGenerate" class="captcha"></template>
         </el-input>
       </el-form-item>
       <el-form-item class="lastline">
@@ -47,8 +46,7 @@
       </el-form-item>
       <el-form-item prop="code">
         <el-input v-model="loginForm.code" maxLength="6" tabindex="2" auto-complete="on" class="codeinput"
-          placeholder="请输入验证码" @keyup.enter="submitForm">
-        </el-input>
+          placeholder="请输入验证码" @keyup.enter="submitForm" />
         <el-button type="primary" :text="true" class="verification" :disabled="time !== 0" @click="sendMsg()">
           {{ time === 0 ? '发送验证码' : `${time}秒后重新发送` }}</el-button>
       </el-form-item>
@@ -76,7 +74,7 @@ import { useCountdown } from '@/utils/base/common';
 import { isPhoneNumber } from '@/utils/is';
 import { CheckboxValueType, ElForm, ElInput, ElMessage } from 'element-plus';
 import { onMounted, reactive, ref, toRefs, watch, nextTick, computed } from 'vue';
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 import { useRoute } from 'vue-router';
 import useStore from '@/store';
 import router from '@/router';

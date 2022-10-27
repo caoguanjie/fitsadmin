@@ -12,9 +12,7 @@
 </template>
 
 <script lang='ts' setup>
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
-import { ElButton } from 'element-plus';
+import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import { VxeGridInstance } from 'vxe-table';
 
 const gridOptions: FitsTableProps = {

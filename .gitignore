@@ -3,7 +3,9 @@ node_modules
 dist
 FitsAdmin
 FitsAdminDocs
-FitsAdminUI
+FitsAdminUI/es
+FitsAdminUI/umd
+FitsAdminUI/favicon.ico
 libs
 .eslintrc-auto-import.json
 auto-imports.d.ts

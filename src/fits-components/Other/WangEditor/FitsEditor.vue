@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="FitsEditor">
 import { onBeforeUnmount, defineEmits, shallowRef, reactive, toRefs, ref, watch, onMounted } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { ElImageViewer } from 'element-plus';

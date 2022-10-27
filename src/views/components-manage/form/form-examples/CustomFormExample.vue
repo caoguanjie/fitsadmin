@@ -3,11 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { FitsCheckboxAllModel, FitsIconSelectModel, FitsTreeSelectModel } from '@/components/Form/model';
-import { FitsFormCreateModel } from '@/components/Common/model'
-import FitsCheckboxAll from '@/components/Form/FitsCheckboxAll.vue';
-import FitsIconSelect from '@/components/Form/FitsIconSelect.vue'
-import FitsTreeSelect from '@/components/Form/FitsTreeSelect.vue'
+import { FitsFormCreateModel, FitsCheckboxAllModel, FitsIconSelectModel, FitsTreeSelectModel, FitsTreeSelect, FitsIconSelect, FitsCheckboxAll, FitsFormCreate } from '@/fits-components';
 
 const data = [
     {

@@ -79,7 +79,7 @@ import { RouteRecordRaw, useRoute, useRouter } from 'vue-router';
 
 
 import ScrollPane from './ScrollPane.vue';
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 import useStore from '@/store';
 import RefreshIcon from '@/assets/icons/fits-refresh.svg';
 import CloseIcon from '@/assets/icons/fits-close.svg';

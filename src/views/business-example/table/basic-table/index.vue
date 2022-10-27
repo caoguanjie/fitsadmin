@@ -63,15 +63,21 @@
                     desc="给 columns 里的对象配置 type=seq 开启序号列。另外，可通过 seqConfig.seqMethod 自定义序列号。 本例演示了自定义序列号，序列号的间隔为2。">
                     <custom-index-table />
                 </fits-card>
+                <fits-card title="数据代理" desc="">
+                    <proxy-table />
+                </fits-card>
+                <fits-card title="数据代理+分页器" desc="">
+                    <proxy-pager-table />
+                </fits-card>
             </div>
         </el-scrollbar>
 
         <div class="right">
             <div class="menu">
                 <div class="menu-title">此页内容</div>
-                <div v-for="(i,k) in navTree" :class="{'active':menuData.num===k}" :key="k" :id="'menuItem' + k"
-                    @click.stop="jumpToAnchor(i.el,k)" class="defaultStyle">
-                    {{i.title}}
+                <div v-for="(i, k) in navTree" :class="{ 'active': menuData.num === k }" :key="k" :id="'menuItem' + k"
+                    @click.stop="jumpToAnchor(i.el, k)" class="defaultStyle">
+                    {{ i.title }}
                 </div>
             </div>
         </div>
@@ -95,7 +101,9 @@ import TreeLazyTable from './components/TreeLazyTable.vue'
 import SummaryTable from './components/SummaryTable.vue'
 import MergeTable from './components/MergeTable.vue'
 import CustomIndexTable from './components/CustomIndexTable.vue'
-
+import ProxyTable from './components/ProxyTable.vue'
+import ProxyPagerTable from './components/ProxyPagerTable.vue'
+import FitsCard from '@/components/Card/FitsCard.vue'
 //锚点目录所需数据
 const navTree: any = ref([]);
 const menuData = reactive({

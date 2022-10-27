@@ -1,29 +1,29 @@
 <template>
   <div class="login-container">
     <img src="@/assets/Login/fitslogo.png" alt="" class="fitslogo">
-    <left-pannel v-if="isShowLeftPannel"></left-pannel>
+    <left-pannel v-if="isShowLeftPannel" />
     <div class="right-pannel">
       <div class="login-form">
         <el-tooltip v-if="!isScanCodeLogin && loginSetting.appScanCode" class="box-item" effect="accout-login"
           :visible="true" :content="curentLoginText" placement="left">
           <div class="rightLogo">
-            <svg-icon icon-class="accoutlogo" @click="handleLoginModel()"></svg-icon>
+            <svg-icon icon-class="accoutlogo" @click="handleLoginModel()" />
           </div>
         </el-tooltip>
         <div class="scancodelogin rightLogo" v-if="isScanCodeLogin && loginSetting.appScanCode">
-          <svg-icon icon-class="ewnlogin" @click="handleLoginModel()"></svg-icon>
+          <svg-icon icon-class="ewnlogin" @click="handleLoginModel()" />
         </div>
         <div class="mainLogin" v-if="isScanCodeLogin">
           <div class="title-box">
             <div class="title">{{ title }}</div>
             <div class="subtitle">{{ subTitle }}</div>
           </div>
-          <main-login></main-login>
+          <main-login />
           <div class="app-download" v-if="loginSetting.appDownload">
             <el-popover placement="top" :hide-after="0" popper-class="loginAppdownload" :width="180" trigger="click">
               <template #reference>
                 <el-button class="btn" text bg>
-                  <svg-icon icon-class="ios"></svg-icon>iPhone
+                  <svg-icon icon-class="ios" />iPhone
                 </el-button>
               </template>
               <div class="appimg">
@@ -31,11 +31,11 @@
                 <span class="text">扫描下载iOS客户端</span>
               </div>
             </el-popover>
-            <span class="hr"></span>
+            <span class="hr" />
             <el-popover placement="top" :hide-after="0" popper-class="loginAppdownload" :width="180" trigger="click">
               <template #reference>
                 <el-button class="btn" text bg>
-                  <svg-icon icon-class="android"></svg-icon>Android
+                  <svg-icon icon-class="android" />Android
                 </el-button>
               </template>
               <div class="appimg">
@@ -45,7 +45,7 @@
             </el-popover>
           </div>
         </div>
-        <ScanCode v-else></ScanCode>
+        <ScanCode v-else />
       </div>
       <div class="login-tips">最佳浏览环境：Chrome64及以上，1920*1080显示分辨率</div>
     </div>
@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, toRefs } from 'vue';
 // 组件依赖
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 import LeftPannel from './components/LeftPannel.vue';
 import ScanCode from './components/ScanCode.vue';
 import MainLogin from './components/MainLogin.vue'

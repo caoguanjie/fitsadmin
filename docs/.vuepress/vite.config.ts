@@ -6,6 +6,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { path } from "@vuepress/utils";
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
+import type { Plugin, ResolvedConfig } from 'vite'
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default defineConfig({
     plugins: [
@@ -14,7 +15,7 @@ export default defineConfig({
             dts: path.resolve(__dirname, '.temp/auto-imports.d.ts'),
             dirs: [path.resolve(__dirname, '../../src')],
         }),
-        Components({
+        process.env.NODE_ENV === 'development' ?? Components({
             dirs: path.resolve(__dirname, '../../src/components'),
             dts: path.resolve(__dirname, '.temp/components.d.ts'),
         }),
@@ -46,5 +47,6 @@ export default defineConfig({
                 }
             ],
         },
-    }
+    },
 });
+

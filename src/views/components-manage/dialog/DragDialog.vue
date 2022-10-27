@@ -1,10 +1,11 @@
 <template>
     <div class="drag-dialog">
-        <el-button @click="visible=true" type="primary">
+        <el-button @click="visible = true" type="primary">
             打开弹窗
         </el-button>
 
-        <fits-dialog :visible="visible" :dialogProp="dialogProp" @cancel="visible=false" @submit="visible=false">
+        <fits-dialog :visible="visible" :dialogProp="dialogProp" @cancel="visible = false"
+            @submit="visible = false">
             <div>我是拖拽弹窗</div>
             <div>我是拖拽弹窗</div>
             <div>我是拖拽弹窗</div>
@@ -15,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+import { FitsDialog } from '@/fits-components';
 const visible = ref(false)
 const dialogProp = reactive({
     title: '拖拽弹窗',

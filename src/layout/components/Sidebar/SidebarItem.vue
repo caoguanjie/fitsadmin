@@ -21,7 +21,7 @@
       <template #title>
         <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
         <span v-if="item.meta && item.meta.title">{{
-        item.meta.title
+            item.meta.title
         }}</span>
       </template>
 
@@ -36,8 +36,7 @@ import { computed, ref } from 'vue';
 import path from 'path-browserify';
 import { isExternal } from '@/utils/validate';
 import AppLink from './Link.vue';
-
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 import useStore from '@/store';
 
 const { setting } = useStore();

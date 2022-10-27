@@ -13,21 +13,23 @@
                 <i class="vxe-icon-add" />
             </el-button>
         </template>
-        <template #requiredHeader="{slotProps:{column}}">
+        <template #requiredHeader="{ slotProps: { column } }">
             <span class="redStar">*</span>
-            <span>{{column.title}}</span>
+            <span>{{ column.title }}</span>
         </template>
 
-        <template #projectDefault="{slotProps:{row, column}}">
-            <el-form :ref="'requiredFormRef_'+row.rowKey+column.id" :model="row" :rules="rules" :key="row.rowKey">
+        <template #projectDefault="{ slotProps: { row, column } }">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
+                :key="row.rowKey">
                 <el-form-item prop="project">
                     <el-autocomplete v-model="row.project" placeholder="请输入" :fetch-suggestions="queryProject"
                         clearable />
                 </el-form-item>
             </el-form>
         </template>
-        <template #batchDefault="{slotProps:{row, column}}">
-            <el-form :ref="'requiredFormRef_'+row.rowKey+column.id" :model="row" :rules="rules" :key="row.rowKey">
+        <template #batchDefault="{ slotProps: { row, column } }">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
+                :key="row.rowKey">
                 <el-form-item prop="batch">
                     <el-select v-model="row.batch">
                         <el-option v-for="item in batch_Arr" :key="item.value" :label="item.label"
@@ -36,7 +38,7 @@
                 </el-form-item>
             </el-form>
         </template>
-        <template #typeDefault="{slotProps:{row}}">
+        <template #typeDefault="{ slotProps: { row } }">
             <el-form-item>
                 <el-select v-model="row.type">
                     <el-option v-for="item in worktype_Arr" :key="item.value" :label="item.label" :value="item.value" />
@@ -44,15 +46,17 @@
             </el-form-item>
 
         </template>
-        <template #taskDefault="{slotProps:{row, column}}">
-            <el-form :ref="'requiredFormRef_'+row.rowKey+column.id" :model="row" :rules="rules" :key="row.rowKey">
+        <template #taskDefault="{ slotProps: { row, column } }">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
+                :key="row.rowKey">
                 <el-form-item prop="task">
                     <el-input v-model="row.task" />
                 </el-form-item>
             </el-form>
         </template>
-        <template #responsibleDefault="{slotProps:{row, column}}">
-            <el-form :ref="'requiredFormRef_'+row.rowKey+column.id" :model="row" :rules="rules" :key="row.rowKey">
+        <template #responsibleDefault="{ slotProps: { row, column } }">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
+                :key="row.rowKey">
                 <el-form-item prop="responsible">
                     <el-select v-model="row.responsible">
                         <el-option v-for="item in responsible_Arr" :key="item.value" :label="item.label"
@@ -61,7 +65,7 @@
                 </el-form-item>
             </el-form>
         </template>
-        <template #reviewerDefault="{slotProps:{row}}">
+        <template #reviewerDefault="{ slotProps: { row } }">
             <el-form-item>
                 <el-select v-model="row.reviewer">
                     <el-option v-for="item in responsible_Arr" :key="item.value" :label="item.label"
@@ -69,23 +73,25 @@
                 </el-select>
             </el-form-item>
         </template>
-        <template #startdateDefault="{slotProps:{row, column}}">
-            <el-form :ref="'dateFormRef_'+row.rowKey+column.id" :model="row" :rules="rules" :key="row.rowKey">
+        <template #startdateDefault="{ slotProps: { row, column } }">
+            <el-form :ref="'dateFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
+                :key="row.rowKey">
                 <el-form-item prop="startdate">
                     <el-date-picker v-model="row.startdate" value-format="YYYY-MM-DD"
                         @change="dateChange(row, column)" />
                 </el-form-item>
             </el-form>
         </template>
-        <template #enddateDefault="{slotProps:{row, column}}">
-            <el-form :ref="'dateFormRef_'+row.rowKey+column.id" :model="row" :rules="rules" :key="row.rowKey">
+        <template #enddateDefault="{ slotProps: { row, column } }">
+            <el-form :ref="'dateFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
+                :key="row.rowKey">
                 <el-form-item prop="enddate">
                     <el-date-picker v-model="row.enddate" value-format="YYYY-MM-DD" @change="dateChange(row, column)" />
                 </el-form-item>
             </el-form>
         </template>
 
-        <template #deleteDefault="{slotProps:{row}}">
+        <template #deleteDefault="{ slotProps: { row } }">
             <el-button @click="removeItem(row)">
                 <i class="vxe-icon-delete" />
             </el-button>
@@ -93,13 +99,12 @@
     </fits-table>
     <div class="dataBox">
         表格数据：
-        {{tableData}}
+        {{ tableData }}
     </div>
 </template>
 
 <script lang='ts' setup>
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import { VxeGridInstance } from 'vxe-table';
 
 const instance = ref()

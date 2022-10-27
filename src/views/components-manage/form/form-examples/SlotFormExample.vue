@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
+import { FitsFormCreateModel, FitsFormCreate } from '@/fits-components';
 import { Search } from '@element-plus/icons-vue'
-import { FitsFormCreateModel } from '@/components/Common/model'
 
 const slotForm = reactive(
     new FitsFormCreateModel({

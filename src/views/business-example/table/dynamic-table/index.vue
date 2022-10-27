@@ -12,9 +12,9 @@
         <div class="right">
             <div class="menu">
                 <div class="menu-title">此页内容</div>
-                <div v-for="(i,k) in navTree" :class="{'active':menuData.num===k}" :key="k" :id="'menuItem' + k"
-                    @click.stop="jumpToAnchor(i.el,k)" class="defaultStyle">
-                    {{i.title}}
+                <div v-for="(i, k) in navTree" :class="{ 'active': menuData.num === k }" :key="k"
+                    :id="'menuItem' + k" @click.stop="jumpToAnchor(i.el, k)" class="defaultStyle">
+                    {{ i.title }}
                 </div>
             </div>
         </div>
@@ -23,6 +23,7 @@
 
 <script lang='ts' setup>
 import DynamicTable from './components/DynamicTable.vue'
+import FitsCard from '@/components/Card/FitsCard.vue'
 
 //锚点目录所需数据
 const navTree: any = ref([]);

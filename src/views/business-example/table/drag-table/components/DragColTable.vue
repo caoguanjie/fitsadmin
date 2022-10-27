@@ -9,8 +9,7 @@
 </template>
 
 <script lang='ts' setup>
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
+import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import Sortable from 'sortablejs';
 import { VxeGridInstance } from 'vxe-table';
 

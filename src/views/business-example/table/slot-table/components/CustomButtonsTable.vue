@@ -7,10 +7,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type';
-import FitsInputSearch from '@/components/Common/FitsInputSearch.vue'
+import { FitsTableProps, useFitsTablePro, FitsTable, FitsInputSearch } from '@/fits-components';
 import { VxeGridInstance } from 'vxe-table';
-import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook';
 
 const gridOptions: FitsTableProps = {
     columns: [

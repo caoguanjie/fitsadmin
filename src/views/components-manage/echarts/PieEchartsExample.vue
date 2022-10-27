@@ -23,6 +23,7 @@ import BaseExample from "./pie-examples/BaseExample.vue"
 import ShowLegendExample from "./pie-examples/ShowLegendExample.vue"
 import GapExample from "./pie-examples/GapExample.vue"
 import ColorExample from "./pie-examples/ColorExample.vue"
+import FitsCard from '@/components/Card/FitsCard.vue'
 
 const examples = shallowRef([
     { component: BaseExample, title: "基础用法", desc: "基础饼图展示，传入data数据即可" },

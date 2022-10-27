@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { FitsFormCreateModel } from '@/components/Common/model'
+import { FitsFormCreateModel, FitsFormCreate } from '@/fits-components';
 
 const simpleForm = reactive(
     new FitsFormCreateModel({

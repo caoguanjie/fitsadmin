@@ -3,8 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import FitsCheckboxAll from '@/components/Form/FitsCheckboxAll.vue';
-import { FitsCheckboxAllModel } from '@/components/Form/model';
+import { FitsCheckboxAllModel, FitsCheckboxAll } from '@/fits-components';
 import { reactive } from 'vue';
 
 const state = reactive(new FitsCheckboxAllModel({

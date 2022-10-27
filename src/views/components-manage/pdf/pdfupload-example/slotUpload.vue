@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import FitsUpload from '@/components/DocumentsUpload/FitsUpload.vue';
 </script>
 
 <style lang="scss" scoped>
