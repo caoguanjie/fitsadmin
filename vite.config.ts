@@ -8,8 +8,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
-// import fullImportPlugin from 'src/utils/base/fullImportPlugin'
 import type { Plugin, ResolvedConfig } from 'vite'
+import removeConsole from 'vite-plugin-remove-console';
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
@@ -32,14 +32,15 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
 
       }),
-      mode === 'dev' ? fullImportPlugin() : Components({
-        dts: './src/components.d.ts',
-        dirs: '',
-        resolvers: [ElementPlusResolver()],
-      }),
+      // mode === 'dev' ? fullImportPlugin() : Components({
+      //   dts: './src/components.d.ts',
+      //   dirs: '',
+      //   resolvers: [ElementPlusResolver()],
+      // }),
 
 
       vue(),
+      mode !== 'dev' && removeConsole(),
       svgLoader(),
       // 命名组件名字的插件
       vueSetupExtend(),
@@ -49,6 +50,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]'
       }),
+
     ],
     css: {
       // css预处理器
@@ -85,6 +87,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     build: {
       outDir: 'FitsAdmin',
       minify: 'terser',
+      // 不生效
       terserOptions: {
         compress: {
           drop_console: mode !== 'dev',
@@ -120,7 +123,6 @@ function fullImportPlugin() {
 
         // 引入 ElementPlus 和 样式
         const prepend = `import ${name} from 'element-plus';\nimport 'element-plus/dist/index.css';\n`
-
         // 通过匹配字符串来使用 ElementPlus （此处替换规则根据 main.ts 的情况而定）
         // 相当于将字符串 `app.use(router).mount('#app')` 替换成 `app.use(router).use(ElementPlus).mount('#app')`
         code = code.replace('.mount(', ($1) => `.use(${name})` + $1)

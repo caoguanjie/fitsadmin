@@ -63,10 +63,12 @@
                     desc="给 columns 里的对象配置 type=seq 开启序号列。另外，可通过 seqConfig.seqMethod 自定义序列号。 本例演示了自定义序列号，序列号的间隔为2。">
                     <custom-index-table />
                 </fits-card>
-                <fits-card title="数据代理" desc="">
+                <fits-card title="数据代理" desc="通过配置 proxyConfig.ajax.query，返回一个Promise，响应结果通过resolve(props)返回，其中props.list存放列表数组。
+                    另外可以通过 proxyConfig.props 修改获取的列表属性配置。开启数据代理后，无法配置 formConfig.data ，如果 form 有默认值，需要手动进行值赋。">
                     <proxy-table />
                 </fits-card>
-                <fits-card title="数据代理+分页器" desc="">
+                <fits-card title="数据代理+分页器"
+                    desc="通过配置 pagerConfig.enabled=true 开启分页，响应结果通过resolve(props)返回，其中props.total存放列表总数。">
                     <proxy-pager-table />
                 </fits-card>
             </div>

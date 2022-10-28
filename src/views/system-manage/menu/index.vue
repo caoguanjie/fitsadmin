@@ -20,10 +20,11 @@ import { getMenuList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance } from 'vxe-table';
-import { FitsTable, useFitsTablePro, FitsTableProps } from 'fits-admin-ui'
+import { FitsTable, useFitsTablePro, FitsTableProps } from '../../../../FitsAdminUI/es/fits-components'
 
-// import { FitsTable, useFitsTablePro, FitsTableProps } from '@/fits-components'
-// import FitsTable from '@/components/FitsTablePro/FitsTable/FitsTable.vue'
+// import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
+import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui/es/fits-components/Table/FitsTable/index'
+// import FitsTable from '@/fits-components/Table/FitsTable/FitsTable.vue'
 // import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook'
 // import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type'
 import XEUtils from 'xe-utils';

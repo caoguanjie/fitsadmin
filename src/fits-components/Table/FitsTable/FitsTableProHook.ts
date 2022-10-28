@@ -184,7 +184,6 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
  */
     watch(() => store.isShowSearchForm, (newValue) => {
         nextTick(() => {
-            console.log(xGrid.value.$el, 9999)
             xGrid.value.$el.nextElementSibling.querySelector('.vxe-grid--form-wrapper').style.display = newValue ? 'block' : 'none';
             // 这步主要是解决各个工具栏被放大后，提示框被挡住的问题，可以把提示框方向变成bottom属性
             eventBus.emit('IsShowSearchForm', store.isShowSearchForm)

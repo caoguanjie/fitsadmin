@@ -6,7 +6,7 @@ import { RouteLocationNormalized, Router } from 'vue-router'
 import useStore from '@/store';
 NProgress.configure({ showSpinner: false })
 import ENV from '@/environment/index';
-import { error } from 'console';
+
 const whiteList = ['/login', '/404']
 export const createRouterGuards = (router: Router) => {
     router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized, next: any) => {

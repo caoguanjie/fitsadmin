@@ -73,8 +73,6 @@
 <script setup lang="ts">
 import { reactive, toRefs, watch } from 'vue';
 
-import ThemePicker from '@/components/ThemePicker/index.vue';
-
 import useStore from '@/store';
 
 const { setting } = useStore();

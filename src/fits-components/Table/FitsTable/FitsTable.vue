@@ -86,7 +86,7 @@ function checkAllSlots() {
     });
 
     // 遍历工具栏的卡槽
-    XEUtils.eachTree([state.gridOption.toolbarConfig], (config: VxeGridPropTypes.ToolbarConfig) => {
+    XEUtils.objectEach([state.gridOption.toolbarConfig], (config: VxeGridPropTypes.ToolbarConfig) => {
         if (config?.slots) {
             XEUtils.each(config.slots, (value) => {
                 arr.push(value);
@@ -105,6 +105,15 @@ function checkAllSlots() {
 
     // 遍历页脚区域的左侧和右侧模板插槽
     XEUtils.eachTree([state.gridOption.pagerConfig], (config: VxeGridPropTypes.PagerConfig) => {
+        if (config?.slots) {
+            XEUtils.each(config.slots, (value) => {
+                arr.push(value);
+            });
+        }
+    });
+
+    // 遍历页脚区域的左侧和右侧模板插槽
+    XEUtils.objectEach([state.gridOption], (config: VxeGridPropTypes.PagerConfig) => {
         if (config?.slots) {
             XEUtils.each(config.slots, (value) => {
                 arr.push(value);

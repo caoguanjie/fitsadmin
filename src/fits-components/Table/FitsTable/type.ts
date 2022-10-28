@@ -1,5 +1,4 @@
 import { StorageStrategy } from '@/types/base/storage';
-import { buildProps } from 'element-plus/es/utils';
 import { FormItemRenderOptions, VxeFormItemPropTypes, VxeGridConstructor, VxeGridPropTypes, VxeTableDefines, VxeTableProps } from 'vxe-table';
 // 对齐方式
 export type Align = 'left' | 'center' | 'right' | null
@@ -122,6 +121,20 @@ export type FitsTableProps<D = any> = VxeTableProps<D> & {
     pagerConfig?: FitsTableProPagerConfig | VxeGridPropTypes.PagerConfig
     proxyConfig?: FitsTableProProxyConfig | VxeGridPropTypes.ProxyConfig
     storage?: StorageStrategy
+    slots?: {
+        // 空数据时显示的文本内容
+        empty?: string,
+        // 表单模板
+        form?: string,
+        // 工具栏模板
+        toolbar?: string,
+        // 	表格顶部模板
+        top?: string,
+        // 表格底部模板
+        bottom?: string,
+        // 分页模板
+        pager?: string,
+    }
 }
 export const FitsTableProps: FitsTableProps = {}
 

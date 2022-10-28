@@ -5,14 +5,12 @@ import { ToolbarSearch, ToolbarFullscreen, ToolbarCustomColumn, ToolbarRefresh, 
 import { h } from 'vue'
 
 
-console.error('执行了')
 
 // 创建工具栏-搜索工具
 VXETable.renderer.add('vxeToolbarSearch', {
     renderToolbarTool(renderOpts, params) {
         const { $grid }: any = params
         const { events = {}, props = {} } = renderOpts;
-        console.error(renderOpts, params)
         return h(ToolbarSearch,
             {
                 msg: props.msg ?? '是否显示搜索条件',
