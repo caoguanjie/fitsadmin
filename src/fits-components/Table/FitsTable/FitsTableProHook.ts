@@ -1,8 +1,8 @@
+import XEUtils from "xe-utils";
 import eventBus from "@/utils/base/EventBus";
 import { useUserHabits } from "@/utils/base/storage-persist";
 import { Ref } from "vue";
 import { VxeFormItemProps, VxeTableDefines } from "vxe-table";
-import XEUtils from "xe-utils";
 import { FitsTableProps } from "./type";
 import { reactive, watch, nextTick } from 'vue';
 export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
@@ -83,7 +83,7 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
         const toolsBtn = {
             search: {
                 toolRender: {
-                    name: 'vxeToolbarSearch',
+                    name: 'FitsToolbarSearch',
                     events: {
                         click: () => {
                             store.isShowSearchForm = !store.isShowSearchForm;
@@ -93,7 +93,7 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
             },
             query: {
                 toolRender: {
-                    name: 'vxeToolbarSetting', events: {
+                    name: 'FitsToolbarSetting', events: {
                         get: () => store.customQueryArray,
                         setCustomQuerySelected: (formConfigData: any) => {
                             const data = xGrid.value?.fitsTablePro.getProxyInfo()
@@ -113,7 +113,7 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
             },
             refresh: {
                 toolRender: {
-                    name: 'vxeToolbarRefresh', events: {
+                    name: 'FitsToolbarRefresh', events: {
                         click: () => {
                             xGrid.value?.fitsTablePro.commitProxy('query')
                         }
@@ -123,7 +123,7 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
 
             export: {
                 toolRender: {
-                    name: 'vxeToolbarExport', events: {
+                    name: 'FitsToolbarExport', events: {
                         click: () => {
                             xGrid.value?.fitsTablePro.openExport()
                         }
@@ -132,7 +132,7 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
             },
             fullscreen: {
                 toolRender: {
-                    name: 'vxeToolbarFullscreen',
+                    name: 'FitsToolbarFullscreen',
                     props: {
                         isShowSearchForm: store.isShowSearchForm
                     },
@@ -147,7 +147,7 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
             },
             custom: {
                 toolRender: {
-                    name: 'vxeToolbarCustomColumn', events: {
+                    name: 'FitsToolbarCustomColumn', events: {
                         geCustomColumnData: () => {
                             return XEUtils.clone(store.customColumnArray, true)
                         },

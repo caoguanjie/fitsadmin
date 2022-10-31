@@ -11,16 +11,15 @@
 </template>
 
 <script lang='ts' setup name="FitsTable">
+import XEUtils from 'xe-utils';
 import { VxeGrid } from 'vxe-table'
 import { reactive, ref, watch } from 'vue';
 import FitsEmpty from '../../Data/FitsEmpty/index.vue'
 import { VxeFormItemProps, VxeGridInstance, VxeGridListeners, VxeGridProps, VxeGridPropTypes } from 'vxe-table';
 import { useResizeObserver } from '@vueuse/core'
-import XEUtils from 'xe-utils';
 import variables from '@/styles/variables.module.scss';
 import { FitsTableProps } from './type';
 import { useLogger } from '@/utils/base/logger'
-import "./renderer/index"
 const props = withDefaults(defineProps<{
     option: FitsTableProps,
     gridEvents?: VxeGridListeners | any
@@ -187,6 +186,106 @@ watch(() => props.option, (newValue) => {
 
 </script>
 <style lang='scss' >
+.vxe-table.cell--highlight .vxe-cell>.el-date-editor .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-date-editor .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-input-number .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-input-number .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-input-number .el-input-number__decrease,
+.vxe-table.cell--highlight .vxe-cell>.el-input-number .el-input-number__increase,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-input-number .el-input-number__decrease,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-input-number .el-input-number__increase,
+.vxe-table.cell--highlight .vxe-cell>.el-input:not(.el-date-editor) .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-autocomplete .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-select .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-cascader .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-input:not(.el-date-editor) .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-autocomplete .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-select .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-cascader .el-input__inner {
+    border: 0;
+}
+
+.vxe-table .vxe-cell>.el-slider .el-slider__runway,
+.vxe-table .vxe-tree-cell>.el-slider .el-slider__runway,
+.vxe-table--filter-element-wrapper>.el-slider .el-slider__runway {
+    margin: 8px 0;
+}
+
+.vxe-table .vxe-cell>.el-slider .el-slider__runway .el-slider__button-wrapper,
+.vxe-table .vxe-tree-cell>.el-slider .el-slider__runway .el-slider__button-wrapper,
+.vxe-table--filter-element-wrapper>.el-slider .el-slider__runway .el-slider__button-wrapper {
+    z-index: auto;
+}
+
+.vxe-table .vxe-cell>.el-input,
+.vxe-table .vxe-tree-cell>.el-input,
+.vxe-form .vxe-form--item-content>.el-input,
+.vxe-table .vxe-cell>.el-autocomplete,
+.vxe-table .vxe-tree-cell>.el-autocomplete,
+.vxe-form .vxe-form--item-content>.el-autocomplete,
+.vxe-table .vxe-cell>.el-input-number,
+.vxe-table .vxe-tree-cell>.el-input-number,
+.vxe-form .vxe-form--item-content>.el-input-number,
+.vxe-table .vxe-cell>.el-select,
+.vxe-table .vxe-tree-cell>.el-select,
+.vxe-form .vxe-form--item-content>.el-select,
+.vxe-table .vxe-cell>.el-cascader,
+.vxe-table .vxe-tree-cell>.el-cascader,
+.vxe-form .vxe-form--item-content>.el-cascader,
+.vxe-table .vxe-cell>.el-date-editor,
+.vxe-table .vxe-tree-cell>.el-date-editor,
+.vxe-form .vxe-form--item-content>.el-date-editor,
+.vxe-table .vxe-cell>.el-slider,
+.vxe-table .vxe-tree-cell>.el-slider,
+.vxe-form .vxe-form--item-content>.el-slider {
+    width: 100%;
+}
+
+.vxe-table .vxe-cell>.el-color-picker,
+.vxe-table .vxe-tree-cell>.el-color-picker,
+.vxe-form .vxe-form--item-content>.el-color-picker {
+    vertical-align: middle;
+}
+
+.vxe-table--filter-element-wrapper {
+    padding: 0.8em 1em;
+}
+
+.vxe-table--filter-element-wrapper>.el-input,
+.vxe-table--filter-element-wrapper>.el-input-number,
+.vxe-table--filter-element-wrapper>.el-autocomplete,
+.vxe-table--filter-element-wrapper>.el-select,
+.vxe-table--filter-element-wrapper>.el-rate,
+.vxe-table--filter-element-wrapper>.el-slider {
+    width: 180px;
+}
+
+.col--valid-error>.vxe-cell>.el-input .el-input__inner,
+.col--valid-error>.vxe-cell>.el-autocomplete .el-input__inner,
+.col--valid-error>.vxe-cell>.el-input-number .el-input__inner,
+.col--valid-error>.vxe-cell>.el-select .el-input__inner,
+.col--valid-error>.vxe-cell>.el-cascader .el-input__inner,
+.col--valid-error>.vxe-cell>.el-date-picker .el-input__inner,
+.col--valid-error>.vxe-tree-cell>.el-input .el-input__inner,
+.col--valid-error>.vxe-tree-cell>.el-autocomplete .el-input__inner,
+.col--valid-error>.vxe-tree-cell>.el-input-number .el-input__inner,
+.col--valid-error>.vxe-tree-cell>.el-select .el-input__inner,
+.col--valid-error>.vxe-tree-cell>.el-cascader .el-input__inner,
+.col--valid-error>.vxe-tree-cell>.el-date-picker .el-input__inner {
+    border-color: #f56c6c;
+}
+
+.vxe-table.cell--highlight .vxe-cell>.el-input:not(.el-date-editor) .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-autocomplete .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-select .el-input__inner,
+.vxe-table.cell--highlight .vxe-cell>.el-cascader .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-input:not(.el-date-editor) .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-autocomplete .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-select .el-input__inner,
+.vxe-table.cell--highlight .vxe-tree-cell>.el-cascader .el-input__inner {
+    padding: 0;
+}
+
 .fits-grid.is--maximize {
     padding: 0 1em;
 }

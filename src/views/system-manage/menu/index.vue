@@ -15,19 +15,20 @@
 </template>
 
 <script lang='ts' setup>
+import XEUtils from 'xe-utils';
 import { getMenuList } from '@/api/base/system';
 // import { FitsFormItemProps } from '@/fits-components/Form/FormCrea';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance } from 'vxe-table';
-import { FitsTable, useFitsTablePro, FitsTableProps } from '../../../../FitsAdminUI/es/fits-components'
+// import { FitsTable, useFitsTablePro, FitsTableProps } from '../../../../FitsAdminUI/es/fits-components'
 
 // import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
-import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui/es/fits-components/Table/FitsTable/index'
+
+import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
 // import FitsTable from '@/fits-components/Table/FitsTable/FitsTable.vue'
 // import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook'
 // import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type'
-import XEUtils from 'xe-utils';
 import { ref } from 'vue'
 
 const { user } = useStore();

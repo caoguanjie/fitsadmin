@@ -69,7 +69,7 @@ export default defineConfig({
         },
         rollupOptions: {
 
-            external: ['vue', 'vxe-table', '@form-create/element-ui', 'element-plus', 'vxe-table-plugin-element'],
+            external: ['vue', 'vxe-table', '@form-create/element-ui', 'element-plus', 'vxe-table-plugin-element', 'xe-utils'],
             input: [path.resolve(__dirname, '../src/fits-components/index.ts')],
             output: [
                 // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
