@@ -1142,27 +1142,6 @@
   dependencies:
     "@better-scroll/core" "^2.4.2"
 
-"@bfehub/vuepress-plugin-code-block@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/@bfehub/vuepress-plugin-code-block/-/vuepress-plugin-code-block-1.0.4.tgz"
-  integrity sha512-pkmotpkNDMOeCHP/Gd7/gyJhg3zmiHccasLFJb1ORtoLaYx7zaS2UqPlbZYH09hs81RCdhSkWRrnI1ndoBWIeg==
-  dependencies:
-    "@mdit-vue/shared" "^0.7.0"
-    "@types/markdown-it" "^12.2.3"
-    "@vuepress/cli" "2.0.0-beta.49"
-    "@vuepress/client" "2.0.0-beta.49"
-    "@vuepress/core" "2.0.0-beta.49"
-    "@vuepress/markdown" "2.0.0-beta.49"
-    "@vuepress/plugin-prismjs" "2.0.0-beta.49"
-    "@vuepress/shared" "2.0.0-beta.49"
-    "@vuepress/utils" "2.0.0-beta.49"
-    "@vueuse/core" "^8.2.1"
-    markdown-it "^13.0.1"
-    posthtml-parser "^0.11.0"
-    posthtml-render "^3.0.0"
-    vue "^3.2.33"
-    vue-router "^4.0.15"
-
 "@braintree/sanitize-url@^6.0.0":
   version "6.0.0"
   resolved "https://registry.npmjs.org/@braintree/sanitize-url/-/sanitize-url-6.0.0.tgz"
@@ -4996,10 +4975,10 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
-fits-admin-ui@^1.0.81:
-  version "1.0.81"
-  resolved "https://registry.yarnpkg.com/fits-admin-ui/-/fits-admin-ui-1.0.81.tgz#8be107d9174cc8cd813ceed64df522e99651f7ae"
-  integrity sha512-bQyvHJMroEZqtSY7Lja2pR2nopPJ7T8De2mS6ZYbCpyAl5i2AeidQ9izj/jdMRt+VPwjxWWWrmGdKI9dSiCARA==
+fits-admin-ui@^1.0.87:
+  version "1.0.87"
+  resolved "https://registry.yarnpkg.com/fits-admin-ui/-/fits-admin-ui-1.0.87.tgz#987211b9ce891502401dfb3a9a5730612dab861e"
+  integrity sha512-4clisM9grb3Vk9j1yYaM0YxwXj+FnIfetgnrAaR+w4IapyPin9fiVsptUdQRdS1dCZ+5wfELy/STJA5+JKt4jQ==
   dependencies:
     element-plus "2.2.12"
     vite "2.8.6"
@@ -8261,6 +8240,27 @@ vuepress-plugin-blog2@2.0.0-beta.91:
     vue "^3.2.37"
     vue-router "^4.1.3"
     vuepress-shared "2.0.0-beta.91"
+
+vuepress-plugin-code-block-nossr@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/vuepress-plugin-code-block-nossr/-/vuepress-plugin-code-block-nossr-1.0.10.tgz#8638b078920d59c0b3a68cd6c8428d7ffd07a905"
+  integrity sha512-2EFmi56xwDtDJSKm/pGeXQVopRmAzTFk6r9vdX3HuQa+YUYpA2Jb2yh0XcXnQTYYhHeNzJSfm868yM5ypx5R6w==
+  dependencies:
+    "@mdit-vue/shared" "^0.7.0"
+    "@types/markdown-it" "^12.2.3"
+    "@vuepress/cli" "2.0.0-beta.49"
+    "@vuepress/client" "2.0.0-beta.49"
+    "@vuepress/core" "2.0.0-beta.49"
+    "@vuepress/markdown" "2.0.0-beta.49"
+    "@vuepress/plugin-prismjs" "2.0.0-beta.49"
+    "@vuepress/shared" "2.0.0-beta.49"
+    "@vuepress/utils" "2.0.0-beta.49"
+    "@vueuse/core" "^8.2.1"
+    markdown-it "^13.0.1"
+    posthtml-parser "^0.11.0"
+    posthtml-render "^3.0.0"
+    vue "^3.2.33"
+    vue-router "^4.0.15"
 
 vuepress-plugin-comment2@2.0.0-beta.91:
   version "2.0.0-beta.91"

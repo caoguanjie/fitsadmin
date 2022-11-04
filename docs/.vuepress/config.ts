@@ -1,7 +1,7 @@
 import { defineUserConfig } from "vuepress";
 import theme from "./theme";
 import { searchPlugin } from "@vuepress/plugin-search";
-import { codeBlockPlugin } from 'vuepress-plugin-code-block-nossr'
+import { codeBlockPlugin } from '@bfehub/vuepress-plugin-code-block'
 import { viteBundler } from '@vuepress/bundler-vite';
 import { resolve } from "path";
 import { path } from "@vuepress/utils";

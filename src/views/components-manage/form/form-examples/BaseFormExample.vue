@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
-import { FitsFormCreateModel, FitsFormCreate, FitsCheckboxAllModel, FitsCheckboxAll, FitsFormTitle } from '@/fits-components';
-
+import { FitsFormCreateModel, FitsCheckboxAllModel } from '@/fits-components/type';
+import { FitsFormCreate, FitsCheckboxAll, FitsFormTitle } from '@/fits-components';
 
 const simpleForm = reactive(
     new FitsFormCreateModel({

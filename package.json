@@ -35,7 +35,7 @@
         "driver.js": "^0.9.8",
         "echarts": "^5.2.2",
         "element-plus": "^2.2.16",
-        "fits-admin-ui": "^1.0.81",
+        "fits-admin-ui": "^1.0.87",
         "is-retry-allowed": "^3.0.0",
         "js-cookie": "^3.0.1",
         "mitt": "^3.0.0",
@@ -55,7 +55,6 @@
         "vue-json-pretty": "^2.2.2",
         "vue-pdf-embed": "^1.1.4",
         "vue-router": "^4.0.12",
-        "vuepress-plugin-code-block-nossr": "^1.0.6",
         "vxe-table": "^4.3.5",
         "vxe-table-plugin-element": "^3.0.6",
         "xe-utils": "^3.5.6"
