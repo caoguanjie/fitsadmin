@@ -22,6 +22,7 @@ const isShowSearchForm = ref(props.grid.props.formConfig ? true : false)
 const placement = ref<any>('top')
 
 onMounted(() => {
+
     eventBus.on('IsShowSearchForm', (_isShowSearchForm: boolean) => {
         isShowSearchForm.value = _isShowSearchForm
         placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'
@@ -31,6 +32,7 @@ onMounted(() => {
 
 function handleClick() {
     isFullscreen.value = !isFullscreen.value
+    console.log(isFullscreen.value)
     console.log(isFullscreen.value)
     isShowSearchForm.value = props.event.get()
     placement.value = isFullscreen.value && !isShowSearchForm.value ? 'bottom' : 'top'

@@ -1,11 +1,12 @@
 import { defineUserConfig } from "vuepress";
 import theme from "./theme";
 import { searchPlugin } from "@vuepress/plugin-search";
-import { codeBlockPlugin } from '@bfehub/vuepress-plugin-code-block'
+import { codeBlockPlugin } from 'vuepress-plugin-code-block-nossr'
 import { viteBundler } from '@vuepress/bundler-vite';
 import { resolve } from "path";
 import { path } from "@vuepress/utils";
 import { docsearchPlugin } from '@vuepress/plugin-docsearch'
+
 
 const base = process.env.NODE_ENV === 'github' ? '/fitsadmin/' : "/"
 
@@ -28,52 +29,42 @@ export default defineUserConfig({
 
   plugins: [
 
-
     selectSearch(),
-
-    // registerComponentsPlugin({
-    //   componentsDir: resolve(__dirname, '../../src/components'),
-    //   getComponentName: (filename: string) => {
-    //     //生成的组件名字
-    //     const arr = filename.split("/")
-    //     return `Fits${path.trimExt(arr[arr.length - 1])}`;
-    //   }
-    // }),
     // @bfehub/vuepress-plugin-code-block
     codeBlockPlugin(),
   ],
   bundler: viteBundler({
     viteOptions: {
       configFile: resolve(__dirname, './vite.config.ts'),
+      // 解决Must use import to load ES Module导致的报错, 当SSR再次打包失败的时候，记得要配置以下第三库不配置的。
       // @ts-expect-error: vite does not provide types for ssr options yet
-      // 解决Must use import to load ES Module导致的报错
       ssr: {
-        noExternal: ['element-plus'],
+        noExternal: ['element-plus', 'is-retry-allowed', 'fits-admin-ui', 'echarts', '@wangeditor/editor-for-vue', '../../src/fits-components'],
       },
       css: {
         preprocessorOptions: {
-            scss: {
-                charset: false,
-                // 引入全局scss变量，不过这样有个坑，就是一定要下划线的scss文件路径才引入正常。
-                // additionalData: `@import "${path.resolve(__dirname, '../../src/styles/_global.scss')}";`,
-                additionalData: `@use "${path.resolve(__dirname, '../../src/styles/_global.scss')}" as *;`,
-            }
+          scss: {
+            charset: false,
+            // 引入全局scss变量，不过这样有个坑，就是一定要下划线的scss文件路径才引入正常。
+            // additionalData: `@import "${path.resolve(__dirname, '../../src/styles/_global.scss')}";`,
+            additionalData: `@use "${path.resolve(__dirname, '../../src/styles/_global.scss')}" as *;`,
+          }
         },
         postcss: {
-            plugins: [
-                {
-                    postcssPlugin: 'internal:charset-removal',
-                    AtRule: {
-                        charset: (atRule) => {
-                            if (atRule.name === 'charset') {
-                                atRule.remove();
-                            }
-                        }
-                    }
+          plugins: [
+            {
+              postcssPlugin: 'internal:charset-removal',
+              AtRule: {
+                charset: (atRule) => {
+                  if (atRule.name === 'charset') {
+                    atRule.remove();
+                  }
                 }
-            ],
+              }
+            }
+          ],
         },
-    }
+      },
     }
   }),
 });
@@ -141,3 +132,5 @@ function selectSearch() {
     })
   }
 }
+
+

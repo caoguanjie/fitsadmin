@@ -19,8 +19,7 @@
         </template>
 
         <template #projectDefault="{ slotProps: { row, column } }">
-            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
-                :key="row.rowKey">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules" :key="row.rowKey">
                 <el-form-item prop="project">
                     <el-autocomplete v-model="row.project" placeholder="请输入" :fetch-suggestions="queryProject"
                         clearable />
@@ -28,8 +27,7 @@
             </el-form>
         </template>
         <template #batchDefault="{ slotProps: { row, column } }">
-            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
-                :key="row.rowKey">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules" :key="row.rowKey">
                 <el-form-item prop="batch">
                     <el-select v-model="row.batch">
                         <el-option v-for="item in batch_Arr" :key="item.value" :label="item.label"
@@ -47,16 +45,14 @@
 
         </template>
         <template #taskDefault="{ slotProps: { row, column } }">
-            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
-                :key="row.rowKey">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules" :key="row.rowKey">
                 <el-form-item prop="task">
                     <el-input v-model="row.task" />
                 </el-form-item>
             </el-form>
         </template>
         <template #responsibleDefault="{ slotProps: { row, column } }">
-            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
-                :key="row.rowKey">
+            <el-form :ref="'requiredFormRef_' + row.rowKey + column.id" :model="row" :rules="rules" :key="row.rowKey">
                 <el-form-item prop="responsible">
                     <el-select v-model="row.responsible">
                         <el-option v-for="item in responsible_Arr" :key="item.value" :label="item.label"
@@ -74,8 +70,7 @@
             </el-form-item>
         </template>
         <template #startdateDefault="{ slotProps: { row, column } }">
-            <el-form :ref="'dateFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
-                :key="row.rowKey">
+            <el-form :ref="'dateFormRef_' + row.rowKey + column.id" :model="row" :rules="rules" :key="row.rowKey">
                 <el-form-item prop="startdate">
                     <el-date-picker v-model="row.startdate" value-format="YYYY-MM-DD"
                         @change="dateChange(row, column)" />
@@ -83,8 +78,7 @@
             </el-form>
         </template>
         <template #enddateDefault="{ slotProps: { row, column } }">
-            <el-form :ref="'dateFormRef_' + row.rowKey + column.id" :model="row" :rules="rules"
-                :key="row.rowKey">
+            <el-form :ref="'dateFormRef_' + row.rowKey + column.id" :model="row" :rules="rules" :key="row.rowKey">
                 <el-form-item prop="enddate">
                     <el-date-picker v-model="row.enddate" value-format="YYYY-MM-DD" @change="dateChange(row, column)" />
                 </el-form-item>
@@ -104,6 +98,7 @@
 </template>
 
 <script lang='ts' setup>
+import { ElMessage } from 'element-plus'
 import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import { VxeGridInstance } from 'vxe-table';
 

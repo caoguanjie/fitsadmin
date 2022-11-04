@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, toRefs } from 'vue';
 // 组件依赖
-import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
+import { SvgIcon } from '@/fits-components';
 import LeftPannel from './components/LeftPannel.vue';
 import ScanCode from './components/ScanCode.vue';
 import MainLogin from './components/MainLogin.vue'

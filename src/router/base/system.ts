@@ -24,7 +24,7 @@ const systemRouter: RouteRecordRaw = {
                 {
                     path: "roles",
                     name: "roles",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/system-manage/roles/index.vue"),
                     meta: { title: "角色管理" },
                 },
                 {
@@ -45,13 +45,13 @@ const systemRouter: RouteRecordRaw = {
             path: "setting",
             name: "setting",
             redirect: "/sysManger/setting/dictionary",
-            component: () => import("@/views/ready/index.vue"),
+            component: () => import("@/views/system-manage/index.vue"),
             meta: { title: "基础设置", icon: "fits-base-setting", alwaysShow: true },
             children: [
                 {
                     path: "dictionary",
                     name: "dictionary",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/system-manage/setting/data-dictionary/index.vue"),
                     meta: { title: "数据字典", },
                 }
             ]

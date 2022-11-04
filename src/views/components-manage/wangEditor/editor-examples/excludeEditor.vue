@@ -3,7 +3,7 @@
 </template>
   
 <script setup lang="ts">
-import FitsEditor from '@/fits-components/Other/WangEditor/FitsEditor.vue'
+import { FitsEditor } from '@/fits-components';
 let containerHtml = ref("")
 const excludeKeys = [
     // "headerSelect",//标题选择

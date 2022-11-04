@@ -22,16 +22,15 @@
 </template>
 
 <script setup lang="ts">
-import VuePdfEmbed from "vue-pdf-embed"
+import VuePdfEmbed from "vue-pdf-embed";
 import { ElButton } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
-import { FitsDialog, FitsTable, FitsTableProps, useFitsTablePro } from "@/fits-components";
-
+import { FitsTable, FitsTableProps, useFitsTablePro, FitsDialog } from "@/fits-components";
+// import { FitsDialog } from "@/fits-components/FeedBack/Dialog";
 const props = defineProps({
     url: {
         type: String,
-        //http://gk.chengdu.gov.cn/uploadfiles/07180246020404/2020061116272871.pdf这个pdf有跨域问题
-        default: "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf"
+        default: new URL(`./test.pdf`, import.meta.url).href
     }
 })
 const visible = ref(false)
@@ -41,7 +40,7 @@ let scale = ref(1);  // 缩放比例
 let doloadUrl = ref("");
 const dialogProp = reactive({
     title: '',
-    width: "90%"
+    width: "70%"
 })
 const onClick = (key: string) => {
     if (key === 'canvas') {
@@ -56,7 +55,7 @@ const onClick = (key: string) => {
 const onClose = () => {
     visible.value = false
 }
-const scaleFun = (index: any) => { // 缩放
+const scaleFun = () => { // 缩放
     let scale1 = scale.value;
     return `transform:scale(${scale1})`
 }
@@ -70,7 +69,14 @@ const gridOptions: FitsTableProps = {
         { field: 'operation', title: '操作', slots: { default: 'operation_default' }, width: 300 },
     ],
     data: [
-        { name: 'pdf模板', suffix: 'PDF', type: 'application/pdf', address: 'http://gk.chengdu.gov.cn/uploadfiles/07180246020404/2020061116272871.pdf', size: '558.13KB' },
+        { name: 'pdf模板', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '558.13KB' },
+        { name: '一个pdf', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '58.13KB' },
+        { name: '模拟pdf', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '55.13KB' },
+        { name: 'pdf文件', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '58.13KB' },
+        { name: '政府文件', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '558KB' },
+        { name: 'pdf模板', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '558.3KB' },
+        { name: 'pdf模板', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '558.1KB' },
+        { name: 'pdf模板', suffix: 'PDF', type: 'application/pdf', address: new URL(`./test.pdf`, import.meta.url).href, size: '558.13KB' },
     ],
 }
 const xGrid = ref<VxeGridInstance | any>()
@@ -89,7 +95,7 @@ const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 }
 
 :deep(.el-scrollbar__view) {
-    height: 80vh;
+    height: 70vh;
 }
 </style>
   

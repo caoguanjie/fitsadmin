@@ -34,7 +34,6 @@
 
 <script lang="ts" setup>
 import { FitsTreeSelectModel, FitsTreeSelect } from '@/fits-components';
-
 const value = ref(['9', '11'])
 
 const data = reactive([

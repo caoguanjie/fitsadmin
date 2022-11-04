@@ -2,7 +2,8 @@
 import { Directive } from 'vue';
 import App from './App.vue';
 import { setupRouter } from '@/router';
-
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 // 引入svg注册脚本
 import 'virtual:svg-icons-register';
 
@@ -29,4 +30,4 @@ setupStore(app);
 setupOtherImports(app)
 
 // 注册全局组件
-app.mount('#app');
+app.use(ElementPlus).mount('#app');

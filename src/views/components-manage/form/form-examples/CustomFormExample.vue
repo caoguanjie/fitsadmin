@@ -3,8 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { FitsFormCreateModel, FitsCheckboxAllModel, FitsIconSelectModel, FitsTreeSelectModel, FitsTreeSelect, FitsIconSelect, FitsCheckboxAll, FitsFormCreate } from '@/fits-components';
-
+import { FitsFormCreateModel, FitsFormCreate, FitsCheckboxAllModel, FitsCheckboxAll, FitsIconSelect, FitsIconSelectModel, FitsTreeSelect, FitsTreeSelectModel } from '@/fits-components';
 const data = [
     {
         id: '1',

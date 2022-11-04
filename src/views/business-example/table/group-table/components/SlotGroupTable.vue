@@ -1,22 +1,20 @@
 <template>
     <div class="base-group-table">
         <!-- 现在这里没用到自定义列，到时候想和框架的查询兼容，还需要等到时候修改 -->
-        <fits-table-pro ref="table" :config="config">
+        <fits-table-group ref="table" :config="config">
             <template #age="scope">
                 <div>{{ scope.row.age }}岁</div>
             </template>
-        </fits-table-pro>
+        </fits-table-group>
     </div>
 </template>
 
 <script lang="ts" setup name="QualityControl">
 import { reactive, ref, toRefs } from "vue";
-import { FitsTableProps } from "@/components/FitsTablePro/FitsTableGroup/type";
-import FitsTablePro from "@/components/FitsTablePro/FitsTableGroup/index.vue"
-import { IFitsTableGroup } from "@/components/FitsTablePro/FitsTableGroup/type"
+import { FitsTableGroupProps, IFitsTableGroup, FitsTableGroup } from '@/fits-components/';
 
-const state = reactive<{ config: FitsTableProps }>({
-    config: new FitsTableProps({
+const state = reactive<{ config: FitsTableGroupProps }>({
+    config: new FitsTableGroupProps({
         headers: [
             { title: "年龄", field: "age" },
             { title: "性别", field: "sex" },

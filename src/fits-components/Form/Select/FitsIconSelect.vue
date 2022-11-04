@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRefs, useAttrs, watch } from 'vue';
 import { FitsIconSelectModel } from './select';
-
+import { SvgIcon } from '../../Basic/SvgIcon'
 const props = withDefaults(defineProps<{ options?: FitsIconSelectModel }>(), {
     options: () => new FitsIconSelectModel(),
 })

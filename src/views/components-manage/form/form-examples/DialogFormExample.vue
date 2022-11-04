@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import useStore from '@/store';
 import { isEmail, isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
-import { FitsFormCreateModel, FitsIconSelectModel, FitsTreeSelectModel, FitsIconSelect, FitsTreeSelect, FitsFormDialog } from '@/fits-components';
+import { FitsFormDialog, FitsFormCreateModel, FitsIconSelect, FitsIconSelectModel, FitsTreeSelect, FitsTreeSelectModel } from '@/fits-components';
 
 const { setting } = useStore();
 

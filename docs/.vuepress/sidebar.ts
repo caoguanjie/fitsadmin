@@ -37,7 +37,7 @@ export default sidebar({
         text: 'FitsFormDialog 表单弹窗',
         link: '/components/Form/FitsFormDialog'
       }]
-    },{
+    }, {
       text: 'Feedback 反馈组件',
       children: [{
         text: 'FitsDialog 弹窗',
@@ -46,13 +46,13 @@ export default sidebar({
         text: 'FitsDrawer 抽屉',
         link: '/components/Dialog/Drawer'
       }]
-    },{
+    }, {
       text: 'Table 表格组件',
       children: [{
         text: 'FitsGroupTable 分组表格',
         link: '/components/Table/GroupTable'
       }]
-    },{
+    }, {
       text: '其他组件',
       children: [{
         text: 'FitsEditor富文本编辑器',
@@ -60,7 +60,7 @@ export default sidebar({
       },
       {
         text: 'FitsUpload文件上传',
-        link: '/components/Other/Pdf'
+        link: '/components/Other/Upload'
       }]
     }],
   '/resources/': 'structure'

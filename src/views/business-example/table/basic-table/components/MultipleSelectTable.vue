@@ -14,7 +14,7 @@
 
 <script lang='ts' setup>
 import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
-import { ElButton } from 'element-plus';
+import { ElButton, ElMessage } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 
 const xGrid = ref<VxeGridInstance | any>()

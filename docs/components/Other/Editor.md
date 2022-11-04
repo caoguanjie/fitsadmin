@@ -11,6 +11,7 @@ date: 2022-10-20
 
 <demo src="../../../src/views/components-manage/wangEditor/editor-examples/baseEditor.vue" title="基础用法" desc="给编辑器绑定String类型的变量,在编辑器内输入的内容都将以HTML保存"></demo> <br/>
 
+
 ### 配置上传方法
 
 <demo  src="../../../src/views/components-manage/wangEditor/editor-examples/uploadEditor.vue" title="配置编辑器上传地址" desc="除非不使用图片上传，否则必须通过配置uploadImg方法，给编辑器绑定图片上传地址。"></demo> <br/>

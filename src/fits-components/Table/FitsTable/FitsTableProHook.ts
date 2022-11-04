@@ -184,13 +184,16 @@ export const useFitsTablePro = (props: FitsTableProps, xGrid: Ref<any>) => {
  */
     watch(() => store.isShowSearchForm, (newValue) => {
         nextTick(() => {
-            xGrid.value.$el.nextElementSibling.querySelector('.vxe-grid--form-wrapper').style.display = newValue ? 'block' : 'none';
+            const element = xGrid.value.$el.nextElementSibling ?? xGrid.value.$el
+            element.querySelector('.vxe-grid--form-wrapper').style.display = newValue ? 'block' : 'none';
             // 这步主要是解决各个工具栏被放大后，提示框被挡住的问题，可以把提示框方向变成bottom属性
-            eventBus.emit('IsShowSearchForm', store.isShowSearchForm)
+            eventBus.emit('IsShowSearchForm', newValue)
             if (document.body.querySelector('.is--maximize')) {
                 // 这里主要解决放大化，如果隐藏搜索区域时，列表高度无法自动计算高度的问题，可以利用vxetable的内置方法，触发页面计算高度。
                 xGrid.value?.fitsTablePro.reloadColumn(fitsTablePro.columns as any)
             }
+
+ 
         })
     })
     /**

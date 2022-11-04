@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
+import { SvgIcon } from '@/fits-components';
 import { Search } from '@element-plus/icons-vue';
 import { useClipboard } from '@vueuse/core';
 import { ElMessage } from 'element-plus';

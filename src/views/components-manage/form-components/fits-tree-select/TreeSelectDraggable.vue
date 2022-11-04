@@ -4,7 +4,6 @@
 
 <script lang="ts" setup>
 import { FitsTreeSelectModel, FitsTreeSelect } from '@/fits-components';
-
 const state = reactive(new FitsTreeSelectModel({
     tree: {
         nodeKey: "id",

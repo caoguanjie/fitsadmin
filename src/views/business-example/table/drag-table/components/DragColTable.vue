@@ -12,6 +12,7 @@
 import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
 import Sortable from 'sortablejs';
 import { VxeGridInstance } from 'vxe-table';
+import { ElMessage } from 'element-plus';
 
 const sortable = ref()
 

@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="FitsTreeSelect">
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import { FitsTreeSelectModel } from './select';
 import { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type';

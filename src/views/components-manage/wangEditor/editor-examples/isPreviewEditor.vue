@@ -7,7 +7,8 @@
 </template>
   
 <script setup lang="ts">
-import FitsEditor from '@/fits-components/Other/WangEditor/FitsEditor.vue'
+import { FitsEditor } from '@/fits-components';
+
 let containerHtml = ref("<p>内容</p></br><img src='https://caoguanjie.github.io/fitsadmin/images/logo.png'></img>")
 let isEdit = ref(true)
 </script>

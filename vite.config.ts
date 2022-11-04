@@ -32,11 +32,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
 
       }),
-      mode === 'dev' ? fullImportPlugin() : Components({
-        dts: './src/components.d.ts',
-        dirs: '',
-        resolvers: [ElementPlusResolver()],
-      }),
+      // mode === 'dev' ? fullImportPlugin() : Components({
+      //   dts: './src/components.d.ts',
+      //   dirs: '',
+      //   resolvers: [ElementPlusResolver()],
+      // }),
 
 
       vue(),

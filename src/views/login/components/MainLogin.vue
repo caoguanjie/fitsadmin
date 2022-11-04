@@ -74,7 +74,7 @@ import { useCountdown } from '@/utils/base/common';
 import { isPhoneNumber } from '@/utils/is';
 import { CheckboxValueType, ElForm, ElInput, ElMessage } from 'element-plus';
 import { onMounted, reactive, ref, toRefs, watch, nextTick, computed } from 'vue';
-import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
+import { SvgIcon } from '@/fits-components';
 import { useRoute } from 'vue-router';
 import useStore from '@/store';
 import router from '@/router';

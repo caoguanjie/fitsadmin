@@ -23,7 +23,7 @@ import { AxiosResponse } from 'axios';
 import { VxeGridInstance } from 'vxe-table';
 // import { FitsTable, useFitsTablePro, FitsTableProps } from '../../../../FitsAdminUI/es/fits-components'
 
-// import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
+// import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components/Table/FitsTable'
 
 import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
 // import FitsTable from '@/fits-components/Table/FitsTable/FitsTable.vue'

@@ -1,11 +1,3 @@
-
-export * from './Form/Select'
-export * from './Other/WangEditor'
-export * from './Data/FitsEmpty'
-export * from './FeedBack/Dialog'
-export * from './Form/Checkbox'
-export * from './Form/FormCreate'
-export * from './Form/Input'
-export * from './Form/Other'
-export * from './Other/Echarts'
-export * from './Table/FitsTable'
+import * as FitsAdminUI from './all'
+export * from './all'
+export default FitsAdminUI

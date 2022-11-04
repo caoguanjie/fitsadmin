@@ -4,7 +4,6 @@
 
 <script lang="ts" setup>
 import { FitsIconSelectModel, FitsIconSelect } from '@/fits-components';
-
 const state = reactive(new FitsIconSelectModel({
     showInput: false,
 }))

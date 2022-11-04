@@ -1,10 +1,10 @@
 <template>
-    <el-button @click="visible  =  true" type="primary">
+    <el-button @click="visible = true" type="primary">
         打开弹窗
     </el-button>
 
-    <fits-dialog :visible="visible" :dialogProp="dialogProp" submitText="提交" cancelText="返回" @cancel="visible  =  false"
-        @submit="visible  =  false">
+    <fits-dialog :visible="visible" :dialogProp="dialogProp" submitText="提交" cancelText="返回" @cancel="visible = false"
+        @submit="visible = false">
         <!-- 自定义头部 -->
         <template #header="{ close, titleId, titleClass }">
             <div class="my-header">

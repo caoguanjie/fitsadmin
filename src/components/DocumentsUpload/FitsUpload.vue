@@ -1,8 +1,8 @@
 <template>
     <div class="uploadpdf-example">
         <el-button @click="visible = true" type="primary">开始上传</el-button>
-        <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="false" @cancel="visible=false"
-            @submit="visible=false">
+        <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="false" @cancel="visible = false"
+            @submit="visible = false">
             <slot name="uploadState">
                 <div class="uploadState">
                     <div class="statebox-success" v-if="state == 1">
@@ -10,14 +10,14 @@
                     </div>
                     <div class="statebox-error" v-else-if="state == 2">
                         <div class="error" />
-                        上传失败 !{{reason}}
+                        上传失败 !{{ reason }}
                     </div>
                 </div>
             </slot>
             <div class="uploadpdf-contain">
                 <div class="limit-text">
                     <slot name="text">
-                        支持上传文件格式为pdf，大小不超过{{props.size}}M（测试文件大小限制）
+                        支持上传文件格式为pdf，大小不超过{{ props.size }}M（测试文件大小限制）
                     </slot>
                 </div>
                 <el-upload ref="uploadRef" class="upload-demo" :method="props.method" :action="props.url"
@@ -37,8 +37,8 @@
                             <div v-if="state == 0">
                                 将文件拖到此处,或 <em>点击上传</em>
                             </div>
-                            <div v-if="state!= 0">
-                                <div style="padding-bottom:8px;" v-if="state == 1">{{filename}}</div>
+                            <div v-if="state != 0">
+                                <div style="padding-bottom:8px;" v-if="state == 1">{{ filename }}</div>
                                 <div style="padding-bottom:8px;" v-if="state == 2">上传失败，请检查文件格式后重试</div>
                                 <em>重新上传</em>
                             </div>

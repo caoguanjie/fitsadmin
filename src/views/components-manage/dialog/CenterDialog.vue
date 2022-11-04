@@ -1,9 +1,9 @@
 <template>
-    <el-button @click="visible  =  true" type="primary">
+    <el-button @click="visible = true" type="primary">
         打开弹窗
     </el-button>
 
-    <fits-dialog :visible="visible" :dialogProp="dialogProp" @cancel="visible  =  false" @submit="visible  =  false">
+    <fits-dialog :visible="visible" :dialogProp="dialogProp" @cancel="visible = false" @submit="visible = false">
         <div>我是基础弹窗</div>
         <div>我是基础弹窗</div>
         <div>我是基础弹窗</div>
