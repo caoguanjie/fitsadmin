@@ -12,15 +12,15 @@ date: 2022-10-17
 <br/>
 
 ### 插槽
-<!-- <demo src="../../../src/views/business-example/table/group-table/components/SlotGroupTable.vue" title="插槽分组表格" desc="可通过插槽去重写表格单元格的内容（插槽名是字段名），另外还提供了额外的插槽：query表格查询条件插槽、noData暂无数据插槽、right组头右侧插槽、groupName组名插槽、expand展开行插槽。"></demo> -->
+<demo src="../../../src/views/business-example/table/group-table/components/SlotGroupTable.vue" title="插槽分组表格" desc="可通过插槽去重写表格单元格的内容（插槽名是字段名），另外还提供了额外的插槽：query表格查询条件插槽、noData暂无数据插槽、right组头右侧插槽、groupName组名插槽、expand展开行插槽。"></demo>
 <br/>
 
 ### 默认展开
-<!-- <demo src="../../../src/views/business-example/table/group-table/components/ExpandGroupTable.vue" title="默认展开分组表格" desc="通过设置expandGroupsNum属性表示默认展开多少个分组，默认展开的分组第一次请求时会返回表格数据，其余分组表格的数据通过分段请求返回（会在组头开启loading图标）。但expandGroupsNum属性的值必须大于1（后端规定的）。"></demo> -->
+<demo src="../../../src/views/business-example/table/group-table/components/ExpandGroupTable.vue" title="默认展开分组表格" desc="通过设置expandGroupsNum属性表示默认展开多少个分组，默认展开的分组第一次请求时会返回表格数据，其余分组表格的数据通过分段请求返回（会在组头开启loading图标）。但expandGroupsNum属性的值必须大于1（后端规定的）。"></demo>
 <br/>
 
 ### 分段请求
-<!-- <demo src="../../../src/views/business-example/table/group-table/components/SubsectionGroupTable.vue" title="分段请求分组表格" desc="如果当前页的分组表格个数大于默认展开分组表格的个数，剩余的分组表格会开启分段请求（会在组头开启loading图标）。可以通过requestGroupNums属性设置多少个表格为一组去分段请求。"></demo> -->
+<demo src="../../../src/views/business-example/table/group-table/components/SubsectionGroupTable.vue" title="分段请求分组表格" desc="如果当前页的分组表格个数大于默认展开分组表格的个数，剩余的分组表格会开启分段请求（会在组头开启loading图标）。可以通过requestGroupNums属性设置多少个表格为一组去分段请求。"></demo>
 <br/>
 
 ### 属性

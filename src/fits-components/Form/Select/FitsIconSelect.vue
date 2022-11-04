@@ -39,7 +39,7 @@ const { options }: any = toRefs(props)
 const emit = defineEmits(['update:modelValue'])
 
 const icons: any = [];
-const modules = import.meta.glob('../../assets/icons/*.svg');
+const modules = import.meta.glob('../../../assets/icons/*.svg');
 for (const path in modules) {
     const p = path.split('assets/icons/')[1].split('.svg')[0];
     icons.push({
@@ -107,7 +107,9 @@ function VisibleChange() {
 function selectedIcon(item: any) {
     // 单选
     if (!isMultiple.value) {
-        iconList.value.map((item: any) => item.isSelected = false)
+        iconList.value.map((item: any) => {
+            item.isSelected = false
+        })
         item.isSelected = !item.isSelected
         if (item.isSelected) {
             selectedNames.value = item.name

@@ -11,7 +11,7 @@
 
 <script lang="ts" setup name="QualityControl">
 import { reactive, ref, toRefs } from "vue";
-import { FitsTableGroupProps, IFitsTableGroup, FitsTableGroup } from '@/fits-components/';
+import { FitsTableGroupProps, IFitsTableGroup, FitsTableGroup } from '@/fits-components';
 
 const state = reactive<{ config: FitsTableGroupProps }>({
     config: new FitsTableGroupProps({

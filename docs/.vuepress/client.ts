@@ -11,6 +11,9 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
+// 引入相关css
+import 'fits-admin-ui/es/style.css';
+
 
 // VuePress 会在构建过程中生成一个 SSR 应用，用以对页面进行预渲染。一般而言，如果一段代码在客户端应用 Mount 之前就使用了浏览器或 DOM API ，我们就认为其对 SSR 不友好，即不支持 SSR 。
 /**
@@ -41,6 +44,9 @@ export default defineClientConfig({
                     if (app.config.globalProperties.isSSR) {
                         import('../../src/fits-components').then(function (m) {
                             app.use(m.default)
+                        })
+                        import('../../src/utils/base/VXETablePluginElement').then(function (m) {
+                            VXETable.use(m.default)
                         })
                         app.config.globalProperties.isSSR = false
                     }

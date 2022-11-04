@@ -54,6 +54,7 @@ export default defineConfig({
  */
 function removeImportPlugin() {
     let config: ResolvedConfig
+    console.log('=================代码转换中==================')
     return <Plugin>{
         name: 'removeImportFitsAdminUI',
         async configResolved(conf) {
