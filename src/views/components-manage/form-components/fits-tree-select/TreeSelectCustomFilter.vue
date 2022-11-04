@@ -3,7 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsTreeSelectModel, FitsTreeSelect } from '@/fits-components';
+import { FitsTreeSelect } from '@/fits-components';
+import { FitsTreeSelectModel } from '@/fits-components/type';
 import type { TreeNodeData } from 'element-plus/es/components/tree/src/tree.type'
 
 const state = reactive(new FitsTreeSelectModel({

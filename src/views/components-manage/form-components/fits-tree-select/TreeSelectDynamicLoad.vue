@@ -4,7 +4,8 @@
 
 <script lang="ts" setup>
 import type Node from 'element-plus/es/components/tree/src/model/node'
-import { FitsTreeSelectModel, FitsTreeSelect } from '@/fits-components';
+import { FitsTreeSelect } from '@/fits-components';
+import { FitsTreeSelectModel } from '@/fits-components/type';
 const state = reactive(new FitsTreeSelectModel({
     tree: {
         nodeKey: "id",

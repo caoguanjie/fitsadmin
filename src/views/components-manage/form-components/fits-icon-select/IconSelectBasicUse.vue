@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsIconSelectModel, FitsIconSelect } from '@/fits-components';
-
+import { FitsIconSelect } from '@/fits-components';
+import { FitsIconSelectModel } from '@/fits-components/type'
 const state = reactive(new FitsIconSelectModel({
     select: {
         clearable: true,

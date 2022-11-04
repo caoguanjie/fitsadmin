@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import { FitsIconSelectModel, FitsIconSelect } from '@/fits-components';
+import { FitsIconSelect } from '@/fits-components';
+import { FitsIconSelectModel } from '@/fits-components/type';
 import { reactive } from 'vue'
 
 const state1 = reactive(new FitsIconSelectModel({
