@@ -16,7 +16,6 @@
         "build:lib": "vite build --config ./FitsAdminUI/lib.config.ts && cd FitsAdminUI && npm version patch && npm publish"
     },
     "dependencies": {
-        "@bfehub/vuepress-plugin-code-block": "^1.0.4",
         "@element-plus/icons-vue": "^1.0.0",
         "@form-create/element-ui": "^3.1.14",
         "@fullcalendar/core": "^5.11.3",
@@ -55,6 +54,7 @@
         "vue-json-pretty": "^2.2.2",
         "vue-pdf-embed": "^1.1.4",
         "vue-router": "^4.0.12",
+        "vuepress-plugin-code-block-nossr": "^1.0.10",
         "vxe-table": "^4.3.5",
         "vxe-table-plugin-element": "^3.0.6",
         "xe-utils": "^3.5.6"
