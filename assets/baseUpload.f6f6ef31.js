@@ -1,0 +1,1 @@
+import{J as o,G as t,M as s,K as p,L as n,O as _}from"./clientConfigs.31b1930b.js";const c={class:"upload-example"},l=t({__name:"baseUpload",setup(r){const e="http://192.168.32.108:3000/mock/78/api/uploadPDF";return(d,m)=>{const a=s("fits-upload");return p(),n("div",c,[_(a,{url:e,data:{state:1,state2:2}})])}}});var u=o(l,[["__file","baseUpload.vue"]]);export{u as default};
