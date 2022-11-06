@@ -14,6 +14,7 @@ import 'vxe-table/lib/style.css'
 // 引入相关css
 import 'fits-admin-ui/es/style.css';
 
+declare const __VUEPRESS_SSR__: boolean
 
 // VuePress 会在构建过程中生成一个 SSR 应用，用以对页面进行预渲染。一般而言，如果一段代码在客户端应用 Mount 之前就使用了浏览器或 DOM API ，我们就认为其对 SSR 不友好，即不支持 SSR 。
 /**
@@ -31,28 +32,36 @@ import 'fits-admin-ui/es/style.css';
  */
 export default defineClientConfig({
     enhance: async ({ app, router, siteData }) => {
-        app.config.globalProperties.isSSR = true
+        // 判断是不是SSR环境，再按需注册组件，这样的处理比放在mounted生命周期要执行顺序要快很多
+        if (!__VUEPRESS_SSR__) {
+            import('../../src/fits-components').then(function (m) {
+                app.use(m.default)
+            })
+            import('../../src/utils/base/VXETablePluginElement').then(function (m) {
+                VXETable.use(m.default)
+            })
+        }
         app
             .use(formCreate)
             .use(ElementPlus, {
                 locale: zhCn,
             })
             .use(VXETable)
-            .mixin({
-                mounted() {
-                    // fits-admin-ui的组件代码只加载一次，用一个全局变量控制
-                    if (app.config.globalProperties.isSSR) {
-                        import('../../src/fits-components').then(function (m) {
-                            app.use(m.default)
-                        })
-                        import('../../src/utils/base/VXETablePluginElement').then(function (m) {
-                            VXETable.use(m.default)
-                        })
-                        app.config.globalProperties.isSSR = false
-                    }
+        // .mixin({
+        //     mounted() {
+        //         // fits-admin-ui的组件代码只加载一次，用一个全局变量控制
+        //         if (app.config.globalProperties.isSSR) {
+        //             import('../../src/fits-components').then(function (m) {
+        //                 app.use(m.default)
+        //             })
+        //             import('../../src/utils/base/VXETablePluginElement').then(function (m) {
+        //                 VXETable.use(m.default)
+        //             })
+        //             app.config.globalProperties.isSSR = false
+        //         }
 
-                }
-            })
+        //     }
+        // })
 
     },
 });
