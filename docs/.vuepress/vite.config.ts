@@ -5,7 +5,6 @@ import { path } from "@vuepress/utils";
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
-
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default defineConfig({
     plugins: [
@@ -55,6 +54,7 @@ export default defineConfig({
 function removeImportPlugin() {
     let config: ResolvedConfig
     console.log('=================代码转换中==================')
+    
     return <Plugin>{
         name: 'removeImportFitsAdminUI',
         async configResolved(conf) {
@@ -70,6 +70,7 @@ function removeImportPlugin() {
                 const reg = new RegExp(/import\s+({.+})\s+from\s+\'@\/fits-components\'\;/g)
                 if (reg.test(code)) {
                     code = code.replace(reg, "")
+                    // code = code.replace(reg, `import type $1 from '@/fits-components/type'`)
                 }
             }
             return code

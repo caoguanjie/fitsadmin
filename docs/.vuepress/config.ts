@@ -7,7 +7,6 @@ import { resolve } from "path";
 import { path } from "@vuepress/utils";
 import { docsearchPlugin } from '@vuepress/plugin-docsearch'
 
-
 const base = process.env.NODE_ENV === 'github' ? '/fitsadmin/' : "/"
 
 

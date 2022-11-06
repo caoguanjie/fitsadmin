@@ -29,7 +29,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="FitsDialog">
 
 import { nextTick, reactive, ref, toRefs, watch } from 'vue';
 

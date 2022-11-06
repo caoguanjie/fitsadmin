@@ -28,7 +28,7 @@ export * from './Table/FitsTableGroup'
 export * from './Basic/SvgIcon'
 import type { App } from "vue"
 
-const components = [
+export const FitsComponents = [
     SvgIcon,
     FitsIconSelect,
     FitsTreeSelect,
@@ -48,5 +48,5 @@ const components = [
 
 ]
 export function install(app: App) {
-    components.forEach((component: any) => component.install(app));
+    FitsComponents.forEach((component: any) => component.install(app));
 }
