@@ -1,0 +1,1 @@
+var e=Object.defineProperty;var h=(t,o,c)=>o in t?e(t,o,{enumerable:!0,configurable:!0,writable:!0,value:c}):t[o]=c;var s=(t,o,c)=>(h(t,typeof o!="symbol"?o+"":o,c),c);class p{constructor({option:o,checkboxGroup:c}={}){s(this,"option");s(this,"checkboxGroup");this.option=o,this.checkboxGroup=c}}export{p as F};
