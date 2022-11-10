@@ -6,9 +6,6 @@
 import { FitsTableProps, FitsTable } from '@/fits-components';
 import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
-import { AxiosResponse } from 'axios';
-import XEUtils from 'xe-utils';
-import { getTableList } from '@/api/business/table';
 
 const xGrid = ref<VxeGridInstance | any>()
 
@@ -37,9 +34,7 @@ const gridOptions: FitsTableProps = {
             query: ({ form }: any) => {
                 return new Promise(resolve => {
                     // 文档看不到请求效果，所以用alert来展示
-                    // alert(`表单参数：${JSON.stringify(form)}`)
-                    console.log(form, 123455);
-
+                    alert(`表单参数：${JSON.stringify(form)}`)
                     const TableList = [
                         {
                             "id": "530000198307057387",
@@ -93,7 +88,7 @@ const gridOptions: FitsTableProps = {
                     ]
                     setTimeout(() => {
                         resolve({
-                            list: XEUtils.toTreeArray(TableList, { clear: true }),
+                            list: TableList
                         })
                     }, 500)
                 })

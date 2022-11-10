@@ -30,7 +30,6 @@ const props = withDefaults(defineProps<{
 // 实例化vxetable的组件，里面有vxe-grid的所有api，详情：https://vxetable.cn/#/grid/api
 const fitsTablePro = ref<VxeGridInstance>()
 
-
 const _gridOption = XEUtils.clone(props.option, true)
 const state = reactive({
     // 动态插槽的名字数组
@@ -38,7 +37,6 @@ const state = reactive({
     // 这里有个大坑，需要把props的proxy对象先做一个深拷贝，变成一个js普通对象，不然props里面复杂的proxy对象嵌套，随便修改都会会让属性失去响应
     gridOption: _gridOption as VxeGridProps,
 })
-
 
 /** 
  * 导出实例化的方法
@@ -50,7 +48,6 @@ defineExpose({
 
 // 初始化默认配置
 initDefaultConfig()
-
 
 function initDefaultConfig() {
     // 检查所有的卡槽
@@ -66,8 +63,6 @@ function initDefaultConfig() {
     // 常用查询功能，监听表单项是否显示
     // setFormConfigItemVisible()
 }
-
-
 
 /**
  * 检查列的插槽
@@ -127,10 +122,8 @@ function checkAllSlots() {
 // 处理每个表单项应该显示几个
 function handleFormItemNumber(width: number) {
     if (XEUtils.isPlainObject(state.gridOption.formConfig) && state.gridOption.formConfig?.items?.length) {
-
         // 每一个表单项的初始宽度，默认338px
         const formItemWidth = parseInt(variables.ListSearchFormItemWidth);
-
         const lineItem = width < 768 ? 2 : Math.ceil(width / formItemWidth);
         // 默认的配置 
         const items = state.gridOption.formConfig?.items as VxeFormItemProps[];
@@ -144,7 +137,11 @@ function handleFormItemNumber(width: number) {
         let isShowExpand = true;
         state.gridOption.formConfig!.items = items.map((element: VxeFormItemProps, index: number) => {
             element.span = Math.floor(24 / lineItem);
-            element.className !== 'searchBtns' && (element.folding = index >= lineItem - 1 + visibleArray.length)
+            // 问题：当24/lineItem除不尽时，span会向下取整，导致表单展开后并没有换行，而是在同一行（就会产生一个问题：没有必要展开和收起表单，因为展开后表单也是在同一行显示）
+            // 例如：当lineItem=5时，每个element的span只能取4，那么一行24个栅格减去5*4个栅格，还剩下4个空余栅格，于是展开之后剩余的表单项会直接填补那4个空余栅格的位置，没有“展开”的效果
+            // 同理，当lineItem=7或者9等等不能被24除尽的值时，都会发生这种情况。因此找到了规律，当除不尽时，判断是否折叠隐藏需要加上一个值，这个值就是用24/lineItem的余数除以每个表单项所占的栅格。
+            const restNum = (24 % lineItem / element.span)
+            element.className !== 'searchBtns' && (element.folding = index >= lineItem - 1 + restNum + visibleArray.length)
             element.folding && isShowExpand && (isShowExpand = false)
             element.className === 'searchBtns' && isShowExpand && (element.collapseNode = false)
             return element
@@ -152,7 +149,6 @@ function handleFormItemNumber(width: number) {
         // console.log(state.gridOption.formConfig!.items)
     }
 }
-
 
 
 // 监听浏览器的变化事件
@@ -180,9 +176,6 @@ watch(() => props.option, (newValue) => {
     handleFormItemNumber(fitsTablePro.value?.$el.clientWidth)
     initDefaultConfig()
 }, { deep: true })
-
-
-
 
 </script>
 <style lang='scss' >
