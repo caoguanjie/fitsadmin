@@ -5,6 +5,8 @@ import { path } from "@vuepress/utils";
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
+import removeConsole from 'vite-plugin-remove-console';
+
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default defineConfig({
     plugins: [
@@ -19,6 +21,7 @@ export default defineConfig({
             // 指定symbolId格式
             symbolId: 'icon-[dir]-[name]'
         }),
+        process.env.NODE_ENV !== 'development' && removeConsole(),
         vueSetupExtend(),
         process.env.NODE_ENV !== 'development' && removeImportPlugin(),
     ],
@@ -54,7 +57,7 @@ export default defineConfig({
 function removeImportPlugin() {
     let config: ResolvedConfig
     console.log('=================代码转换中==================')
-    
+
     return <Plugin>{
         name: 'removeImportFitsAdminUI',
         async configResolved(conf) {
