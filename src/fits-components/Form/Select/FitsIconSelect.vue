@@ -165,6 +165,7 @@ function clearSelected() {
             min-width: 50px;
             margin: 10px;
             max-height: 60px;
+            box-sizing: border-box;
 
             .inner-content {
                 display: flex;

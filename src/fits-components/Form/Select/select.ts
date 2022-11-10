@@ -1,7 +1,7 @@
 
 import { Component, h } from "vue"
 import type { TreeComponentProps } from 'element-plus/es/components/tree/src/tree.type'
-import { CaretBottom } from '@element-plus/icons-vue'
+import { CaretTop } from '@element-plus/icons-vue'
 
 /**
  * （树筛选、图标选择）选择器select的配置
@@ -108,7 +108,7 @@ export class FitsSelectProps {
         this.persistent = persistent ?? true;
         this.clearIcon = clearIcon
         this.fitInputWidth = fitInputWidth ?? true;
-        this.suffixIcon = suffixIcon ?? h(CaretBottom)
+        this.suffixIcon = suffixIcon ?? h(CaretTop)
         this.validateEvent = validateEvent ?? true;
         this.multiple = multiple ?? false
         this.collapseTags = collapseTags ?? false
