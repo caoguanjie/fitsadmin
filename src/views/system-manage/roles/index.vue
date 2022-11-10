@@ -20,8 +20,8 @@
                     </div>
                     <el-collapse-transition>
                         <div v-show="isShow">
-                            <div class="text" v-for="(item, key) in roleC" :key="key">
-                                <div class=" textLeft">
+                            <!-- <div class="text" v-for="(item, key) in roleClass" :key="key">
+                                <div class=" textLeft" @click="clickTree">
                                     <el-icon>
                                         <UserFilled :color='"#007dff"' />
                                     </el-icon>
@@ -33,16 +33,62 @@
                                     <el-popover placement="bottom" title="" trigger="click"
                                         :popper-class="'Role-popover'" :hide-after=0>
                                         <template #reference>
-                                            <More :color='"#999999"' />
+                                            <MoreFilled :color='"#999999"' />
                                         </template>
-                                        <el-button type="primary" plain size="small"
-                                            @click="classifyButton(key, 'editClass')">编辑
-                                        </el-button>
-                                        <el-button type="primary" plain size="small"
-                                            @click="classifyButton(key, 'delete')">删除</el-button>
+
+                                        <div class="btn">
+                                            <el-button @click="classifyButton(key, 'editClass')">编辑</el-button>
+                                        </div>
+                                        <div class="btn">
+                                            <el-button @click="classifyButton(key, 'delete')">删除</el-button>
+                                        </div>
                                     </el-popover>
                                 </el-icon>
-                            </div>
+                            </div> -->
+                            <el-tree :data="roleClass" node-key="id" default-expand-all :expand-on-click-node="false"
+                                @node-click="clickTree">
+                                <template #default="{ data }">
+                                    <span class="custom-tree-node">
+                                        <el-popover placement="bottom" title="" trigger="contextmenu"
+                                            :popper-class="'Role-popover'" :hide-after=0>
+                                            <template #reference>
+                                                <div class=" text">
+                                                    <div class=" textLeft">
+                                                        <div class="textContent">
+                                                            <span>{{ data.Cname }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <el-icon class="moreButton">
+                                                        <el-popover placement="bottom" title="" trigger="click"
+                                                            :popper-class="'Role-popover'" :hide-after=0>
+                                                            <template #reference>
+                                                                <MoreFilled :color='"#999999"' />
+                                                            </template>
+                                                            <div class="btn">
+                                                                <el-button @click="classifyButton(data, 'editClass')">编辑
+                                                                </el-button>
+                                                            </div>
+                                                            <div class="btn">
+                                                                <el-button @click="classifyButton(data, 'deleteClass')">
+                                                                    删除
+                                                                </el-button>
+                                                            </div>
+                                                        </el-popover>
+                                                    </el-icon>
+                                                </div>
+                                            </template>
+                                            <div class="btn">
+                                                <el-button @click="classifyButton(data, 'editClass')">编辑
+                                                </el-button>
+                                            </div>
+                                            <div class="btn">
+                                                <el-button @click="classifyButton(data, 'deleteClass')">删除
+                                                </el-button>
+                                            </div>
+                                        </el-popover>
+                                    </span>
+                                </template>
+                            </el-tree>
                         </div>
                     </el-collapse-transition>
                 </div>
@@ -61,7 +107,8 @@
                             <el-button type="danger">Danger</el-button> -->
                     </template>
                     <template #state="{ slotProps }">
-                        <el-switch v-model="slotProps.row.Ustate" />
+                        <el-switch v-model="slotProps.row.Ustate"
+                            style="--el-switch-on-color: #000000; --el-switch-off-color: #dcdfe6" />
                         <!-- {{ slotProps.row.Ustate }} -->
                     </template>
                 </fits-table>
@@ -71,7 +118,7 @@
             <div class="title">菜单权限管理列表</div>
             <div class="search">
                 <el-input class="searchBox" placeholder="关键词搜索" :prefix-icon="Search" />
-                <el-button class="Savebotton">保存</el-button>
+                <el-button class="Savebotton" @click="savePower">保存</el-button>
             </div>
             <div class="contain">
                 <el-checkbox label="全选" size="large" v-model="checkAll" @change="handleCheckAllChange" />
@@ -80,12 +127,14 @@
             </div>
         </div>
         <!-- 数据弹窗（新增角色、角色分类、编辑角色分类） -->
-        <fits-dialog :visible="dialogData.operateRole.visible" :dialogProp="dialogData.operateRole.props"
-            @cancel="closeDialog('addRole')" @submit="onSubmint(dialogData.operateRole.key)">
+        <fits-dialog :class="'onfooter'" :visible="dialogData.operateRole.visible"
+            :dialogProp="dialogData.operateRole.props" @cancel="closeDialog('addRole')" :showFooter="false">
             <add-role v-if="dialogData.operateRole.key == 'addRole' || dialogData.operateRole.key == 'addClass'"
-                @addChange="addChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data" />
+                @dataChange="dataChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data"
+                @closeDialog="closeDialog" />
             <edit-role v-if="dialogData.operateRole.key == 'editRole' || dialogData.operateRole.key == 'editClass'"
-                @addChange="addChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data" />
+                @dataChange="dataChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data"
+                @closeDialog="closeDialog" />
         </fits-dialog>
         <!-- 工具栏操作确认弹窗（关联、启用、禁用、导出、删除） -->
         <fits-dialog :class="'Roles-baseDialog'" :visible="dialogData.baseRole.visible"
@@ -94,23 +143,24 @@
             {{ dialogData.baseRole.dialogText }}
         </fits-dialog>
         <!-- 关联用户弹窗 -->
-        <fits-dialog :visible="dialogData.relateRole.visible" :dialogProp="dialogData.relateRole.props"
-            :showFooter="false" @cancel="dialogData.relateRole.visible = false">
-            <relate-role />
+        <fits-dialog :class="'Roles-relateDialog onfooter'" :visible="dialogData.relateRole.visible"
+            :dialogProp="dialogData.relateRole.props" :showFooter="false"
+            @cancel="dialogData.relateRole.visible = false">
+            <relate-role @closeDialog="closeDialog" />
         </fits-dialog>
     </div>
 </template>
 
 <script lang='ts' setup>
 import XEUtils from 'xe-utils';
-import { Search, CirclePlusFilled, More, UserFilled, CaretBottom, CaretRight } from '@element-plus/icons-vue'
+import { Search, CirclePlusFilled, MoreFilled, UserFilled, CaretBottom, CaretRight } from '@element-plus/icons-vue'
 import { getRoleList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance, VxeGridListeners } from 'vxe-table';
 import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
 import { ref } from 'vue'
-import { ElTree } from 'element-plus'
+import { ElTree, ElMessage } from 'element-plus'
 import addRole from "./addRole.vue"
 import editRole from "./editRole.vue"
 import relateRole from "./relateRole.vue"
@@ -154,13 +204,13 @@ const dialogData = reactive({
         visible: false,
         props: {
             title: '关联用户',
-            width: '90%'
+            width: '75%'
         }
     }
 })
-const openMessage = () => {
+const openMessage = (mess: string) => {
     ElMessage({
-        message: '请选择至少一个角色！',
+        message: mess,
         type: 'warning',
     })
 }
@@ -202,7 +252,7 @@ const gridEvents: VxeGridListeners = {
                     dialogData.baseRole.dialogText = "是否确定启用选中的用户？"
                     dialogData.baseRole.key = "RoleUse"
                 } else {
-                    openMessage()
+                    openMessage('请选择至少一个角色！')
                 }
                 break
             }
@@ -212,7 +262,7 @@ const gridEvents: VxeGridListeners = {
                     dialogData.baseRole.dialogText = "是否确定禁用选中的用户？"
                     dialogData.baseRole.key = "Roledisable"
                 } else {
-                    openMessage()
+                    openMessage('请选择至少一个角色！')
                 }
                 break
             }
@@ -222,7 +272,7 @@ const gridEvents: VxeGridListeners = {
                     dialogData.baseRole.dialogText = "是否确定导出选中的用户？"
                     dialogData.baseRole.key = "RoleyExport"
                 } else {
-                    openMessage()
+                    openMessage('请选择至少一个角色！')
                 }
                 break
             }
@@ -232,7 +282,7 @@ const gridEvents: VxeGridListeners = {
                     dialogData.baseRole.dialogText = "是否确定删除选中的用户？"
                     dialogData.baseRole.key = "Roleremove"
                 } else {
-                    openMessage()
+                    openMessage('请选择至少一个角色！')
                 }
                 break
             }
@@ -242,10 +292,11 @@ const gridEvents: VxeGridListeners = {
 const gridOptions: FitsTableProps = {
     // border: true,
     keepSource: false,
-    showOverflow: false,
+    showOverflow: "tooltip",
     id: 'rolestable',
     rowConfig: {
-        height: 40
+        height: 52,
+        isCurrent: true,
     },
     //数据缓存，如果其他表格也使用了同一个key会导致表格数据串用
     storage: {
@@ -279,15 +330,16 @@ const gridOptions: FitsTableProps = {
         enabled: true
     },
     columns: [
-        { field: 'Checkbox', type: 'checkbox', title: '多选', width: 50 },
-        { field: 'Indexes', title: '序号', type: 'seq', width: 50 },
-        { field: 'Uname', title: '角色名称', minWidth: 100, treeNode: true },
-        { field: 'Ucode', title: '角色编码', minWidth: 100 },
-        { field: 'Udescribe', title: '角色描述', minWidth: 100 },
+        // <<<<<<< .mine
+        { field: 'Checkbox', type: 'checkbox', title: '多选', minWidth: 50 },
+        { field: 'Indexes', title: '序号', type: 'seq', minWidth: 80 },
+        { field: 'Uname', title: '角色名称', minWidth: 130 },
+        { field: 'Ucode', title: '角色编码', minWidth: 130 },
+        { field: 'Udescribe', title: '角色描述', minWidth: 130 },
         { field: 'Sort', title: '排序', minWidth: 100 },
-        { field: 'Ustate', title: '角色状态', slots: { default: 'state' }, width: 100 },
-        { field: 'Operation', title: '操作列', minWidth: 150, slots: { default: 'operate' }, fixed: 'right' }
-        // { field: 'Operati on', title: '操作列', width: 200, fixed: 'right', contentRender: { name: 'TableOpeate' } }
+        { field: 'Ustate', title: '角色状态', slots: { default: 'state' }, minWidth: 100 },
+        // { field: 'Operation', title: '操作列', minWidth: 150, slots: { default: 'operate' }, fixed: 'right' }
+        { field: 'Operation', title: '操作列', width: 200, fixed: 'right', slots: { default: 'operate' }, contentRender: { name: 'TableOpeate' } }
     ],
     toolbarConfig: {
         buttons: [
@@ -387,7 +439,7 @@ const gridOptions: FitsTableProps = {
 }
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 //左侧角色管理数据
-const roleC = ref([
+const roleClass = ref([
     {
         Cname: '后勤',
         Cdescribe: ""
@@ -410,6 +462,26 @@ const roleC = ref([
     },
     {
         Cname: '维护中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '测试',
+        Cdescribe: ""
+    },
+    {
+        Cname: '运维',
+        Cdescribe: ""
+    },
+    {
+        Cname: '需求',
+        Cdescribe: ""
+    },
+    {
+        Cname: '售后',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护',
         Cdescribe: ""
     }
 ])
@@ -466,7 +538,6 @@ const treeData: Tree[] = [
 const keys: Array<number> = []
 onMounted(() => {
     nextTick(() => {
-
         // xGrid.value?.xGrid?.commitProxy('query')
     })
     setTimeout(() => {
@@ -517,7 +588,7 @@ const returnID = (val: any): any => {
     keys.push(val.id)
     return val.id
 }
-//关闭新建弹窗
+//关闭弹窗
 const closeDialog = (key: string) => {
     switch (key) {
         case "addRole":
@@ -525,13 +596,26 @@ const closeDialog = (key: string) => {
             break;
         case "baseRole":
             dialogData.baseRole.visible = false
+            break;
+        case "relateRole":
+            dialogData.relateRole.visible = false
+            break;
     }
 }
-let AddData = <any>{}
-//新增弹窗数据返回
-const addChange = (val: any, key: string) => {
-    console.log(val, "新增弹窗数据改动")
-    AddData = val
+//弹窗数据返回
+const dataChange = (val: any, key: string) => {
+    if (dialogData.operateRole.key == 'addClass') {
+        if (val.Cname) {
+            roleClass.value.push(val)
+            val = []
+        }
+    }
+    else if (dialogData.operateRole.key == 'addRole') {
+        console.log("增加角色", val)
+    }
+    else if (dialogData.operateRole.key == 'editClass') {
+        console.log('修改分类', val)
+    }
 }
 //点击表格全选框触发
 // const onCheckAll = (val: any) => {
@@ -580,27 +664,24 @@ const onSubmint = (key: string) => {
             console.log("删除")
             break;
         case 'addClass':
-            dialogData.operateRole.visible = false
-            if (dialogData.operateRole.key == 'addClass') {
-                if (AddData.Cname) {
-                    roleC.value.push(AddData)
-                    AddData = []
-                }
-            }
+            closeDialog('operateRole')
             break;
         case 'addRole':
-            dialogData.operateRole.visible = false
+            closeDialog('operateRole')
             break;
         case 'RoleClassRemove':
-            dialogData.baseRole.visible = false
             break
         case 'editClass':
-            dialogData.operateRole.visible = false
+            closeDialog('operateRole')
+            break;
+        case 'deleteClass':
+            closeDialog('operateRole')
             break;
         case 'editRole':
-            dialogData.operateRole.visible = false
+            closeDialog('operateRole')
             break;
     }
+    //关闭消息弹窗(上面关闭的是操作弹窗)
     closeDialog('baseRole')
 }
 //表格编辑按钮
@@ -633,18 +714,38 @@ const addClassfy = () => {
     dialogData.operateRole.data = obj
 }
 //角色管理操作
-const classifyButton = (index: number, key: string) => {
+const classifyButton = (data: any, key: string) => {
     if (key == 'delete') {
         dialogData.baseRole.visible = true
         dialogData.baseRole.dialogText = "是否确定删除？"
-        dialogData.baseRole.key = "Roledisable"
+        dialogData.baseRole.key = "deleteClass"
     }
     else if (key == 'editClass') {
         dialogData.operateRole.visible = true
         dialogData.operateRole.props.title = "编辑角色分类"
         dialogData.operateRole.key = "editClass"
-        dialogData.operateRole.data = roleC.value[index]
+        dialogData.operateRole.data = data
     }
+}
+//保存权限
+const savePower = () => {
+    let checkedData = xGrid.value.fitsTablePro.getCheckboxRecords(true)
+    let treeCheckedData = treeRef.value!.getCheckedNodes()
+    if (!checkedData.length) {
+        openMessage('请选择至少一个角色！')
+        return
+    }
+    if (!treeCheckedData.length) {
+        openMessage('请选择至少一个权限进行分配！')
+        return
+    }
+    console.log("权限分配成功,分配角色：", checkedData, ",分配权限：", treeCheckedData)
+}
+//点击左侧树节点
+const clickTree = () => {
+    nextTick(() => {
+        xGrid.value.fitsTablePro.commitProxy('query')
+    })
 }
 </script>
 <style lang='scss' scoped>
@@ -693,9 +794,12 @@ const classifyButton = (index: number, key: string) => {
                     padding: 0 8px;
                 }
 
+                :deep(.custom-tree-node) {
+                    width: 100%;
+                }
+
 
                 .text {
-                    line-height: 36px;
                     padding: 0 16px;
                     display: flex;
                     align-items: center;
@@ -704,6 +808,7 @@ const classifyButton = (index: number, key: string) => {
                     .textLeft {
                         display: flex;
                         align-items: center;
+                        cursor: pointer;
 
                         .textContent {
                             padding-left: 8px;
@@ -717,6 +822,10 @@ const classifyButton = (index: number, key: string) => {
                             outline: none !important;
                         }
                     }
+                }
+
+                .text:hover {
+                    background-color: #F5F7FA;
                 }
             }
         }
@@ -761,6 +870,10 @@ const classifyButton = (index: number, key: string) => {
 
     }
 
+    :deep(.fits-dialog .el-dialog__footer .el-button) {
+        border-radius: 2px;
+    }
+
     :deep(.Roles-baseDialog) {
 
         .el-dialog__header {
@@ -772,11 +885,41 @@ const classifyButton = (index: number, key: string) => {
             padding-bottom: 20px;
         }
     }
+
+    :deep(.onfooter) {
+        .el-dialog__body {
+            .dialog-body {
+                .el-scrollbar {
+                    .el-scrollbar__wrap {
+                        .el-scrollbar__view {
+                            padding: 0px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 </style>
-<style>
+<style lang="scss">
 .Role-popover {
-    display: flex;
-    justify-content: center;
+    width: 110px !important;
+    min-width: 110px !important;
+    padding: 0 !important;
+    border-radius: 0px;
+
+    .btn {
+        padding: 0 !important;
+        width: 100%;
+        margin-right: 0px !important;
+
+        .el-button {
+            border: none;
+            font-size: 14px;
+            width: 100%;
+            height: 44px;
+            border-radius: 0;
+        }
+    }
 }
 </style>

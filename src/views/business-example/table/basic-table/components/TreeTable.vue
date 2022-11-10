@@ -3,87 +3,90 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const xGrid = ref<VxeGridInstance | any>()
 const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', title: '部门', width: 200, treeNode: true },
-        { field: 'level', title: '绩效', },
-        { field: 'numner', title: '考核分数', },
-        { field: 'rate', title: '等级', width: 150 },
+        { field: 'level', title: '权限标识', },
+        { field: 'numner', title: '创建时间', },
+        { field: 'rate', title: '修改时间', width: 150 },
     ],
     data: [
         {
-            name: '总经办',
+            name: '入库管理',
             level: '',
             numner: '',
             rate: '',
-            children: [
-                { name: '业务部', rate: 9, numner: 24, level: 1 },
-                {
-                    name: '客户部',
-                    level: '',
-                    numner: '',
-                    rate: '',
-                    children: [
-                        { name: '客户A部', rate: 13, numner: 32, level: 1 },
-                        { name: '客户B部', rate: 9, numner: 29, level: 4 },
-                    ]
-                },
-            ]
         },
         {
-            name: '研发部',
+            name: '系统管理',
             level: '',
             numner: '',
             rate: '',
             children: [
                 {
-                    name: '研发A部',
+                    name: '用户管理',
                     level: '',
                     numner: '',
                     rate: '',
                     children: [
-                        { name: '第一组', rate: 9, numner: 29, level: 4 },
-                        { name: '第二组', rate: 22, numner: 28, level: 5 }
+                        { name: '用户新增', rate: '2022-10-12', numner: '2021-02-17', level: 'sys:user:add' },
+                        { name: '用户编辑', rate: '2022-10-12', numner: '2021-02-17', level: 'sys:user:edit' },
+                        { name: '用户删除', rate: '2022-10-12', numner: '2021-02-17', level: 'sys:user:delete' },
                     ]
                 },
                 {
-                    name: '研发B部',
+                    name: '角色管理',
                     level: '',
                     numner: '',
                     rate: '',
                     children: [
-                        {
-                            name: '分部',
-                            level: '',
-                            numner: '',
-                            rate: '',
-                            children: [
-                                { name: '研发1部', rate: 77, numner: 29, level: 4 },
-                                { name: '研发2部', rate: 34, numner: 21, level: 2 }
-                            ]
-                        },
-                        { name: '总部', rate: 22, numner: 26, level: 5 }
+                        { name: '总经理', rate: '2022-10-12', numner: '2021-02-17', level: 'sys:role:manager' },
+                        { name: '副经理', rate: '2022-10-12', numner: '2021-02-17', level: 'sys:role:deputymanager' },
+                        { name: '产品', rate: '2022-10-12', numner: '2021-02-17', level: 'sys:role:producer' },
                     ]
                 },
                 {
-                    name: '研发C部',
+                    name: '菜单管理',
                     level: '',
                     numner: '',
                     rate: '',
                     children: [
-                        { name: '研发中心组', rate: 11, numner: 35, level: 1 },
-                        { name: '客户中心', rate: 40, numner: 18, level: 4 },
-                        { name: '服务台', rate: 22, numner: 20, level: 2 }
+                        { name: '研发中心组', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' },
+                        { name: '客户中心', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' },
+                        { name: '服务台', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' }
+                    ]
+                },
+                {
+                    name: '部门管理',
+                    level: '',
+                    numner: '',
+                    rate: '',
+                    children: [
+                        { name: '研发中心组', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' },
+                        { name: '客户中心', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' },
+                        { name: '服务台', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' }
+                    ]
+                },
+                {
+                    name: '管理',
+                    level: '',
+                    numner: '',
+                    rate: '',
+                    children: [
+                        { name: '研发中心组', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' },
+                        { name: '客户中心', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' },
+                        { name: '服务台', rate: '2021-02-17', numner: '2021-02-17', level: 'sys:role:producer' }
                     ]
                 }
             ]
         },
         {
-            name: '产品部',
+            name: '多级菜单',
             level: '',
             numner: '',
             rate: '',
@@ -94,10 +97,7 @@ const gridOptions: FitsTableProps = {
             ]
         }
     ],
-    treeConfig: {
-        iconOpen: 'vxe-icon-square-minus',
-        iconClose: 'vxe-icon-square-plus',
-    },
+    treeConfig: {},
 }
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 

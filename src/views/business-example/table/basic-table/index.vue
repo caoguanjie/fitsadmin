@@ -10,6 +10,10 @@
                     desc="当内容过长时，通过配置 showOverflow=true 和 showHeaderOverflow=true 可以全局开启内容和表头悬浮提示。如果只需要个别列开启悬浮提示，则只为 columns 中的对象添加该属性即可。">
                     <show-overflow-table />
                 </fits-card>
+                <fits-card title="拖动列宽"
+                    desc="通过设置 columnConfig.resizable=true 开启可拖动调整列宽。注意：如果开启拖动列宽，建议通过设置 border='full' 显示表格的所有边框，以免造成样式上的缺漏或不美观。">
+                    <resizable-table />
+                </fits-card>
                 <fits-card title="斑马纹表格" desc="通过 stripe=true 开启斑马纹。另外，通过配置 rowConfig.isHover=true 开启当鼠标移到行时，高亮当前行。">
                     <stripe-table />
                 </fits-card>
@@ -45,10 +49,13 @@
                     <filter-table />
                 </fits-card>
                 <fits-card title="树结构"
-                    desc="给 columns 里的对象配置 treeNode=true 指定该列为树节点。通过给 data 中的对象配置 children 属性，设置子节点。另外，可以通过设置 treeConfig.iconOpen 和 treeConfig.iconClose 定义收起和打开树的显示图标。">
+                    desc="给 columns 里的对象配置 treeNode=true 指定该列为树节点。通过给 data 中的对象配置 children 属性，设置子节点。注意：这里还需要开启 treeConfig，哪怕没有属性，也要传一个空对象，否则子节点显示不出来。">
                     <tree-table />
                 </fits-card>
-                <fits-card title="树形懒加载"
+                <fits-card title="树结构-自定义图标" desc="通过设置 treeConfig.iconOpen 和 treeConfig.iconClose 定义收起和打开树的显示图标。">
+                    <tree-icon-table />
+                </fits-card>
+                <fits-card title="树结构-懒加载"
                     desc="通过配置 treeConfig.lazy=true 开启树形懒加载， 通过配置 treeConfig.loadMethod 定义异步加载子节点的方法。另外，还需要给 data 里的对象配置 hacChild=true 标识是否存在子节点，从而控制是否允许被点击，默认值为 false 不可点击。">
                     <tree-lazy-table />
                 </fits-card>
@@ -63,13 +70,27 @@
                     desc="给 columns 里的对象配置 type=seq 开启序号列。另外，可通过 seqConfig.seqMethod 自定义序列号。 本例演示了自定义序列号，序列号的间隔为2。">
                     <custom-index-table />
                 </fits-card>
-                <fits-card title="数据代理" desc="通过配置 proxyConfig.ajax.query，返回一个Promise，响应结果通过resolve(props)返回，其中props.list存放列表数组。
-                    另外可以通过 proxyConfig.props 修改获取的列表属性配置。开启数据代理后，无法配置 formConfig.data ，如果 form 有默认值，需要手动进行值赋。">
+                <fits-card title="数据代理"
+                    desc="通过配置 proxyConfig.ajax.query，返回一个Promise，响应结果通过resolve(props)返回，其中props.list存放列表数组。
+                    另外还需要通过 proxyConfig.props 配置获取的列表属性。没有开启分页的列表只需要配置 props.list 即可，例如配置了 props.list='myList', 那么Promise返回的对象中列表属性也需要命名为 myList。">
                     <proxy-table />
+                </fits-card>
+                <fits-card title="数据代理+自动加载"
+                    desc="当页面渲染完成后默认会自动加载查询数据。如果不希望自动加载，则配置 autoLoad=false 并且可以通过几种方式触发查询：
+                    第一种方式，通过配置 toolbarConfig.tools 开启工具栏的工具列表，其中的 刷新数据按钮可以触发查询。第二种方式，可以在代码逻辑中通过获取表格实例并调用 commitProxy('query')方法触发查询。">
+                    <proxy-autoload-table />
+                </fits-card>
+                <fits-card title="数据代理+表单默认值"
+                    desc="开启数据代理后，如果配置了表单并且需要给表单赋默认值，则需要将 proxyConfig.form 配置为 false(默认不配置也为false)，否则会报错且无法正确赋值。">
+                    <proxy-default-table />
                 </fits-card>
                 <fits-card title="数据代理+分页器"
                     desc="通过配置 pagerConfig.enabled=true 开启分页，响应结果通过resolve(props)返回，其中props.total存放列表总数。">
                     <proxy-pager-table />
+                </fits-card>
+                <fits-card title="数据代理+插槽"
+                    desc="当表格的表单位置是在工具栏区域时，这时候不需要将表单配置在formConfig中，而是直接使用toolbarConfig.slots.buttons 设置工具栏左侧的插槽，将搜索组件放在这个插槽内。组件需要发出一个事件，用于表格接受表单的参数，接收到参数后可以将该表单用一个响应式对象保存起来，随后调用表格的commitProxy('query')方法手动触发查询。">
+                    <proxy-slot-table />
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -89,6 +110,7 @@
 <script lang='ts' setup>
 import BasicTable from './components/BasicTable.vue'
 import ShowOverflowTable from './components/ShowOverflowTable.vue'
+import ResizableTable from './components/ResizableTable.vue'
 import StripeTable from './components/StripeTable.vue'
 import BorderTable from './components/BorderTable.vue'
 import StatusTable from './components/StatusTable.vue'
@@ -99,12 +121,16 @@ import MultipleSelectTable from './components/MultipleSelectTable.vue'
 import SortTable from './components/SortTable.vue'
 import FilterTable from './components/FilterTable.vue'
 import TreeTable from './components/TreeTable.vue'
+import TreeIconTable from './components/TreeIconTable.vue'
 import TreeLazyTable from './components/TreeLazyTable.vue'
 import SummaryTable from './components/SummaryTable.vue'
 import MergeTable from './components/MergeTable.vue'
 import CustomIndexTable from './components/CustomIndexTable.vue'
 import ProxyTable from './components/ProxyTable.vue'
+import ProxyAutoloadTable from './components/ProxyAutoloadTable.vue'
+import ProxyDefaultTable from './components/ProxyDefaultTable.vue'
 import ProxyPagerTable from './components/ProxyPagerTable.vue'
+import ProxySlotTable from './components/ProxySlotTable.vue'
 import FitsCard from '@/components/Card/FitsCard.vue'
 //锚点目录所需数据
 const navTree: any = ref([]);

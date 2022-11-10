@@ -13,7 +13,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { ElButton, ElMessage } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 

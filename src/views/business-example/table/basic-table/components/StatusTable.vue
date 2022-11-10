@@ -3,7 +3,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const xGrid = ref<VxeGridInstance | any>()
@@ -39,10 +40,10 @@ const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 <style lang="scss">
 .warning-row {
-    background: #fdf6ec;
+    background: #fdf6ec !important;
 }
 
 .success-row {
-    background: #f0f9eb;
+    background: #f0f9eb !important;
 }
 </style>

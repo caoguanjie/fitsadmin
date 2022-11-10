@@ -3,7 +3,7 @@
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
                 <fits-card title="动态表格" desc="动态表格展示了表单＋表格的结合使用。
-                主要是通过表格插槽实现">
+                表格内部的渲染器主要是通过表格插槽实现的。">
                     <dynamic-table></dynamic-table>
                 </fits-card>
             </div>
@@ -12,8 +12,8 @@
         <div class="right">
             <div class="menu">
                 <div class="menu-title">此页内容</div>
-                <div v-for="(i, k) in navTree" :class="{ 'active': menuData.num === k }" :key="k"
-                    :id="'menuItem' + k" @click.stop="jumpToAnchor(i.el, k)" class="defaultStyle">
+                <div v-for="(i, k) in navTree" :class="{ 'active': menuData.num === k }" :key="k" :id="'menuItem' + k"
+                    @click.stop="jumpToAnchor(i.el, k)" class="defaultStyle">
                     {{ i.title }}
                 </div>
             </div>

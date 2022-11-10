@@ -3,10 +3,10 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 import { AxiosResponse } from 'axios';
-import XEUtils from 'xe-utils';
 import { getTableList } from '@/api/business/table';
 
 const xGrid = ref<VxeGridInstance | any>()
@@ -20,9 +20,6 @@ const gridOptions: FitsTableProps = {
         { field: 'address', title: '地址', editRender: { name: 'input', defaultValue: '广东省广州市越秀区中山路快乐小区6号楼801' }, width: 320 },
     ],
     formConfig: {
-        // data: {
-        //     name: '123'
-        // },
         items: [
             { field: 'name', title: '姓名', itemRender: { name: 'ElInput', props: { placeholder: '请输入姓名' } } },
         ]
@@ -30,7 +27,7 @@ const gridOptions: FitsTableProps = {
     proxyConfig: {
         enabled: true,
         form: true, // 启用表单代理
-        autoLoad: true,
+        autoLoad: false,
         ajax: {
             query: ({ form }: any) => {
                 return new Promise(resolve => {
@@ -44,7 +41,7 @@ const gridOptions: FitsTableProps = {
                             return;
                         }
                         resolve({
-                            list: XEUtils.toTreeArray(ReturnData.TableList, { clear: true }),
+                            list: ReturnData.TableList
                         })
                     })
                 })
@@ -54,6 +51,9 @@ const gridOptions: FitsTableProps = {
             list: 'list'
         }
     },
+    toolbarConfig: {
+        tools: {}
+    }
 }
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>

@@ -18,7 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import { FitsFormCreateModel, FitsFormCreate, FitsFormDialog } from '@/fits-components';
+import { FitsFormCreate, FitsFormDialog } from '@/fits-components';
+import { FitsFormCreateModel } from '@/fits-components/type'
 import { ElMessage } from 'element-plus';
 
 let num = 0

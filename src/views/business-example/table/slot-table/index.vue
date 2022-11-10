@@ -21,6 +21,10 @@
                     desc="通过配置 toolbarConfig.slots 属性可以使用插槽。该属性是一个对象，其中键为 buttons，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义工具栏左侧的按钮区域。">
                     <custom-buttons-table />
                 </fits-card>
+
+                <fits-card title="主从表" desc="">
+                    <master-slave-table />
+                </fits-card>
             </div>
         </el-scrollbar>
 
@@ -41,6 +45,7 @@ import CustomContentTable from './components/CustomContentTable.vue'
 import CustomHeaderTable from './components/CustomHeaderTable.vue'
 import ExpandRowTable from './components/ExpandRowTable.vue'
 import CustomButtonsTable from './components/CustomButtonsTable.vue'
+import MasterSlaveTable from './components/MasterSlaveTable.vue'
 import FitsCard from '@/components/Card/FitsCard.vue'
 
 //锚点目录所需数据

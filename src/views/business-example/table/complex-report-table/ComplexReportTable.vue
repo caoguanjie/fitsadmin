@@ -1,7 +1,7 @@
 <template>
     <div class="complex-report-table">
         <!-- @cellMouseenter="cellMouseenter" -->
-        <fits-table :option="fitsTablePro" ref="xGrid" :Slots="slots" @cellMouseenter="cellMouseenter">
+        <fits-table :option="fitsTablePro" ref="xGrid" @cellMouseenter="cellMouseenter">
             <template #myButtons>
                 <el-button-group>
                     <el-button v-for="(item, index) in buttons" :key="item.value" @click="tabChange(index)">
@@ -23,12 +23,9 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
-
-const slots = reactive({
-    empty: 'empty'
-})
 
 let currentCol = ref(0)
 // button切换
@@ -213,6 +210,9 @@ const gridOptions: FitsTableProps = {
     tooltipConfig: {
         enterDelay: 0,
         leaveDelay: 0
+    },
+    slots: {
+        empty: 'empty'
     }
 }
 const xGrid = ref<VxeGridInstance | any>()
@@ -322,7 +322,7 @@ onBeforeUnmount(() => {
 onDeactivated(() => {
     document.removeEventListener('mouseenter', onMouseOver, true)
 })
-// //判断点击是否在弹窗内
+//判断点击是否在弹窗内
 const onMouseOver = (e: any) => {
     if (!e?.target?.closest(".vxe-table--body-wrapper")) {
         // 非当前元素，需要执行的代码

@@ -3,7 +3,11 @@
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
                 <fits-card title="复杂表头" desc="通过给 columns 中的对象传递 children 属性定义子列，即可实现表头分组。">
-                    <fits-table :option="fitsTablePro" ref="xGrid" />
+                    <complex-header-table />
+                </fits-card>
+                <fits-card title="复杂表头交叉高亮"
+                    desc="首先交叉高亮需要让表格的行和列分别高亮起来，行的高亮配置可以通过 rowConfig.isHover=true 直接开启，列的高亮没有配置项，需要自己处理，本案例用到表格的 cellMouseenter 事件，因此需要传递 tooltipConfig配置(空对象也行)。然后给每个子列添加headerClassName和className，类名是帮助我们给该列添加高亮的样式。在cellMouseenter方法中开启监听mouseover事件，具体逻辑操作可以看代码。最后需要在卸载页面的生命周期内移除监听事件。">
+                    <complex-highlight-table />
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -21,48 +25,9 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
-import { VxeGridInstance } from 'vxe-table';
+import ComplexHeaderTable from './components/ComplexHeaderTable.vue'
+import ComplexHighlightTable from './components/ComplexHighlightTable.vue'
 import FitsCard from '@/components/Card/FitsCard.vue'
-
-const gridOptions: FitsTableProps = {
-    border: true,
-    columns: [
-        { type: 'seq', field: "Index", width: 50, title: '序号' },
-        {
-            title: '基本信息',
-            field: "basic",
-            children: [
-                { field: 'name', title: '姓名' },
-                {
-                    title: '其他信息',
-                    field: "other",
-                    children: [
-                        { field: 'phone', title: '电话' },
-                        { field: 'birth', title: '生日' }
-                    ]
-                },
-                { field: 'sex', title: '性别' }
-            ]
-        },
-        { field: 'mark', title: '备注', sortable: true, showOverflow: true },
-    ],
-    data: [
-        { name: '王五', phone: '13224452121', birth: '1999-10-08', sex: '男', mark: '下周五入住201房' },
-        { name: '李晓明', phone: '13754456492', birth: '2015-05-18', sex: '男', mark: '无' },
-        { name: '王大陆', phone: '13324459856', birth: '2000-01-05', sex: '女', mark: '已离职，归还设备' },
-        { name: '李萌萌', phone: '18712458736', birth: '1879-12-13', sex: '女', mark: '此人不存在 ' },
-        { name: '张兴', phone: '18924584265', birth: '1954-03-25', sex: '男', mark: '办理手续、护照、签证 、身份汇总' },
-    ],
-    headerAlign: 'center',
-    toolbarConfig: {
-        tools: {
-            enabled: true
-        }
-    }
-}
-const xGrid = ref<VxeGridInstance | any>()
-const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 //锚点目录所需数据
 const navTree: any = ref([]);
 const menuData = reactive({
@@ -177,10 +142,6 @@ const removeHeigthLight = (k: number) => {
 .complex-header-table {
     .fits-card {
         min-width: 500px;
-    }
-
-    .fits-grid {
-        // height: 500px;
     }
 }
 </style>

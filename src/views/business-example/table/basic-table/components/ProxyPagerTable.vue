@@ -3,18 +3,19 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 import { AxiosResponse } from 'axios';
-import XEUtils from 'xe-utils';
 import { getTableList } from '@/api/business/table';
 
 const xGrid = ref<VxeGridInstance | any>()
 
 const gridOptions: FitsTableProps = {
     columns: [
-        { field: 'Checkbox', type: 'checkbox', width: 50 },
-        { field: 'name', title: '姓名', editRender: { name: 'input', defaultValue: '小明' } },
+        { type: 'seq', field: 'seq' },
+        { field: 'Checkbox', type: 'checkbox', width: 50, sortable: true },
+        { field: 'name', title: '姓名', editRender: { name: 'input', defaultValue: '小明' }, sortable: true },
         { field: 'phone', title: '电话', editRender: { name: 'input', defaultValue: '13578459562' } },
         { field: 'birth', title: '出生日期', editRender: { name: 'input', defaultValue: '2006-11-07' } },
         { field: 'address', title: '地址', editRender: { name: 'input', defaultValue: '广东省广州市越秀区中山路快乐小区6号楼801' }, width: 320 },
@@ -34,9 +35,9 @@ const gridOptions: FitsTableProps = {
     },
     proxyConfig: {
         form: true, // 启用表单代理
-        autoLoad: true,
+        autoLoad: false,
         ajax: {
-            query: ({ form }: any) => {
+            query: ({ form, $grid, page, sort, sorts }: any) => {
                 return new Promise(resolve => {
                     const pageParam = {
                         pageIndex: 11,
@@ -55,7 +56,7 @@ const gridOptions: FitsTableProps = {
                             return;
                         }
                         resolve({
-                            result: XEUtils.toTreeArray(ReturnData.TableList, { clear: true }),
+                            result: ReturnData.TableList,
                             page: {
                                 total: ReturnData.ItemCount
                             }

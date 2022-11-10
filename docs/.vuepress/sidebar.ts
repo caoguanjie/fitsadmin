@@ -51,6 +51,9 @@ export default sidebar({
       children: [{
         text: 'FitsGroupTable 分组表格',
         link: '/components/Table/GroupTable'
+      }, {
+        text: 'FitsTable 表格',
+        link: '/components/Table/Table'
       }]
     }, {
       text: '其他组件',

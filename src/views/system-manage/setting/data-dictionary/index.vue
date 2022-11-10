@@ -1,6 +1,6 @@
 <template>
     <div class="dictionary-manage">
-        <div class="role-left">
+        <div class="dict-left">
             <div class="left-classification">
                 <div class="top">
                     <el-input class="searchBox" placeholder="搜索字典分类" :prefix-icon="Search" />
@@ -18,72 +18,98 @@
                         </el-icon>
                         业务字典
                     </div>
+
                     <el-collapse-transition>
                         <div v-show="isShow">
-                            <div class="text" v-for="(item, key) in roleC" :key="key">
-                                <div class=" textLeft">
-                                    <el-icon>
-                                        <UserFilled :color='"#007dff"' />
-                                    </el-icon>
-                                    <div class="textContent">
-                                        {{ item.Cname }}
-                                    </div>
-                                </div>
-                                <el-icon class="moreButton">
-                                    <el-popover placement="bottom" title="" trigger="click"
-                                        :popper-class="'Role-popover'" :hide-after=0>
-                                        <template #reference>
-                                            <More :color='"#999999"' />
-                                        </template>
-                                        <el-button text size="small" @click="classifyButton(key, 'editClass')">编辑
-                                        </el-button>
-                                        <el-button size="small" @click="classifyButton(key, 'delete')">删除</el-button>
-                                    </el-popover>
-                                </el-icon>
-                            </div>
+                            <el-tree :data="dictClass" node-key="id" default-expand-all :expand-on-click-node="false"
+                                @node-click="clickTree">
+                                <template #default="{ data }">
+                                    <span class="custom-tree-node">
+                                        <el-popover placement="bottom" title="" trigger="contextmenu"
+                                            :popper-class="'Role-popover'" :hide-after=0>
+                                            <template #reference>
+                                                <div class=" text">
+                                                    <div class=" textLeft">
+                                                        <div class="textContent">
+                                                            <span>{{ data.Cname }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <el-icon class="moreButton">
+                                                        <el-popover placement="bottom" title="" trigger="click"
+                                                            :popper-class="'Role-popover'" :hide-after=0>
+                                                            <template #reference>
+                                                                <MoreFilled :color='"#999999"' />
+                                                            </template>
+                                                            <div class="btn">
+                                                                <el-button @click="classifyButton(data, 'editClass')">编辑
+                                                                </el-button>
+                                                            </div>
+                                                            <div class="btn">
+                                                                <el-button @click="classifyButton(data, 'deleteClass')">
+                                                                    删除
+                                                                </el-button>
+                                                            </div>
+                                                        </el-popover>
+                                                    </el-icon>
+                                                </div>
+                                            </template>
+                                            <div class="btn">
+                                                <el-button @click="classifyButton(data, 'editClass')">编辑
+                                                </el-button>
+                                            </div>
+                                            <div class="btn">
+                                                <el-button @click="classifyButton(data, 'deleteClass')">删除
+                                                </el-button>
+                                            </div>
+                                        </el-popover>
+                                    </span>
+                                </template>
+                            </el-tree>
                         </div>
                     </el-collapse-transition>
                 </div>
             </div>
-            <div class="left-contain">
+            <div div class=" left-contain">
                 <!-- <fits-list-seach :formItem='formItem' /> -->
                 <fits-table :option="fitsTablePro" ref="xGrid" :grid-events="gridEvents">
                     <template #operate="{ slotProps }">
                         <!-- <fits-table :option="fitsTablePro" ref="xGrid" :grid-events="gridEvents"
                             @checkbox-all="onCheckAll" @checkbox-change="onCheckOne">
                             <template #operate> -->
-                        <span class="FromButton underline" @click="FormOperation(slotProps.row, 'editRole')">编辑</span>
+                        <span class="FromButton underline" @click="FormOperation(slotProps.row, 'editDict')">编辑</span>
                         <span class="FromButton delete" @click="FormOperation(slotProps.row, 'deleteRole')">删除</span>
                         <!-- <el-button type="warning">Warning</el-button>
                             <el-button type="danger">Danger</el-button> -->
                     </template>
                     <template #state="{ slotProps }">
-                        <el-switch v-model="slotProps.row.IsEnabled" />
+                        <el-switch v-model="slotProps.row.IsEnabled"
+                            style="--el-switch-on-color: #000000; --el-switch-off-color: #dcdfe6" />
                         <!-- {{ slotProps.row.Ustate }} -->
                     </template>
                 </fits-table>
             </div>
         </div>
         <!-- 数据弹窗（新增业务字典、字典、编辑字典分类） -->
-        <fits-dialog :visible="dialogData.operateRole.visible" :dialogProp="dialogData.operateRole.props"
-            @cancel="closeDialog('addDict')" @submit="onSubmint(dialogData.operateRole.key)">
-            <add-dict v-if="dialogData.operateRole.key == 'addDict' || dialogData.operateRole.key == 'addClass'"
-                @addChange="addChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data" />
-            <edit-dict v-if="dialogData.operateRole.key == 'editRole' || dialogData.operateRole.key == 'editClass'"
-                @addChange="addChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data" />
+        <fits-dialog :class="'onfooter'" :visible="dialogData.operate.visible" dialogData.relateRole.visible=false
+            :dialogProp="dialogData.operate.props" :showFooter="false" @cancel="closeDialog('operate')">
+            <add-dict v-if="dialogData.operate.key == 'addDict' || dialogData.operate.key == 'addClass'"
+                @dataChange="dataChange" @closeDialog="closeDialog" :keys="dialogData.operate.key"
+                :setData="dialogData.operate.data" />
+            <edit-dict v-if="dialogData.operate.key == 'editDict' || dialogData.operate.key == 'editClass'"
+                @dataChange="dataChange" @closeDialog="closeDialog" :keys="dialogData.operate.key"
+                :setData="dialogData.operate.data" />
         </fits-dialog>
         <!-- 工具栏操作确认弹窗（关联、启用、禁用、导出、删除） -->
-        <fits-dialog :class="'Roles-baseDialog'" :visible="dialogData.baseRole.visible"
-            :dialogProp="dialogData.baseRole.props" @cancel="closeDialog('baseRole')"
-            @submit="onSubmint(dialogData.baseRole.key)">
-            {{ dialogData.baseRole.dialogText }}
+        <fits-dialog :class="'Dicts-baseDialog'" :visible="dialogData.base.visible" :dialogProp="dialogData.base.props"
+            @cancel="closeDialog('base')" @submit="onSubmint(dialogData.base.key)">
+            {{ dialogData.base.dialogText }}
         </fits-dialog>
     </div>
 </template>
 
 <script lang='ts' setup>
 import XEUtils from 'xe-utils';
-import { Search, CirclePlusFilled, More, UserFilled, CaretBottom, CaretRight } from '@element-plus/icons-vue'
+import { Search, CirclePlusFilled, MoreFilled, CaretBottom, CaretRight } from '@element-plus/icons-vue'
 import { getDictItemList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
@@ -93,13 +119,14 @@ import { ref } from 'vue'
 import { FitsDialog } from '@/fits-components'
 import addDict from './add-dict.vue'
 import editDict from './edit-dict.vue'
+import { ElMessage } from 'element-plus'
 
 
 const { user } = useStore();
 const xGrid = ref<VxeGridInstance | any>()
 
 const dialogData = reactive({
-    operateRole: {
+    operate: {
         visible: false,
         key: "",
         data: {},
@@ -108,7 +135,7 @@ const dialogData = reactive({
             width: '40%'
         }
     },
-    baseRole: {
+    base: {
         dialogText: "",
         key: "",
         visible: false,
@@ -128,7 +155,7 @@ let isShow = ref(true)
 const showHide = () => {
     isShow.value = !isShow.value
 }
-//表头工具栏监听事件
+//表头工具栏事件
 const gridEvents: VxeGridListeners = {
     async toolbarButtonClick({ code }) {
         //表格
@@ -137,9 +164,9 @@ const gridEvents: VxeGridListeners = {
         let record = $grid.getCheckboxRecords()
         switch (code) {
             case 'addDict': {
-                dialogData.operateRole.props.title = "新增字典"
-                dialogData.operateRole.visible = true
-                dialogData.operateRole.key = 'addDict'
+                dialogData.operate.props.title = "新增字典"
+                dialogData.operate.visible = true
+                dialogData.operate.key = 'addDict'
                 let obj = {
                     Uname: '',
                     Ucode: '',
@@ -148,14 +175,14 @@ const gridEvents: VxeGridListeners = {
                     Ustate: false,
                     Roledisable: ""
                 }
-                dialogData.operateRole.data = obj
+                dialogData.operate.data = obj
                 break
             }
             case 'Dictable': {
                 if (record.length) {
-                    dialogData.baseRole.visible = true
-                    dialogData.baseRole.dialogText = "是否确定启用选中的字典？"
-                    dialogData.baseRole.key = 'Dictable'
+                    dialogData.base.visible = true
+                    dialogData.base.dialogText = "是否确定启用选中的字典？"
+                    dialogData.base.key = 'Dictable'
                 } else {
                     openMessage()
                 }
@@ -163,9 +190,9 @@ const gridEvents: VxeGridListeners = {
             }
             case 'Dictunable': {
                 if (record.length) {
-                    dialogData.baseRole.visible = true
-                    dialogData.baseRole.dialogText = "是否确定禁用选中的字典？"
-                    dialogData.baseRole.key = 'Dictunable'
+                    dialogData.base.visible = true
+                    dialogData.base.dialogText = "是否确定禁用选中的字典？"
+                    dialogData.base.key = 'Dictunable'
                 } else {
                     openMessage()
                 }
@@ -173,9 +200,9 @@ const gridEvents: VxeGridListeners = {
             }
             case 'DictExport': {
                 if (record.length) {
-                    dialogData.baseRole.visible = true
-                    dialogData.baseRole.dialogText = "是否确定导出选中的字典？"
-                    dialogData.baseRole.key = "DictExport"
+                    dialogData.base.visible = true
+                    dialogData.base.dialogText = "是否确定导出选中的字典？"
+                    dialogData.base.key = "DictExport"
                 } else {
                     openMessage()
                 }
@@ -183,9 +210,9 @@ const gridEvents: VxeGridListeners = {
             }
             case 'DictDelete': {
                 if (record.length) {
-                    dialogData.baseRole.visible = true
-                    dialogData.baseRole.dialogText = "是否确定删除选中的字典？"
-                    dialogData.baseRole.key = "DictDelete"
+                    dialogData.base.visible = true
+                    dialogData.base.dialogText = "是否确定删除选中的字典？"
+                    dialogData.base.key = "DictDelete"
                 } else {
                     openMessage()
                 }
@@ -200,7 +227,7 @@ const gridOptions: FitsTableProps = {
     showOverflow: false,
     id: 'dictionarytable',
     rowConfig: {
-        height: 40
+        height: 52
     },
     //数据缓存，如果其他表格也使用了同一个key会导致表格数据串用
     storage: {
@@ -235,14 +262,14 @@ const gridOptions: FitsTableProps = {
         enabled: true
     },
     columns: [
-        { field: 'Checkbox', type: 'checkbox', title: '多选', width: 50 },
-        { field: 'Indexes', title: '序号', type: 'seq', width: 50 },
-        { field: 'Name', title: '字典名称', width: 130, treeNode: true },
-        { field: 'Code', title: '字典值', width: 100 },
-        { field: 'SortNum', title: '字典编码', width: 160 },
-        { field: 'DictionaryID', title: '备注', width: 100 },
-        { field: 'Sort', title: '排序', width: 100 },
-        { field: 'IsEnabled', title: '状态', slots: { default: 'state' }, width: 100 },
+        { field: 'Checkbox', type: 'checkbox', title: '多选', minWidth: 50 },
+        { field: 'Indexes', title: '序号', type: 'seq', minWidth: 80 },
+        { field: 'Name', title: '字典名称', minWidth: 130 },
+        { field: 'Code', title: '字典值', minWidth: 160 },
+        { field: 'SortNum', title: '字典编码', minWidth: 130 },
+        { field: 'DictionaryID', title: '备注', minWidth: 100 },
+        { field: 'Sort', title: '排序', minWidth: 100 },
+        { field: 'IsEnabled', title: '状态', slots: { default: 'state' }, minWidth: 100 },
         { field: 'Operation', title: '操作列', minWidth: 150, slots: { default: 'operate' }, fixed: 'right' }
         // { field: 'Operati on', title: '操作列', width: 200, fixed: 'right', contentRender: { name: 'TableOpeate' } }
     ],
@@ -329,7 +356,6 @@ const gridOptions: FitsTableProps = {
                             })
                             return;
                         }
-                        console.log(result, 12312)
                         resolve({
                             result: ReturnData.TableList,
                             page: {
@@ -344,7 +370,7 @@ const gridOptions: FitsTableProps = {
 }
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 //左侧业务字典数据
-const roleC = ref([
+const dictClass = ref([
     {
         Cname: '变异场景',
         Cdescribe: ""
@@ -380,21 +406,44 @@ onMounted(() => {
         // gridOptions.formConfig = {}
     }, 2000)
 })
-//关闭新建弹窗
+//关闭弹窗
 const closeDialog = (key: string) => {
     switch (key) {
         case "addDict":
-            dialogData.operateRole.visible = false
+            dialogData.operate.visible = false
             break;
-        case "baseRole":
-            dialogData.baseRole.visible = false
+        case "addClass":
+            dialogData.operate.visible = false
+            break;
+        case "base":
+            dialogData.base.visible = false
+            break;
+        case "editDict":
+            dialogData.operate.visible = false
+            break;
+        case "editClass":
+            dialogData.operate.visible = false
+            break;
+        case "operate":
+            dialogData.operate.visible = false
     }
 }
-let AddData = <any>{}
-//新增弹窗数据返回
-const addChange = (val: any, key: string) => {
-    console.log(val, "新增弹窗数据改动")
-    AddData = val
+//弹窗数据返回
+const dataChange = (val: any, key: string) => {
+    if (dialogData.operate.key == 'addClass') {
+        if (val.Cname) {
+            dictClass.value.push(val)
+            val = []
+        }
+    }
+    if (dialogData.operate.key == 'editDict') {
+        console.log("字典编辑", val)
+
+    }
+    if (dialogData.operate.key == 'editClass') {
+        console.log("字典分类编辑", val)
+        dictClass.value[dictIndex] = XEUtils.clone(val)
+    }
 }
 //点击表格全选框触发
 // const onCheckAll = (val: any) => {
@@ -440,67 +489,71 @@ const onSubmint = (key: string) => {
             console.log("删除")
             break;
         case 'addClass':
-            dialogData.operateRole.visible = false
-            if (dialogData.operateRole.key == 'addClass') {
-                if (AddData.Cname) {
-                    roleC.value.push(AddData)
-                    AddData = []
-                }
-            }
+            dialogData.operate.visible = false
             break;
         case 'addDict':
-            dialogData.operateRole.visible = false
+            dialogData.operate.visible = false
             break;
         case 'RoleClassRemove':
-            dialogData.baseRole.visible = false
+            dialogData.base.visible = false
             break
         case 'editClass':
-            dialogData.operateRole.visible = false
+            dialogData.operate.visible = false
             break;
-        case 'editRole':
-            dialogData.operateRole.visible = false
+        case 'deleteClass':
+            dictClass.value.splice(dictIndex, 1)
+            break;
+        case 'editDict':
+            dialogData.operate.visible = false
             break;
     }
-    closeDialog('baseRole')
+    closeDialog('base')
 }
 //表格编辑按钮
 const FormOperation = (val: any, key: string) => {
-    if (key == 'editRole') {
-        dialogData.operateRole.visible = true
-        dialogData.operateRole.props.title = "编辑字典"
-        dialogData.operateRole.key = "editRole"
-        dialogData.operateRole.data = val
+    if (key == 'editDict') {
+        dialogData.operate.visible = true
+        dialogData.operate.props.title = "编辑字典"
+        dialogData.operate.key = "editDict"
+        dialogData.operate.data = val
     } else if (key == 'deleteRole') {
-        dialogData.baseRole.visible = true
-        dialogData.baseRole.dialogText = "是否确定删除选中的字典？"
-        dialogData.baseRole.key = "deleteRole"
+        dialogData.base.visible = true
+        dialogData.base.dialogText = "是否确定删除选中的字典？"
+        dialogData.base.key = "deleteRole"
     }
 }
 //新增业务字典按钮
 const addClassfy = () => {
-    dialogData.operateRole.props.title = "新增业务字典"
-    dialogData.operateRole.visible = true
-    dialogData.operateRole.key = 'addClass'
+    dialogData.operate.props.title = "新增业务字典"
+    dialogData.operate.visible = true
+    dialogData.operate.key = 'addClass'
     //每次新建都传入新的对象解决会有数据残留
     let obj = {
         Cname: '',
         Cdescribe: ""
     }
-    dialogData.operateRole.data = obj
+    dialogData.operate.data = obj
 }
+let dictIndex: number
 //左侧业务字典操作
-const classifyButton = (index: number, key: string) => {
-    if (key == 'delete') {
-        dialogData.baseRole.visible = true
-        dialogData.baseRole.dialogText = "是否确定删除？"
-        dialogData.baseRole.key = 'Dictunable'
+const classifyButton = (data: any, key: string) => {
+    if (key == 'deleteClass') {
+        dialogData.base.visible = true
+        dialogData.base.dialogText = "是否确定删除？"
+        dialogData.base.key = 'deleteClass'
     }
     else if (key == 'editClass') {
-        dialogData.operateRole.visible = true
-        dialogData.operateRole.props.title = "编辑业务字典"
-        dialogData.operateRole.key = "editClass"
-        dialogData.operateRole.data = roleC.value[index]
+        dialogData.operate.visible = true
+        dialogData.operate.props.title = "编辑业务字典"
+        dialogData.operate.key = "editClass"
+        dialogData.operate.data = data
     }
+}
+//点击左侧树节点
+const clickTree = () => {
+    nextTick(() => {
+        xGrid.value.fitsTablePro.commitProxy('query')
+    })
 }
 </script>
 <style lang='scss' scoped>
@@ -513,7 +566,7 @@ const classifyButton = (index: number, key: string) => {
     background: #F1F2F5;
     // height: calc(100vh - 50px - 40px - 16px - 32px);
 
-    .role-left {
+    .dict-left {
         display: flex;
         flex: 1;
         margin-right: 8px;
@@ -524,7 +577,7 @@ const classifyButton = (index: number, key: string) => {
         .left-classification {
             border-right: 1px solid #DCDFE6;
             margin-right: 16px;
-            min-width: 0px;
+            min-width: 240px;
 
             .top {
                 display: flex;
@@ -549,10 +602,14 @@ const classifyButton = (index: number, key: string) => {
                     padding: 0 8px;
                 }
 
+                :deep(.custom-tree-node) {
+                    width: 100%;
+                }
+
 
                 .text {
                     line-height: 36px;
-                    padding: 0 16px;
+                    margin: 0 16px;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
@@ -560,6 +617,7 @@ const classifyButton = (index: number, key: string) => {
                     .textLeft {
                         display: flex;
                         align-items: center;
+                        cursor: pointer;
 
                         .textContent {
                             padding-left: 8px;
@@ -597,8 +655,11 @@ const classifyButton = (index: number, key: string) => {
         }
     }
 
+    :deep(.fits-dialog .el-dialog__footer .el-button) {
+        border-radius: 2px;
+    }
 
-    :deep(.Roles-baseDialog) {
+    :deep(.Dicts-baseDialog) {
 
         .el-dialog__header {
             display: none;
@@ -609,11 +670,41 @@ const classifyButton = (index: number, key: string) => {
             padding-bottom: 20px;
         }
     }
+
+    :deep(.onfooter) {
+        .el-dialog__body {
+            .dialog-body {
+                .el-scrollbar {
+                    .el-scrollbar__wrap {
+                        .el-scrollbar__view {
+                            padding: 0px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 </style>
-<style>
+<style lang="scss">
 .Role-popover {
-    display: flex;
-    justify-content: center;
+    width: 110px !important;
+    min-width: 110px !important;
+    padding: 0 !important;
+    border-radius: 0px;
+
+    .btn {
+        padding: 0 !important;
+        width: 100%;
+        margin-right: 0px !important;
+
+        .el-button {
+            border: none;
+            font-size: 14px;
+            width: 100%;
+            height: 44px;
+            border-radius: 0;
+        }
+    }
 }
 </style>

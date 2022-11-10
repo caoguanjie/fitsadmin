@@ -3,7 +3,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { ElMessage } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 
@@ -11,7 +12,7 @@ const xGrid = ref<VxeGridInstance | any>()
 
 const gridOptions: FitsTableProps = {
     columns: [
-        { field: 'name', type: 'seq' },
+        { field: 'seq', type: 'seq' },
         { field: 'name', title: '姓名' },
         { field: 'phone', title: '电话' },
         { field: 'birth', title: '出生日期' },

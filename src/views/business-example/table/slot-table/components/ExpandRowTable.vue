@@ -12,7 +12,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 
@@ -23,7 +24,6 @@ const gridOptions: FitsTableProps = {
         { field: 'phone', title: '电话', },
         { field: 'birth', title: '出生日期' },
         { field: 'address', title: '地址', width: 320 },
-        { field: 'operation', title: '操作' },
     ],
     data: [
         { name: '王五', phone: '13224452121', birth: '1999-10-08', address: '广东省广州市天河区五山路东城小区5号楼401' },

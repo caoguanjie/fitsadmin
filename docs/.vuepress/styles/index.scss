@@ -154,3 +154,27 @@ table {
         box-sizing: border-box;
     }
 }
+
+.fits-grid {
+    .vxe-table--header,
+    .vxe-table--body,
+    .vxe-table--footer {
+        margin: 0;
+    }
+    thead {
+        tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        th {
+            border-top: 0;
+            border-bottom: 0;
+        }
+    }
+    tbody,
+    tfoot {
+        td {
+            border-top: 0;
+            border-bottom: 0;
+        }
+    }
+}

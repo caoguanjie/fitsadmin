@@ -99,7 +99,8 @@
 
 <script lang='ts' setup>
 import { ElMessage } from 'element-plus'
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const instance = ref()

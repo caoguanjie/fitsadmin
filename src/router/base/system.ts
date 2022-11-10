@@ -18,19 +18,20 @@ const systemRouter: RouteRecordRaw = {
                 {
                     path: "user",
                     name: "user",
-                    component: () => import("@/views/ready/index.vue"),
-                    meta: { title: "用户管理", icon: "" },
+                    component: () => import("@/views/system-manage/user/index.vue"),
+                    meta: { title: "用户管理" },
                 },
                 {
                     path: "roles",
                     name: "roles",
+
                     component: () => import("@/views/system-manage/roles/index.vue"),
                     meta: { title: "角色管理" },
                 },
                 {
                     path: "department",
                     name: "department",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/system-manage/department/index.vue"),
                     meta: { title: "部门管理" },
                 },
                 {

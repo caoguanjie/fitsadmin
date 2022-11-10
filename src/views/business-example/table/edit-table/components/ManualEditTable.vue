@@ -1,6 +1,6 @@
 <template>
     <fits-table :option="fitsTablePro" ref="xGrid">
-        <template #operation_default="{ row }">
+        <template #operation_default="{ slotProps: { row } }">
             <el-button @click="editRow(row)">
                 编辑
             </el-button>
@@ -9,7 +9,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const gridOptions: FitsTableProps = {

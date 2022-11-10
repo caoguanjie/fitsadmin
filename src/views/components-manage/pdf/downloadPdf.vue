@@ -15,7 +15,8 @@ import useDownloadPdf from "@/utils/base/downloadPdf"
 import { ElButton } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 import Axios from "axios";
-import { FitsTable, FitsTableProps, useFitsTablePro } from "@/fits-components";
+import { FitsTable, FitsTableProps } from "@/fits-components";
+import { useFitsTablePro } from "@/fits-components/type";
 
 const data = {
     //pdf下载地址

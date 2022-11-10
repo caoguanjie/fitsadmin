@@ -1,13 +1,14 @@
 <template>
     <fits-table :option="fitsTablePro" ref="xGrid">
         <template #buttons>
-            <fits-input-search></fits-input-search>
+            <fits-input-search />
         </template>
     </fits-table>
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable, FitsInputSearch } from '@/fits-components';
+import { FitsTableProps, FitsTable, FitsInputSearch } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const gridOptions: FitsTableProps = {

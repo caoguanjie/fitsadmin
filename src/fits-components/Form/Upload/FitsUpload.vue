@@ -1,6 +1,10 @@
 <template>
     <div class="uploadpdf-example">
-        <el-button @click="visible = true" type="primary">开始上传</el-button>
+        <div @click="visible = true">
+        <slot name="mybutton">
+            <el-button type="primary">开始上传</el-button>
+        </slot>
+        </div>
         <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="props.showFooter" @cancel="onCancel"
             @submit="onSubmit">
             <div class="uploadState">

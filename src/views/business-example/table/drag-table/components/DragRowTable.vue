@@ -1,5 +1,5 @@
 <template>
-    <fits-table :option="fitsTablePro" ref="xGrid">
+    <fits-table :option="fitsTablePro" ref="xGrid" class="DragRowTable">
         <template #dragDefault>
             <span class="drag-btn">
                 <i class="vxe-icon-num-list"></i>
@@ -9,7 +9,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, useFitsTablePro, FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTable } from '@/fits-components';
+import { useFitsTablePro } from '@/fits-components/type'
 import Sortable from 'sortablejs';
 import { VxeGridInstance } from 'vxe-table';
 
@@ -43,7 +44,7 @@ onMounted(() => {
 })
 
 function setDrag() {
-    const el = document.querySelector(".body--wrapper>.vxe-table--body tbody")
+    const el = document.querySelector(".DragRowTable .body--wrapper>.vxe-table--body tbody")
     sortable.value = Sortable.create(el, {
         onEnd: (evt: any) => {
             if (evt.oldIndex === evt.newIndex) return

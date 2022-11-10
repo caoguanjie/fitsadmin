@@ -13,6 +13,32 @@ export const getMenuList = (params: any, pagingParams: PagingParams) =>
         params: params,
         pagingParams: pagingParams
     })
+export const getOrgin = (params: any) =>
+    http({
+        url: 'departmentList',
+        method: 'get',
+        params: params,
+    })
+export const getUserList = (params: any, pagingParams: PagingParams) =>
+    http({
+        url: 'UserList',
+        method: 'get',
+        params: params,
+        pagingParams: pagingParams
+    })
+
+export const getDepartment = ()=>
+    http({
+        url:"department/manager/getDepartmentList",
+        method:'get'
+    })
+export const getDepartmentTableList = (params: any, pagingParams: PagingParams)=> 
+http({
+    url:"department/manager/getDepartmentDatatable",
+    method:'get',
+    params: params,
+    pagingParams: pagingParams
+})
 
 /**
 * @description 角色管理--角色列表列表
@@ -26,6 +52,9 @@ export const getRoleList = (params: any, pagingParams: PagingParams) =>
         params: params,
         pagingParams: pagingParams
     })
+
+     /**
+
 
     /**
 * @description 角色管理--角色列表列表

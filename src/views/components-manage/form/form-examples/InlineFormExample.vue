@@ -3,7 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { FitsFormCreateModel, FitsFormCreate } from '@/fits-components';
+import { FitsFormCreate } from '@/fits-components';
+import { FitsFormCreateModel } from '@/fits-components/type'
 
 const inlineForm = reactive(
     new FitsFormCreateModel({
