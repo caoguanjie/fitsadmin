@@ -3,8 +3,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { FitsTableProps, useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const xGrid = ref<VxeGridInstance | any>()
@@ -31,7 +31,7 @@ const gridOptions: FitsTableProps = {
         form: true, // 必须关闭表单代理，否则无法赋表单默认值
         autoLoad: false,
         ajax: {
-            query: ({ form }: any) => {
+            query: ({ form }) => {
                 return new Promise(resolve => {
                     // 文档看不到请求效果，所以用alert来展示
                     alert(`表单参数：${JSON.stringify(form)}`)

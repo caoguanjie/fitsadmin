@@ -217,9 +217,9 @@ function isLastView() {
 function refreshSelectedTag(view: TagView) {
   console.log(view)
   tagsView.delCachedView(view);
-  const { fullPath } = view;
+  const { fullPath, query } = view;
   nextTick(() => {
-    router.replace({ path: '/redirect' + fullPath }).catch((err) => {
+    router.replace({ path: '/redirect' + fullPath, query }).catch((err) => {
       console.warn(err);
     });
   });

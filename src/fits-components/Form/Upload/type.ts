@@ -1,4 +1,4 @@
-import { ExtractPropTypes} from "vue"
+import { ExtractPropTypes } from "vue"
 /**
  * 上传组件的配置
  */
@@ -7,7 +7,7 @@ export const uploadProps = {
     url: {
         type: String,
         default: 'http://192.168.32.108:3000/mock/78/api/uploadPDF',
-        require:true
+        require: true
     },
     //设置上传请求方法
     method: {
@@ -78,6 +78,10 @@ export const uploadProps = {
     cancelText: {
         type: String,
         default: "取消"
+    },
+    ClassName: {
+        type: String,
+        default: ""
     }
 }
 export type UploadProps = ExtractPropTypes<typeof uploadProps> 

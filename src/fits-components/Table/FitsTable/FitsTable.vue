@@ -90,6 +90,12 @@ function checkAllSlots() {
 
     // 遍历搜索区域表单项的插槽
     XEUtils.eachTree(state.gridOption.formConfig?.items, (config) => {
+        //未设置输入框默认值时将默认值设置为空字符串
+        // if (config?.itemRender) {
+        //     if (!config.itemRender.defaultValue) {
+        //         config.itemRender.defaultValue = ""
+        //     }
+        // }
         if (config?.slots) {
             XEUtils.each(config.slots, (value) => {
                 arr.push(value);
@@ -114,6 +120,7 @@ function checkAllSlots() {
             });
         }
     });
+
     state.dynamicSlotNameArray = [...arr];
     const { log } = useLogger()
     arr.length && log.primary('FitsTable组件已有插槽', state.dynamicSlotNameArray)
@@ -281,6 +288,7 @@ watch(() => props.option, (newValue) => {
 
 .fits-grid.is--maximize {
     padding: 0 1em;
+    margin: 0;
 }
 
 .fits-grid {
@@ -306,10 +314,12 @@ watch(() => props.option, (newValue) => {
     }
 
     .vxe-toolbar {
+        padding: 0 1px 0 0;
 
         .vxe-buttons--wrapper:not(:empty),
         .vxe-tools--wrapper:not(:empty) {
             padding: 16px 0;
+            margin: 0.6em 0;
         }
 
         & .vxe-checkbox--icon {

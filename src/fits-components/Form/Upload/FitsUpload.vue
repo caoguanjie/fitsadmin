@@ -1,12 +1,12 @@
 <template>
     <div class="uploadpdf-example">
         <div @click="visible = true">
-        <slot name="mybutton">
-            <el-button type="primary">开始上传</el-button>
-        </slot>
+            <slot name="mybutton">
+                <el-button type="primary">开始上传</el-button>
+            </slot>
         </div>
         <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="props.showFooter" @cancel="onCancel"
-            @submit="onSubmit">
+            @submit="onSubmit" :class="props.ClassName">
             <div class="uploadState">
                 <div class="statebox-success" v-if="state == 1">
                     <el-image style="width: 20px; height: 20px;margin-right:10px" :src="images.img2" />
@@ -29,7 +29,7 @@
                         </div>
                     </slot>
                 </div>
-                <el-upload ref="uploadRef" class="upload-demo" :method="props.method" :action="props.url"
+                <el-upload ref="uploadRef" class="upload-demo" :method="props.method" :action="translateUrl(props.url)"
                     :data="props.data" drag :disabled="props.disabled" :name="props.name" :on-remove="onRemove"
                     :on-change="onChange" :show-file-list="props.showfile" :on-progress="onProgress"
                     :on-success="onSuccess" :on-error="onError" :on-preview="onPreview" :before-upload="beforeUpload"
@@ -76,21 +76,55 @@
 </template>
 
 <script setup lang="ts" name="FitsUpload">
-
+import { onMounted, reactive, ref } from 'vue';
 import { FitsDialog } from '@/fits-components/FeedBack/Dialog'
 import type { UploadInstance } from 'element-plus'
 import { fileMIMEType } from "@/utils/base/getFileType"
 import { uploadProps } from "./type"
 
+
 const uploadRef = ref<UploadInstance>()
 const visible = ref(false)
 let images = {
-    img1: new URL(`../../../assets/document-icons/png-success/unknow.png`, import.meta.url).href,
+    img1: new URL(`../../../assets/document-icons/state/unknow.png`, import.meta.url).href,
     img2: new URL(`../../../assets/document-icons/state/success.png`, import.meta.url).href,
-    img3: new URL(`../../../assets/document-icons/state/error.png`, import.meta.url).href
+    img3: new URL(`../../../assets/document-icons/state/error.png`, import.meta.url).href,
+    excel: new URL(`../../../assets/document-icons/png/excel.png`, import.meta.url).href,
+    pdf: new URL(`../../../assets/document-icons/png/pdf.png`, import.meta.url).href,
+    ppt: new URL(`../../../assets/document-icons/png/ppt.png`, import.meta.url).href,
+    zip: new URL(`../../../assets/document-icons/png/zip.png`, import.meta.url).href,
+    exe: new URL(`../../../assets/document-icons/png/exe.png`, import.meta.url).href,
+    wps: new URL(`../../../assets/document-icons/png/wps.png`, import.meta.url).href,
+    txt: new URL(`../../../assets/document-icons/png/txt.png`, import.meta.url).href,
+    images: new URL(`../../../assets/document-icons/png/image.png`, import.meta.url).href,
+    video: new URL(`../../../assets/document-icons/png/video.png`, import.meta.url).href,
+    audio: new URL(`../../../assets/document-icons/png/audio.png`, import.meta.url).href,
+    docx: new URL(`../../../assets/document-icons/png/word.png`, import.meta.url).href,
+    apk: new URL(`../../../assets/document-icons/png/apk.png`, import.meta.url).href,
+    unknow: new URL(`../../../assets/document-icons/png/unknow.png`, import.meta.url).href,
+    success: new URL(`../../../assets/document-icons/state/success.png`, import.meta.url).href,
+    error: new URL(`../../../assets/document-icons/state/error.png`, import.meta.url).href,
+}
+let successImages = {
+    excel: new URL(`../../../assets/document-icons/png-success/excel.png`, import.meta.url).href,
+    pdf: new URL(`../../../assets/document-icons/png-success/pdf.png`, import.meta.url).href,
+    ppt: new URL(`../../../assets/document-icons/png-success/ppt.png`, import.meta.url).href,
+    zip: new URL(`../../../assets/document-icons/png-success/zip.png`, import.meta.url).href,
+    exe: new URL(`../../../assets/document-icons/png-success/exe.png`, import.meta.url).href,
+    wps: new URL(`../../../assets/document-icons/png-success/wps.png`, import.meta.url).href,
+    txt: new URL(`../../../assets/document-icons/png-success/txt.png`, import.meta.url).href,
+    images: new URL(`../../../assets/document-icons/png-success/image.png`, import.meta.url).href,
+    video: new URL(`../../../assets/document-icons/png-success/video.png`, import.meta.url).href,
+    audio: new URL(`../../../assets/document-icons/png-success/audio.png`, import.meta.url).href,
+    docx: new URL(`../../../assets/document-icons/png-success/word.png`, import.meta.url).href,
+    apk: new URL(`../../../assets/document-icons/png-success/apk.png`, import.meta.url).href,
 }
 
 const props = defineProps(uploadProps)
+
+const translateUrl = (url: string) => {
+    return new URL(url, import.meta.url).href
+}
 
 const dialogProp = reactive({
     width: props.width,
@@ -149,41 +183,39 @@ onMounted(() => {
     //如果只允许上传一种类型文件的初始图标
     if (props.type.length == 1) {
         let ft = props.type[0]
-        let typeName = ""
         if (ft == 'excel ') {
-            typeName = "excel"
+            images.img1 = images.excel
         } else if (ft == 'pdf') {
-            typeName = 'pdf'
+            images.img1 = images.pdf
         } else if (ft == 'ppt') {
-            typeName = 'ppt'
+            images.img1 = images.ppt
         } else if (ft == "zip") {
-            typeName = "zip"
+            images.img1 = images.zip
         } else if (ft == "exe") {
-            typeName = "exe"
+            images.img1 = images.exe
         } else if (ft == "wps") {
-            typeName = "wps"
+            images.img1 = images.wps
         } else if (ft == "txt") {
-            typeName = "txt"
+            images.img1 = images.txt
         } else if (ft == "images") {
-            typeName = "image"
+            images.img1 = images.images
         } else if (ft == "video") {
-            typeName = "video"
+            images.img1 = images.video
         } else if (ft == "audio") {
-            typeName = "audio"
+            images.img1 = images.audio
         } else if (ft == 'docx') {
-            typeName = "word"
+            images.img1 = images.docx
         } else if (ft == 'apk') {
-            typeName = "apk"
+            images.img1 = images.apk
         }
         //除以上文件类型外都显示为未知文件
         else {
-            typeName = "unknow"
+            images.img1 = images.unknow
         }
-        images.img1 = new URL(`../../../assets/document-icons/png/` + typeName + `.png`, import.meta.url).href
     }
     //允许上传多种类型的初始图标
     else {
-        images.img1 = new URL(`../../../assets/document-icons/png/unknow.png`, import.meta.url).href
+        images.img1 = images.unknow
     }
 })
 //上传成功
@@ -192,36 +224,34 @@ const onSuccess = (response: any, uploadFile: any, uploadFiles: any) => {
     let suffix = uploadFile.name.split('.')
     let ft = suffix[suffix.length - 1]
     //根据上传成功的文件后缀决定上传成功的图标
-    let typeName = ""
     if (ft == 'xls' || ft == 'xlsx') {
-        typeName = "excel"
+        images.img1 = successImages.excel
     } else if (ft == 'pdf') {
-        typeName = 'pdf'
+        images.img1 = successImages.pdf
     } else if (ft == 'ppt') {
-        typeName = 'ppt'
+        images.img1 = successImages.ppt
     } else if (ft == "zip" || ft == 'z' || ft == '7z' || ft == 'rar') {
-        typeName = "zip"
+        images.img1 = successImages.zip
     } else if (ft == "exe") {
-        typeName = "exe"
+        images.img1 = successImages.exe
     } else if (ft == "wps") {
-        typeName = "wps"
+        images.img1 = successImages.wps
     } else if (ft == "txt") {
-        typeName = "txt"
+        images.img1 = successImages.txt
     } else if (ft == "jpeg" || ft == "jpg" || ft == 'png' || ft == 'gif' || ft == 'svg') {
-        typeName = "image"
+        images.img1 = successImages.images
     } else if (ft == "mp4" || ft == 'm4v' || ft == 'mov' || ft == 'mpe' || ft == 'mpeg' || ft == 'mpg' || ft == '3gp' || ft == 'asf' || ft == 'avi') {
-        typeName = "video"
+        images.img1 = successImages.video
     } else if (ft == "m3u" || ft == "m4a" || ft == "m4b" || ft == "m4p" || ft == "mpga" || ft == 'mp2' || ft == 'mp3' || ft == 'ogg' || ft == "rmvb" || ft == 'wav' || ft == 'wma' || ft == 'wmv') {
-        typeName = "audio"
+        images.img1 = successImages.audio
     } else if (ft == 'docx' || ft == 'doc') {
-        typeName = "word"
+        images.img1 = successImages.docx
     } else if (ft == 'apk') {
-        typeName = "apk"
+        images.img1 = successImages.apk
     }
     else {
-        typeName = "unknow"
+        images.img1 = images.unknow
     }
-    images.img1 = new URL(`../../../assets/document-icons/png-success/` + typeName + `.png`, import.meta.url).href
     emit('onSuccess', response, uploadFile, uploadFiles)
 }
 //上传失败
@@ -255,7 +285,7 @@ const beforeUpload = (rawFile: any,) => {
     if (rawFile.size / 1024 / 1024 > props.size) {
         state.value = 2
         reason.value = " （文件过大）"
-        images.img1 = new URL(`../../../assets/document-icons/png/unknow.png`, import.meta.url).href
+        images.img1 = images.unknow
         return false
     }
     //限制格式,m4u,mpga,mpg4,m4b,m4p,rmvb,7z,rar
@@ -275,7 +305,7 @@ const beforeUpload = (rawFile: any,) => {
             //如果遍历完propsType都不符合则返回false停止上传
             state.value = 2
             reason.value = " （文件格式错误）"
-            images.img1 = new URL(`../../../assets/document-icons/png/unknow.png`, import.meta.url).href
+            images.img1 = images.unknow
             return false
         }
     }
@@ -370,4 +400,3 @@ const onSubmit = () => {
     }
 }
 </style>
-  

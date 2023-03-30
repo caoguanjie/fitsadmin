@@ -116,37 +116,37 @@ export const businessRouter: RouteRecordRaw = {
             path: "Excel",
             name: "Excel",
             redirect: "/businessRouter/Excel/ExploreExcel",
-            component: () => import("@/views/ready/index.vue"),
+            component: () => import("@/views/business-example/index.vue"),
             meta: { title: "Excel功能", roles: ["admin", "editor"], icon: "fits-execle" },
             children: [
                 {
                     path: "ExploreExcel",
                     name: "ExploreExcel",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/excel/exportBase.vue"),
                     meta: { title: "导出Excel" },
                 },
                 {
                     path: "ExploreSelected",
                     name: "ExploreSelected",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/excel/exportSelected.vue"),
                     meta: { title: "导出已选择项" },
                 },
                 {
                     path: "ExploreMultistageTableHead",
                     name: "ExploreMultistageTableHead",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/excel/exportHeaders.vue"),
                     meta: { title: "导出多级表头" },
                 },
                 {
                     path: "UploadExcel",
                     name: "UploadExcel",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/excel/uploadExcel.vue"),
                     meta: { title: "上传Excel" },
                 },
                 {
                     path: "DownloadExcel",
                     name: "DownloadExcel",
-                    component: () => import("@/views/ready/index.vue"),
+                    component: () => import("@/views/business-example/excel/downExcel.vue"),
                     meta: { title: "下载Excel" },
                 },
             ],
@@ -223,7 +223,7 @@ export const businessRouter: RouteRecordRaw = {
                 },
             ],
         },
-        
+
         {
             path: "calendars",
             name: "Calendars",

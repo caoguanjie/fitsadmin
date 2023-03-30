@@ -7,24 +7,29 @@
                         <el-input class="searchBox" placeholder="关键词搜索" :prefix-icon="Search" />
                     </div>
                     <div class="contain">
-                        <el-tree ref="treeRef" :data="roleClass" default-expand-all node-key="id" highlight-current
-                            :props="defaultProps" @check-change="handleCheckChange">
-                            <template #default="scope">
-                                <div class="treeItem" style="display:flex;align-items:flex-end;" @click="clickTree">
-                                    <div class="parentItem" v-if="'children' in scope.data" style="padding-right:4px;">
-                                        <el-icon>
-                                            <el-image style="width: 100%; height: 100%" :src="images.img1" />
-                                        </el-icon>
+
+                        <el-scrollbar height="480px">
+                            <el-tree ref="treeRef" :data="roleClass" default-expand-all node-key="id" highlight-current
+                                :props="defaultProps" @check-change="handleCheckChange">
+                                <template #default="scope">
+                                    <div class="treeItem" style="display:flex;align-items:flex-end;">
+                                        <div class="parentItem" v-if="'children' in scope.data"
+                                            style="padding-right:4px;">
+                                            <el-icon>
+                                                <el-image style="width: 100%; height: 100%" :src="images.img1" />
+                                            </el-icon>
+                                            {{ scope.data.name }}
+                                        </div>
+                                        <div class="ChildItem" v-else style="padding-right:4px;" @click="clickTree">
+                                            <el-icon>
+                                                <el-image style="width: 100%; height: 100%" :src="images.img2" />
+                                            </el-icon>
+                                            {{ scope.data.name }}
+                                        </div>
                                     </div>
-                                    <div class="ChildItem" v-else style="padding-right:4px;">
-                                        <el-icon>
-                                            <el-image style="width: 100%; height: 100%" :src="images.img2" />
-                                        </el-icon>
-                                    </div>
-                                    {{ scope.data.Cname }}
-                                </div>
-                            </template>
-                        </el-tree>
+                                </template>
+                            </el-tree>
+                        </el-scrollbar>
                     </div>
                 </div>
                 <div class="leftTable">
@@ -59,8 +64,10 @@
                 </div>
                 <div class="contain">
                     <el-checkbox label="全选" size="large" v-model="checkAll" @change="handleCheckAllChange" />
-                    <el-tree ref="treeRef" :data="treeData" show-checkbox default-expand-all node-key="id"
-                        highlight-current :props="defaultProps" @check-change="handleCheckChange" />
+                    <el-scrollbar height="480px">
+                        <el-tree ref="treeRef" :data="treeData" show-checkbox default-expand-all node-key="id"
+                            highlight-current :props="defaultProps" @check-change="handleCheckChange" />
+                    </el-scrollbar>
                 </div>
             </div>
         </div>
@@ -74,7 +81,7 @@
 <script lang='ts' setup>
 import { ref } from 'vue'
 import XEUtils from 'xe-utils';
-import { getRoleList } from '@/api/base/system';
+import { getRoleList, getDepartment } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance } from 'vxe-table';
@@ -198,67 +205,14 @@ const gridOptions: FitsTableProps = {
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
 
-onMounted(() => {
-
-    nextTick(() => {
-
-        // xGrid.value?.xGrid?.commitProxy('query')
-    })
-    setTimeout(() => {
-
-        // gridOptions.id = 'test'
-        // gridOptions.formConfig = {}
-    }, 2000)
+onMounted(async () => {
+    const res = await getDepartment()
+    roleClass.value = res.ReturnData.TableList
 })
 //左侧角色管理数据
-const roleClass = ref([
-    {
-        Cname: '后勤',
-        Cdescribe: ""
-    },
-    {
-        Cname: '财务',
-        Cdescribe: ""
-    },
-    {
-        Cname: '产品中心',
-        Cdescribe: ""
-    },
-    {
-        Cname: '前端',
-        Cdescribe: ""
-    },
-    {
-        Cname: '设计',
-        Cdescribe: ""
-    },
-    {
-        Cname: '维护中心',
-        Cdescribe: ""
-    },
-    {
-        Cname: '测试',
-        Cdescribe: ""
-    },
-    {
-        Cname: '运维',
-        Cdescribe: ""
-    },
-    {
-        Cname: '需求',
-        Cdescribe: ""
-    },
-    {
-        Cname: '售后',
-        Cdescribe: ""
-    },
-    {
-        Cname: '维护',
-        Cdescribe: ""
-    }
-])
+const roleClass = ref()
 //菜单权限管理列表数据
-const treeData: Tree[] = [
+const treeData = [
     {
         id: 1,
         label: '销售人员',
@@ -380,37 +334,59 @@ const clickTree = () => {
     font-size: 12px;
     min-height: 665px;
 
+
     .relate-content {
-        display: flex;
         background: #F2F2F2;
         padding: 8px 8px 0px;
-        overflow: hidden;
+        display: flex;
 
         .relateLeft {
             background: #FFFFFF;
-            display: flex;
-            flex: 1;
             margin-right: 8px;
+            font-size: 14px;
+            width: 100%;
 
             .leftTree {
-                min-width: 200px;
                 padding: 16px 8px;
                 border-right: 1px solid #DCDFE6;
+                min-width: 220px;
+                float: left;
+                height: 100%;
 
                 .contain {
                     padding-top: 8px;
 
                     :deep(.treeItem) {
                         width: 100%;
+
+                        .ChildItem {
+                            font-size: 12px;
+                        }
+                    }
+
+                    :deep(.el-tree:first-child>.el-tree-node>.el-tree-node__content:first-child>.treeItem) {
+                        font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+                        font-weight: 800;
+                        color: #303133;
+                        font-size: 14px;
                     }
                 }
             }
 
             .leftTable {
-                flex: 1;
+                overflow: hidden;
 
                 .scrollContent {
                     padding: 0px 16px 0 17px;
+
+                    .tableContent {
+                        overflow: hidden;
+
+                    }
+
+                    :deep(.el-scrollbar__wrap) {
+                        overscroll-behavior: contain;
+                    }
 
                     .tableBottom {
                         background: #F3F3F3;
@@ -440,7 +416,7 @@ const clickTree = () => {
         .relateRight {
             background: #FFFFFF;
             padding: 8px;
-            min-width: 200px;
+            min-width: 220px;
 
             .title {
                 font-weight: bold;
@@ -463,7 +439,17 @@ const clickTree = () => {
             border-radius: 2px;
             display: flex;
             align-items: flex-end;
+            line-height: 16px;
+            height: auto;
         }
+    }
+
+    :deep(.body--wrapper) {
+        overscroll-behavior: contain;
+    }
+
+    :deep(.el-button--large) {
+        padding: 8px 24px;
     }
 }
 </style>

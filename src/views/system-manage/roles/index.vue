@@ -20,75 +20,44 @@
                     </div>
                     <el-collapse-transition>
                         <div v-show="isShow">
-                            <!-- <div class="text" v-for="(item, key) in roleClass" :key="key">
-                                <div class=" textLeft" @click="clickTree">
-                                    <el-icon>
-                                        <UserFilled :color='"#007dff"' />
-                                    </el-icon>
-                                    <div class="textContent">
-                                        {{ item.Cname }}
-                                    </div>
-                                </div>
-                                <el-icon class="moreButton">
-                                    <el-popover placement="bottom" title="" trigger="click"
-                                        :popper-class="'Role-popover'" :hide-after=0>
-                                        <template #reference>
-                                            <MoreFilled :color='"#999999"' />
-                                        </template>
-
-                                        <div class="btn">
-                                            <el-button @click="classifyButton(key, 'editClass')">编辑</el-button>
-                                        </div>
-                                        <div class="btn">
-                                            <el-button @click="classifyButton(key, 'delete')">删除</el-button>
-                                        </div>
-                                    </el-popover>
-                                </el-icon>
-                            </div> -->
-                            <el-tree :data="roleClass" node-key="id" default-expand-all :expand-on-click-node="false"
-                                @node-click="clickTree">
-                                <template #default="{ data }">
-                                    <span class="custom-tree-node">
-                                        <el-popover placement="bottom" title="" trigger="contextmenu"
-                                            :popper-class="'Role-popover'" :hide-after=0>
-                                            <template #reference>
-                                                <div class=" text">
-                                                    <div class=" textLeft">
-                                                        <div class="textContent">
-                                                            <span>{{ data.Cname }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <el-icon class="moreButton">
-                                                        <el-popover placement="bottom" title="" trigger="click"
-                                                            :popper-class="'Role-popover'" :hide-after=0>
-                                                            <template #reference>
-                                                                <MoreFilled :color='"#999999"' />
-                                                            </template>
-                                                            <div class="btn">
-                                                                <el-button @click="classifyButton(data, 'editClass')">编辑
-                                                                </el-button>
-                                                            </div>
-                                                            <div class="btn">
-                                                                <el-button @click="classifyButton(data, 'deleteClass')">
-                                                                    删除
-                                                                </el-button>
-                                                            </div>
-                                                        </el-popover>
+                            <el-scrollbar class="treeScrollbar">
+                                <el-tree :data="roleClass" node-key="id" default-expand-all
+                                    :expand-on-click-node="false">
+                                    <!-- <el-tree :data="roleClass" node-key="id" default-expand-all :expand-on-click-node="false"
+                                @node-click="clickTree"> -->
+                                    <template #default="{ data }">
+                                        <span class="custom-tree-node">
+                                            <div class=" text">
+                                                <div class=" textLeft" @click="clickTree">
+                                                    <el-icon>
+                                                        <UserFilled :color="'#007DFF'" />
                                                     </el-icon>
+                                                    <div class="textContent">
+                                                        <span>{{ data.Cname }}</span>
+                                                    </div>
                                                 </div>
-                                            </template>
-                                            <div class="btn">
-                                                <el-button @click="classifyButton(data, 'editClass')">编辑
-                                                </el-button>
+                                                <el-icon class="moreButton">
+                                                    <el-popover placement="bottom" title="" trigger="click"
+                                                        :popper-class="'Role-popover'" :hide-after=0>
+                                                        <template #reference>
+                                                            <MoreFilled :color='"#999999"' />
+                                                        </template>
+                                                        <div class="btn">
+                                                            <el-button @click="classifyButton(data, 'editClass')">编辑
+                                                            </el-button>
+                                                        </div>
+                                                        <div class="btn">
+                                                            <el-button @click="classifyButton(data, 'delete')">
+                                                                删除
+                                                            </el-button>
+                                                        </div>
+                                                    </el-popover>
+                                                </el-icon>
                                             </div>
-                                            <div class="btn">
-                                                <el-button @click="classifyButton(data, 'deleteClass')">删除
-                                                </el-button>
-                                            </div>
-                                        </el-popover>
-                                    </span>
-                                </template>
-                            </el-tree>
+                                        </span>
+                                    </template>
+                                </el-tree>
+                            </el-scrollbar>
                         </div>
                     </el-collapse-transition>
                 </div>
@@ -115,26 +84,28 @@
             </div>
         </div>
         <div class="role-right">
-            <div class="title">菜单权限管理列表</div>
-            <div class="search">
-                <el-input class="searchBox" placeholder="关键词搜索" :prefix-icon="Search" />
-                <el-button class="Savebotton" @click="savePower">保存</el-button>
-            </div>
-            <div class="contain">
-                <el-checkbox label="全选" size="large" v-model="checkAll" @change="handleCheckAllChange" />
-                <el-tree ref="treeRef" :data="treeData" show-checkbox default-expand-all node-key="id" highlight-current
-                    :props="defaultProps" @check-change="handleCheckChange" />
-            </div>
+            <el-scrollbar height="calc(100vh-200px)">
+                <div class="title">菜单权限管理列表</div>
+                <div class="search">
+                    <el-input class="searchBox" placeholder="关键词搜索" :prefix-icon="Search" />
+                    <el-button class="Savebotton" @click="savePower">保存</el-button>
+                </div>
+                <div class="contain">
+                    <el-checkbox label="全选" size="large" v-model="checkAll" @change="handleCheckAllChange" />
+                    <el-tree ref="treeRef" :data="treeData" show-checkbox default-expand-all node-key="id"
+                        highlight-current :props="defaultProps" @check-change="handleCheckChange" />
+                </div>
+            </el-scrollbar>
         </div>
         <!-- 数据弹窗（新增角色、角色分类、编辑角色分类） -->
         <fits-dialog :class="'onfooter'" :visible="dialogData.operateRole.visible"
             :dialogProp="dialogData.operateRole.props" @cancel="closeDialog('addRole')" :showFooter="false">
             <add-role v-if="dialogData.operateRole.key == 'addRole' || dialogData.operateRole.key == 'addClass'"
                 @dataChange="dataChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data"
-                @closeDialog="closeDialog" />
+                @closeDialog="closeDialog" :roleClass="roleClass" />
             <edit-role v-if="dialogData.operateRole.key == 'editRole' || dialogData.operateRole.key == 'editClass'"
                 @dataChange="dataChange" :keys="dialogData.operateRole.key" :setData="dialogData.operateRole.data"
-                @closeDialog="closeDialog" />
+                @closeDialog="closeDialog" :roleClass="roleClass" />
         </fits-dialog>
         <!-- 工具栏操作确认弹窗（关联、启用、禁用、导出、删除） -->
         <fits-dialog :class="'Roles-baseDialog'" :visible="dialogData.baseRole.visible"
@@ -153,7 +124,7 @@
 
 <script lang='ts' setup>
 import XEUtils from 'xe-utils';
-import { Search, CirclePlusFilled, MoreFilled, UserFilled, CaretBottom, CaretRight } from '@element-plus/icons-vue'
+import { Search, CirclePlusFilled, MoreFilled, CaretBottom, CaretRight, UserFilled } from '@element-plus/icons-vue'
 import { getRoleList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
@@ -310,16 +281,6 @@ const gridOptions: FitsTableProps = {
         //     number: '2',
         // },
         items: [
-            // { field: 'keyword', title: '模糊搜索', itemRender: { name: 'ElInput', props: { placeholder: '请输入菜单关键字、权限标识、路径' } } },
-            // { field: 'sex', span: 3, title: '性别', itemRender: { name: '$select', options: [{ value: '0', label: '女' }, { value: '1', label: '男' }], props: { placeholder: '请选择性别' } } },
-            // { field: 'role', span: 3, title: '角色', itemRender: { name: '$input', props: { placeholder: '请输入角色' } } },
-            // { field: 'age1', span: 3, title: '年龄1', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            // { field: 'age2', span: 3, title: '年龄2', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            // { field: 'age3', span: 3, title: '年龄3', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            // { field: 'age4', span: 3, title: '年龄5', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            // { field: 'age5', span: 3, title: '年龄5', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            // { field: 'age6', span: 3, title: '年龄6', itemRender: { name: '$input', props: { type: 'number', placeholder: '请输入年龄' } } },
-            // { field: 'flag', span: 3, title: '开关', itemRender: { name: '$switch', props: { openLabel: '是', closeLabel: '否' } } },
             { field: 'name', span: 3, title: '角色名称', itemRender: { name: 'ElInput', props: { placeholder: '请输入角色名称' } } },
             { field: 'code', span: 3, title: '角色编码', itemRender: { name: 'ElInput', props: { placeholder: '请输入角色编码' } } },
         ]
@@ -339,11 +300,11 @@ const gridOptions: FitsTableProps = {
         { field: 'Sort', title: '排序', minWidth: 100 },
         { field: 'Ustate', title: '角色状态', slots: { default: 'state' }, minWidth: 100 },
         // { field: 'Operation', title: '操作列', minWidth: 150, slots: { default: 'operate' }, fixed: 'right' }
-        { field: 'Operation', title: '操作列', width: 200, fixed: 'right', slots: { default: 'operate' }, contentRender: { name: 'TableOpeate' } }
+        { field: 'Operation', title: '操作', width: 200, fixed: 'right', slots: { default: 'operate' }, contentRender: { name: 'TableOpeate' } }
     ],
     toolbarConfig: {
         buttons: [
-            { code: 'addRole', name: '添加角色', status: 'primary' },
+            { code: 'addRole', name: '新增角色', status: 'primary' },
             { code: 'RoleRelation', name: '关联用户' },
             { code: 'RoleUse', name: '启用' },
             { code: 'Roledisable', name: '禁用' },
@@ -353,51 +314,6 @@ const gridOptions: FitsTableProps = {
         tools: {
             enabled: true
         },
-        // refresh: {
-        //     // 刷新
-        //     icon: 'vxe-icon-refresh'
-        // },
-        // zoom: true,
-        // export: false,
-        // custom: false,
-        // tools: [
-        //     {
-        //         toolRender: {
-        //             name: 'ToolbarSearch', events: {
-        //                 click: () => {
-        //                     console.log('关闭搜索')
-        //                 }
-        //             }
-        //         }
-        //     },
-        //     { toolRender: { name: 'ToolbarSetting' } },
-        //     { toolRender: { name: 'ToolbarRefresh' } },
-
-        //     {
-        //         toolRender: {
-        //             name: 'ToolbarExport', events: {
-        //                 click: () => {
-
-        //                     // xGrid.value?.openExport()
-        //                 }
-        //             },
-        //         }
-        //     },
-        //     {
-        //         toolRender: { name: 'ToolbarFullscreen' }
-        //     },
-        //     {
-        //         toolRender: {
-        //             name: 'ToolbarCustomColumn', events: {
-        //                 click: () => {
-        //                     console.log(111);
-
-        //                 }
-        //             },
-
-        //         }
-        //     },
-        // ],
     },
 
     proxyConfig: {
@@ -482,6 +398,186 @@ const roleClass = ref([
     },
     {
         Cname: '维护',
+        Cdescribe: ""
+    },
+    {
+        Cname: '管理',
+        Cdescribe: ""
+    },
+    {
+        Cname: '财务',
+        Cdescribe: ""
+    },
+    {
+        Cname: '产品中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '前端',
+        Cdescribe: ""
+    },
+    {
+        Cname: '设计',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '测试',
+        Cdescribe: ""
+    },
+    {
+        Cname: '运维',
+        Cdescribe: ""
+    },
+    {
+        Cname: '需求',
+        Cdescribe: ""
+    },
+    {
+        Cname: '售后',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护',
+        Cdescribe: ""
+    },
+    {
+        Cname: '管理',
+        Cdescribe: ""
+    },
+    {
+        Cname: '财务',
+        Cdescribe: ""
+    },
+    {
+        Cname: '产品中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '前端',
+        Cdescribe: ""
+    },
+    {
+        Cname: '设计',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '测试',
+        Cdescribe: ""
+    },
+    {
+        Cname: '运维',
+        Cdescribe: ""
+    },
+    {
+        Cname: '需求',
+        Cdescribe: ""
+    },
+    {
+        Cname: '售后',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护',
+        Cdescribe: ""
+    },
+    {
+        Cname: '管理',
+        Cdescribe: ""
+    },
+    {
+        Cname: '财务',
+        Cdescribe: ""
+    },
+    {
+        Cname: '产品中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '前端',
+        Cdescribe: ""
+    },
+    {
+        Cname: '设计',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '测试',
+        Cdescribe: ""
+    },
+    {
+        Cname: '运维',
+        Cdescribe: ""
+    },
+    {
+        Cname: '需求',
+        Cdescribe: ""
+    },
+    {
+        Cname: '售后',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护',
+        Cdescribe: ""
+    },
+    {
+        Cname: '管理',
+        Cdescribe: ""
+    },
+    {
+        Cname: '财务',
+        Cdescribe: ""
+    },
+    {
+        Cname: '产品中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '前端',
+        Cdescribe: ""
+    },
+    {
+        Cname: '设计',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护中心',
+        Cdescribe: ""
+    },
+    {
+        Cname: '测试',
+        Cdescribe: ""
+    },
+    {
+        Cname: '运维',
+        Cdescribe: ""
+    },
+    {
+        Cname: '需求',
+        Cdescribe: ""
+    },
+    {
+        Cname: '售后',
+        Cdescribe: ""
+    },
+    {
+        Cname: '维护',
+        Cdescribe: ""
+    },
+    {
+        Cname: '管理',
         Cdescribe: ""
     }
 ])
@@ -750,26 +846,27 @@ const clickTree = () => {
 </script>
 <style lang='scss' scoped>
 .role-manage {
+    height: 100%;
+    display: flex;
     user-select: none;
     font-size: 14px;
-    display: flex;
     margin: 0;
     padding: 16px 12px 0 12px;
     background: #F1F2F5;
     // height: calc(100vh - 50px - 40px - 16px - 32px);
 
     .role-left {
+        height: 100%;
         display: flex;
-        flex: 1;
         margin-right: 8px;
         background: #FFFFFF;
-        display: flex;
-        padding: 16px 12px 0 12px;
+        min-width: 240px;
 
         .left-classification {
+            float: left;
             border-right: 1px solid #DCDFE6;
             margin-right: 16px;
-            min-width: 240px;
+            padding: 16px 0 0 16px;
 
             .top {
                 display: flex;
@@ -800,10 +897,10 @@ const clickTree = () => {
 
 
                 .text {
-                    padding: 0 16px;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    padding: 0 15px 0 0;
 
                     .textLeft {
                         display: flex;
@@ -822,16 +919,22 @@ const clickTree = () => {
                             outline: none !important;
                         }
                     }
+
                 }
 
                 .text:hover {
                     background-color: #F5F7FA;
                 }
+
+                .treeScrollbar {
+                    height: calc(100vh - 225px);
+                }
             }
         }
 
         .left-contain {
-            flex: 1;
+            width: 100%;
+            overflow: hidden;
 
             .FromButton {
                 color: #007DFF;
@@ -853,7 +956,6 @@ const clickTree = () => {
     .role-right {
         background: #FFFFFF;
         padding: 16px 12px 0 16px;
-        min-width: 200px;
 
         .title {
             font-weight: bold;
@@ -898,6 +1000,10 @@ const clickTree = () => {
                 }
             }
         }
+    }
+
+    :deep(.body--wrapper) {
+        overscroll-behavior: contain;
     }
 }
 </style>

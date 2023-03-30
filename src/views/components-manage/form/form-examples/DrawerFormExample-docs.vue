@@ -3,7 +3,18 @@
         打开表单
     </el-button>
     <fits-form-dialog :option="dialogOpt" @submit="submitDialogForm" @cancel="dialogOpt.visible = false"
-        class="dialogFormExample" ref="formtypeRef" />
+        class="dialogFormExample" ref="formtypeRef">
+        <template #header>
+            <span>
+                头部插槽
+            </span>
+        </template>
+        <template #footer>
+            <span>
+                底部插槽
+            </span>
+        </template>
+    </fits-form-dialog>
 </template>
 
 <script setup lang="ts">
@@ -14,6 +25,7 @@ import { isHomeNumber, isPhoneNumber, isShortNumber } from '@/utils/is';
 const formtypeRef = ref()
 
 const dialogOpt = reactive({
+    width: '80%',
     visible: false,
     forms: [
         {

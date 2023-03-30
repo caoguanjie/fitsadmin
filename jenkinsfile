@@ -1,0 +1,39 @@
+
+pipeline{
+    agent any
+    
+    parameters {
+         choice choices: ['dev', 'prod'], description: '根据不同环境打包', name: 'environment'
+         choice choices: ['https://192.168.32.12/svn/Proj2015005-FitsDemo/04.项目编码/前端框架/PC/FitsPCFrame_V3.0'], description: '前端框架组的FitsAdmin_v3.0版本', name: 'SVN_Address'
+    }
+    
+ 
+    
+    tools {nodejs "nodejs16"}
+    stages{
+     
+        stage('拉取代码'){
+            steps {
+                checkout([$class: 'SubversionSCM', additionalCredentials: [], excludedCommitMessages: '', excludedRegions: '', excludedRevprop: '', excludedUsers: '', filterChangelog: false, ignoreDirPropChanges: false, includedRegions: '', locations: [[cancelProcessOnExternalsFail: true, credentialsId: '76fba1e3-b9b5-4d2f-aa36-83f5236045a8', depthOption: 'infinity', ignoreExternalsOption: true, local: '.', remote: "${params.SVN_Address}"]], quietOperation: true, workspaceUpdater: [$class: 'UpdateUpdater']])
+            }
+        }
+        
+        stage('修改文件权限'){
+            steps {
+               sh 'chmod -R 777 /var/jenkins_home/workspace/pipeline-demo'
+            }
+        }
+
+        stage('安装依赖'){
+            steps {
+               sh 'npm install'
+            }
+        }
+
+        stage('运行代码'){
+            steps {
+               sh 'npm run build:"${params.environment}"'
+            }
+        }
+    }
+}

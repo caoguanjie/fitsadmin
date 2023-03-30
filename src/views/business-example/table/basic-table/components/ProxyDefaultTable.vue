@@ -3,16 +3,13 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { FitsTableProps, useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 import { AxiosResponse } from 'axios';
 import { getTableList } from '@/api/business/table';
 
 const xGrid = ref<VxeGridInstance | any>()
-// const myData = ref({
-//     name: '123'
-// })
 
 const gridOptions: FitsTableProps = {
     columns: [
@@ -23,12 +20,10 @@ const gridOptions: FitsTableProps = {
         { field: 'address', title: '地址', editRender: { name: 'input', defaultValue: '广东省广州市越秀区中山路快乐小区6号楼801' }, width: 320 },
     ],
     formConfig: {
-        // formConfig?.data和proxyConfig不能同时存在，会报【参数 "grid.data" 与 "grid.proxy-config" 有冲突】这个错误信息。可以通过1. defaultValue 2.
         data: {
             name: '123'
         },
         items: [
-            // , defaultValue: '123'
             { field: 'name', title: '姓名', itemRender: { name: 'ElInput', props: { placeholder: '请输入姓名' } } },
         ]
     },
@@ -37,9 +32,7 @@ const gridOptions: FitsTableProps = {
         form: false, // 启用表单代理
         autoLoad: false,
         ajax: {
-            query: ({ form }: any) => {
-                // console.log(myData.value, 'myData');
-
+            query: ({ form }) => {
                 return new Promise(resolve => {
                     // XEUtils.merge(form, gridOptions.formConfig?.data)
                     getTableList(form).then((result: AxiosResponse) => {

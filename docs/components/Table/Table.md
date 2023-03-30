@@ -129,6 +129,10 @@ date: 2022-09-27
 <demo src="../../../src/views/business-example/table/slot-table/components/CustomButtonsTable.vue" title="自定义按钮区域" desc="通过配置 toolbarConfig.slots 属性可以使用插槽。该属性是一个对象，其中键为 buttons，值为自定义插槽名称。之后在FitsTable组件中通过 <template #自定义插槽名称> 的形式即可自定义工具栏左侧的按钮区域。"></demo>
 <br/>
 
+### 主从表
+<demo src="../../../src/views/business-example/table/slot-table/components/MasterSlaveTable.vue" title="主从表" desc="主从表也是通过展开行来实现的，可以看上面展开行表格的例子，只需要在插槽内再使用一次表格组件就完成了。"></demo>
+<br/>
+
 ## 动态表格
 
 <demo src="../../../src/views/business-example/table/dynamic-table/components/DynamicTable.vue" title="动态表格" desc="动态表格展示了表单＋表格的结合使用。表格内部的渲染器主要是通过表格插槽实现的。"></demo>

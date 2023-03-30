@@ -54,6 +54,7 @@ export const createRouterGuards = (router: Router) => {
                 // 如果有设置白名单可以直接进入
                 next()
             } else {
+
                 // if (permission.routes.length) {
                 //     next()
                 // } else {

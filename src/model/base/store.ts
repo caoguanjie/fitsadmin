@@ -32,7 +32,8 @@ export class RouteMeta {
     affix: boolean
     hidden: boolean
     alwaysShow: boolean
-    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow }: any = {}) {
+    noCache: boolean
+    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow, noCache }: any = {}) {
         this.roles = roles ?? []
         this.title = title ?? ''
         this.icon = icon ?? ''
@@ -41,6 +42,7 @@ export class RouteMeta {
         this.affix = affix ?? false
         this.hidden = hidden ?? false
         this.alwaysShow = alwaysShow ?? false
+        this.noCache = noCache ?? true
     }
 }
 

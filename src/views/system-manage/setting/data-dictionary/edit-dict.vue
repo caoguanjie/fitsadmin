@@ -39,7 +39,7 @@
 
         <div class="edit-bottom">
             <el-button class="edit-button" size="large" @click="closeDialog('cancle')">取消</el-button>
-            <el-button class="edit-button" type="primary" size="large" @click="closeDialog('submit')">提交
+            <el-button class="edit-button" type="primary" size="large" @click="closeDialog('submit')">确定
             </el-button>
         </div>
     </div>
@@ -183,7 +183,13 @@ const closeDialog = (key: string) => {
             border-radius: 2px;
             display: flex;
             align-items: flex-end;
+            line-height: 16px;
+            height: auto;
         }
+    }
+
+    :deep(.el-button--large) {
+        padding: 8px 24px;
     }
 }
 </style>

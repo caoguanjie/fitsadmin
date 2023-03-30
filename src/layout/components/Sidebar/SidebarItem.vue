@@ -19,7 +19,7 @@
       <!-- popper-append-to-body -->
 
       <template #title>
-        <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
+        <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon" />
         <span v-if="item.meta && item.meta.title">{{
             item.meta.title
         }}</span>

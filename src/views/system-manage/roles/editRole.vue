@@ -4,9 +4,9 @@
             <!-- 编辑角色内容 -->
             <el-form v-if="props.keys == 'editRole'" ref="ruleFormRef" :model="ruleForm" :rules="rules"
                 label-width="120px" class="demo-ruleForm" :size="formSize" status-icon>
-                <el-form-item label="角色分类" prop="Uname">
-                    <el-select style="width:100%;" v-model="ruleForm.Udescribe" class="m-2" placeholder="请选择">
-                        <el-option v-for="item in roleC" :key="item" :label="item" :value="item" />
+                <el-form-item label="角色分类" prop="Ucode">
+                    <el-select style="width:100%;" v-model="ruleForm.Ucode" class="m-2" placeholder="请选择">
+                        <el-option v-for="(item, key) in roleC" :key="key" :label="item.Cname" :value="item.Cname" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="角色名称" prop="Uname">
@@ -26,7 +26,7 @@
             <!-- 角色管理编辑内容 -->
             <el-form v-else-if="props.keys == 'editClass'" ref="ruleFormRef" :model="classyForm" :rules="rules"
                 label-width="120px" class="demo-classyForm" :size="formSize" status-icon>
-                <el-form-item label="角色名称" prop="Cname">
+                <el-form-item label="角色分类" prop="Cname">
                     <el-input v-model="classyForm.Cname" />
                 </el-form-item>
                 <el-form-item label="分类描述" prop="Cdescribe">
@@ -37,12 +37,13 @@
 
         <div class="edit-bottom">
             <el-button class="edit-button" size="large" @click="closeDialog('cancle')">取消</el-button>
-            <el-button class="edit-button" type="primary" size="large" @click="closeDialog('submit')">提交</el-button>
+            <el-button class="edit-button" type="primary" size="large" @click="closeDialog('submit')">确定</el-button>
         </div>
     </div>
 </template>
 
 <script lang='ts' setup>
+import XEUtils from 'xe-utils';
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
@@ -50,7 +51,8 @@ import { ElMessage } from 'element-plus'
 const emit = defineEmits(['dataChange', "closeDialog"])
 const props = defineProps({
     keys: String,
-    setData: Object
+    setData: Object,
+    roleClass: Array
 })
 const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
@@ -67,14 +69,7 @@ let classyForm = reactive({
     Cname: '',
     Cdescribe: ""
 })
-const roleC = [
-    '后勤',
-    '财务',
-    '产品中心',
-    '前端',
-    '设计',
-    '维护中心'
-]
+const roleC = <any>ref()
 const rules = reactive<FormRules>({
     Uname: [
         { required: true, message: '请输入角色名称', trigger: 'blur' },
@@ -107,6 +102,17 @@ watch(
         deep: true
     }
 )
+watch(
+    () => props.roleClass,
+    () => {
+        roleC.value = XEUtils.clone(props.roleClass)
+    },
+    {
+        //初始化立即执行
+        immediate: true,
+        deep: true
+    }
+);
 const closeDialog = (key: string) => {
     if (key == "cancle") {
         emit("closeDialog", "addRole")
@@ -156,7 +162,13 @@ const closeDialog = (key: string) => {
             border-radius: 2px;
             display: flex;
             align-items: flex-end;
+            line-height: 16px;
+            height: auto;
         }
+    }
+
+    :deep(.el-button--large) {
+        padding: 8px 24px;
     }
 }
 </style>

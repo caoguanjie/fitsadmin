@@ -9,8 +9,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { FitsTableProps, useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 import { AxiosResponse } from 'axios';
 import { getTableList } from '@/api/business/table';
@@ -47,7 +47,7 @@ const gridOptions: FitsTableProps = {
         form: true, // 启用表单代理
         autoLoad: true, // 自动加载
         ajax: {
-            query: ({ form }: any) => {
+            query: ({ form }) => {
                 return new Promise(resolve => {
                     getTableList(form).then((result: AxiosResponse) => {
                         const { ReturnData } = result;

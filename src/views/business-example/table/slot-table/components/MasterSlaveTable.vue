@@ -7,8 +7,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { useFitsTablePro, FitsTableProps } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const gridOptions: FitsTableProps = {
@@ -60,10 +60,6 @@ const { fitsTablePro: slaveTablePro } = useFitsTablePro(slaveGridOptions, slaveG
         margin: 0 20px 20px 40px;
     }
 }
-
-// .el-descriptions {
-//     margin: 20px;
-// }
 </style>
 
 <style lang="scss">

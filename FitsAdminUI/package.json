@@ -1,6 +1,6 @@
 {
     "name": "fits-admin-ui",
-    "version": "1.0.87",
+    "version": "1.0.91",
     "description": "FitsAdminUI是根据element plus进行二次开发的组件库",
     "main": "umd/fits-components/index.js",
     "module": "es/fits-components/index.js",

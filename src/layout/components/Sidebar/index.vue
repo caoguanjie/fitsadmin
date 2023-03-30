@@ -5,14 +5,14 @@
       <el-menu :default-active="activeMenu" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false"
         mode="vertical">
 
-        <div v-if="hamburgerPotion =='bottom' || !isshowFooterBreadcrumb">
-          <div v-for="route in routes" :item="route" :key="route.path">{{route.path}}</div>
+        <div v-if="hamburgerPotion == 'bottom' || !isshowFooterBreadcrumb">
+          <div v-for="route in routes" :item="route" :key="route.path">{{ route.path }}</div>
           <sidebar-item v-for="route in routes" :item="route" :key="route.path" :base-path="basePath + '/' + route.path"
             :is-collapse="isCollapse" />
         </div>
 
         <div v-else>
-          <div v-for="route in allRoutes" :item="route" :key="route.path">{{route.path}}</div>
+          <div v-for="route in allRoutes" :item="route" :key="route.path">{{ route.path }}</div>
           <sidebar-item v-for="route in allRoutes" :item="route" :key="route.path" :base-path="route.path"
             :is-collapse="isCollapse" />
         </div>

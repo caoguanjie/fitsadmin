@@ -5,9 +5,11 @@ import { isFunction } from '../is'
 // 声明一个 Map 用于存储每个请求的标识 和 取消函数
 let pendingMap = new Map<string, Canceler>()
 
-export const getPendingUrl = (config: AxiosRequestConfig) =>
-  // 箭头函数，不需要{}的，不用return也能直接返回值
-  [config.method, config.url, qs.stringify(config.data), qs.stringify(config.params)].join('&')
+export const getPendingUrl = (config: AxiosRequestConfig) => {
+  // JSON.parse(JSON.stringify(config.data))是为了解决当data中存在属性为NaN的情况，能把NaN序列化转成null，经过axios的请求后，null会变成空值
+  const configData = typeof config.data === 'object' && config.data !== null ? JSON.parse(JSON.stringify(config.data)) : config.data
+  return [config.method, config.url, qs.stringify(configData), qs.stringify(config.params)].join('&')
+}
 
 /**
  * @description 添加请求，创建取消请求的令牌，把token和接口信息作为键值对保存到map

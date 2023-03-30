@@ -10,16 +10,8 @@
                     style="--el-switch-on-color: #000000; --el-switch-off-color: #dcdfe6"></el-switch>
             </template>
         </fits-table>
-        <!-- <fits-dialog ref="formtypeRef" :visible="dialogData.addDepartment.visible"
-            :dialogProp="dialogData.addDepartment.props" @submit="submitDepartment"
-            @cancel="closeDialog('addDepartment')" class="dialogFormExample">
-            <departmentDialog @addChange="addChange" :departmentInfo="dialogData.addDepartment.info" ref="departmentDialogInstance"/>
-        </fits-dialog> -->
-        <fits-dialog ref="formtypeRef" :visible="dialogData.addDepartment.visible"
-            :dialogProp="dialogData.addDepartment.props"
-            @cancel="closeDialog('addDepartment')" class="dialogFormExample" :showFooter="false">
-            <departmentDialog @addChange="addChange" :departmentInfo="dialogData.addDepartment.info" ref="departmentDialogInstance"/>
-        </fits-dialog>
+        <fits-form-dialog :option="dialogOpt" @submit="submitDialogForm" @cancel="dialogOpt.visible = false"
+            class="dialogFormExample" ref="formtypeRef" />
         <fits-dialog class="baseDepartment" :visible="dialogData.baseDepartment.visible"
             :class="'Department-baseDialog'" :dialogProp="dialogData.baseDepartment.props"
             @submit="onSubmit(dialogData.baseDepartment.key)" @cancel="closeDialog('baseDepartment')">
@@ -27,7 +19,6 @@
         </fits-dialog>
     </div>
 </template>
-
 <script lang='ts' setup>
 import XEUtils from 'xe-utils';
 import { getDepartmentTableList } from '@/api/base/system';
@@ -38,7 +29,9 @@ import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
 import { ref } from 'vue'
 import { FitsDialog } from '@/fits-components/FeedBack/Dialog';
 import { ElNotification } from 'element-plus'
-import departmentDialog from './departmentDialog.vue'
+import { FitsFormCreateModel, FitsFormDialog } from '@/fits-components';
+import FitsTreeSelect from '@/fits-components/Form/Select/FitsTreeSelect.vue'
+import { FitsTreeSelectModel } from '@/fits-components/Form/Select/select';
 const { user } = useStore();
 const xGrid = ref<VxeGridInstance | any>()
 //表格的配置项
@@ -68,26 +61,15 @@ const gridOptions: FitsTableProps = {
         enabled: true
     },
     columns: [
-        { field: 'Checkbox', type: 'checkbox', title: '多选', minWidth: 50 },
-        { field: 'Title', title: '部门名称', minWidth: 210, treeNode: true },
-        { field: 'code', title: '部门编码', minWidth: 150 },
-        { field: 'Sort', title: '排序', minWidth: 120 },
+        { field: 'Checkbox', type: 'checkbox', title: '多选', minWidth: 60 },
+        { field: 'Title', title: '部门名称', minWidth: 210, treeNode: true, },
+        { field: 'code', title: '部门编码', minWidth: 150, align: 'center' },
+        { field: 'Sort', title: '排序', minWidth: 150, align: 'center' },
         {
-            field: 'remark', title: '备注', minWidth: 150,
-            slots: {
-                'default': (params) => h(
-                    'div',
-                    {
-                        style: 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%;'
-                    },
-                    [
-                        h('span', params.row.remark)
-                    ]
-                )
-            },
+            field: 'remark', title: '备注', minWidth: 120,
         },
-        { field: 'status', title: '部门状态', minWidth: 200, slots: { default: 'status' } },
-        { field: 'CreateTime', title: '创建时间', minWidth: 140 },
+        { field: 'status', title: '部门状态', minWidth: 120, slots: { default: 'status' }, align: 'center' },
+        { field: 'CreateTime', title: '创建时间', minWidth: 180, align: 'center' },
         { field: 'Operation', title: '操作', minWidth: 150, slots: { default: 'operate' }, fixed: 'right' }
     ],
     showOverflow: "tooltip",
@@ -105,7 +87,7 @@ const gridOptions: FitsTableProps = {
     },
     treeConfig: {
         transform: true,
-        rowField: 'Id',
+        rowField: 'id',
         parentField: 'PId',
     },
     proxyConfig: {
@@ -146,7 +128,7 @@ const gridOptions: FitsTableProps = {
         }
     },
     tooltipConfig: {
-        contentMethod: ({ type, column, row, items }) => {
+        contentMethod: ({ column, row }) => {
             const { field } = column
             if (field === 'remark') {
                 return row[field]
@@ -162,10 +144,8 @@ const gridEvents: VxeGridListeners = {
         let record = $grid.getCheckboxRecords()
         switch (code) {
             case 'add': {
-                // dialogOpt.visible = true
-                // dialogOpt.dialogProp.title = "新增部门"
-                dialogData.addDepartment.visible = true
-                dialogData.addDepartment.props.title = '新增部门'
+                dialogOpt.visible = true
+                dialogOpt.dialogProp.title = '新增部门'
                 break
             }
             case 'enable': {
@@ -222,21 +202,18 @@ const gridEvents: VxeGridListeners = {
 let formtypeRef = ref()
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 
-function editBtn(obj: any) {
-    dialogData.addDepartment.visible = true
-    dialogData.addDepartment.props.title = '修改部门'
-    dialogData.addDepartment.info = obj
-}
 //表格的删除事件
 const removeBtn = async (obj: any) => {
-    const $table = xGrid.value
-    const type = await VXETable.modal.confirm('您确定要删除该数据?')
-    if (type === 'confirm') {
-        $table.fitsTablePro.remove(obj)
-        nextTick(() => {
-            $table.fitsTablePro.commitProxy('query')
-        })
-    }
+    // const $table = xGrid.value
+    // const type = await VXETable.modal.confirm('您确定要删除该数据?')
+    // if (type === 'confirm') {
+    //     $table.fitsTablePro.remove(obj)
+    //     nextTick(() => {
+    //         $table.fitsTablePro.commitProxy('query')
+    //     })
+    // }
+    dialogData.baseDepartment.visible = true
+    dialogData.baseDepartment.dialogText = '是否确定删除选中的部门?'
 }
 //对话框的提交事件
 const onSubmit = (key: string) => {
@@ -269,27 +246,6 @@ const onSubmit = (key: string) => {
     }
     closeDialog('baseDepartment')
 }
-let resultData = ref()
-const addChange = (val: any) => {
-    resultData.value = val
-}
-
-let departmentDialogInstance = ref()
-
-// const submitDepartment = () => {
-//     console.log(123)
-//     console.log(departmentDialogInstance.value,'111')
-//     // let target = xGrid.value.fitsTablePro.reactData.tableData
-//     // if (resultData.value) {
-//     //     let i = target.findIndex((item: any) => item.id === resultData.value.Id)
-//     //     xGrid.value.fitsTablePro.reactData.tableData.splice(i, 0, resultData.value)
-//     // }
-//     // nextTick(() => {
-//     //     xGrid.value.fitsTablePro.commitProxy('query')
-//     // })
-//     // dialogData.addDepartment.visible = false
-//     // dialogData.addDepartment.info = {}
-// }
 onMounted(() => {
 
     nextTick(() => {
@@ -308,7 +264,7 @@ const dialogData = reactive({
         visible: false,
         props: {
             title: '新增部门',
-            width: '460px'
+            width: '40%'
         },
         info: {}
     },
@@ -318,7 +274,7 @@ const dialogData = reactive({
         visible: false,
         props: {
             title: "提示",
-            width: '460px'
+            width: '30%'
         }
     }
 })
@@ -327,7 +283,7 @@ const closeDialog = (key: string) => {
     switch (key) {
         case 'addDepartment':
             dialogData.addDepartment.visible = false
-            dialogData.addDepartment.info = {}
+            // dialogData.addDepartment.info = {}
             break
         case 'baseDepartment':
             dialogData.baseDepartment.visible = false
@@ -335,11 +291,276 @@ const closeDialog = (key: string) => {
             break
     }
 }
+let rowResult = ref()
+//对话框配置项目
+const dialogOpt = reactive({
+    visible: false,
+    forms: [
+        {
+            form: new FitsFormCreateModel({
+                rule: [
+                    {
+                        type: 'title',
+                        field: "PId",
+                        title: "上级部门",
+                        component: markRaw(FitsTreeSelect),
+                        props: {
+                            options: new FitsTreeSelectModel({
+                                select: {
+                                    placeholder: "请选择",
+                                    clearable: true
+                                },
+                                input: {
+                                    placeholder: "部门搜索",
+                                },
+                                tree: {
+                                    nodeKey: "id",
+                                    data: [
+                                        {
+                                            id: '150000198607018427',
+                                            label: '广州华侨医院',
+                                            children: [
+                                                {
+                                                    id: '15000019860701848',
+                                                    PId: '150000198607018427',
+                                                    label: '医院医技',
+                                                    children: [
+                                                        {
+                                                            id: '15000019860701842',
+                                                            PId: '15000019860701848',
+                                                            label: '医院医技01'
+                                                        },
+                                                        {
+                                                            id: '15000019860701846',
+                                                            PId: '15000019860701848',
+                                                            label: '医院医技02',
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            id: '150000198607018400',
+                                            label: '广州第一人民医院',
+                                            children: [
+                                                {
+                                                    id: '16000019860701848',
+                                                    PId: '150000198607018400',
+                                                    label: '医院医技',
+                                                    children: [
+                                                        {
+                                                            id: '15100019860701842',
+                                                            PId: '16000019860701848',
+                                                            label: '医院医技01'
+                                                        },
+                                                        {
+                                                            id: '15120019860701842',
+                                                            PId: '16000019860701848',
+                                                            label: '医院医技02',
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            id: '150100198607018400',
+                                            label: '广州南方医科附属第三医院',
+                                            children: [
+                                                {
+                                                    id: '16000019860701748',
+                                                    PId: '150100198607018400',
+                                                    label: '医院医技',
+                                                    children: [
+                                                        {
+                                                            id: '15100019860721842',
+                                                            PId: '16000019860701748',
+                                                            label: '医院医技01'
+                                                        },
+                                                        {
+                                                            id: '15100019860751842',
+                                                            PId: '16000019860701748',
+                                                            label: '医院医技02',
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                    checkStrictly: true
+                                },
+                            })
+                        },
+                        validate: [
+                            { required: true, message: "请选择", trigger: 'change' }
+                        ],
+                    },
+                    {
+                        type: "input",
+                        field: "Title",
+                        title: "部门名称",
+                        props: {
+                            placeholder: "请输入",
+                        },
+                        effect: {
+                            required: '请输入部门名称'
+                        }
+                    },
+                    {
+                        type: "input",
+                        field: "code",
+                        title: "部门编号",
+                        props: {
+                            placeholder: "请输入"
+                        },
+                        effect: {
+                            required: '请输入部门编号'
+                        }
+                    },
+                    {
+                        type: "input",
+                        field: "remark",
+                        title: "部门描述",
+                        props: {
+                            placeholder: "请输入"
+                        },
+                    },
+                    {
+                        type: "input",
+                        field: "Sort",
+                        title: "排序",
+                        props: {
+                            placeholder: "请输入"
+                        },
+                    },
+                    {
+                        type: "radio",
+                        field: "status",
+                        title: "状态",
+                        options: [
+                            {
+                                value: true,
+                                label: "启用"
+                            },
+                            {
+                                value: false,
+                                label: "禁用"
+                            }
+                        ]
+                    },
+                ],
+                option: {
+                    form: {
+                        labelPosition: 'right',
+                        inline: true,
+                    },
+                    submitBtn: false,
+                    resetBtn: false
+                },
+                col: 1
+            }),
+        },
+        // {
+        //     title: '组织关系',
+        //     iconClass: 'fits-system',
+        //     form: new FitsFormCreateModel({
+        //         rule: [
+        //             {
+        //                 type: "input",
+        //                 field: "officenumber",
+        //                 title: "办公号码",
+        //                 props: {
+        //                     placeholder: "请输入办公号码"
+        //                 },
+        //                 validate: [
+        //                     {
+        //                         validator: (rule: any, val: any) => {
+        //                             return val ? isHomeNumber(val) || isPhoneNumber(val) : true
+        //                         },
+        //                         message: "请输入正确的手机号或固话"
+        //                     }
+        //                 ]
+        //             },
+        //             {
+        //                 type: "datePicker",
+        //                 field: "offJobDate",
+        //                 title: "离职日期",
+        //                 props: {
+        //                     placeholder: "请选择离职日期"
+        //                 }
+        //             },
+        //             {
+        //                 type: "select",
+        //                 field: "UserTag",
+        //                 title: "用户标签",
+        //                 props: {
+        //                     filterable: true,
+        //                     placeholder: "请选择用户标签",
+        //                 },
+        //                 options: [
+        //                     {
+        //                         value: "1",
+        //                         label: "选项1"
+        //                     },
+        //                     {
+        //                         value: "2",
+        //                         label: "选项2"
+        //                     }
+        //                 ],
+        //             },
+        //         ],
+        //         option: {
+        //             form: {
+        //                 labelPosition: 'right',
+        //                 inline: true,
+        //             },
+        //             submitBtn: false,
+        //             resetBtn: false
+        //         },
+        //     }),
+        // }
+    ],
+    dialogProp: {
+        title: '',
+        width: '35%'
+    },
+    formType: 'dialog'
+})
+//表格的编辑按钮
+function editBtn(obj: any) {
+    rowResult.value = obj
+    dialogOpt.visible = true
+    dialogOpt.dialogProp.title = '修改部门'
+    if (obj.PId === "null") {
+        obj.PId = obj.id
+    }
+    nextTick(() => {
+        formtypeRef.value.formRef.forEach((item: any) => {
+            item.fApi.setValue(obj)
+        })
+    })
+}
+//对话框的提交按钮
+function submitDialogForm(formValue: any) {
+    if (dialogOpt.dialogProp.title = "新增部门") {
+        dialogOpt.visible = false
+        return
+    }
+    if (dialogOpt.dialogProp.title = "修改部门") {
+        const arr = xGrid.value.fitsTablePro.reactData.tableData
+        let obj = arr.find((item: any) => {
+            return item.id == rowResult.value.id
+        })
+        Object.assign(obj, formValue)
+        xGrid.value.fitsTablePro.commitProxy('query')
+        dialogOpt.visible = false
+    }
+}
 </script>
 <style lang='scss' scoped>
 .department-manage {
     padding: 0 $basePadding;
     background-color: #fff;
+    user-select: none;
 
     span {
         width: 24px;
@@ -375,5 +596,20 @@ const closeDialog = (key: string) => {
         }
     }
 
+    :deep(.onfooter) {
+        .el-dialog__body {
+            .dialog-body {
+                .el-scrollbar {
+                    .el-scrollbar__wrap {
+                        .el-scrollbar__view {
+                            padding: 0px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
-</style>
+</style> 
+

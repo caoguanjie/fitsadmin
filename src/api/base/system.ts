@@ -19,6 +19,11 @@ export const getOrgin = (params: any) =>
         method: 'get',
         params: params,
     })
+/**
+* @description 用户管理--用户列表
+* @param params
+* @returns
+*/
 export const getUserList = (params: any, pagingParams: PagingParams) =>
     http({
         url: 'UserList',
@@ -26,19 +31,28 @@ export const getUserList = (params: any, pagingParams: PagingParams) =>
         params: params,
         pagingParams: pagingParams
     })
-
-export const getDepartment = ()=>
+/**
+* @description 部门管理--部门组织列表
+* @param params
+* @returns
+*/
+export const getDepartment = () =>
     http({
-        url:"department/manager/getDepartmentList",
-        method:'get'
+        url: "department/manager/getDepartmentList",
+        method: 'get'
     })
-export const getDepartmentTableList = (params: any, pagingParams: PagingParams)=> 
-http({
-    url:"department/manager/getDepartmentDatatable",
-    method:'get',
-    params: params,
-    pagingParams: pagingParams
-})
+/**
+* @description 部门管理--部门列表
+* @param params
+* @returns
+*/
+export const getDepartmentTableList = (params: any, pagingParams: PagingParams) =>
+    http({
+        url: "department/manager/getDepartmentDatatable",
+        method: 'get',
+        params: params,
+        pagingParams: pagingParams
+    })
 
 /**
 * @description 角色管理--角色列表列表
@@ -53,18 +67,19 @@ export const getRoleList = (params: any, pagingParams: PagingParams) =>
         pagingParams: pagingParams
     })
 
-     /**
+/**
 
 
-    /**
+/**
 * @description 角色管理--角色列表列表
 * @param params
 * @returns
 */
 export const getDictItemList = (params: any, pagingParams: PagingParams) =>
-http({
-    url: '/base/dictionary/DicItems',
-    method: 'get',
-    params: params,
-    pagingParams: pagingParams
-})
+    http({
+        url: '/base/dictionary/DicItems',
+        method: 'get',
+        params: params,
+        pagingParams: pagingParams
+    })
+

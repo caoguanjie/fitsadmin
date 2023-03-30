@@ -95,7 +95,7 @@ interface FitsSystemSetting {
      * @desrciption 面包屑的展示位置
      * @default {bottom} 
      */
-     breadcrumbPosition: 'top' | 'bottom'
+    breadcrumbPosition: 'top' | 'bottom'
     /**
      * @desrciption 表单的展示形式
      * @default {true} 

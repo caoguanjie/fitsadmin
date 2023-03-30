@@ -17,7 +17,7 @@ const useStore = () => ({
   permission: usePermissionStore(),
   setting: useSettingStore(),
   tagsView: useTagsViewStore(),
-  userHabits: useUserHabitsStorage()
+  userHabits: useUserHabitsStorage(),
 });
 
 export function setupStore(app: App) {

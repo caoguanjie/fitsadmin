@@ -26,7 +26,7 @@
             <!-- 新增字典分类内容 -->
             <el-form v-else-if="props.keys == 'addClass'" ref="ruleFormRef" :model="classyForm" :rules="rules"
                 label-width="120px" class="demo-classyForm" :size="formSize" status-icon>
-                <el-form-item label="分类名称" prop="Cname">
+                <el-form-item label="字典分类" prop="Cname">
                     <el-input v-model="classyForm.Cname" />
                 </el-form-item>
                 <el-form-item label="分类描述" prop="Cdescribe">
@@ -38,7 +38,7 @@
 
         <div class="add-bottom">
             <el-button class="add-button" size="large" @click="closeDialog('cancle')">取消</el-button>
-            <el-button class="add-button" type="primary" size="large" @click="closeDialog('submit')">提交
+            <el-button class="add-button" type="primary" size="large" @click="closeDialog('submit')">确定
             </el-button>
         </div>
     </div>
@@ -190,7 +190,13 @@ const closeDialog = (key: string) => {
             border-radius: 2px;
             display: flex;
             align-items: flex-end;
+            line-height: 16px;
+            height: auto;
         }
+    }
+
+    :deep(.el-button--large) {
+        padding: 8px 24px;
     }
 }
 </style>

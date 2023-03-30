@@ -6,15 +6,15 @@
                 选中所有可选行
             </el-button>
             <el-button @click="setAllChecked(false)">
-                清楚所有勾选行
+                清除所有勾选行
             </el-button>
         </template>
     </fits-table>
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { FitsTableProps, useFitsTablePro } from '@/fits-components/type'
 import { ElButton, ElMessage } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 

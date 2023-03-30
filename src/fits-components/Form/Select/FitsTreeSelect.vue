@@ -65,8 +65,15 @@ watch(filterText, (val: string) => {
 })
 
 onMounted(() => {
+    getkey()
     initValue(_attrs.modelValue)
 })
+
+let lableKey = 'label'
+// 判断是否有修改tree的label
+function getkey() {
+    options.value?.tree?.props?.label ? lableKey = options.value?.tree?.props?.label : ""
+}
 
 function initValue(val: string) {
     if (!val || !val?.length) return
@@ -81,7 +88,10 @@ function initValue(val: string) {
         arr = typeof val === 'string' ? [val] : val
         treeRef.value.setCheckedKeys(arr)
         selectedValue.value = []
-        treeRef.value.getCheckedNodes(true).map((item: any) => selectedValue.value.push(item.label))
+        treeRef.value.getCheckedNodes(true).map((item: any) => {
+            // Tree可能会配置label，所以不一定是label，需要确定是否修改了tree的label
+            selectedValue.value.push(item[lableKey])
+        })
         emit('update:modelValue', treeRef.value.getCheckedKeys(true))
     }
 }
@@ -133,9 +143,9 @@ function Check(obj: any, treeObj: any) {
         selectedValue.value.splice(index, 1)
     } else {
         // 勾选
-        const leafArr = treeObj.checkedNodes.filter((item: any) => !item['children'])
+        const leafArr = treeObj.checkedNodes.filter((item: any) => !item['children'] || !item.children.length)
         selectedValue.value = []
-        leafArr.map((item: any) => selectedValue.value.push(item.label))
+        leafArr.map((item: any) => selectedValue.value.push(item[lableKey]))
     }
     emit('update:modelValue', treeRef.value.getCheckedKeys(true))
 }
@@ -146,10 +156,11 @@ function Check(obj: any, treeObj: any) {
 function RemoveTag(val: any) {
     const checkNodes = treeRef.value.getCheckedNodes(true)
     // 找到一样内容的节点，取消它的勾选
-    const removeNode = checkNodes.find((item: any) => item.label === val)
+    const removeNode = checkNodes.find((item: any) => item[lableKey] === val)
     treeRef.value.setChecked(removeNode.id, false)
     emit('update:modelValue', treeRef.value.getCheckedKeys(true))
 }
+
 
 </script>
 

@@ -1,8 +1,8 @@
 <template>
     <div class="dialog">
         <el-dialog ref="elDialogRef" :class="props.class ? props.class + ' fits-dialog' : 'fits-dialog'"
-            :close-on-click-modal="false" v-bind="dialogProp" v-model="isVisible" :top="dialogMarginTop"
-            @close="emitcancel">
+            :close-on-click-modal="false" v-bind="dialogProp" v-model="isVisible"
+            :top="props.dialogProp.top ? props.dialogProp.top : dialogMarginTop" @close="emitcancel">
             <!-- dialog的头部插槽 -->
             <template #header="{ close, titleId, titleClass }">
                 <slot name="header" class="dialog-header" :close="close" :titleId="titleId" :titleClass="titleClass" />
@@ -87,6 +87,11 @@ function emitcancel() {
  * 当弹窗内容低于540高度的时候，marginTop: -10vh。也能达到大概居中的目的
  */
 function updatedWindowHeight() {
+    if (props.dialogProp.appendToBody) {
+        //如果设置了appendToBody之后下面的方法设置的top会导致弹窗位置异常
+        dialogMarginTop.value = ""
+        return
+    }
     // 实际弹窗部分
     const dialogWindowHeight = elDialogRef.value.dialogContentRef.$el.getBoundingClientRect().height
     // 黑色阴影的div

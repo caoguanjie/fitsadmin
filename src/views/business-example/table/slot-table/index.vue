@@ -22,7 +22,7 @@
                     <custom-buttons-table />
                 </fits-card>
 
-                <fits-card title="主从表" desc="">
+                <fits-card title="主从表" desc="主从表也是通过展开行来实现的，可以看上面展开行表格的例子，只需要在插槽内再使用一次表格组件就完成了。 ">
                     <master-slave-table />
                 </fits-card>
             </div>

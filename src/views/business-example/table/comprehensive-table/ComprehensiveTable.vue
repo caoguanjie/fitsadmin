@@ -18,8 +18,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTreeSelectModel, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { FitsTableProps, FitsTreeSelectModel, useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 import { Folder, Document } from '@element-plus/icons-vue'
 

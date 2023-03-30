@@ -1,10 +1,14 @@
 <template>
-    <fits-table :option="fitsTablePro" ref="xGrid" />
+    <fits-table :option="fitsTablePro" ref="xGrid">
+        <template #tools>
+            123
+        </template>
+    </fits-table>
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { FitsTableProps, useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const xGrid = ref<VxeGridInstance | any>()
@@ -23,6 +27,14 @@ const gridOptions: FitsTableProps = {
         { name: '李萌萌', phone: '18712458736', birth: '1879-12-13', address: '广东省广州市海珠区五山路幸福小区6号楼101 ' },
         { name: '张兴', phone: '18924584265', birth: '1954-03-25', address: '广东省广州市海珠区五山路幸福小区7号楼102 ' },
     ],
+    toolbarConfig: {
+        tools: {
+            enabled: true
+        },
+        slots: {
+            tools: 'tools'
+        }
+    }
 }
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>

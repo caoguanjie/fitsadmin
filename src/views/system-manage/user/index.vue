@@ -6,15 +6,14 @@
             </div>
 
             <div class="tree_list">
-                <el-scrollbar height="calc(100vh - 200px)">
-                    <el-tree :data="treeData" highlight-current node-key="id" :props="defaultProps"
-                        default-expand-all @node-click="getTreeTable" ref="treeRef" :filter-node-method="filterNode">
+                <el-scrollbar>
+                    <el-tree :data="treeData" highlight-current node-key="id" :props="defaultProps" default-expand-all
+                        @node-click="getTreeTable" ref="treeRef" :filter-node-method="filterNode">
                         <template #default="{ node, data }">
                             <span class="custom-tree-node">
-                                <img src="@/assets/sysmanger/wenjianjia.png"
-                                    v-if="data.children && data.children.length > 0 && data.pid" style="color:#FFCA28" />
-                                <img class="people" src="@/assets/sysmanger/yingyerenyuan.png" v-if="!data.children"
-                                    style="color:#ACC6D3" />
+                                <img :src="images.img1" v-if="data.children && data.children.length > 0 && data.pid"
+                                    style="color:#FFCA28" />
+                                <img class="people" :src="images.img2" v-if="!data.children" style="color:#ACC6D3" />
                                 {{ data.name }}
                             </span>
                         </template>
@@ -32,6 +31,10 @@ import userManage from './components/userManage.vue'
 import { getDepartment } from '@/api/base/system';;
 import { Search } from '@element-plus/icons-vue'
 import { ElTree } from 'element-plus'
+let images = {
+    img1: new URL(`../../../assets/sysmanger/wenjianjia.png`, import.meta.url).href,
+    img2: new URL(`../../../assets/sysmanger/yingyerenyuan.png`, import.meta.url).href
+}
 interface Tree {
     id: string,
     name: string,
@@ -76,26 +79,19 @@ onMounted(async () => {
 <style lang='scss' scoped>
 .user-manage {
     background-color: #fff;
-    display: flex;
     user-select: none;
-    // min-width: 1688px;
-    width:100%;
-    
 
     .left {
+        float: left;
         min-width: 240px;
-        // width:14%;
-        display: flex;
-        flex-direction: column;
-        border-right: 1px solid #DCDFE6;
-        padding-bottom: $basePadding ;
+        height: 100%;
         .search {
             position: relative;
 
             :deep(.el-input) {
                 padding: 16px 12px 8px;
                 font-size: 12px;
-                --el-border-radius-base: 2px;          
+                --el-border-radius-base: 2px;
             }
 
             :deep(.is-focus) {
@@ -164,10 +160,10 @@ onMounted(async () => {
     }
 
     .right {
-        margin-left: 12px;
-        // flex: 1;
-        width: 100%;
-        padding-right:8px;
+        padding-left: 12px;
+        border-left: 1px solid #DCDFE6;
+        overflow: hidden;
+        padding-right: 8px;
     }
 
     .el-input {
@@ -176,8 +172,7 @@ onMounted(async () => {
 }
 </style>
 <style lang="scss">
-.dialog[data-v-bd6a426a] .el-overlay > div:first-child > .relate > .el-dialog__body > .dialog-body > .el-scrollbar > .el-scrollbar__wrap > .el-scrollbar__view{
-    padding:0px
+.dialog[data-v-bd6a426a] .el-overlay>div:first-child>.relate>.el-dialog__body>.dialog-body>.el-scrollbar>.el-scrollbar__wrap>.el-scrollbar__view {
+    padding: 0px
 }
-
 </style>

@@ -1,9 +1,8 @@
 <template>
-    <el-menu :default-active="activeMenu" class="topMenu" mode="horizontal" @select="changeMenu">
+    <el-menu :default-active="activeMenu" class="topMenu" mode="horizontal" @select="changeMenu" :ellipsis="false">
         <template v-for="item in routes" :key="item.path">
 
             <el-menu-item :index="item.path">
-                <!-- <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon" /> -->
                 <template #title>
                     {{ item.meta.title }}
                 </template>

@@ -8,8 +8,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable, FitsInputSearch } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable, FitsInputSearch } from '@/fits-components';
+import { FitsTableProps, useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';
 
 const inputValue = ref('')

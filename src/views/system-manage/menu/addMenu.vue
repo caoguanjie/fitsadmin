@@ -4,9 +4,7 @@
       <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" class="demo-ruleForm"
         :size="formSize" status-icon>
         <el-form-item label="上级目录" prop="CreateTime">
-          <el-select style="width: 100%" v-model="ruleForm.CreateTime" class="m-2" placeholder="请选择">
-            <el-option v-for="item in roleC" :key="item.Cname" :label="item.Cname" :value="item.Cname" />
-          </el-select>
+          <fits-tree-select :options="treeState" v-bind="ruleForm.CreateTime" />
         </el-form-item>
         <el-form-item label="菜单类型" prop="Type">
           <!-- 只放按钮会导致字体没有加粗 -->
@@ -21,21 +19,24 @@
           <el-button v-if="ruleForm.Type != 'anniu'" class="add-button" @click="ruleForm.Type = 'anniu'">按钮</el-button>
           <el-button v-if="ruleForm.Type == 'anniu'" class="add-button" @click="ruleForm.Type = 'anniu'" type="primary"
             plain>按钮</el-button>
+          <el-button v-if="ruleForm.Type != 'shuju'" class="add-button" @click="ruleForm.Type = 'shuju'">数据</el-button>
+          <el-button v-if="ruleForm.Type == 'shuju'" class="add-button" @click="ruleForm.Type = 'shuju'" type="primary"
+            plain>数据</el-button>
         </el-form-item>
         <el-form-item label="菜单图标">
           <div style="display: flex; width: 100%; justify-content: space-between">
             <fits-icon-select :options="state" :class="'addMenuClass'" />
-            <fits-upload :url="url" :type="['images']">
+            <fits-upload :url="url" :type="['images']" :ClassName="'uploadClass'">
               <template #mybutton>
                 <el-button class="add-button" type="primary" plain>开始上传</el-button>
               </template>
             </fits-upload>
           </div>
         </el-form-item>
-        <el-form-item label="菜单标题" prop="Title">
+        <el-form-item label="菜单标题" prop="Title" v-if="ruleForm.Type != 'anniu'">
           <el-input v-model="ruleForm.Title" rows="5" resize="none" placeholder="请输入" />
         </el-form-item>
-        <div style="display: flex; justify-content: flex-start">
+        <div style="display: flex; justify-content: flex-start" v-if="ruleForm.Type != 'anniu'">
           <el-form-item label="菜单状态" prop="State" style="display: flex; align-items: center">
             <el-radio-group v-model="ruleForm.State" class="ml-4">
               <el-radio :label="true" size="large">启用</el-radio>
@@ -49,7 +50,21 @@
             </el-radio-group>
           </el-form-item>
         </div>
-        <el-form-item label="路由地址" prop="ComponentPath">
+        <!-- 菜单类型选择按钮是显示 -->
+        <el-form-item label="按钮名称" prop="Title" v-if="ruleForm.Type == 'anniu'">
+          <el-input v-model="ruleForm.Title" rows="5" resize="none" placeholder="请输入" />
+        </el-form-item>
+        <!-- 菜单类型选择菜单时显示 -->
+        <div style="display: flex; justify-content: space-between;width:100%" v-if="ruleForm.Type == 'caidan'">
+          <el-form-item label="组件名称" prop="ComponentName" style="display: flex; align-items: center">
+            <el-input v-model="ruleForm.ComponentName" rows="5" resize="none" placeholder="请输入" />
+          </el-form-item>
+          <el-form-item label="组件路径" prop="Address" style="display: flex; align-items: center">
+            <el-input v-model="ruleForm.Address" rows="5" resize="none" placeholder="请输入" />
+          </el-form-item>
+        </div>
+
+        <el-form-item label="路由地址" prop="ComponentPath" v-if="ruleForm.Type != 'anniu'">
           <el-input v-model="ruleForm.ComponentPath" rows="5" resize="none" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="菜单排序" prop="Sort">
@@ -60,7 +75,7 @@
 
     <div class="add-bottom">
       <el-button class="add-button" size="large" @click="closeDialog('cancle')">取消</el-button>
-      <el-button class="add-button" type="primary" size="large" @click="closeDialog('submit')">提交
+      <el-button class="add-button" type="primary" size="large" @click="closeDialog('submit')">确定
       </el-button>
     </div>
   </div>
@@ -71,9 +86,10 @@ import { reactive, ref } from 'vue';
 import XEUtils from 'xe-utils';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ElMessage } from 'element-plus'
-import { FitsIconSelect } from '@/fits-components';
-import { FitsIconSelectModel } from '@/fits-components/type';
+import { FitsIconSelect, FitsTreeSelect } from '@/fits-components';
+import { FitsIconSelectModel, FitsTreeSelectModel } from '@/fits-components/type';
 import { FitsUpload } from '@/fits-components/Form/Upload';
+import { getMenuList } from '@/api/base/system';
 const url = 'http://192.168.32.108:3000/mock/78/api/uploadPDF';
 const state = reactive(
   new FitsIconSelectModel({
@@ -85,8 +101,19 @@ const state = reactive(
 const emit = defineEmits(['dataChange', 'closeDialog']);
 const props = defineProps({
   keys: String,
-  setData: Object
+  setData: Object,
+  requireData: Array
 });
+const treeState = reactive(new FitsTreeSelectModel({
+  select: {
+    clearable: true,
+  },
+  tree: {
+    nodeKey: "Id",
+    data: [],
+    checkStrictly: true
+  },
+}))
 const formSize = ref('default');
 const ruleFormRef = ref<FormInstance>();
 let ruleForm = reactive({
@@ -98,35 +125,10 @@ let ruleForm = reactive({
   IsUrL: false,
   IsCache: false,
   State: false,
-  CreateTime: ''
+  CreateTime: '',
+  Address: "",
+  ComponentName: "",
 });
-//下拉框数据
-const roleC = ref([
-  {
-    Cname: '后勤',
-    Cdescribe: ''
-  },
-  {
-    Cname: '财务',
-    Cdescribe: ''
-  },
-  {
-    Cname: '产品中心',
-    Cdescribe: ''
-  },
-  {
-    Cname: '前端',
-    Cdescribe: ''
-  },
-  {
-    Cname: '设计',
-    Cdescribe: ''
-  },
-  {
-    Cname: '维护中心',
-    Cdescribe: ''
-  }
-]);
 watch(
   () => props.setData,
   () => {
@@ -138,15 +140,20 @@ watch(
     deep: true
   }
 );
-// Title: '',
-// Icon: '',
-// Type: '',
-// Sort: '',
-// ComponentPath: "",
-// IsUrL: false,
-// IsCache: false,
-// State: false,
-// CreateTime: "",
+watch(
+  () => props.requireData,
+  () => {
+    treeState.tree.data = Object.assign(treeState.tree.data, props.requireData);
+    XEUtils.eachTree(treeState.tree.data, item => {
+      item.label = item.Title
+    }, { children: 'children' })
+  },
+  {
+    //初始化立即执行
+    immediate: true,
+    deep: true
+  }
+);
 const rules = reactive<FormRules>({
   Title: [{ required: true, message: '请输入菜单标题', trigger: 'blur' }],
   Type: [
@@ -158,25 +165,6 @@ const rules = reactive<FormRules>({
     { min: 3, max: 10, message: '长度请大于3，小于10', trigger: 'blur' }
   ]
 });
-// const changeData = () => {
-//     if (props.keys == 'addClass') {
-//         let obj = {
-//             Cname: classyForm.Cname,
-//             Cdescribe: classyForm.Cdescribe,
-//         }
-//         emit('dataChange', obj, props.keys)
-//     }
-//     else if (props.keys == 'addRole') {
-//         let obj = {
-//             Uname: ruleForm.Uname,
-//             Ucode: ruleForm.Ucode,
-//             Udescribe: ruleForm.Udescribe,
-//             Sort: ruleForm.Sort,
-//             Ustate: ruleForm.Ustate
-//         }
-//         emit('dataChange', obj, props.keys)
-//     }
-// }
 const closeDialog = (key: string) => {
   if (key == 'cancle') {
     emit("closeDialog", "operate")
@@ -212,7 +200,11 @@ const closeDialog = (key: string) => {
     padding: 24px 32px 20px 0;
 
     .addMenuClass {
-      width: 70%;
+      padding-right: 20px;
+    }
+
+    :deep(.el-form-item--default) {
+      width: 100%;
     }
   }
 
@@ -229,6 +221,21 @@ const closeDialog = (key: string) => {
       border-radius: 0;
       display: flex;
       align-items: flex-end;
+      line-height: 16px;
+      height: auto;
+    }
+  }
+
+  :deep(.el-button--large) {
+    padding: 8px 24px;
+  }
+}
+</style>
+<style lang="scss">
+.add-content {
+  .uploadClass {
+    .dialog-body {
+      padding: 20px !important;
     }
   }
 }

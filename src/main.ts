@@ -7,14 +7,13 @@ import 'element-plus/dist/index.css'
 // 引入svg注册脚本
 import 'virtual:svg-icons-register';
 
-// 自定义样式
-import '@/styles/index.scss';
-
 // 自定义指令
 import * as directive from '@/directive';
 import { setupStore } from '@/store';
 
 import setupOtherImports from './other-imports';
+// 自定义样式
+import '@/styles/index.scss';
 const app = createApp(App);
 Object.keys(directive).forEach((key) => {
   app.directive(key, (directive as { [key: string]: Directive })[key]);

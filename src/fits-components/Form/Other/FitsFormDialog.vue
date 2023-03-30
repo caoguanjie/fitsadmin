@@ -2,6 +2,9 @@
     <div class="formType">
         <fits-drawer v-bind="option" @cancel="closeForm" @submit="submitForm" @open="openForm" class="FormTypeDrawer"
             v-if="option.formType === 'drawer'">
+            <template #header>
+                <slot name="header" />
+            </template>
             <div class="form-drawer-container" v-for="(item, index) in option.forms" :key="index">
                 <el-scrollbar>
                     <div class="title" v-show="item?.title">
@@ -11,13 +14,22 @@
                     <fits-form-create :form="item.form" ref="DrawerRef" />
                 </el-scrollbar>
             </div>
+            <template #footer>
+                <slot name="footer" />
+            </template>
         </fits-drawer>
         <fits-dialog class="FormTypeDialog" v-bind="option" @cancel="closeForm" @submit="submitForm" @open="openForm"
             v-else>
+            <template #header>
+                <slot name="header" />
+            </template>
             <div class="form-dialog-container" v-for="(item, index) in option.forms" :key="index">
                 <form-title :model-value="item.title" v-if="item?.title" />
                 <fits-form-create :form="item.form" ref="DialogRef" />
             </div>
+            <template #footer>
+                <slot name="footer" />
+            </template>
         </fits-dialog>
     </div>
 </template>
@@ -154,7 +166,7 @@ function submitForm() {
     }
 
     .el-drawer {
-        width: auto !important;
+        width: auto;
     }
 }
 </style>

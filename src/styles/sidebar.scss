@@ -34,7 +34,7 @@
         }
         &.has-logo {
             .el-scrollbar {
-                height: calc(100% - 50px);
+                height: calc(100% - 50px - 24px);
             }
         }
         .is-horizontal {
@@ -60,6 +60,12 @@
         }
         .el-menu-item {
             margin: 3px var(--fits-sidebar-submenu-padding);
+        }
+        .submenu-title-noDropdown{
+            &.is-active {
+                background-color: var(--fits-sidebar-hover-backgroud-color);
+                color: var(--fits-sidebar-active-font-color);
+            }
         }
         // menu hover
         .submenu-title-noDropdown,

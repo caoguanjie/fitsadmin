@@ -52,13 +52,17 @@ defineExpose({ xGrid })
 const { setting } = useStore();
 let colNum = setting.formType === 'dialog' ? 2 : 1
 let formtypeRef = ref()
+let images = {
+    img1:new URL(`../../../../assets/sysmanger/wenjianjia.png`,import.meta.url).href,
+    img2:new URL(`../../../../assets/sysmanger/yingyerenyuan.png`,import.meta.url).href
+}
 //标识对话框
 let flag = ref(true)
 //表格的配置项
 const gridOptions: FitsTableProps = {
-    keepSource: true,
+    keepSource: false,
     showOverflow: "tooltip",
-    id: 'userManage',
+    id: 'userManageTable',
     rowConfig: {
         height: 52,
         isCurrent: true,
@@ -154,31 +158,33 @@ const gridOptions: FitsTableProps = {
     pagerConfig: {
         enabled: true
     },
-    // align:'center',
     columns: [
-        { field: 'Checkbox', type: 'checkbox', title: '多选', minWidth: 50 },
-        { field: 'Indexes', title: '序号', type: 'seq', minWidth: 50 },
-        { field: 'name', title: '用户名称', minWidth: 80 },
-        { field: 'account', title: '用户账号', minWidth: 80 },
-        { field: 'mobiTel', title: '手机号码', minWidth: 100 },
-        { field: 'sex', title: '性别', minWidth: 50 },
-        { field: 'department', title: '上级机构', minWidth: 80 },
-        // {
-        //     field: 'tap', title: '用户标签', minWidth: 80, slots: {
-        //         'default': (params) => h(
-        //             'div',
-        //             {
-        //                 style: 'overflow: hidden;  white-space: nowrap; width: 100%;background:#ECF5FF;border-radius:2px;border:1px solid #79BBFF;text-align:center'
-        //             },
-        //             [
-        //                 h('span', { style: ' color: #007DFF; ' }, params.row.tap)
-        //             ]
-        //         )
-        //     },
-        // },
-        { field: 'status', title: '用户状态', slots: { default: 'status' }, minWidth: 100 },
-        { field: 'comeDate', title: '入职时间', minWidth: 100 },
-        { field: 'Operation', title: '操作', minWidth: 160, slots: { default: 'operate' }, fixed: "right" }
+        { field: 'Checkbox', type: 'checkbox', title: '多选',minWidth: 50 },
+        { field: 'Indexes', title: '序号', type: 'seq',minWidth: 50 },
+        { field: 'name', title: '用户名称',minWidth: 80},
+        { field: 'account', title: '用户账号',minWidth: 80},
+        { field: 'mobiTel', title: '手机号码',minWidth: 100},
+        { field: 'sex', title: '性别',minWidth: 50 },
+        { field: 'department', title: '上级机构',minWidth: 80},
+        {
+            field: 'tap', title: '用户标签', width: 100,align:'center', slots: {
+                'default': (params) => h(
+                    'div',
+                    {
+                        style: 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%;text-align:center'
+                    },
+                    [
+                        h('span',
+                            { style: 'display:block;background: #ecf5ff;padding: 8px; color: #007dff; border-radius: 2px;padding: 0 2px;border:1px solid #79BBFF;' },
+                            params.row.tap
+                        ),
+                    ]
+                )
+            },
+        },
+        { field: 'status', title: '用户状态', slots: { default: 'status' },minWidth: 80,align:'center'},
+        { field: 'comeDate', title: '入职时间',minWidth: 100},
+        { field: 'Operation', title: '操作', slots: { default: 'operate' }, fixed: "right",minWidth: 150 }
     ],
     toolbarConfig: {
         buttons: [
@@ -639,13 +645,15 @@ function editBtn(obj: object | any) {
 }
 //表格删除按钮事件
 const removeBtn = async (obj: any) => {
-    const $table = xGrid.value
-    const type = await VXETable.modal.confirm('您确定要删除该数据?')
-    if (type === 'confirm') {
-        nextTick(() => {
-            $table.fitsTablePro.commitProxy('query')
-        })
-    }
+    // const $table = xGrid.value
+    // const type = await VXETable.modal.confirm('您确定要删除该数据?')
+    // if (type === 'confirm') {
+    //     nextTick(() => {
+    //         $table.fitsTablePro.commitProxy('query')
+    //     })
+    // }
+    dialogData.dialogText = '是否确定删除选中的用户?'
+    dialogData.visible = true
 }
 //新建用户和编辑对话框的提交按钮
 const submitDialogForm = async (formValue: any) => {
@@ -677,15 +685,15 @@ let visibleRelate = ref(false)
 
 const dialogRelateProp = reactive({
     title: '关联角色',
-    width: '75%'
+    width: '85%'
 })
 const dialogData = reactive({
     dialogText: '',
     key: "",
     visible: false,
     props: {
-        title: '提示',
-        width: "460px"
+        title: '',
+        width: "30%"
     }
 })
 
@@ -735,7 +743,7 @@ span {
     color: #0e84ff;
     cursor: pointer;
     // margin:5px 20px 5px 0;
-    margin-right: 20px;
+    margin-right: 10px;
 
     text-decoration: underline;
 }

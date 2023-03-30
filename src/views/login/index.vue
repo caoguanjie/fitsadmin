@@ -27,7 +27,7 @@
                 </el-button>
               </template>
               <div class="appimg">
-                <img src="@/assets/Login/iosCode.png" alt="">
+                <img src="@/assets/Login/IOSCode.png" alt="">
                 <span class="text">扫描下载iOS客户端</span>
               </div>
             </el-popover>
@@ -39,7 +39,7 @@
                 </el-button>
               </template>
               <div class="appimg">
-                <img src="@/assets/Login/androidCode.png" alt="">
+                <img src="@/assets/Login/AndroidCode.png" alt="">
                 <span class="text">扫描下载Android客户端</span>
               </div>
             </el-popover>

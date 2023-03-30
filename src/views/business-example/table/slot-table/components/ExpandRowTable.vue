@@ -12,8 +12,8 @@
 </template>
 
 <script lang='ts' setup>
-import { FitsTableProps, FitsTable } from '@/fits-components';
-import { useFitsTablePro } from '@/fits-components/type'
+import { FitsTable } from '@/fits-components';
+import { FitsTableProps, useFitsTablePro } from '@/fits-components/type'
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';
 

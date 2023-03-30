@@ -1,6 +1,6 @@
 <template>
     <div class="drawer-container">
-        <el-drawer v-model="isVisible" @close="closeDrawer" v-bind="dialogProp">
+        <el-drawer v-model="isVisible" @close="closeDrawer" v-bind="dialogProp" :size="props.dialogProp.width">
             <!-- drawer的头部插槽 -->
             <template #header="{ close, titleId, titleClass }">
                 <slot name="header" :close="close" :titleId="titleId" :titleClass="titleClass" />
@@ -11,10 +11,10 @@
             <template #footer v-if="showFooter">
                 <slot name="footer">
                     <el-button @click="closeDrawer" class="cancelBtn">
-                        {{cancelText}}
+                        {{ cancelText }}
                     </el-button>
                     <el-button type="primary" @click="submitDrawer" class="sureBtn">
-                        {{submitText}}
+                        {{ submitText }}
                     </el-button>
                 </slot>
             </template>
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<{
     submitText?: string,
     cancelText?: string,
     showFooter?: boolean,
-    dialogProp?: any
+    dialogProp?: any,
 }>(), {
     visible: false,
     submitText: '确定',
@@ -66,7 +66,7 @@ function submitDrawer() {
 <style lang="scss">
 .drawer-container {
     .el-drawer {
-        max-width: 80% !important;
+        max-width: 100%;
     }
 
     .el-drawer__header {

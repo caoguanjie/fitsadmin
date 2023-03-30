@@ -15,8 +15,11 @@ import { login } from '@/api/base/login'
 // const axiosCanceler = new AxiosCanceler()
 // 是否正在刷新的标记
 let isRefreshing = false
+// 是否执行过默默获取token
+let isHaveToken = false
+
 // 重试队列，每一项将是一个待执行的函数形式
-const requestQueues: (() => void)[] = []
+let requestQueues: (() => void)[] = []
 
 // 重置请求参数
 const resetRequestParams = (config: AxiosRequestConfig) => {
@@ -49,30 +52,32 @@ const inductiveLogin = () => {
 }
 
 export const refreshToken = (response: AxiosResponse) => {
-    // return login({ LoginID: 'caogj', Password: '1111111' }).then((res: AxiosResponse) => {
-    //     // 重新请求
-    //     const { RetCode, ReturnData } = res
-    //     const { user } = useStore();
-    //     if (RetCode === ResultEnum.SUCCESS) {
-    //         user.setToken(ReturnData.LoginToken);
-    //         // 由于requestSuccess拦截器里面对URL进行了改造，所以这里把最原始的URL转化出来
-    //         const config = resetRequestParams(response.config)
-    //         // 最先的接口返回2002，也是最先返回正式的结果，剩余的接口再按顺序返回
-    //         // 已经刷新了token，将所有队列中的请求进行重试
-    //         if (requestQueues && requestQueues.length) {
-    //             requestQueues.forEach(callback => callback())
-    //             requestQueues = []
-    //         }
-    //         isRefreshing = false
-    //         return http(config)
-    //     } else {
-    //         // 刷新token失败，神仙也救不了了，跳转到首页重新登录吧
-    //         router.replace({ path: `/login?redirect=${router.currentRoute.path}` })
-    //     }
-    // }).catch((err: any) => {
-    //     console.error('refreshtoken error =>', err)
-    //     // 刷新token失败，神仙也救不了了，跳转到首页重新登录吧 
-    // })
+    const { user } = useStore();
+    // 拿记住的账号密码重新登录
+    return login(Object.assign({ code: "", phone: "" }, user.loginInfo)).then((res: AxiosResponse) => {
+        // 重新请求
+        const { RetCode, ReturnData } = res
+        if (RetCode === ResultEnum.SUCCESS) {
+            user.setToken(ReturnData.LoginToken);
+            // 由于requestSuccess拦截器里面对URL进行了改造，所以这里把最原始的URL转化出来
+            const config = resetRequestParams(response.config)
+            // 最先的接口返回2002，也是最先返回正式的结果，剩余的接口再按顺序返回
+            // 已经刷新了token，将所有队列中的请求进行重试
+            if (requestQueues && requestQueues.length) {
+                requestQueues.forEach(callback => callback())
+                requestQueues = []
+            }
+            isRefreshing = false
+            isHaveToken = true
+            return http(config)
+        } else {
+            // 刷新token失败，神仙也救不了了，跳转到首页重新登录吧
+            router.replace({ path: `/login?redirect=${router.currentRoute.value.path}` })
+        }
+    }).catch((err: any) => {
+        console.error('refreshtoken error =>', err)
+        // 刷新token失败，神仙也救不了了，跳转到首页重新登录吧 
+    })
 }
 // 请求拦截器
 export const requestSuccess = (request: AxiosRequestConfig) => {
@@ -91,7 +96,7 @@ export const requestSuccess = (request: AxiosRequestConfig) => {
         url += '?'
         const keys = Object.keys(request.params)
         for (const key of keys) {
-            url += `${encodeURIComponent('Data[' + key + ']')}=${encodeURIComponent(request.params[key])}&`
+            url += `${encodeURIComponent('Data[' + key + ']')}=${encodeURIComponent(request.params[key] ?? "")}&`
         }
         request.url = url.substring(0, url.length - 1)
         request.params = {}
@@ -149,19 +154,53 @@ export const responseSuccess = (response: AxiosResponse) => {
         case ResultEnum.LOGIN_FAIL:
             // 登录失败
             // 在枚举那里注释这个LOGIN_FAIL就是身份失效，true为无感
-            if (!user.token) {
-                if (setting.isInsensitivity) {
-                    // 无感登录
-                    return insensitiveLogin(response)
+            // if (!user.token) {
+            //     if (setting.isInsensitivity) {
+            //         // 无感登录
+            //         return insensitiveLogin(response)
+            //     } else {
+            //         // 有感登录
+            //         return inductiveLogin()
+            //     }
+            // } else {
+            //     // 当由于接口快慢问题，会导致授权接口还没有返回token的时候，然后又发起了新一个请求，
+            //     // 新请求因为没有token，又会直接报2002，导致又需要去请求一次授权，有时候会覆盖token或者引发其他问题。
+            //     // 现在做法是，当有接口返回2002的时候，先判断本地有没有token，如果有就直接请求自身，获取数据
+            //     return http(resetRequestParams(response.config))
+            // }
+
+            // 个案系统token失效拦截的逻辑
+            if (setting.isInsensitivity) {
+                // 无感登录
+                if (!isRefreshing) {
+                    if (isHaveToken) {
+                        /**
+                         * 这里只针对个案系统通过授权码登录的问题，授权码只能登录一次带来问题
+                         * 这里原因是：
+                         * 1、当一个页面有两个接口，有时间差发起请求
+                         * 2、第一个接口发起授权登录，在授权登录过程中发起第二个接口，这个时候还没有token返回
+                         * 3、当token返回成功后，才接收到第二个接口是2002，这个时候会再次发起授权，不符合预期
+                         * 4、正常流程应该是第二个接口返回2002后，应该调用自身的接口重新请求一遍就能获取数据
+                         */
+                        isHaveToken = false
+                        return http(resetRequestParams(response.config))
+                    } else {
+                        isRefreshing = true
+                        return refreshToken(response)
+                    }
                 } else {
-                    // 有感登录
-                    return inductiveLogin()
+                    // 当遇到正在默默登录的接口，返回一个未执行resolve的promise
+                    return new Promise((resolve) => {
+                        // 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
+                        requestQueues.push(() => {
+                            resolve(http(resetRequestParams(response.config)))
+                        })
+                    })
                 }
             } else {
-                // 当由于接口快慢问题，会导致授权接口还没有返回token的时候，然后又发起了新一个请求，
-                // 新请求因为没有token，又会直接报2002，导致又需要去请求一次授权，有时候会覆盖token或者引发其他问题。
-                // 现在做法是，当有接口返回2002的时候，先判断本地有没有token，如果有就直接请求自身，获取数据
-                return http(resetRequestParams(response.config))
+                // 有感登录
+                // token失效，弹出登录框
+                inductiveLogin()
             }
 
         // 更多状态，请参照枚举ResultEnum类型，进行业务处理

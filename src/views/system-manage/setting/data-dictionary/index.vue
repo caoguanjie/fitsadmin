@@ -21,38 +21,40 @@
 
                     <el-collapse-transition>
                         <div v-show="isShow">
-                            <el-tree :data="dictClass" node-key="id" default-expand-all :expand-on-click-node="false"
-                                @node-click="clickTree">
-                                <template #default="{ data }">
-                                    <span class="custom-tree-node">
-                                        <el-popover placement="bottom" title="" trigger="contextmenu"
-                                            :popper-class="'Role-popover'" :hide-after=0>
-                                            <template #reference>
-                                                <div class=" text">
-                                                    <div class=" textLeft">
-                                                        <div class="textContent">
-                                                            <span>{{ data.Cname }}</span>
-                                                        </div>
+                            <el-scrollbar class="treeScrollbar">
+                                <el-tree ref="treeRef" :data="dictClass" node-key="dictClass.id" default-expand-all
+                                    :expand-on-click-node="false" @node-contextmenu="openMenu">
+                                    <template #default="{ data }">
+                                        <span class="custom-tree-node">
+                                            <!-- <el-popover placement="bottom" title="" trigger="contextmenu"
+                                            :popper-class="'Role-popover'" :hide-after=0
+                                            v-model:visible="data.isVisible" :key="data" :offset="0">
+                                            <template #reference> -->
+                                            <div class=" text">
+                                                <div class=" textLeft" @click="clickTree">
+                                                    <div class="textContent">
+                                                        <span>{{ data.Cname }}</span>
                                                     </div>
-                                                    <el-icon class="moreButton">
-                                                        <el-popover placement="bottom" title="" trigger="click"
-                                                            :popper-class="'Role-popover'" :hide-after=0>
-                                                            <template #reference>
-                                                                <MoreFilled :color='"#999999"' />
-                                                            </template>
-                                                            <div class="btn">
-                                                                <el-button @click="classifyButton(data, 'editClass')">编辑
-                                                                </el-button>
-                                                            </div>
-                                                            <div class="btn">
-                                                                <el-button @click="classifyButton(data, 'deleteClass')">
-                                                                    删除
-                                                                </el-button>
-                                                            </div>
-                                                        </el-popover>
-                                                    </el-icon>
                                                 </div>
-                                            </template>
+                                                <el-icon class="moreButton">
+                                                    <el-popover placement="bottom" title="" trigger="click"
+                                                        :popper-class="'Role-popover'" :hide-after=0>
+                                                        <template #reference>
+                                                            <MoreFilled :color='"#999999"' />
+                                                        </template>
+                                                        <div class="btn">
+                                                            <el-button @click="classifyButton(data, 'editClass')">编辑
+                                                            </el-button>
+                                                        </div>
+                                                        <div class="btn">
+                                                            <el-button @click="classifyButton(data, 'deleteClass')">
+                                                                删除
+                                                            </el-button>
+                                                        </div>
+                                                    </el-popover>
+                                                </el-icon>
+                                            </div>
+                                            <!-- </template>
                                             <div class="btn">
                                                 <el-button @click="classifyButton(data, 'editClass')">编辑
                                                 </el-button>
@@ -61,10 +63,11 @@
                                                 <el-button @click="classifyButton(data, 'deleteClass')">删除
                                                 </el-button>
                                             </div>
-                                        </el-popover>
-                                    </span>
-                                </template>
-                            </el-tree>
+                                        </el-popover> -->
+                                        </span>
+                                    </template>
+                                </el-tree>
+                            </el-scrollbar>
                         </div>
                     </el-collapse-transition>
                 </div>
@@ -104,6 +107,14 @@
             @cancel="closeDialog('base')" @submit="onSubmint(dialogData.base.key)">
             {{ dialogData.base.dialogText }}
         </fits-dialog>
+        <ul v-show="visible" :style="{ left: position.left + 'px', top: position.top + 'px' }" class="contextmenu">
+            <div class="btn">
+                <el-button @click="classifyButton(position.data, 'editClass')">编辑</el-button>
+            </div>
+            <div class="btn">
+                <el-button @click="classifyButton(position.data, 'deleteClass')">删除 </el-button>
+            </div>
+        </ul>
     </div>
 </template>
 
@@ -119,11 +130,19 @@ import { ref } from 'vue'
 import { FitsDialog } from '@/fits-components'
 import addDict from './add-dict.vue'
 import editDict from './edit-dict.vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElTree } from 'element-plus'
 
-
+const treeRef = ref<InstanceType<typeof ElTree>>()
 const { user } = useStore();
 const xGrid = ref<VxeGridInstance | any>()
+
+// 鼠标右键菜单选项
+let visible = ref(false)
+let position = ref({
+    top: 0,
+    left: 0,
+    data: []
+})
 
 const dialogData = reactive({
     operate: {
@@ -145,6 +164,7 @@ const dialogData = reactive({
         }
     }
 })
+// 消息提醒
 const openMessage = () => {
     ElMessage({
         message: '请选择至少一个字典！',
@@ -253,7 +273,28 @@ const gridOptions: FitsTableProps = {
             // { field: 'flag', span: 3, title: '开关', itemRender: { name: '$switch', props: { openLabel: '是', closeLabel: '否' } } },
             { field: 'name', span: 3, title: '字典名称', itemRender: { name: 'ElInput', props: { placeholder: '请输入字典名称' } } },
             { field: 'code', span: 3, title: '字典值', itemRender: { name: 'ElInput', props: { placeholder: '请输入字典值' } } },
-            { field: 'code', span: 3, title: '字典状态', itemRender: { name: 'ElInput', props: { placeholder: '请输入请选择状态' } } },
+            {
+                field: 'IsEnabled', span: 3, title: '字典状态', itemRender: {
+                    name: 'ElSelect',
+                    props: {
+                        // multiple: true,
+                        collapseTags: true,
+                        collapseTagsTooltip: true,
+                        clearable: true,
+                        placeholder: '请输入请选择状态'
+                    },
+                    options: [
+                        {
+                            value: '1',
+                            label: '启用',
+                        },
+                        {
+                            value: '2',
+                            label: '禁用',
+                        },
+                    ]
+                }
+            },
         ]
     },
     importConfig: {},
@@ -284,51 +325,6 @@ const gridOptions: FitsTableProps = {
         tools: {
             enabled: true
         },
-        // refresh: {
-        //     // 刷新
-        //     icon: 'vxe-icon-refresh'
-        // },
-        // zoom: true,
-        // export: false,
-        // custom: false,
-        // tools: [
-        //     {
-        //         toolRender: {
-        //             name: 'ToolbarSearch', events: {
-        //                 click: () => {
-        //                     console.log('关闭搜索')
-        //                 }
-        //             }
-        //         }
-        //     },
-        //     { toolRender: { name: 'ToolbarSetting' } },
-        //     { toolRender: { name: 'ToolbarRefresh' } },
-
-        //     {
-        //         toolRender: {
-        //             name: 'ToolbarExport', events: {
-        //                 click: () => {
-
-        //                     // xGrid.value?.openExport()
-        //                 }
-        //             },
-        //         }
-        //     },
-        //     {
-        //         toolRender: { name: 'ToolbarFullscreen' }
-        //     },
-        //     {
-        //         toolRender: {
-        //             name: 'ToolbarCustomColumn', events: {
-        //                 click: () => {
-        //                     console.log(111);
-
-        //                 }
-        //             },
-
-        //         }
-        //     },
-        // ],
     },
 
     proxyConfig: {
@@ -372,28 +368,280 @@ const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 //左侧业务字典数据
 const dictClass = ref([
     {
+        id: 0,
         Cname: '变异场景',
-        Cdescribe: ""
+        Cdescribe: "",
+        isVisible: false,
     },
     {
+        id: 1,
         Cname: '非计划重返住院',
-        Cdescribe: ""
+        Cdescribe: "",
+        isVisible: false,
     },
     {
+        id: 2,
         Cname: '非计划重返手术室次数',
-        Cdescribe: ""
+        Cdescribe: "",
+        isVisible: false,
     },
     {
+        id: 3,
         Cname: '护理评率',
-        Cdescribe: ""
+        Cdescribe: "",
+        isVisible: false,
     },
     {
+        id: 4,
         Cname: '手术并发症',
-        Cdescribe: ""
+        Cdescribe: "",
+        isVisible: false,
     },
     {
+        id: 5,
         Cname: '等级',
-        Cdescribe: ""
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 1,
+        Cname: '非计划重返住院',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 2,
+        Cname: '非计划重返手术室次数',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 3,
+        Cname: '护理评率',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 4,
+        Cname: '手术并发症',
+        Cdescribe: "",
+        isVisible: false,
+    },
+    {
+        id: 5,
+        Cname: '等级',
+        Cdescribe: "",
+        isVisible: false,
     }
 ])
 onMounted(() => {
@@ -405,6 +653,12 @@ onMounted(() => {
         // gridOptions.id = 'test'
         // gridOptions.formConfig = {}
     }, 2000)
+    document.addEventListener("click", e => {
+        const thisClassName = (e.target as any).className;
+        if (thisClassName !== "contextmenu") {
+            visible.value = false;
+        }
+    });
 })
 //关闭弹窗
 const closeDialog = (key: string) => {
@@ -501,7 +755,7 @@ const onSubmint = (key: string) => {
             dialogData.operate.visible = false
             break;
         case 'deleteClass':
-            dictClass.value.splice(dictIndex, 1)
+            treeRef.value!.remove(dictClass.value[dictIndex])
             break;
         case 'editDict':
             dialogData.operate.visible = false
@@ -524,7 +778,7 @@ const FormOperation = (val: any, key: string) => {
 }
 //新增业务字典按钮
 const addClassfy = () => {
-    dialogData.operate.props.title = "新增业务字典"
+    dialogData.operate.props.title = "新增字典分类"
     dialogData.operate.visible = true
     dialogData.operate.key = 'addClass'
     //每次新建都传入新的对象解决会有数据残留
@@ -555,29 +809,33 @@ const clickTree = () => {
         xGrid.value.fitsTablePro.commitProxy('query')
     })
 }
+const openMenu = (event: any, data: any, node: any, assembly: any) => {
+    position.value.data = data
+    visible.value = true;
+    const left = event.clientX;
+    position.value.left = left - 75;
+    position.value.top = event.clientY - 90;
+}
 </script>
 <style lang='scss' scoped>
 .dictionary-manage {
+    height: 100%;
     user-select: none;
     font-size: 14px;
-    display: flex;
     margin: 0;
-    padding: 16px 12px 0 12px;
     background: #F1F2F5;
-    // height: calc(100vh - 50px - 40px - 16px - 32px);
+    padding: 16px 12px 0 12px;
 
     .dict-left {
-        display: flex;
-        flex: 1;
+        height: 100%;
         margin-right: 8px;
         background: #FFFFFF;
-        display: flex;
-        padding: 16px 12px 0 12px;
 
         .left-classification {
-            border-right: 1px solid #DCDFE6;
-            margin-right: 16px;
             min-width: 240px;
+            float: left;
+            padding: 16px 0 0 12px;
+            height: 100%;
 
             .top {
                 display: flex;
@@ -609,10 +867,10 @@ const clickTree = () => {
 
                 .text {
                     line-height: 36px;
-                    margin: 0 16px;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    padding-right: 15px;
 
                     .textLeft {
                         display: flex;
@@ -632,11 +890,17 @@ const clickTree = () => {
                         }
                     }
                 }
+
+                .treeScrollbar {
+                    height: calc(100vh - 225px);
+                }
             }
         }
 
         .left-contain {
-            flex: 1;
+            border-left: 1px solid #DCDFE6;
+            padding-left: 16px;
+            overflow: hidden;
 
             .FromButton {
                 color: #007DFF;
@@ -681,6 +945,40 @@ const clickTree = () => {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    :deep(.body--wrapper) {
+        overscroll-behavior: contain;
+    }
+
+    .contextmenu {
+        min-width: 100px;
+        margin-left: 20px;
+        // margin: 0;
+        background: #fff;
+        z-index: 3000;
+        position: absolute;
+        list-style-type: none;
+        padding: 5px 0;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #333;
+        box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+
+        .btn {
+            padding: 0 !important;
+            width: 100%;
+            margin-right: 0px !important;
+
+            .el-button {
+                border: none;
+                font-size: 14px;
+                width: 100%;
+                height: 44px;
+                border-radius: 0;
             }
         }
     }
