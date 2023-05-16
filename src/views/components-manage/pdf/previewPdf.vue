@@ -21,7 +21,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="PreviewPDF">
 import VuePdfEmbed from "vue-pdf-embed";
 import { ElButton } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';

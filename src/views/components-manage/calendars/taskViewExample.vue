@@ -33,7 +33,7 @@
         </div>
     </el-scrollbar>
 </template>
-<script setup lang="ts">
+<script setup lang="ts"  name="taskView">
 
 import '@fullcalendar/core/vdom'// 解决插件在顶级库前加载的报错
 import { Calendar } from '@fullcalendar/core'

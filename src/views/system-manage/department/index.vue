@@ -7,7 +7,7 @@
             </template>
             <template #status="{ slotProps }">
                 <el-switch v-model="slotProps.row.status"
-                    style="--el-switch-on-color: #000000; --el-switch-off-color: #dcdfe6"></el-switch>
+                    style="--el-switch-on-color: #000000; --el-switch-off-color: #dcdfe6" />
             </template>
         </fits-table>
         <fits-form-dialog :option="dialogOpt" @submit="submitDialogForm" @cancel="dialogOpt.visible = false"
@@ -19,7 +19,7 @@
         </fits-dialog>
     </div>
 </template>
-<script lang='ts' setup>
+<script lang='ts' setup name="Department">
 import XEUtils from 'xe-utils';
 import { getDepartmentTableList } from '@/api/base/system';
 import useStore from '@/store';

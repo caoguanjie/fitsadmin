@@ -32,8 +32,8 @@ export class RouteMeta {
     affix: boolean
     hidden: boolean
     alwaysShow: boolean
-    noCache: boolean
-    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow, noCache }: any = {}) {
+    cache: boolean
+    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow, cache }: any = {}) {
         this.roles = roles ?? []
         this.title = title ?? ''
         this.icon = icon ?? ''
@@ -42,7 +42,7 @@ export class RouteMeta {
         this.affix = affix ?? false
         this.hidden = hidden ?? false
         this.alwaysShow = alwaysShow ?? false
-        this.noCache = noCache ?? true
+        this.cache = cache ?? true
     }
 }
 
@@ -67,4 +67,5 @@ export interface TagView extends Partial<RouteLocationNormalized> {
 export interface TagsViewState {
     visitedViews: TagView[];
     cachedViews: string[];
+    excludeViews: string[];
 }

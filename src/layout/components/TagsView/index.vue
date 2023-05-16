@@ -70,7 +70,6 @@ import {
   watch,
   onMounted,
   ComponentInternalInstance,
-  toRefs,
 } from 'vue';
 
 import path from 'path-browserify';
@@ -214,15 +213,8 @@ function isLastView() {
   }
 }
 
-function refreshSelectedTag(view: TagView) {
-  console.log(view)
-  tagsView.delCachedView(view);
-  const { fullPath, query } = view;
-  nextTick(() => {
-    router.replace({ path: '/redirect' + fullPath, query }).catch((err) => {
-      console.warn(err);
-    });
-  });
+function refreshSelectedTag(view?: TagView) {
+  router.push(router.currentRoute.value.fullPath)
 }
 
 function toLastView(visitedViews: TagView[], view?: any) {
@@ -269,7 +261,7 @@ function closeRightTags() {
 }
 
 function closeOtherTags() {
-  router.push(selectedTag.value);
+  router.push(selectedTag.value as any);
   tagsView.delOtherViews(selectedTag.value).then(() => {
     moveToCurrentTag();
   });

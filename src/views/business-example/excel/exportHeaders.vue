@@ -27,7 +27,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="ExploreMultistageTableHead">
 import XEUtils from 'xe-utils';
 import { getMenuList } from '@/api/base/system';
 import useStore from '@/store';

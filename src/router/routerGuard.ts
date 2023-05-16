@@ -6,14 +6,13 @@ import { RouteLocationNormalized, Router } from 'vue-router'
 import useStore from '@/store';
 NProgress.configure({ showSpinner: false })
 import ENV from '@/environment/index';
-
 const whiteList = ['/login', '/404']
+import { deleteCache } from './utils';
 export const createRouterGuards = (router: Router) => {
-    router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized, next: any) => {
+    router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: any) => {
         // 开启进度条
         NProgress.start()
         const { user, permission, userHabits } = useStore();
-
         // 确定用户是否已登录
         if (user && user.token) {
             if (to.path === '/login') {
@@ -28,10 +27,12 @@ export const createRouterGuards = (router: Router) => {
                         await user.getUserInfo()
                         // 生成路由方案
                         const asscessRoutes: any = await permission.generateRoutes(user.roles)
+
                         // 动态添加路由
                         asscessRoutes.forEach((route: any) => {
                             router.addRoute(route);
                         });
+                        console.error('asscessRoutes', asscessRoutes, router.getRoutes())
                         // 根据用户的id初始化用户习惯的数据库存储
                         userHabits.store === null && userHabits.initDB((user.userInfo as any).id)
                         // Set the replace: true, 因此导航不会留下历史记录
@@ -54,17 +55,6 @@ export const createRouterGuards = (router: Router) => {
                 // 如果有设置白名单可以直接进入
                 next()
             } else {
-
-                // if (permission.routes.length) {
-                //     next()
-                // } else {
-                //     const accessRoutes: any = await permission.generateRoutes(['admin']);
-                //     accessRoutes.forEach((route: any) => {
-                //         router.addRoute(route);
-                //     });
-                //     next({ ...to, replace: true })
-                // }
-
                 // 没有访问权限的其他页面将重定向到登录页面
                 next(`/login?redirect=${to.path}`)
                 NProgress.done()
@@ -73,12 +63,18 @@ export const createRouterGuards = (router: Router) => {
     })
 
     router.afterEach((to: RouteLocationNormalized) => {
-        // 关闭 进度条
-        NProgress.done()
-
-        // 设置页面标题
-        if (to.meta.title) {
-            document.title = to.meta.title + ' - ' + ENV.project.title
+        // 当页面需要刷新时，要清空组件的缓存
+        if (router.routerRefresh) {
+            router.routerRefresh = false
+            deleteCache(to, true)
+        } else {
+            // 关闭 进度条
+            NProgress.done()
+            // 设置页面标题
+            if (to.meta.title) {
+                document.title = to.meta.title + ' - ' + ENV.project.title
+            }
         }
     })
 }
+

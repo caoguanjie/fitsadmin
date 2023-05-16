@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="LineEcharts">
 import BaseExample from "./line-examples/BaseExample.vue"
 import SmoothExample from "./line-examples/SmoothExample.vue"
 import AreaExample from "./line-examples/AreaExample.vue"

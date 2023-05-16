@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="UploadPDF">
 import baseUpload from "@/views/components-manage/pdf/pdfupload-example/baseUpload.vue"
 import typeUpload from "@/views/components-manage/pdf/pdfupload-example/typeUpload.vue"
 import slotUpload from "@/views/components-manage/pdf/pdfupload-example/slotUpload.vue"

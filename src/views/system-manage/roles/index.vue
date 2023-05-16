@@ -122,7 +122,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="Roles">
 import XEUtils from 'xe-utils';
 import { Search, CirclePlusFilled, MoreFilled, CaretBottom, CaretRight, UserFilled } from '@element-plus/icons-vue'
 import { getRoleList } from '@/api/base/system';

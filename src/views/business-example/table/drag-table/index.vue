@@ -5,12 +5,12 @@
             <div class="content" v-outline="tocProps">
                 <fits-card title="拖拽行"
                     desc="vxe-table 表格不支持拖动功能；可以结合 sortablejs 实现拖动效果。由于直接操作了 Dom 节点，需要与 Vue 的数据同步，必须设置 rowConfig.useKey=true ，并且根据 vue 的规则自行实现数据同步。">
-                    <drag-row-table></drag-row-table>
+                    <drag-row-table />
                 </fits-card>
 
                 <fits-card title="拖拽列"
                     desc="vxe-table 表格不支持拖动功能；可以结合 sortablejs 实现拖动效果。由于直接操作了 Dom 节点，需要与 Vue 的数据同步，必须设置 columnConfig.useKey=true ，并且根据 vue 的规则自行实现数据同步。">
-                    <drag-col-table></drag-col-table>
+                    <drag-col-table />
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -27,7 +27,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="DrapTable">
 import DragRowTable from './components/DragRowTable.vue'
 import DragColTable from './components/DragColTable.vue'
 import FitsCard from '@/components/Card/FitsCard.vue'

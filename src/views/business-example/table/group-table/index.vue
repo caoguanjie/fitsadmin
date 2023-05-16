@@ -32,7 +32,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="GroupTable">
 import BaseGroupTable from "./components/BaseGroupTable.vue"
 import ExpandGroupTable from "./components/ExpandGroupTable.vue"
 import SubsectionGroupTable from "./components/SubsectionGroupTable.vue"

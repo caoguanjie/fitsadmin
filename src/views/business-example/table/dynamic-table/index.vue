@@ -4,7 +4,7 @@
             <div class="content" v-outline="tocProps">
                 <fits-card title="动态表格" desc="动态表格展示了表单＋表格的结合使用。
                 表格内部的渲染器主要是通过表格插槽实现的。">
-                    <dynamic-table></dynamic-table>
+                    <dynamic-table />
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -21,7 +21,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="DynamicTable">
 import DynamicTable from './components/DynamicTable.vue'
 import FitsCard from '@/components/Card/FitsCard.vue'
 

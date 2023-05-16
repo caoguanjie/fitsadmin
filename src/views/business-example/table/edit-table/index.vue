@@ -3,16 +3,16 @@
         <el-scrollbar class="left" @scroll="scroll" always>
             <div class="content" v-outline="tocProps">
                 <fits-card title="编辑模式" desc="给 columns 里的对象配置 editRender 属性设置渲染器名称等，即可开启可编辑功能。">
-                    <edit-mode-table></edit-mode-table>
+                    <edit-mode-table />
                 </fits-card>
 
                 <fits-card title="点击触发编辑"
                     desc="通过配置 editConfig.trigger 设置编辑器的触发方式。可以通过单击、双击和手动方式触发。本例演示了切换单击和双击的触发方式，手动触发请移步下一个例子。">
-                    <edit-trigger-table></edit-trigger-table>
+                    <edit-trigger-table />
                 </fits-card>
 
                 <fits-card title="手动触发编辑" desc="手动的触发方式需要配置 editConfig.trigger='manual'，且只对 editConfig.mode='row'有效。">
-                    <manual-edit-table></manual-edit-table>
+                    <manual-edit-table />
                 </fits-card>
             </div>
         </el-scrollbar>
@@ -29,7 +29,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="EditTable">
 import EditModeTable from './components/EditModeTable.vue'
 import EditTriggerTable from './components/EditTriggerTable.vue'
 import ManualEditTable from './components/ManualEditTable.vue'

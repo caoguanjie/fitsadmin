@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="AllTable">
 import { FitsTable } from '@/fits-components';
 import { FitsTableProps, FitsTreeSelectModel, useFitsTablePro } from '@/fits-components/type'
 import { VxeGridInstance } from 'vxe-table';

@@ -56,7 +56,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="ComprehensiveExample2">
 import MoreWorkGroupItem from "./comprehensive-example2/MoreWorkGroupItem.vue"
 import SingleWorkGroupItem from "./comprehensive-example2/SingleWorkGroupItem.vue"
 import WorkOrderTrendItem from "./comprehensive-example2/WorkOrderTrendItem.vue"

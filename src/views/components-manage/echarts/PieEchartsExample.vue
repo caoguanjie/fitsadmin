@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="PieEcharts">
 import BaseExample from "./pie-examples/BaseExample.vue"
 import ShowLegendExample from "./pie-examples/ShowLegendExample.vue"
 import GapExample from "./pie-examples/GapExample.vue"

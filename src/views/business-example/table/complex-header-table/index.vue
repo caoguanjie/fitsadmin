@@ -24,7 +24,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="ComplexTable">
 import ComplexHeaderTable from './components/ComplexHeaderTable.vue'
 import ComplexHighlightTable from './components/ComplexHighlightTable.vue'
 import FitsCard from '@/components/Card/FitsCard.vue'

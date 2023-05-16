@@ -8,6 +8,7 @@ const useTagsViewStore = defineStore({
   state: (): TagsViewState => ({
     visitedViews: [],
     cachedViews: [], //  keepAlive 缓存页面
+    excludeViews: [], // 不缓存的组件
   }),
   actions: {
     /**
@@ -35,10 +36,31 @@ const useTagsViewStore = defineStore({
      * @param view 
      */
     addCachedView(view: any) {
+
       if (this.cachedViews.includes(view.name)) return;
-      if (!view.meta.noCache) {
+      if (view.meta.cache) {
         this.cachedViews.push(view.name);
       }
+      console.log('addTags', view, this.cachedViews)
+    },
+    /**
+     * 添加不执行缓存视图，把组件名字存入keep-alive的exclude属性里面
+     * @param view 
+     */
+    addExcludeView(view: any) {
+      if (this.excludeViews.includes(view.name)) return;
+      this.excludeViews.push(view.name);
+    },
+    /**
+    * 删除不执行缓存视图，把组件名字存入keep-alive的exclude属性里面
+    * @param view 
+    */
+    delExcludeView(view: any) {
+      return new Promise((resolve) => {
+        const index = this.excludeViews.indexOf(view.name);
+        index > -1 && this.excludeViews.splice(index, 1);
+        resolve([...this.excludeViews]);
+      });
     },
     /**
      * 删除可访问的路由视图

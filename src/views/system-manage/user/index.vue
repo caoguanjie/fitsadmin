@@ -12,8 +12,8 @@
                         <template #default="{ node, data }">
                             <span class="custom-tree-node">
                                 <img :src="images.img1" v-if="data.children && data.children.length > 0 && data.pid"
-                                    style="color:#FFCA28" />
-                                <img class="people" :src="images.img2" v-if="!data.children" style="color:#ACC6D3" />
+                                    style="color:#FFCA28">
+                                <img class="people" :src="images.img2" v-if="!data.children" style="color:#ACC6D3">
                                 {{ data.name }}
                             </span>
                         </template>
@@ -26,9 +26,9 @@
         </div>
     </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="User">
 import userManage from './components/userManage.vue'
-import { getDepartment } from '@/api/base/system';;
+import { getDepartment } from '@/api/base/system';
 import { Search } from '@element-plus/icons-vue'
 import { ElTree } from 'element-plus'
 let images = {
@@ -85,6 +85,7 @@ onMounted(async () => {
         float: left;
         min-width: 240px;
         height: 100%;
+
         .search {
             position: relative;
 

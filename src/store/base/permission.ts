@@ -62,6 +62,54 @@ const usePermissionStore = defineStore({
       this.routes = constantRoutes.concat(routes);
       this.setActiveMenu();
     },
+    /**
+     * 将多级嵌套路由处理成一维数组
+     * @param routesList 传入路由
+     * @returns 返回处理后的一维路由
+     */
+    generateFlatRoutes(accessRoutes: any) {
+      const flatRoutes = [];
+
+      for (const item of accessRoutes) {
+        let childrenFflatRoutes: any = [];
+        if (item.children && item.children.length > 0) {
+          childrenFflatRoutes = this.castToFlatRoute(item.children, "");
+        }
+
+        // 一级路由是布局路由,需要处理的只是其子路由数据
+        flatRoutes.push({ ...item, children: childrenFflatRoutes })
+      }
+
+      return flatRoutes;
+    },
+    /**
+     * 将子路由转换为扁平化路由数组（仅一级）
+     * @param {待转换的子路由数组} routes
+     * @param {父级路由路径} parentPath
+     */
+    castToFlatRoute(routes: any, parentPath: any, flatRoutes = []) {
+      const _flatRoutes: any = flatRoutes;
+      for (const item of routes) {
+        if (item.children && item.children.length > 0) {
+          if (item.redirect && item.redirect !== 'noRedirect') {
+            // ...item 是为了接受一切从后端回传的各种字段
+            _flatRoutes.push({
+              ...item,
+              path: (parentPath + "/" + item.path).substring(1),
+            });
+          }
+          this.castToFlatRoute(item.children, parentPath + "/" + item.path, flatRoutes);
+        } else {
+          _flatRoutes.push({
+            ...item,
+            path: (parentPath + "/" + item.path).substring(1)
+          })
+
+        }
+      }
+
+      return _flatRoutes;
+    },
     generateRoutes(roles: string[]) {
       return new Promise((resolve, reject) => {
         let accessedRoutes
@@ -73,7 +121,9 @@ const usePermissionStore = defineStore({
           accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
         }
         this.setRoutes(accessedRoutes);
-        resolve(accessedRoutes);
+        const flatRoutes = this.generateFlatRoutes(accessedRoutes)
+        console.error(accessedRoutes, flatRoutes)
+        resolve(flatRoutes);
         // listRoutes()
         //   .then((response) => {
         //     const asyncRoutes = response.data;

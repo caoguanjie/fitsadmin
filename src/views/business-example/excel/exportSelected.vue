@@ -42,7 +42,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="ExploreSelected">
 import { getRoleList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';

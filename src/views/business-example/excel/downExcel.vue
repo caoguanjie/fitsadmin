@@ -10,7 +10,7 @@
     </div>
 </template>
   
-<script setup lang="ts">
+<script setup lang="ts" name="DownloadExcel">
 import useDownloadPdf from "@/utils/base/downloadPdf"
 import { ElButton } from 'element-plus';
 import { VxeGridInstance } from 'vxe-table';

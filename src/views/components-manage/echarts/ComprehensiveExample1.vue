@@ -7,7 +7,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="ComprehensiveExample1">
 import HeaderItem from "./comprehensive-example1/HeaderItem.vue"
 import SingleWorkGroupItem from "./comprehensive-example1/SingleWorkGroupItem.vue"
 import WorkOrderItem from "./comprehensive-example1/WorkOrderItem.vue"

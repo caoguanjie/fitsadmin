@@ -40,7 +40,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="SlotTable">
 import CustomContentTable from './components/CustomContentTable.vue'
 import CustomHeaderTable from './components/CustomHeaderTable.vue'
 import ExpandRowTable from './components/ExpandRowTable.vue'

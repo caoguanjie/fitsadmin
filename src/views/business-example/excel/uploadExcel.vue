@@ -9,7 +9,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="UploadExcel">
 import { FitsUpload } from '@/fits-components';
 import * as XLSX from 'xlsx';
 

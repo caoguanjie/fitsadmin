@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="BarEcharts">
 import BaseExample from "./bar-examples/BaseExample.vue"
 import ShowLegendExample from "./bar-examples/ShowLegendExample.vue"
 import PositionLegendExample from "./bar-examples/PositionLegendExample.vue"

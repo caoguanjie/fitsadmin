@@ -8,6 +8,8 @@
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
+    // 关闭class类属性必须要要初始化的值提示
+    "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "baseUrl": "./",

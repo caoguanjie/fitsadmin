@@ -107,7 +107,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="BasicTable">
 import BasicTable from './components/BasicTable.vue'
 import ShowOverflowTable from './components/ShowOverflowTable.vue'
 import ResizableTable from './components/ResizableTable.vue'

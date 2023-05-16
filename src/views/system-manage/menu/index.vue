@@ -36,7 +36,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="Menu">
 import XEUtils from 'xe-utils';
 import { getMenuList } from '@/api/base/system';
 // import { FitsFormItemProps } from '@/fits-components/Form/FormCrea';

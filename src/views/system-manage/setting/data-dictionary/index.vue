@@ -118,7 +118,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="dictionary">
 import XEUtils from 'xe-utils';
 import { Search, CirclePlusFilled, MoreFilled, CaretBottom, CaretRight } from '@element-plus/icons-vue'
 import { getDictItemList } from '@/api/base/system';

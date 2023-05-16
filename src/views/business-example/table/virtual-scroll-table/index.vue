@@ -21,7 +21,7 @@
     </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="VirtualScroll">
 import VirtualScrollTable from './components/VirtualScrollTable.vue'
 import FitsCard from '@/components/Card/FitsCard.vue'
 
