@@ -2,9 +2,10 @@
   <div class="tags-view__container">
     <scroll-pane ref="scrollPaneRef" class="tags-view__wrapper" @scroll="handleScroll">
       <router-link v-for="tag in visitedViews" :key="tag.path" :data-path="tag.path"
-        :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath } as any"
-        class="tags-view__item" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
-        @contextmenu.prevent="openMenu(tag, $event)" @click="setCurrentTags(tag)">
+        :class="isActive(tag) ? 'active' : ''"
+        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath, cache: true } as any" class="tags-view__item"
+        @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''" @contextmenu.prevent="openMenu(tag, $event)"
+        @click="setCurrentTags(tag)">
         <svg-icon v-if="tag.meta.icon" :icon-class="tag.meta.icon" />
         {{ tag.meta.title }}
         <span v-if="!isAffix(tag)" class="icon-close" @click.prevent.stop="closeSelectedTag(tag)">
@@ -304,8 +305,13 @@ onMounted(() => {
 });
 
 // 设置当前的tag
-function setCurrentTags(currentTag: TagView) {
+function setCurrentTags(currentTag: TagView | any) {
   selectedTag.value = currentTag;
+  // router.push({
+  //   path: currentTag.path, 
+  //   query: currentTag.query, 
+  //    cache: true
+  // })
 }
 // 处理多页签的操作
 function handleCommand(command: string) {

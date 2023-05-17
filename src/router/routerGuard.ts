@@ -32,7 +32,6 @@ export const createRouterGuards = (router: Router) => {
                         asscessRoutes.forEach((route: any) => {
                             router.addRoute(route);
                         });
-                        console.error('asscessRoutes', asscessRoutes, router.getRoutes())
                         // 根据用户的id初始化用户习惯的数据库存储
                         userHabits.store === null && userHabits.initDB((user.userInfo as any).id)
                         // Set the replace: true, 因此导航不会留下历史记录
@@ -65,6 +64,7 @@ export const createRouterGuards = (router: Router) => {
     router.afterEach((to: RouteLocationNormalized) => {
         // 当页面需要刷新时，要清空组件的缓存
         if (router.routerRefresh) {
+            console.error(router.routerRefresh)
             router.routerRefresh = false
             deleteCache(to, true)
         } else {

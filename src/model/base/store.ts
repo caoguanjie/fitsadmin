@@ -1,3 +1,4 @@
+import ENV from '@/environment';
 import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
 
 /**
@@ -42,7 +43,7 @@ export class RouteMeta {
         this.affix = affix ?? false
         this.hidden = hidden ?? false
         this.alwaysShow = alwaysShow ?? false
-        this.cache = cache ?? true
+        this.cache = cache ?? ENV.system.keepalive
     }
 }
 

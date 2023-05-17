@@ -10,7 +10,8 @@ import 'virtual:svg-icons-register';
 // 自定义指令
 import * as directive from '@/directive';
 import { setupStore } from '@/store';
-
+// default-passive-events会影响工作流范例的使用
+import 'default-passive-events'
 import setupOtherImports from './other-imports';
 // 自定义样式
 import '@/styles/index.scss';

@@ -101,6 +101,16 @@ interface FitsSystemSetting {
      * @default {true} 
      */
     formType: 'dialog' | 'drawer'
+    /**
+     * @desrciption 是否开启所有页面缓存
+     * @default {true} 
+     */
+    keepalive: boolean
+    /**
+     * @desrciption 最大缓存页面的数量
+     * @default {20} 
+     */
+    keepaliveMax: number
 }
 
 /**

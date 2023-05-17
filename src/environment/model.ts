@@ -32,7 +32,9 @@ export class FitsDefaultSetting implements FitsSetting {
             coutDownTime: 30,
             showFooterBreadcrumb: true,
             breadcrumbPosition: 'bottom',
-            formType: 'dialog'
+            formType: 'dialog',
+            keepalive: true,
+            keepaliveMax: 20,
         }
     }
 

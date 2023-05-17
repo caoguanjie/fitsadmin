@@ -40,12 +40,18 @@ export function RouterUtils(router: Router) {
      * @returns 
      */
     router.push = function (...to) {
-        const location = to[0];
+        const location: any = to[0];
         /**
          * 这里选择fullpath属性进行判断的原因是，<component>组件使用的key是以fullpath属性
          */
         if (router.resolve(location).fullPath === currentRoute.value.fullPath) {
-            router.routerRefresh = true
+            // 这一步主要解决左右切换页签时，同时也会刷新组件，默认切换左右页签，会一直使用缓存组件
+            if (typeof location.cache === 'boolean' && location.cache === true) {
+                router.routerRefresh = false
+            } else {
+                router.routerRefresh = true
+            }
+
         } else {
             setCache(location)
         }
@@ -53,12 +59,16 @@ export function RouterUtils(router: Router) {
     }
 
     router.replace = function (...to) {
-        const location = to[0];
+        const location: any = to[0];
         /**
          * 这里选择fullpath属性进行判断的原因是，<component>组件使用的key是以fullpath属性
          */
         if (router.resolve(location).fullPath === currentRoute.value.fullPath) {
-            router.routerRefresh = true
+            if (typeof location.cache === 'boolean' && location.cache === true) {
+                router.routerRefresh = false
+            } else {
+                router.routerRefresh = true
+            }
         } else {
             setCache(location)
         }

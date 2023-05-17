@@ -1,11 +1,11 @@
+<!-- :key="route.fullPath" ,key的作用，应该是多个路由指向同一个组件，应该要缓存不同的实例 -->
+<!-- v-if="!excludeViews.length" 当不缓存组件的数组发生变化的时候，component要经历创建和销毁才能实现组件刷新 -->
 <template>
   <section class="app-main">
-    <!-- :key="route.fullPath" ,key的作用，应该是多个路由指向同一个组件，应该要缓存不同的实例 -->
     <router-view v-slot="{ Component, route }">
       <transition name="router-fade" mode="out-in" enter-from-class="router-fade-enter">
-        <keep-alive :include="cachedViews" :exclude="excludeViews" :max="20">
-          <component :is="Component" v-if="!excludeViews.length"
-            :key="route.matched.length > 2 ? undefined : route.fullPath" />
+        <keep-alive :include="cachedViews" :exclude="excludeViews" :max="ENV.system.keepaliveMax">
+          <component :is="Component" v-if="!excludeViews.length" :key="route.fullPath" />
         </keep-alive>
       </transition>
     </router-view>
@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import useStore from '@/store';
-
+import ENV from '@/environment/index';
 import { RouteLocationNormalized, onBeforeRouteUpdate } from 'vue-router';
 import { deleteCache } from '@/router/utils';
 
@@ -27,7 +27,9 @@ const cachedViews = computed(() => tagsView.cachedViews);
 const excludeViews = computed(() => tagsView.excludeViews);
 const router = useRouter()
 
-
+/**
+ * 路由更新时的路由守卫，是组件内的路由守卫，不是全局路由守卫
+ */
 onBeforeRouteUpdate((to: RouteLocationNormalized, from: RouteLocationNormalized, next) => {
   if (!router.keepAlive) {
     console.error('onBeforeRouteUpdate', router.keepAlive)
@@ -40,7 +42,6 @@ onBeforeRouteUpdate((to: RouteLocationNormalized, from: RouteLocationNormalized,
   }
   next()
 })
-
 
 
 </script>

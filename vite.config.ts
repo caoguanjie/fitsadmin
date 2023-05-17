@@ -24,7 +24,9 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
         imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
         dts: './src/auto-imports.d.ts',
-        resolvers: [ElementPlusResolver()],
+        resolvers: [ElementPlusResolver({
+          importStyle: mode === "dev" ? false : "sass",
+        })],
         eslintrc: {
           enabled: true, // Default `false`
           filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
