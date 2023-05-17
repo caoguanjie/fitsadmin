@@ -58,14 +58,14 @@ LRU是 Least Recently Used 的缩写，即`最近最少使用`。
 ### 3. 缓存组件存在很多未知的坑点
 keepalive遇到的坑点可能需要前端们在项目开发过程中，不断遭遇然后汇总到框架组这边来，收录然后给出相应的解决方案，目前最大的问题是缓存的页面切换是不会改变数据和界面的，如果切换时需要改变数据，要结合组件生命周期钩子函数`activated`和`deactivated`进行业务处理，这样也会带来第二个问题，当你一个页面中是有多个组件组合而成的，数据都是在各自组件内请求，那么你每个组件都需要写`activated`和`deactivated`进行回调，当业务复杂时，会给大家带了非常多的麻烦，所以请各位开发留意这种情况。
 
-## 框架的终极解决方案
+## FitsAdmin框架的终极解决方案
 1. FitsAdmin框架将全局配置`默认缓存所有页面`
 2. FitsAdmin框架将所有三级或者三级以上的路由，通过逻辑转换，变成二级路由
 3. FitsAdmin框架将重写`vue-router`的`push/replace/go/back/forword`等api函数，让开发自定义决定`前进`、`后退`的页面是需要缓存还是取消缓存
 4. FitsAdmin框架将利用路由守卫`onBeforeRouteUpdate`和`afterEach`控制当前组件能否实现刷新功能，实现缓存组件的销毁动作
 
 
-## 框架缓存机制的交互设计
+## FitsAdmin框架缓存机制的交互设计
 
 ### 1.多页签切换所展示的页面都是被缓存的页面
 > 左右切换并不会更新页面，如果要更新页面，只能使用右键菜单的刷新当前页面功能
@@ -78,10 +78,11 @@ keepalive遇到的坑点可能需要前端们在项目开发过程中，不断�
 > 点击侧边栏菜单，新开的页面会在多页签上显示，切换上一个页面菜单，会显示上一个缓存页面，不会刷新上一个页面
 
 
-<video  width="1497px" height="615px"  muted="" controls autoplay loop><source src="/images/QQ20230517-143646-HD.mp4" type="video/mp4"></video>
+<video style="width:100%" muted="" controls autoplay loop><source src="/images/QQ20230517-143646-HD.mp4" type="video/mp4"></video>
 
 ### 3. 操作浏览器的前进后退按钮使用的还是缓存的页面
 
+::: info 总结
 综上所述，可以概括几点内容
 1. 所有前进的（新开的）页面都是新页面，所有后退的页面都是缓存页面
 2. 在已有的路由历史堆栈里面，无论是通过侧边栏访问、还是多页签访问，都是访问已经被缓存的页面
@@ -89,10 +90,12 @@ keepalive遇到的坑点可能需要前端们在项目开发过程中，不断�
     * 重复点击侧边栏同一个菜单
     * 多页签右键菜单中的`刷新当前路由`操作
     * 编程式导航调用:`router.push({path:'/cache-page-a', cache: false})` 或者 `router.go(-1, {cache: false})`
+:::
+
 
 
 ## 旧项目的升级流程
-### 涉及的项目文件清单
+### 1. 涉及的项目文件清单
 ::: tip
 前端开发者们，可以根据以下的清单列表，去FitsAdmin框架源码中，找到相应的代码进行迁移升级
 :::
@@ -125,10 +128,10 @@ keepalive遇到的坑点可能需要前端们在项目开发过程中，不断�
 
 ```
 
-### 需要迁移的核心代码
-::: tabs
+### 2. 需要迁移的核心代码
 
-@tab 页面缓存的核心代码
+::: details 页面缓存的核心代码
+
 
 ```vue
 <!-- 路径：layout/components/AppMain.vue -->
@@ -178,8 +181,9 @@ onBeforeRouteUpdate((to: RouteLocationNormalized, from: RouteLocationNormalized,
 })
 </script>
 ```
+:::
 
-@tab vue-Router相关的核心代码
+::: details vue-Router相关的核心代码
 
 1. **直接迁移`src/router/utils.ts`文件到项目文件里面**
 ```ts
@@ -374,8 +378,10 @@ export function setupRouter(app: App) {
 }
 
 ```
+:::
 
-@tab 将多级路由变成二级路由的关键代码
+
+::: details 将多级路由变成二级路由的关键代码
 
 ```ts
 // 路径src/store/base/permission.ts
@@ -454,8 +460,9 @@ const usePermissionStore = defineStore({
 * `const flatRoutes = this.generateFlatRoutes(accessedRoutes)`这句代码是把三级和三级以上的路由变成二级路由后，通过`router.beforeEach`动态添加。因此实际上vue-router实际上使用的是二级路由。
   
 因此各个项目组的前端开发人员，要注意这个部分的代码，如果你们开发项目是二级路由的，根本不用迁移这部分`src/store/base/permission.ts`的代码，因为你们原来就是二级路由的，直接迁移其他代码即可。但是如果你是三级路由的项目，要注意层级，更多情况你是从接口得到一个无限层级的菜单树了，你已经通过方法已经转成三级路由了，这个时候记得要再调用一下`generateFlatRoutes`方法转成二级路由
-  
-@tab 全局系统配置
+:::
+
+::: details  全局系统配置
 
 1. 调整router.meta的noCache字段，改成cache字段。
 ```ts
@@ -485,11 +492,10 @@ export class RouteMeta {
 
 ```
 
-::: danger
-前端开发者们一定要在vscode全局搜索所有的noCache字段，改成cache字段
-:::
+ps:  前端开发者们一定要在vscode全局搜索所有的noCache字段，改成cache字段
 
-2. 增加全局的系统配置
+
+1. 增加全局的系统配置
 ```ts
 // 路径： src/environment/type.d.ts
 /**
@@ -525,7 +531,9 @@ export class FitsDefaultSetting implements FitsSetting {
     }
 }
 ```  
-@tab 其他文件
+:::
+
+::: details 其他文件
 
 1. 新增页面切换的动画效果,路径：`src/styles/transition.scss`  
 
