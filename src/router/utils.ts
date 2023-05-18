@@ -127,7 +127,7 @@ export async function deleteCache(router: RouteLocationNormalized, reload = fals
         if (reload) {
             NProgress.done()
         }
-    }, 200)
+    }, 100)
     /**
      * 这里200ms对应的是transition组件router-fade的动画效果，设置200ms的动画持续时间
      * 如果要改，记得要去修改src/styles/transition.scss文件的样式

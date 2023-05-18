@@ -122,6 +122,7 @@ keepalive遇到的坑点可能需要前端们在项目开发过程中，不断�
 │       └── utils.ts                     # 增加重写vue-router api的关键代码，并且一些拓展vueRouter的一些ts声明
 │   ├── store                           
 │       └── base                         # 框架本身预定义的一些全局状态管理
+│           ├── tagsView.ts              # 增加excludeViews属性和相应的添加和删减方法
 │           └── permission.ts            # 增加将三级嵌套路由全部拍成二级路由的写法
 │   └── styles
 │       └── transition.scss              # 新增页面切换的动画效果          
@@ -316,9 +317,9 @@ export async function deleteCache(router: RouteLocationNormalized, reload = fals
         if (reload) {
             NProgress.done()
         }
-    }, 200)
+    }, 100)
     /**
-     * 这里200ms对应的是transition组件router-fade的动画效果，设置200ms的动画持续时间
+     * 这里100ms对应的是transition组件router-fade的动画效果，设置200ms的动画持续时间
      * 如果要改，记得要去修改src/styles/transition.scss文件的样式
      */
     _debounce()
@@ -541,11 +542,11 @@ export class FitsDefaultSetting implements FitsSetting {
 // global transition css
 .router-fade-leave-active,
 .router-fade-enter-active {
-    transition: all .2s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
-    -webkit-transition: all .2s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
-    -moz-transition: all .2s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
-    -ms-transition: all .2s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
-    -o-transition: all .2s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -webkit-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -moz-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -ms-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -o-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
 }
 
 .router-fade-enter {
@@ -572,6 +573,38 @@ export class FitsDefaultSetting implements FitsSetting {
 </template>
 ```
 
+3. 增加excludeViews属性和相应的添加和删减方法
+```ts
+const useTagsViewStore = defineStore({
+    id: 'tagsView',
+    state: (): TagsViewState => ({
+        visitedViews: [],
+        cachedViews: [], //  keepAlive 缓存页面
+        excludeViews: [], // 不缓存的组件
+    }),
+    actions: {
+        /**
+         * 添加不执行缓存视图，把组件名字存入keep-alive的exclude属性里面
+         * @param view 
+         */
+        addExcludeView(view: any) {
+        if (this.excludeViews.includes(view.name)) return;
+        this.excludeViews.push(view.name);
+        },
+        /**
+        * 删除不执行缓存视图，把组件名字存入keep-alive的exclude属性里面
+        * @param view 
+        */
+        delExcludeView(view: any) {
+        return new Promise((resolve) => {
+            const index = this.excludeViews.indexOf(view.name);
+            index > -1 && this.excludeViews.splice(index, 1);
+            resolve([...this.excludeViews]);
+        });
+        },
+    }
+})
+```
 :::
 
 ## vue-router接口扩展
