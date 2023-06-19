@@ -7,11 +7,11 @@ export default sidebar({
     },
     {
       text: '进阶',
-      children: ['eslint', 'elementplus', 'srcAlias', 'auto-imports', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart', 'keepalive']
+      children: ['eslint', 'elementplus', 'srcAlias', 'auto-imports', 'envirmoment', 'cross-domin', 'http', 'iconfont', 'wangEditor', 'echart', 'keepalive', 'jenkins']
     },
     {
       text: '其他',
-      children: ['function-list', 'svn']
+      children: ['function-list', 'svn', 'memory-leak']
     }
   ],
   '/components/': [
