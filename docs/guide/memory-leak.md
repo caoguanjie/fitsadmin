@@ -201,3 +201,102 @@ npm i vue@3.2.47
    * 再执行`npm install`命令重新生成`package-lock.json`
 
 :::
+
+
+## 2023年6月30日发现的内存泄露点
+原本以为解决了vue的版本问题就能解决内存泄露的，但是我在项目中更新之后，发现结果并没有按照我们想象的想法来，内存并没有释放多少，虽然有减少，但是提升有限
+于是我开始进行漫长的排查内存泄露的原因过程。下面直接说结果，找寻的过程就不做过多的赘叙了。
+
+### FitsDialog组件存在内存泄露
+
+起因是在`element-plus`的`issues`看到一篇文章：[[Component] [dialog] dialog组件导致内存泄漏 #8972](https://github.com/element-plus/element-plus/issues/8972)
+
+看完文章之后发现这个内存泄露的根本原因是：vue的内置组件`Teleport`导致的，在vue的github的`issues`,也有相应的文章[The onUnmounted callback is not triggered when using Teleport #6347](https://github.com/vuejs/core/issues/6347)。大体的意思就是：包裹在`Teleport`组件里面的组件，无法正常调用销毁钩子函数`onUnmounted`导致了组件无法正常销毁。
+
+有上面的证据作为理论进行分析的话，大概就是如果弹窗组件`FitsDialog`组件在页面切换之后，没有正确进行销毁，于是弹窗组件就被缓存在内存了，由于弹窗组件的上层组件是列表组件的页面，弹窗和列表组件存在父子关系，会导致整个列表页面被缓存下来，此时占用的内存无法被正常回收，一定程度导致了内存过高。
+
+::: warning 总结
+截止到vue的版本v3.2.47，依然没有解决这个问题。后面前端开发如果要利用element-plus的`el-dialog`组件的时候，或者vue的`Teleport`要注意这个影响。
+:::
+
+#### 解决方法
+
+在`element-plus`的`issues`的帖子中有个临时的方法，给`el-dialog`加上`append-to-body`属性，在一定程度解决这个问题，实践之后，我发现加上属性之后，其实就是没有再使用vue`Teleport`组件了,会直接把弹窗组件的dom节点插入到body结束标签的上面，从而达到释放内存的效果。
+
+因此 `FitsDialog`组件要修改的内容如下：
+
+1.给`el-dialog`组件加上`append-to-body`,其他地方的代码不用动
+```vue
+<el-dialog ref="elDialogRef" :class="props.class ? props.class + ' fits-dialog' : 'fits-dialog'"
+            :close-on-click-modal="false" v-bind="dialogProp" v-model="isVisible" append-to-body
+            :top="props.dialogProp.top ? props.dialogProp.top : dialogMarginTop" @close="emitcancel">
+           
+        </el-dialog>
+```
+
+2. 调整弹窗的高度计算方法，让弹窗居中偏上的位置显示
+
+```js
+/**
+ * 这里的代码主要是，当弹窗内容超过540的高度的时候，自动居中
+ * 当弹窗内容低于540高度的时候，marginTop: -10vh。也能达到大概居中的目的
+ */
+function updatedWindowHeight() {
+
+    // 实际弹窗部分
+    const dialogWindowHeight = elDialogRef.value.dialogContentRef.$el.getBoundingClientRect().height
+    // 黑色阴影的div
+    const dialogWrapWindowHeight = elDialogRef.value.dialogContentRef.$parent.$parent.$el.getBoundingClientRect().height;
+
+    /**
+     * 下面是旧代码
+     if (dialogWindowHeight > 540) {
+         dialogMarginTop.value = "0";
+     } else {
+         dialogMarginTop.value = dialogWrapWindowHeight < 540 ? "20px" : "-10vh";
+     }
+     */
+    
+    // 下面是调整之后的代码
+    if (dialogWindowHeight > dialogWrapWindowHeight) {
+        dialogMarginTop.value = "0";
+    } else {
+        // 第一个2是为了弹框居中，第二个2是了弹框处于居中再上一半的距离，因为人的视线是在窗口的中部以上的位置，
+        dialogMarginTop.value = (dialogWrapWindowHeight - dialogWindowHeight) / 2 / 2 + 'px'
+    }
+
+}
+```
+
+
+### ToolbarCustomColumn组件存在内存泄露
+这个组件主要用于列表的工具栏，控制表格的排列的顺序和显示隐藏的组件，解决上面的`FitsDialog`组件的内存泄露问题，不解决这个组件，你会发现，页面一样没有减少内存，我也是排查好久，很难才能重新出来这个关联关系的
+
+其实不是这个组件存在问题，根本原因出现在`el-popover`，看到这个组件，就让我联想到上面的`el-dialog`都是弹窗式的组件，很难不让我不怀疑根本原因，是不是归根到底还是`vue`的内置组件`Teleport`惹得祸呢？
+
+这个问题也在在`element-plus`的`issues`中找到相关讨论：[[Component] [popover] <el-popover>'s content won't be destroyed with :teleported="false" #6378](https://github.com/element-plus/element-plus/issues/6378)。果不其然啊，根据简单dom的结构和`el-popover`开放出来的api来看，这个弹窗组件也是利用了`Teleport`组件，因此那里用到了`el-popover`、`el-dialog`这两个组件，都会缓存它们的父级组件，从而导致了页面在切换过程中，本该会销毁掉的页面，缺错过了销毁阶段，占用的内存也得不到释放
+
+#### 解决办法
+给`el-popover`组件增加`:teleported="false"`的属性，这个属性在文档中有说明：`当 popover 组件长时间不触发且 persistent 属性设置为 false 时, popover 将会被删除`
+
+```vue
+<el-popover ref="popoverRef" :persistent="false"> </el-popover>
+```
+
+::: danger 注意
+`:persistent="false"`是有缺陷的，官网说的很清楚，只有长时间不触发才会，释放内存，但是如果你在刚进来页面就点击了这个弹框，就会激发了，这个时候内存是不会释放的，并且研究证明，这个popover组件并没有类似`el-dialog`组件那样`append-to-body`方式，能配置不使用`Teleport`组件。
+:::
+
+
+
+由上面两个组件就可以分析，受`Teleport`组件影响的组件就太多了，例如
+* `el-select`
+* `el-date-picker`
+* `el-cascader`级联选择器
+
+根据`vue/core`github上面issue的方案，修改组件的源码，也无法正常解决。
+
+![图 8](/images/20230703044056.png)  
+
+
+截止7月3日之前，内存泄露问题没有很好的方案可以解决。
