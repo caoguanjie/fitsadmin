@@ -1,26 +1,43 @@
 import mitt, { EventType } from "mitt";
 import { onUnmounted } from "vue";
 
-
+/**
+ * on 绑定的事件是一个数组，也就是说相同的名字可以绑定多个callback
+ * off 是解绑callback，但是emit有个漏洞，是如果绑定的事件是多个相同的callback的话，只会解绑第一个。
+ * off 函数还有一个坑，就是取消绑定之后，没有删除绑定的关键词`eventName`属性。
+ */
 const emitter = mitt();
 
 const eventBus = {
   on(eventName: EventType, callback: any) {
-    // 这里要判断绑定的事件是否存在，避免重复调用vue的生命周期的钩子，
-    // 导致页面有警告`onUnmounted is called when there is no active component instance to be associated with.`
-    if (!emitter.all.has(eventName)) {
+    const handlers = emitter.all!.get(eventName);
+    // 是否存在相同的函数
+    let hasSameFunction = false;
+
+    handlers && handlers.map((handler) => {
+      // 判断绑定的事件中是否有相同的函数
+      if (Function.prototype.toString.call(callback) !== Function.prototype.toString.call(handler)) {
+        hasSameFunction = true
+      }
+    });
+    console.error('eventBus.on', !handlers, hasSameFunction, eventName)
+    if (!handlers || hasSameFunction) {
+      // 如果没有绑定过值，直接绑定
+      emitter.on(eventName, callback);
+      console.error('eventBus.on', emitter, eventName)
       onUnmounted(() => {
-        emitter.off(eventName, callback);
+        eventBus.off(eventName, callback);
       });
     }
-    emitter.on(eventName, callback);
-
   },
-  emit(eventName: string, params?: any) {
+  emit(eventName: EventType, params?: any) {
     emitter.emit(eventName, params);
   },
-  off(eventName: string, callback?: any) {
+  off(eventName: EventType, callback?: any) {
     emitter.off(eventName, callback);
+    const handlers = emitter.all!.get(eventName);
+    handlers?.length === 0 && emitter.all.delete(eventName);
+    console.error('eventBus.销毁', emitter, eventName)
   },
 };
 export default eventBus;

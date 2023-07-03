@@ -126,6 +126,12 @@ const componentRouter: RouteRecordRaw = {
                     component: () => import("@/views/components-manage/workflow/index.vue"),
                     meta: { title: "工作流范例", roles: ["admin", "editor"] },
                 },
+                {
+                    path: "Keyboard",
+                    name: "Keyboard",
+                    component: () => import("@/views/components-manage/keyboard/index.vue"),
+                    meta: { title: "键盘范例" },
+                },
 
             ],
         },
