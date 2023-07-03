@@ -99,6 +99,9 @@ onMounted(() => {
     }
   };
 });
+onUnmounted(() => {
+  window.onresize = null
+})
 </script>
 
 <style lang="scss">

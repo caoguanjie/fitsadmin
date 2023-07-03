@@ -25,7 +25,7 @@ import { getDepartmentTableList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance, VxeGridListeners, VXETable } from 'vxe-table';
-import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
+import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
 import { ref } from 'vue'
 import { FitsDialog } from '@/fits-components/FeedBack/Dialog';
 import { ElNotification } from 'element-plus'

@@ -13,9 +13,8 @@
                             <template #default="{ node, data }">
                                 <span class="custom-tree-node">
                                     <img :src="images.img1" v-if="data.children && data.children.length > 0 && data.pid"
-                                        style="color:#FFCA28" />
-                                    <img class="people" :src="images.img2" v-if="!data.children"
-                                        style="color:#ACC6D3" />
+                                        style="color:#FFCA28">
+                                    <img class="people" :src="images.img2" v-if="!data.children" style="color:#ACC6D3">
                                     {{ data.name }}
                                 </span>
                             </template>
@@ -52,8 +51,7 @@
                 <el-input v-model="filterResult" placeholder="搜索部门" :prefix-icon="Search" />
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                 <el-tree :data="data" ref="treeref" show-checkbox node-key="id" :props="defaultProps"
-                    @check-change="handleCheckChange" :filter-node-method="filternode" default-expand-all>
-                </el-tree>
+                    @check-change="handleCheckChange" :filter-node-method="filternode" default-expand-all />
             </div>
         </div>
         <div class="relate-bottom">
@@ -69,11 +67,11 @@ import { Search } from '@element-plus/icons-vue'
 import { ElTree } from 'element-plus'
 import useStore from '@/store';
 import { VxeGridInstance } from 'vxe-table';
-import { useFitsTablePro } from 'fits-admin-ui'
+import { useFitsTablePro } from '@/fits-components'
 import XEUtils from 'xe-utils';
 import { FitsTableProps, FitsTable, FitsInputSearch } from '@/fits-components';
 const { user } = useStore();
-const xGrid = ref<VxeGridInstance | any>()
+let xGrid = ref<VxeGridInstance | any>()
 defineExpose(xGrid)
 let images = {
     img1: new URL(`../../../../assets/sysmanger/wenjianjia.png`, import.meta.url).href,
@@ -357,6 +355,9 @@ onMounted(async () => {
         returnID(item)
     })
 })
+onUnmounted(() => {
+    xGrid = null
+})
 </script>
 <style lang="scss" scoped>
 .relate-user {
@@ -381,6 +382,7 @@ onMounted(async () => {
                 min-width: 212px;
                 padding: 16px 8px;
                 float: left;
+
                 .tree_list {
                     padding-top: 8px;
 
