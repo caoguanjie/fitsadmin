@@ -209,7 +209,7 @@ npm i vue@3.2.47
 
 ### FitsDialog组件存在内存泄露
 
-起因是在`element-plus`的`issues`看到一篇文章：[[Component] [dialog] dialog组件导致内存泄漏 #8972](https://github.com/element-plus/element-plus/issues/8972)
+起因是在`element-plus`的`issues`看到一篇文章：[Component-dialog dialog组件导致内存泄漏 #8972](https://github.com/element-plus/element-plus/issues/8972)
 
 看完文章之后发现这个内存泄露的根本原因是：vue的内置组件`Teleport`导致的，在vue的github的`issues`,也有相应的文章[The onUnmounted callback is not triggered when using Teleport #6347](https://github.com/vuejs/core/issues/6347)。大体的意思就是：包裹在`Teleport`组件里面的组件，无法正常调用销毁钩子函数`onUnmounted`导致了组件无法正常销毁。
 
@@ -231,7 +231,7 @@ npm i vue@3.2.47
             :close-on-click-modal="false" v-bind="dialogProp" v-model="isVisible" append-to-body
             :top="props.dialogProp.top ? props.dialogProp.top : dialogMarginTop" @close="emitcancel">
            
-        </el-dialog>
+</el-dialog>
 ```
 
 2. 调整弹窗的高度计算方法，让弹窗居中偏上的位置显示
@@ -274,7 +274,7 @@ function updatedWindowHeight() {
 
 其实不是这个组件存在问题，根本原因出现在`el-popover`，看到这个组件，就让我联想到上面的`el-dialog`都是弹窗式的组件，很难不让我不怀疑根本原因，是不是归根到底还是`vue`的内置组件`Teleport`惹得祸呢？
 
-这个问题也在在`element-plus`的`issues`中找到相关讨论：[[Component] [popover] <el-popover>'s content won't be destroyed with :teleported="false" #6378](https://github.com/element-plus/element-plus/issues/6378)。果不其然啊，根据简单dom的结构和`el-popover`开放出来的api来看，这个弹窗组件也是利用了`Teleport`组件，因此那里用到了`el-popover`、`el-dialog`这两个组件，都会缓存它们的父级组件，从而导致了页面在切换过程中，本该会销毁掉的页面，缺错过了销毁阶段，占用的内存也得不到释放
+这个问题也在在`element-plus`的`issues`中找到相关讨论：[[Component] [popover] el-popover content won't be destroyed with :teleported="false" #6378](https://github.com/element-plus/element-plus/issues/6378)。果不其然啊，根据简单dom的结构和`el-popover`开放出来的api来看，这个弹窗组件也是利用了`Teleport`组件，因此那里用到了`el-popover`、`el-dialog`这两个组件，都会缓存它们的父级组件，从而导致了页面在切换过程中，本该会销毁掉的页面，缺错过了销毁阶段，占用的内存也得不到释放
 
 #### 解决办法
 给`el-popover`组件增加`:teleported="false"`的属性，这个属性在文档中有说明：`当 popover 组件长时间不触发且 persistent 属性设置为 false 时, popover 将会被删除`
@@ -299,4 +299,4 @@ function updatedWindowHeight() {
 ![图 8](/images/20230703044056.png)  
 
 
-截止7月3日之前，内存泄露问题没有很好的方案可以解决。
+截止7月3日之前，内存泄露问题没有很好的方案可以解决，在没有vue官方团队没有修复bug之前，还是采用全局页面缓存的方式最合适，至少不会因为页面左右切换导致不断有新的内存泄露产生。

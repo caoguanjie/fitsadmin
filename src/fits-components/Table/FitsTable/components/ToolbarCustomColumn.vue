@@ -5,7 +5,7 @@
     </el-tooltip>
 
     <el-popover ref="popoverRef" :virtual-ref="buttonRef" popper-class="toolsPoper" trigger="click" virtual-triggering
-        width="200px" v-bind="$attrs" @before-leave="closeWindow">
+        width="200px" v-bind="$attrs" @before-leave="closeWindow" :persistent="false">
         <el-scrollbar max-height="500px">
             <el-tree ref="treeRef" :data="data.columns" draggable class="columnBox" show-checkbox default-expand-all
                 :expand-on-click-node="false" node-key="field" highlight-current :props="defaultProps"

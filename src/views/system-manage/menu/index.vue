@@ -47,7 +47,7 @@ import { VxeGridInstance, VxeGridListeners } from 'vxe-table';
 
 // import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components/Table/FitsTable'
 
-import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
+import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
 // import FitsTable from '@/fits-components/Table/FitsTable/FitsTable.vue'
 // import { useFitsTablePro } from '@/components/FitsTablePro/FitsTable/FitsTableProHook'
 // import { FitsTableProps } from '@/components/FitsTablePro/FitsTable/type'

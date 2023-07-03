@@ -17,6 +17,15 @@ const systemRouter: RouteRecordRaw = {
             meta: { title: "组织机构", icon: "fits-zhuji" },
             children: [
                 {
+                    path: 'test/:id',
+                    name: 'Test1View',
+                    component: () => import('@/views/Test1View.vue'),
+
+                    meta: {
+                        title: '测试页111'
+                    }
+                },
+                {
                     path: "user",
                     name: "User",
                     component: () => import("@/views/system-manage/user/index.vue"),
@@ -27,7 +36,7 @@ const systemRouter: RouteRecordRaw = {
                     name: "Roles",
 
                     component: () => import("@/views/system-manage/roles/index.vue"),
-                    meta: { title: "角色管理", cache: true },
+                    meta: { title: "角色管理" },
                 },
                 {
                     path: "department",

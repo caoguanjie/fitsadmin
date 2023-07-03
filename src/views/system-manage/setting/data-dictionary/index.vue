@@ -125,7 +125,7 @@ import { getDictItemList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance, VxeGridListeners } from 'vxe-table';
-import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
+import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
 import { ref } from 'vue'
 import { FitsDialog } from '@/fits-components'
 import addDict from './add-dict.vue'
