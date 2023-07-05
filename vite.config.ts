@@ -17,7 +17,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
 
   return {
-    base: mode !== 'dev' ? '/' : '/',
+    base: mode !== 'github' ? '/' : '/fitsadmin',
     plugins: [
       // 自动导入elment-plus
       AutoImport({
