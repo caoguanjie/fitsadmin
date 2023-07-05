@@ -10,7 +10,7 @@
       <template v-if="device !== 'mobile'">
         <!--        <search id="header-search" class="right-menu-item" />
                 <error-log class="errLog-container right-menu-item hover-effect" />-->
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
         <el-tooltip content="主题设置" effect="dark" placement="bottom">
           <theme-select class="right-menu-item hover-effect setting" />
         </el-tooltip>
@@ -59,7 +59,7 @@ import useStore from '@/store';
 import TopMenu from '@/layout/components/TopMenu/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue';
 import Breadcrumb from '@/layout/components/Breadcrumb/index.vue';
-import Screenfull from '@/components/ScreenFull/index.vue'
+// import Screenfull from '@/components/ScreenFull/index.vue'
 import ThemeSelect from '@/layout/components/Settings/ThemeSelect.vue';
 import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
 
