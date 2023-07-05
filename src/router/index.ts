@@ -70,15 +70,6 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         meta: { title: '首页', icon: 'fits-home', affix: true, hidden: true }
       },
       {
-        path: 'table/:id',
-        component: () => import('@/views/TableView.vue'),
-        name: 'TableView',
-        meta: {
-          title: '测试页', icon: 'fits-home', hidden: true, cache: false
-        }
-      },
-
-      {
         path: 'User',
         component: () => import('@/views/user/index.vue'),
         name: 'User',
