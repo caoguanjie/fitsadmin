@@ -27,6 +27,7 @@
         "@lazebird/vue3outline": "^0.1.8",
         "@logicflow/core": "^1.1.26",
         "@logicflow/extension": "^1.1.26",
+        "@vue/runtime-core": "^3.2.37",
         "@wangeditor/editor": "^5.0.0",
         "@wangeditor/editor-for-vue": "^5.1.10",
         "axios": "^0.24.0",
@@ -93,7 +94,7 @@
         "vite-plugin-svg-icons": "^2.0.1",
         "vite-plugin-vue-setup-extend": "^0.4.0",
         "vite-svg-loader": "^3.4.0",
-        "vue": "^3.2.47",
+        "vue": "3.2.41",
         "vue-tsc": "^0.34.7",
         "vuepress": "^2.0.0-beta.49",
         "vuepress-theme-hope": "^2.0.0-beta.91"
