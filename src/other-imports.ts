@@ -9,18 +9,20 @@ import { App } from 'vue';
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 // 引入相关css
-import 'fits-admin-ui/es/style.css';
 //自动生成导航菜单
 import { useOutline } from '@lazebird/vue3outline';
-import VXETablePluginElement from '@/utils/base/VXETablePluginElement'
-
+import VXETablePluginFits from '@/fits-components/Table/FitsTable/components/ToolsPluginElement'
+import VXETablePluginElement from 'vxe-table-plugin-element'
+import 'vxe-table-plugin-element/dist/style.css'
 function setupOtherImports(app: App) {
     app
         .use(formCreate)
         .use(VXETable)
         .use(useOutline)
-
+    // 使用ele的组件兼容插件
     VXETable.use(VXETablePluginElement)
+    // 自定义工具栏
+    VXETable.use(VXETablePluginFits)
 }
 
 export default setupOtherImports

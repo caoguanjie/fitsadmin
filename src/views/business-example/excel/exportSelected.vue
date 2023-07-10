@@ -12,12 +12,12 @@
                             <el-radio :label="false" size="large">否</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="导出文件格式：">
+                    <!-- <el-form-item label="导出文件格式：">
                         <el-select v-model="fileType" placeholder="请选择文件格式">
                             <el-option v-for="(item, key) in options" :key="key" :label="item.label"
                                 :value="item.value" />
                         </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item label="">
                         <a href="https://vxetable.cn/#/table/advanced/export" target="_blank" style="margin-left: 15px">
                             <el-tag type="info">Excel导出相关资料</el-tag>
@@ -47,7 +47,7 @@ import { getRoleList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance } from 'vxe-table';
-import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
+import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
 import { ref } from 'vue'
 
 const { user } = useStore();

@@ -31,8 +31,9 @@ const router = useRouter()
  * 路由更新时的路由守卫，是组件内的路由守卫，不是全局路由守卫
  */
 onBeforeRouteUpdate((to: RouteLocationNormalized, from: RouteLocationNormalized, next) => {
+
+  console.error('onBeforeRouteUpdate', router.keepAlive)
   if (!router.keepAlive) {
-    console.error('onBeforeRouteUpdate', router.keepAlive)
     // 如果不需要缓存，就要删除当前组件的缓存
     deleteCache(to)
   } else {

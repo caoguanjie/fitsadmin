@@ -47,7 +47,7 @@ import { getRoleList } from '@/api/base/system';
 import useStore from '@/store';
 import { AxiosResponse } from 'axios';
 import { VxeGridInstance } from 'vxe-table';
-import { useFitsTablePro, FitsTableProps, FitsTable } from 'fits-admin-ui'
+import { useFitsTablePro, FitsTableProps, FitsTable } from '@/fits-components'
 import { ref } from 'vue'
 
 const { user } = useStore();
