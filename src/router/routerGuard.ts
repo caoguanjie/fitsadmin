@@ -64,7 +64,8 @@ export const createRouterGuards = (router: Router) => {
     router.afterEach((to: RouteLocationNormalized) => {
         // 当页面需要刷新时，要清空组件的缓存
         if (router.routerRefresh) {
-            console.error(router.routerRefresh)
+
+            // console.error(router.routerRefresh)
             router.routerRefresh = false
             deleteCache(to, true)
         } else {

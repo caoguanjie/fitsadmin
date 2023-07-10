@@ -117,16 +117,16 @@ export function RouterUtils(router: Router) {
  */
 export async function deleteCache(router: RouteLocationNormalized, reload = false) {
     const { tagsView } = useStore();
+    // 通过reload属性决定当前组件是否刷新，解决页面如果没有缓存的情况下，第一次打开会刷新两次的效果
+    if (!reload) return
     // 开启进度条
-    reload && NProgress.start();
+    NProgress.start();
     tagsView.addExcludeView(router)
     await nextTick()
     // 防抖设置，防止频繁点击组件刷新导致性能问题
     const _debounce = debounce(async () => {
         tagsView.delExcludeView(router)
-        if (reload) {
-            NProgress.done()
-        }
+        NProgress.done()
     }, 100)
     /**
      * 这里200ms对应的是transition组件router-fade的动画效果，设置200ms的动画持续时间
