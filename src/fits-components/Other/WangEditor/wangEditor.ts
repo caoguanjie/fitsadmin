@@ -1,4 +1,4 @@
-import { withInstall } from '@/utils/base/withInstall'
+import { withInstall } from '@/fits-components/withInstall'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 
 const WangEditor = withInstall(Editor)
