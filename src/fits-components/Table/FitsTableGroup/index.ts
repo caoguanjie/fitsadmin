@@ -1,5 +1,5 @@
 import table from './FitsTableGroup.vue'
-import { withInstall } from '@/utils/base/withInstall'
+import { withInstall } from '@/fits-components/withInstall'
 import CommonGroupTables from './components/CommonGroupTable.vue'
 import ConditionsGroupTables from './components/ConditionsGroupTable.vue'
 import CustomColumn from './components/CustomColumns.vue'

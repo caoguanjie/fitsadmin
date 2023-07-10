@@ -1,6 +1,6 @@
 import FormCreate from './FitsFormCreate.vue'
 import Form from './FitsForm.vue'
-import { withInstall } from '@/utils/base/withInstall'
+import { withInstall } from '@/fits-components/withInstall'
 
 const FitsFormCreate = withInstall(FormCreate)
 const FitsForm = withInstall(Form)

@@ -1,6 +1,6 @@
 import FormDialog from './FitsFormDialog.vue'
 import FormTitle from './FormTitle.vue'
-import { withInstall } from '@/utils/base/withInstall'
+import { withInstall } from '@/fits-components/withInstall'
 
 const FitsFormDialog = withInstall(FormDialog)
 const FitsFormTitle = withInstall(FormTitle)

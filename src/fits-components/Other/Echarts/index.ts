@@ -1,5 +1,5 @@
 import FitsEchart from './FitsEcharts.vue'
-import { withInstall } from '@/utils/base/withInstall'
+import { withInstall } from '@/fits-components/withInstall'
 
 const FitsEcharts = withInstall(FitsEchart)
 export { FitsEcharts }

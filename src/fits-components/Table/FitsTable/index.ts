@@ -1,5 +1,5 @@
 import table from './FitsTable.vue'
-import { withInstall } from '@/utils/base/withInstall'
+import { withInstall } from '@/fits-components/withInstall'
 
 export { useFitsTablePro } from './FitsTableProHook'
 
