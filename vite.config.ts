@@ -34,11 +34,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
 
       }),
-      // mode === 'dev' ? fullImportPlugin() : Components({
-      //   dts: './src/components.d.ts',
-      //   dirs: '',
-      //   resolvers: [ElementPlusResolver()],
-      // }),
+      mode === 'dev' ? fullImportPlugin() : Components({
+        dts: './src/components.d.ts',
+        dirs: '',
+        resolvers: [ElementPlusResolver()],
+      }),
 
 
       vue(),
@@ -110,7 +110,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   };
 };
 
-
+/**
+ * element全局导入插件
+ * 通过修改编译后的代码，全局增加ele的js和ts
+ * @returns 
+ */
 function fullImportPlugin() {
   let config: ResolvedConfig
   return <Plugin>{
@@ -134,3 +138,4 @@ function fullImportPlugin() {
     }
   }
 }
+
