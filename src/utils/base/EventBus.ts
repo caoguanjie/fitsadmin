@@ -20,11 +20,9 @@ const eventBus = {
         hasSameFunction = true
       }
     });
-    console.error('eventBus.on', !handlers, hasSameFunction, eventName)
     if (!handlers || hasSameFunction) {
       // 如果没有绑定过值，直接绑定
       emitter.on(eventName, callback);
-      console.error('eventBus.on', emitter, eventName)
       onUnmounted(() => {
         eventBus.off(eventName, callback);
       });
@@ -37,7 +35,6 @@ const eventBus = {
     emitter.off(eventName, callback);
     const handlers = emitter.all!.get(eventName);
     handlers?.length === 0 && emitter.all.delete(eventName);
-    console.error('eventBus.销毁', emitter, eventName)
   },
 };
 export default eventBus;
