@@ -1,6 +1,6 @@
 # 更新日志
 
-## v1.1.0 (2023-7-10)
+## [v1.1.0](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-11)(2023-7-11)
 
 ### BUG修复（Bug Fixes）
 -  **EventBus:** 避免函数的重复绑定，解决清除不完全，导致闭包的内存泄露
@@ -11,6 +11,8 @@
 - **内存泄露:** 优化vue的底层源码，解决内置组件的内存泄露问题
 - **fits-admin-ui优化:** 删除fits-admin-ui的引用方式，改用`@/fits-components`
 - **VXETablePluginElement插件优化:** 删除vxe-table兼容ELement样式的插件
+- **删除fitsadmin文档相关内容:**为了更好更新vue的版本，将稳定的文档编译代码和框架代码分离
+- **删除fitsadminUI编译代码:**全面抛弃了fits-admin-ui的引用方式
   
 
 ### 新增功能（New features）
