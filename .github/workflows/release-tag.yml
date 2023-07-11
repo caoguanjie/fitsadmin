@@ -18,7 +18,7 @@ jobs:
           uses: actions/checkout@master
         - name: Create Release for Tag
           id: release_tag
-          uses: release-drafter/release-drafter@v5
+          uses: yyx990803/release-tag@master
           env:
             ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           with:
