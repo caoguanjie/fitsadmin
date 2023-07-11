@@ -18,9 +18,9 @@ jobs:
           uses: actions/checkout@master
         - name: Create Release for Tag
           id: release_tag
-          uses: yyx990803/release-tag@master
+          uses: release-drafter/release-drafter@v5
           env:
-            GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+            ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           with:
             tag_name: ${{ github.ref }}
             body: |
