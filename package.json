@@ -1,6 +1,6 @@
 {
     "name": "fitsadmin",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "scripts": {
         "dev": "vite serve --mode dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",
@@ -28,7 +28,7 @@
         "@lazebird/vue3outline": "^0.1.8",
         "@logicflow/core": "^1.1.26",
         "@logicflow/extension": "^1.1.26",
-        "@vue/runtime-core": "^3.2.37",
+        "@vue/runtime-core": "git+https://github.com/caoguanjie/vue3-runtime-core.git",
         "@wangeditor/editor": "^5.0.0",
         "@wangeditor/editor-for-vue": "^5.1.10",
         "axios": "^0.24.0",
@@ -37,7 +37,6 @@
         "driver.js": "^0.9.8",
         "echarts": "^5.2.2",
         "element-plus": "^2.2.16",
-        "fits-admin-ui": "^1.0.88",
         "is-retry-allowed": "^3.0.0",
         "js-cookie": "^3.0.1",
         "mitt": "^3.0.0",
@@ -57,7 +56,6 @@
         "vue-json-pretty": "^2.2.2",
         "vue-pdf-embed": "^1.1.4",
         "vue-router": "^4.0.12",
-        "vuepress-plugin-code-block-nossr": "^1.0.11",
         "vxe-table": "^4.3.5",
         "vxe-table-plugin-element": "^3.0.6",
         "xe-utils": "^3.5.11",
@@ -75,9 +73,6 @@
         "@typescript-eslint/eslint-plugin": "^5.19.0",
         "@typescript-eslint/parser": "^5.19.0",
         "@vitejs/plugin-vue": "^1.9.3",
-        "@vuepress/client": "^2.0.0-beta.49",
-        "@vuepress/plugin-docsearch": "^2.0.0-beta.49",
-        "@vuepress/plugin-search": "^2.0.0-beta.49",
         "cross-env": "^7.0.3",
         "eslint": "^8.14.0",
         "eslint-config-prettier": "^8.5.0",
@@ -96,9 +91,7 @@
         "vite-plugin-vue-setup-extend": "^0.4.0",
         "vite-svg-loader": "^3.4.0",
         "vue": "3.2.41",
-        "vue-tsc": "^0.34.7",
-        "vuepress": "^2.0.0-beta.49",
-        "vuepress-theme-hope": "^2.0.0-beta.91"
+        "vue-tsc": "^0.34.7"
     },
     "repository": "https://github.com/caoguanjie/fitsadmin",
     "author": "caoguanjie",
