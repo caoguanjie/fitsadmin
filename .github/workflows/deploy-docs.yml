@@ -20,19 +20,19 @@ jobs:
       - name: 设置 Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
-          cache: npm
+          node-version: 18
+          cache: pnpm
 
       - name: 安装依赖
-        run: npm install
+        run: pnpm install
 
-      - name: 构建文档
+      - name: 构建网站
         env:
           NODE_OPTIONS: --max_old_space_size=4096
         run: |-
-          npm run build:github
+          pnpm run build:github
 
-      - name: 部署文档
+      - name: 部署网站
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # 这是文档部署到的分支名称

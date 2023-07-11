@@ -9,11 +9,11 @@ interface PreviousValue {
 }
 const _modules: PreviousValue = Object.keys(importModules).reduce((modules: PreviousValue, modulesPath: string) => {
     const modulesName = modulesPath.replace(/^\.\/modules\/(.*)\.\w+$/, "$1")
-    const value = importModules[modulesPath]
+    const value: any = importModules[modulesPath]
     modules[modulesName] = value.default;
     return modules
 }, {})
-const NODE_ENV = process.env.NODE_ENV || 'dev'
+const NODE_ENV = import.meta.env.MODE || 'dev'
 const ENV: FitsDefaultSetting = new FitsDefaultSetting(_modules[NODE_ENV])
 console.log(ENV)
 export default ENV

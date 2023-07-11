@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import { fileURLToPath, URL } from 'node:url'
 import { UserConfig, ConfigEnv, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
@@ -14,7 +15,7 @@ import removeConsole from 'vite-plugin-remove-console';
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
-
+  console.log(mode)
 
   return {
     base: mode !== 'github' ? '/' : '/fitsadmin',
@@ -83,7 +84,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     resolve: {
       // Vite路径别名配置
       alias: {
-        '@': path.resolve('./src')
+        '@': fileURLToPath(new URL('./src', import.meta.url))
       }
     },
     build: {
