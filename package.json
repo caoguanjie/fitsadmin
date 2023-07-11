@@ -10,8 +10,7 @@
         "serve": "vite preview",
         "lint": "eslint src/**/*.{ts,js,vue} --fix",
         "prepare": "husky install",
-        "prettier": "prettier --write .",
-        "preinstall": "echo \"只能采用pnpm进行依赖的安装\" && exit 1"
+        "prettier": "prettier --write ."
     },
     "dependencies": {
         "@element-plus/icons-vue": "^1.0.0",
