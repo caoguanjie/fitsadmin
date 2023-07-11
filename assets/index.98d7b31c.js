@@ -1,1 +1,0 @@
-const e={beforeMount(e,t){let n=null,l=null;const u=()=>t.value&&t.value(),o=()=>{l&&(clearTimeout(l),l=null),n&&(clearInterval(n),n=null)};e.addEventListener("mousedown",(e=>{0===e.button&&(u(),document.addEventListener("mouseup",o,{once:!0}),o(),l=setTimeout((()=>{n=setInterval((()=>{u()}),100)}),600))}))}};export{e as R};
