@@ -1,8 +1,8 @@
 <p align="center">
-    <img src="https://img.shields.io/badge/Vue-3.2.25-brightgreen.svg"/>
-    <img src="https://img.shields.io/badge/Vite-2.9.7-green.svg"/>
-    <img src="https://img.shields.io/badge/pinia-2.0.12-blueviolet.svg"/>
-    <img src="https://img.shields.io/badge/Element Plus-2.2.9-blue.svg"/>
+<img src="https://img.shields.io/badge/Vue-3.3.4-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/Vite-4.4.3-green.svg"/>
+    <img src="https://img.shields.io/badge/pinia-2.1.4-blueviolet.svg"/>
+    <img src="https://img.shields.io/badge/Element Plus-2.3.7-blue.svg"/>
     <a src="https://github.com/caoguanjie" target="_blank">
         <img src="https://img.shields.io/github/stars/caoguanjie/fitsadmin.svg?style=social&label=Stars"/>
     </a>
@@ -20,7 +20,7 @@
 ## 项目简介
 **FitsAdmin** 是基于[vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin)升级的 Vue3 + Element Plus 版本的后台管理前端解决方案。
 
-项目使用 Vue3 + Vite2 + TypeScript + Element Plus + Vue Router + Pinia + Volar 等前端主流技术栈，基于此项目模板生成的前端框架相信能解决您们大部分的难题，里面内置动态路由，权限验证，提炼了典型的业务模型、封装了通用型各种业务组件，提供了丰富的范例展示，可以帮助你快速搭建企业级的中后台产品原型
+项目使用 Vue3.3 + Vite4 + TypeScript + Element Plus + Vue Router + Pinia + Volar 等前端主流技术栈，基于此项目模板生成的前端框架相信能解决您们大部分的难题，里面内置动态路由，权限验证，提炼了典型的业务模型、封装了通用型各种业务组件，提供了丰富的范例展示，可以帮助你快速搭建企业级的中后台产品原型
 
 
 ## 功能清单
