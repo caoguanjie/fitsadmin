@@ -283,8 +283,8 @@ npm i https://github.com/caoguanjie/vue3-runtime-core.git
 ```
 
 
-- **删除fitsadmin文档相关内容:**为了更好更新vue的版本，将稳定的文档编译代码和框架代码分离
-- **删除fitsadminUI编译代码:**全面抛弃了fits-admin-ui的引用方式
+- **删除fitsadmin文档相关内容:** 为了更好更新vue的版本，将稳定的文档编译代码和框架代码分离
+- **删除fitsadminUI编译代码:** 全面抛弃了fits-admin-ui的引用方式
 
 
 ### 新增功能（New features）
