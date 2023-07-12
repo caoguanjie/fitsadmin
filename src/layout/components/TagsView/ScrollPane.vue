@@ -28,7 +28,7 @@ const { tagsView } = useStore();
 
 const visitedViews = computed(() => tagsView.visitedViews);
 
-const scrollWrapper = computed(() => proxy?.$refs.scrollContainer.$refs.wrap$);
+const scrollWrapper = computed(() => proxy?.$refs.scrollContainer.$refs.wrapRef);
 
 onMounted(() => {
   scrollWrapper.value.addEventListener('scroll', emitScroll, true);
@@ -36,6 +36,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   scrollWrapper.value.removeEventListener('scroll', emitScroll);
 });
+
+
 
 function handleScroll(e: WheelEvent) {
   const eventDelta = (e as any).wheelDelta || -e.deltaY * 40;

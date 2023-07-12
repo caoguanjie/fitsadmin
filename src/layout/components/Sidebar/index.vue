@@ -43,6 +43,8 @@ const showLogo = computed(() => setting.sidebarLogo);
 const isCollapse = computed(() => !app.sidebar.opened);
 // 初始的路由
 routes.value = getRouter(permission.activeMenu)
+// 临时变量，用来保存当前激活的菜单值
+let _activeMenu = permission.activeMenu
 const subscribe = permission.$subscribe((mutation, state) => {
   /*
   * mutation主要包含三个属性值：
@@ -54,12 +56,11 @@ const subscribe = permission.$subscribe((mutation, state) => {
             “patch function” ：通过 $patch 传递函数的方式改变的
   *
   * */
-
-  if ((mutation.events as any).key === 'activeMenu') {
+  if (state.activeMenu !== _activeMenu) {
     // 我们就可以在此处监听store中值的变化，当变化为某个值的时候，去做一些业务操作之类的
+    _activeMenu = state.activeMenu
     routes.value = getRouter(state.activeMenu)
   }
-
 
 }, { detached: false })
 //第二个参数options对象，是各种配置参数

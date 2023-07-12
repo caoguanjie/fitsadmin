@@ -60,8 +60,8 @@ dependencies:
     specifier: ^5.2.2
     version: 5.2.2
   element-plus:
-    specifier: ^2.2.16
-    version: 2.2.16(vue@3.3.4)
+    specifier: ^2.3.7
+    version: 2.3.7(vue@3.3.4)
   is-retry-allowed:
     specifier: ^3.0.0
     version: 3.0.0
@@ -2491,8 +2491,8 @@ packages:
       zrender: 5.2.1
     dev: false
 
-  /element-plus@2.2.16(vue@3.3.4):
-    resolution: {integrity: sha512-rvaTMFIujec9YDC5lyaiQv2XVUCHuhVDq2k+9vQxP78N8Wd07iEOGa9pvEVOO2uYc75l4rSl2RE/IWPH/6Mdzw==}
+  /element-plus@2.3.7(vue@3.3.4):
+    resolution: {integrity: sha512-h6TxclbaLUJxg/Bv5j/ZKsK+K5yadQliw5+R30HWyE69pXlqXTX24oYx+yw3pA4Dy+lqEDi5501FQ0CORk3OSA==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
