@@ -98,7 +98,9 @@ const subscribe = permission.$subscribe((mutation, state) => {
 - **VXETablePluginElement插件优化:** 删除vxe-table兼容ELement样式的插件
 - **删除fitsadmin文档相关内容:** 为了更好更新vue的版本，将稳定的文档编译代码和框架代码分离
 - **删除fitsadminUI编译代码:** 全面抛弃了fits-admin-ui的引用方式
-  
+
+### 重大变化
+    如果项目`npm install`之后无法正常运行，请升级node到最新版本即可，参考版本`v20.4.0`
 
 ### 新增功能（New features）
 - **页面缓存机制:** 通过全局配置控制组件是否缓存
