@@ -1,5 +1,34 @@
 # 更新日志
 
+## [v1.2.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-12)(2023-7-12)
+
+### 重大变化
+-  **patch-package:** 增加@vue/runtime-core补丁方案。
+
+```shell
+# 由于Teleport组件存在严重的内存泄露问题，详情可以浏览https://github.com/caoguanjie/vue3-runtime-core
+# 由于国内网络限制的原因，pnpm i https://github.com/caoguanjie/vue3-runtime-core.git。安装非常慢，甚至失败
+# 而且不同项目之间由于vue的版本不一样，github方式太过死板，繁杂。现在有了新的思路，对node_module需要进行调整的源码，可以利用打补丁的方式解决。
+# 思路可参考：https://juejin.cn/post/7119369833187115039, 下面以@vue/runtime-core为例子，讲述操作过程
+
+# 第一步，先执行以下命令，记得带上版本号。
+pnpm patch @vue/runtime-core@3.3.4
+# 第二步，上面命令会把node_modules里面@vue/runtime-core的文件夹复制一份到临时目录（macOS系统）：/private/var/folders/68/k_1kgz_5733g0lfc_6zd_1l00000gq/T/97e44825a38a5cef38a069c1f1f8908d
+# 我们到这个临时目录去把源码给修改掉，保存之后，执行以下代码
+pnpm patch-commit /private/var/folders/68/k_1kgz_5733g0lfc_6zd_1l00000gq/T/97e44825a38a5cef38a069c1f1f8908d
+# 这个代码会在项目的根目录下创建新的补丁文件：/patches/@vue__runtime-core@3.3.4.patch
+# 并且会在package.json文件新增代码：
+# "pnpm": {
+#         "patchedDependencies": {
+#             "@vue/runtime-core@3.3.4": "patches/@vue__runtime-core@3.3.4.patch"
+#         }
+#    }
+
+# 任何人下载项目之后，直接执行pnpm install 之后pnpm命令会先执行补丁，替换源码。不过要提醒的是，以上命令必须保证你的当前的git是最新，不然会报错。
+# 如果是用npm包管理工具的，可以参考：https://juejin.cn/post/7020302035207602183
+```
+
+
 ## [v1.2.0](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-12)(2023-7-12)
 
 ### 性能优化
