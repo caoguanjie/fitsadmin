@@ -233,57 +233,53 @@ function fullImportPlugin() {
 ```
 
 
-- **内存泄露:** 优化vue的底层源码，解决内置组件的内存泄露问题
+- **内存泄露:** 优化vue的底层源码，解决内置组件的内存泄露问题（[内存泄露（memory leak）](/guide/memory-leak.md)）
 
-详情请参考：[内存泄露（memory leak）](/guide/memory-leak.md)
-总结下来就是：
-1. 更新vue的版本至`v3.2.47`
+
 ```shell
+# 更新vue的版本至`v3.2.47`
 npm i vue@3.2.47
-```
-1. 安装`@vue/runtime-core`.
-
-```shell
+#  安装`@vue/runtime-core`.
 npm i https://github.com/caoguanjie/vue3-runtime-core.git
 ```
 
 
 
+
 - **fits-admin-ui优化:** 删除fits-admin-ui的引用方式，改用`@/fits-components`
 
- * 抛弃fits-admin-ui的原因：
-1. `VXETablePluginElement`插件引用`fits-admin-ui`之后，导致vxe-table出现重复引用，导致注册插件的方法消失。
+```
+抛弃fits-admin-ui的原因：
+1. VXETablePluginElement插件引用fits-admin-ui之后，导致vxe-table出现重复引用，导致注册插件的方法消失。
 2. `fits-admin-ui`编译之后，产生的包过大
 3. `fits-admin-ui`编译之后，可拓展性差，就算插件存在bug，项目组的成员难以及时调整优化。
 4. `fits-admin-ui`封装的组件不够成熟，带来很多小问题。
 
-* 旧项目删除fits-admin-ui的步骤：
-1. `npm uninstall fits-admin-ui`,卸载多余的依赖
-2. 在代码编辑器中搜索`fits-admin-ui`,把关键词换成`@/fits-components`，即可完成平替。
-3. 如果在文件`other-imports.ts`中，有全局注册组件的代码，请把相关代码删除： ~~` import FitsAdminUI from 'fits-admin-ui'; app.use(FitsAdminUI)`~~
+旧项目删除fits-admin-ui的步骤：
+1. npm uninstall fits-admin-ui,卸载多余的依赖
+2. 在代码编辑器中搜索fits-admin-ui,把关键词换成@/fits-components，即可完成平替。
+3. 如果在文件other-imports.ts中，有全局注册组件的代码，请把相关代码删除： import FitsAdminUI from 'fits-admin-ui'; app.use(FitsAdminUI)
+```
 
 
 - **VXETablePluginElement插件优化:** 删除vxe-table兼容ELement样式的插件VXETablePluginElement，重新安装插件的最新代码
-
-  * 抛弃VXETablePluginElement的原因：
-1. 上面`fits-admin-ui`优化有说明其中一个原因
-2. 存在内存泄露问题
-3. 始终兼容代码不是github上最新的代码
-
-   * 优化方案：
-1. 删除文件`src/utils/base/VXETablePluginElement.ts`
-2. 安装最新的代码
-
-```shell
-npm i vxe-table-plugin-element@3.0.7
 ```
-3. 创建`src/fits-components/Table/FitsTable/components/ToolsPluginElement.ts`文件。`ToolsPluginElement.ts`文件主要是为了兼容列表FitsTable组件的自定义工具栏，里面包括所有的工具栏的渲染器。直接在框架组复制该文件到项目即可
-4. 安装新的``ToolsPluginElement.ts`插件
-```ts
+抛弃VXETablePluginElement的原因：
+    1. 上面`fits-admin-ui`优化有说明其中一个原因
+    2. 存在内存泄露问题
+    3. 始终兼容代码不是github上最新的代码
+
+ 优化方案：
+    1. 删除文件`src/utils/base/VXETablePluginElement.ts`
+    2. 安装最新的代码: npm i vxe-table-plugin-element@3.0.7
+    3. 创建src/fits-components/Table/FitsTable/components/ToolsPluginElement.ts文件。`ToolsPluginElement.ts`文件主要是为了兼容列表FitsTable组件的自定义工具栏，里面包括所有的工具栏的渲染器。直接在框架组复制该文件到项目即可
+    4. 安装新的ToolsPluginElement.ts插件
+```
+```diff
 // 路径：src/other-imports.ts
-import VXETablePluginFits from '@/fits-components/Table/FitsTable/components/ToolsPluginElement'
++ import VXETablePluginFits from '@/fits-components/Table/FitsTable/components/ToolsPluginElement'
 // 自定义工具栏
-VXETable.use(VXETablePluginFits)
++ VXETable.use(VXETablePluginFits)
 ```
 
 
