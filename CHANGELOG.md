@@ -1,8 +1,8 @@
 # 更新日志
 
-## [v1.2.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-12)(2023-7-12)
-
+## [v1.2.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-13)(2023-7-13)
 ### 重大变化
+-  **Mock Data:** 增加线上demo的接口请求方案，将内部部署的Yapi上Demo接口导入平台ApiFox，开启云模拟。
 -  **patch-package:** 增加@vue/runtime-core补丁方案。
 
 ```shell
