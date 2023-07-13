@@ -75,11 +75,10 @@ import { isPhoneNumber } from '@/utils/is';
 import { CheckboxValueType, ElForm, ElInput, ElMessage } from 'element-plus';
 import { onMounted, reactive, ref, toRefs, watch, nextTick, computed } from 'vue';
 import { SvgIcon } from '@/fits-components';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import useStore from '@/store';
-import router from '@/router';
-import { use } from 'echarts';
 const route = useRoute();
+const router = useRouter();
 const { user } = useStore();
 const passwordRef = ref(ElInput);
 const loginFormRef = ref(ElForm);
@@ -107,7 +106,7 @@ const state = reactive({
 
   loginVerifyRules: {
     phone: [{ trigger: 'blur', validator: validatePhone }],
-    code: [{ required: true, trigger: 'blur', message: '验证码不能为空' }],
+    code: [{ required: true, trigger: 'blur', message: '验证码不能为空12333' }],
   },
   loading: false,
   // 是否开始倒计时

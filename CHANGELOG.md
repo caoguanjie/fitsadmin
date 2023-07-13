@@ -1,5 +1,9 @@
 # 更新日志
 
+## [v1.2.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-13)(2023-7-13)
+### BUG修复（Bug Fixes）
+-  **Login:** 修复登录界面的点击登录显示登录成功，但未进入系统界面的bug
+
 ## [v1.2.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-13)(2023-7-13)
 ### 重大变化
 -  **Mock Data:** 增加线上demo的接口请求方案，将内部部署的Yapi上Demo接口导入平台ApiFox，开启云模拟。
