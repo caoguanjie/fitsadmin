@@ -18,8 +18,10 @@
 import axios, { AxiosInstance } from 'axios'
 import { requestFail, requestSuccess, responseFail, responseSuccess } from './interceptors'
 import ENV from "@/environment/index"
+// 解决上线环境没有前置URL【/api】的问题
+const preURL = import.meta.env.MODE === 'github' ? '/' : '/api/'
 const service: AxiosInstance = axios.create({
-  baseURL: ENV.project.api_address + '/api/', // url = base url + request url
+  baseURL: ENV.project.api_address + preURL, // url = base url + request url
   timeout: ENV.project.http_timeout,
   retries: 2, // 重试的次数
   retryDelay: 2000 // 每一次重试，会延迟多少秒
