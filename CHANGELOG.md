@@ -1,10 +1,17 @@
 # 更新日志
 
-## [v1.2.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-13)(2023-7-13)
+## [v1.2.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-14)(2023-7-14)
 ### BUG修复（Bug Fixes）
 -  **Login:** 修复登录界面的点击登录显示登录成功，但未进入系统界面的bug
+-  **Vite.config.ts:** 修复了打包正式包之后，按需加载ElementPlus的表单样式和组件丢失问题([8465180](https://github.com/caoguanjie/fitsadmin/commit/8465180781fd7f5a3dd61e20a25f68731b2af253))
+-  **Vite.config.ts:** 解决了fullImportPlugin函数替换的ElementPlus的引入位置问题([8465180](https://github.com/caoguanjie/fitsadmin/commit/8465180781fd7f5a3dd61e20a25f68731b2af253))
+-  **ElMessageBox:** 解决了按需加载弹框之后，程序二次导入导致的弹框样式消失问题（[2fa73c1](https://github.com/caoguanjie/fitsadmin/commit/2fa73c1876f5ff8775b50df2659e09600cd0facf)）
 
-## [v1.2.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-13)(2023-7-13)
+
+### 性能优化
+-  **FormCreate:** 升级了表单自动生成工具的FormCreate版本，升级到`v3.1.23`（[773a5e5](https://github.com/caoguanjie/fitsadmin/commit/773a5e592f3a76af08d30d3b84438f5ba02d2e56)）
+
+## [v1.2.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-13)(2023-7-14)
 ### 重大变化
 -  **Mock Data:** 增加线上demo的接口请求方案，将内部部署的Yapi上Demo接口导入平台ApiFox，开启云模拟。
 -  **patch-package:** 增加@vue/runtime-core补丁方案。
@@ -326,7 +333,7 @@ npm i https://github.com/caoguanjie/vue3-runtime-core.git
 
 
 ### 重大变化
-    如果项目`npm install`之后无法正常运行，请升级node到最新版本即可，参考版本`v20.4.0`
+如果项目`npm install`之后无法正常运行，请升级node到最新版本即可，参考版本`v20.4.0`
 
 
 ## [v1.0.0](https://github.com/caoguanjie/fitsadmin/tree/v1.0.0) (2022-11-10)
