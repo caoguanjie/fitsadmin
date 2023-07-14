@@ -1,12 +1,10 @@
 
-import { Directive } from 'vue';
+
 import App from './App.vue';
 import { setupRouter } from '@/router';
-// import ElementPlus from 'element-plus'
-// import 'element-plus/dist/index.css'
 // 引入svg注册脚本
 import 'virtual:svg-icons-register';
-
+import { Directive } from 'vue';
 // 自定义指令
 import * as directive from '@/directive';
 import { setupStore } from '@/store';
