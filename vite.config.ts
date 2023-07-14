@@ -17,7 +17,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd());
 
   return {
-    base: mode !== 'github' ? '/' : '/',
+    base: mode !== 'github' ? '/' : '/fitsadmin',
     plugins: [
       // 自动导入elment-plus
       AutoImport({
