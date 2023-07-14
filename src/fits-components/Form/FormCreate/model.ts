@@ -1,7 +1,9 @@
-import { OptionAttrs, CreatorAttrs, RuleAttrs, ApiAttrs, RowProps } from '@form-create/element-ui/types/config'
+
+import type { Options } from '@form-create/element-ui'
+import { RowProps } from '@form-create/element-ui/types/config'
 import { ButtonProps } from 'element-plus'
 import { Component } from 'vue'
-import { Options } from '@form-create/core/types/index'
+
 
 /**
  * @desc FitsFormCreate表单类型
@@ -9,9 +11,9 @@ import { Options } from '@form-create/core/types/index'
  * @param option 表单全局配置，非必填，使用默认配置
  * @param col 表单展示列数
  */
- export class FitsFormCreateModel {
+export class FitsFormCreateModel {
     rule: FitsFormCreateRuleProps[]
-    option?: Options<OptionAttrs, CreatorAttrs, RuleAttrs, ApiAttrs>
+    option?: Options
     col?: number
     constructor({
         rule,
@@ -22,7 +24,7 @@ import { Options } from '@form-create/core/types/index'
         this.option = new FitsFormCreateOptionModel({ ...option })
         this.col = col
     }
- }
+}
 
 
 /**
@@ -75,7 +77,7 @@ interface FitsFormCreateRuleProps {
  * @param onReload 表单重置回调函数
  * @param global 设置所有组件的通用规则
  */
- export class FitsFormCreateOptionModel {
+export class FitsFormCreateOptionModel {
     form?: any
     submitBtn: boolean | FitsFormCreateBtnType;
     resetBtn?: boolean | FitsFormCreateBtnType;
@@ -158,7 +160,7 @@ interface FitsFormCreateRuleProps {
  * @param innerText 按钮的文字
  * @param click 按钮的点击事件
  */
- type FitsFormCreateBtnType = ButtonProps & {
+type FitsFormCreateBtnType = ButtonProps & {
     show?: boolean;
     innerText?: string;
     click?: () => void;

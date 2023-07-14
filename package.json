@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@element-plus/icons-vue": "^1.0.0",
-        "@form-create/element-ui": "^3.1.14",
+        "@form-create/element-ui": "^3.1.23",
         "@fullcalendar/core": "^5.11.3",
         "@fullcalendar/daygrid": "^5.11.3",
         "@fullcalendar/interaction": "^5.11.3",
