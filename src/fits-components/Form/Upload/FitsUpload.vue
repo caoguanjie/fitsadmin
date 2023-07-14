@@ -86,7 +86,7 @@ import { uploadProps } from "./type"
 const uploadRef = ref<UploadInstance>()
 const visible = ref(false)
 let images = {
-    img1: new URL(`../../../assets/document-icons/state/unknow.png`, import.meta.url).href,
+    img1: new URL(`../../../assets/document-icons/png/unknow.png`, import.meta.url).href,
     img2: new URL(`../../../assets/document-icons/state/success.png`, import.meta.url).href,
     img3: new URL(`../../../assets/document-icons/state/error.png`, import.meta.url).href,
     excel: new URL(`../../../assets/document-icons/png/excel.png`, import.meta.url).href,
