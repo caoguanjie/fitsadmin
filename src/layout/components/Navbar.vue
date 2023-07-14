@@ -50,7 +50,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ElMessageBox } from 'element-plus';
 import { User, EditPen, Message, Help, SwitchButton } from '@element-plus/icons-vue';
 import useStore from '@/store';
 
