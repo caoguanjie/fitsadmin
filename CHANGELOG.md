@@ -1,4 +1,4 @@
-# 更新日志
+
 
 ## [v1.2.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-14)(2023-7-14)
 ### BUG修复（Bug Fixes）
