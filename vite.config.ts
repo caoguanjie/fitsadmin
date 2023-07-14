@@ -15,19 +15,16 @@ import removeConsole from 'vite-plugin-remove-console';
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
-  console.log(mode)
 
   return {
-    base: mode !== 'github' ? '/' : '/fitsadmin',
+    base: mode !== 'github' ? '/' : '/',
     plugins: [
       // 自动导入elment-plus
       AutoImport({
 
         imports: ['vue', 'vue-router', '@vueuse/core', { 'moment': [['default', 'moment']] }],
         dts: './src/auto-imports.d.ts',
-        resolvers: [ElementPlusResolver({
-          importStyle: mode === "dev" ? false : "sass",
-        })],
+        resolvers: [ElementPlusResolver()],
         eslintrc: {
           enabled: true, // Default `false`
           filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
@@ -38,6 +35,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       mode === 'dev' ? fullImportPlugin() : Components({
         dts: './src/components.d.ts',
         dirs: '',
+        directoryAsNamespace: true,
         resolvers: [ElementPlusResolver()],
       }),
 
@@ -124,16 +122,21 @@ function fullImportPlugin() {
       config = conf
     },
     transform(code, id) {
+
       // 判断当前处理的是否是 _src/main.ts_
       if (path.join(config.root, 'src/main.ts') === id) {
+
         const name = 'ElementPlus'
 
         // 引入 ElementPlus 和 样式
         const prepend = `import ${name} from 'element-plus';\nimport 'element-plus/dist/index.css';\n`
+        // 把 ElementPlus 引入插入到文件的中部位置，不能至于开头，会导致vue来不及加载而报错
+        const insertCode = code.replace('import * as directive', ($2) => prepend + $2)
         // 通过匹配字符串来使用 ElementPlus （此处替换规则根据 main.ts 的情况而定）
         // 相当于将字符串 `app.use(router).mount('#app')` 替换成 `app.use(router).use(ElementPlus).mount('#app')`
-        code = code.replace('.mount(', ($1) => `.use(${name})` + $1)
-        return prepend + code
+        code = insertCode.replace('.mount(', ($1) => `.use(${name})` + $1)
+
+        return code
       }
       return code
     }

@@ -4,10 +4,8 @@
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
-import { FitsFormCreate } from '@/fits-components';
-import { FitsFormCreateModel, FitsCheckboxAllModel } from '@/fits-components/type';
-import FitsCheckboxAll from '@/fits-components/Form/Checkbox/FitsCheckboxAll.vue';
-import FitsFormTitle from '@/fits-components/Form/Other/FormTitle.vue';
+
+import { FitsCheckboxAll, FitsFormTitle, FitsFormCreateModel, FitsCheckboxAllModel, FitsFormCreate } from '@/fits-components';
 
 const simpleForm = reactive(
     new FitsFormCreateModel({
@@ -173,9 +171,11 @@ const simpleForm = reactive(
                 type: "switch",
                 title: "开关",
                 field: "switch2",
+                style: {
+                    '--el-switch-on-color': '#000',
+                    '-el-switch-on-color': 'pink'
+                },
                 props: {
-                    inactiveColor: '#000',
-                    activeColor: 'pink',
                     size: "large",
                     inlinePrompt: true,
                     activeText: '开',

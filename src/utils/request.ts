@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { ElMessage, ElMessageBox } from 'element-plus';
 import { localStorage } from '@/utils/storage';
 import useStore from '@/store';
 
@@ -41,7 +40,7 @@ service.interceptors.response.use(
         return response;
       }
 
-      ElMessage({
+      ElMessageBox({
         message: msg || '系统出错',
         type: 'error'
       });
@@ -56,7 +55,7 @@ service.interceptors.response.use(
       window.location.href = '/'; // 跳转登录页
       ElMessageBox.alert('当前页面已失效，请重新登录', '提示', {});
     } else {
-      ElMessage({
+      ElMessageBox({
         message: msg || '系统出错',
         type: 'error'
       });

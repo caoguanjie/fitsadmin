@@ -1,9 +1,7 @@
-
-// 目前不支持自动按需加载, 需要手动导入一下 auto-import.js 文件, 详情：https://github.com/xaboy/form-create/issues/511
-// import install from '@form-create/element-ui/auto-import'
-
-
 import formCreate from '@form-create/element-ui';
+// 目前不支持自动按需加载, 需要手动导入一下 auto-import.js 文件, 详情：https://github.com/xaboy/form-create/issues/511
+import install from '@form-create/element-ui/auto-import'
+
 import { App } from 'vue';
 // vxe-table插件，整合了element组件库
 import VXETable from 'vxe-table'
@@ -14,6 +12,8 @@ import { useOutline } from '@lazebird/vue3outline';
 import VXETablePluginFits from '@/fits-components/Table/FitsTable/components/ToolsPluginElement'
 import VXETablePluginElement from 'vxe-table-plugin-element'
 import 'vxe-table-plugin-element/dist/style.css'
+// 自动加载按需加载ele组件
+formCreate.use(install)
 function setupOtherImports(app: App) {
     app
         .use(formCreate)
@@ -23,6 +23,7 @@ function setupOtherImports(app: App) {
     VXETable.use(VXETablePluginElement)
     // 自定义工具栏
     VXETable.use(VXETablePluginFits)
+
 }
 
 export default setupOtherImports
