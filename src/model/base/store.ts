@@ -34,7 +34,9 @@ export class RouteMeta {
     hidden: boolean
     alwaysShow: boolean
     cache: boolean
-    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow, cache }: any = {}) {
+    // 除了框架默认配置的meta属性，根据实际项目情况，还可以拓展更多属性
+    [customMeta: string]: any
+    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow, cache, ...moreMethod }: any = {}) {
         this.roles = roles ?? []
         this.title = title ?? ''
         this.icon = icon ?? ''
@@ -44,8 +46,22 @@ export class RouteMeta {
         this.hidden = hidden ?? false
         this.alwaysShow = alwaysShow ?? false
         this.cache = cache ?? ENV.system.keepalive
+        this.initMoreMethodValue(moreMethod)
+    }
+    /**
+     * 拓展开发可以定义更多除了框架以外的属性
+     * @param method 
+     */
+    initMoreMethodValue(method: any | null | undefined) {
+        if (method && method.constructor === Object && Object.keys(method).length !== 0) {
+            for (const val in method) {
+                this[val] = method[val]
+            }
+        }
+
     }
 }
+
 
 
 /**
