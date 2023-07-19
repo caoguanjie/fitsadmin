@@ -68,6 +68,9 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       // 此处添加以下设置host:0.0.0.0 或true
       // 将监听所有地址，包括局域网和公网地址
       host: '0.0.0.0',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
       port: Number(env[`VITE_APP_PORT_${mode}`]),
       open: true, // 运行自动打开浏览器
       // proxy: {
@@ -124,8 +127,9 @@ function fullImportPlugin() {
     transform(code, id) {
 
       // 判断当前处理的是否是 _src/main.ts_
-      if (path.join(config.root, 'src/main.ts') === id) {
-
+      // 解决window系统路径反斜杠`\`导致elementplus导入失败
+      if (id.split(path.sep).includes('main.ts')) {
+        console.log(id.split(path.sep))
         const name = 'ElementPlus'
 
         // 引入 ElementPlus 和 样式
