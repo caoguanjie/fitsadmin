@@ -1,7 +1,7 @@
 ## [v1.2.3](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-20)(2023-7-20)
 ### BUG修复（Bug Fixes）
 -  **RouteMeta:** 解决开发者自定义路由meta信息时，自定义meta信息丢失的问题([7a29c12](https://github.com/caoguanjie/fitsadmin/commit/7a29c121448d149d03f87413b43834c338761bfd))
--  **Vite.config.ts:** 解决window系统路径反斜杠`\`导致elementplus导入失败、新增可以允许跨域([0e2d0fd](https://github.com/caoguanjie/fitsadmin/commit/0e2d0fd582056bc9a3bea4cd950d27c8f34f99ca))
+-  **Vite.config.ts:** 解决window系统路径反斜杠`\`导致elementplus导入失败、新增可以允许跨域([5247331](https://github.com/caoguanjie/fitsadmin/commit/52473317825df8793ea3db4f7172714ce27e8241)、[4e6040b](https://github.com/caoguanjie/fitsadmin/commit/4e6040be451965cd9ba3d69fee1d01ddf542cf68))
 -  **other-import:** 解决formcreate插件重复注册的问题，目前formcreate不存在自动导入的方案，只能全局导入([16bbc62](https://github.com/caoguanjie/fitsadmin/commit/16bbc6290ebd2eb7b7fc4fc47d90b28b1dc02147))
 
 ## [v1.2.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-14)(2023-7-14)
