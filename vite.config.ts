@@ -127,9 +127,8 @@ function fullImportPlugin() {
     transform(code, id) {
 
       // 判断当前处理的是否是 _src/main.ts_
-      // 解决window系统路径反斜杠`\`导致elementplus导入失败
-      if (id.split(path.sep).includes('main.ts')) {
-        console.log(id.split(path.sep))
+      // 解决window系统路径反斜杠`\`导致elementplus导入失败,path.normalize(id)在window下会转成正斜杠。
+      if (path.normalize(id).split(path.sep).includes('main.ts')) {
         const name = 'ElementPlus'
 
         // 引入 ElementPlus 和 样式
