@@ -125,12 +125,13 @@ function fullImportPlugin() {
       config = conf
     },
     transform(code, id) {
-
       // 判断当前处理的是否是 _src/main.ts_
-      // 解决window系统路径反斜杠`\`导致elementplus导入失败,path.normalize(id)在window下会转成正斜杠。
-      if (path.normalize(id).split(path.sep).includes('main.ts')) {
+      // 解决window系统路径反斜杠`\`导致elementplus导入失败,id代表的路径一致是反斜杠。
+      if (id.indexOf('src/main.ts') > -1) {
         const name = 'ElementPlus'
-
+        console.log('id', id)
+        console.log('path.normalize(id)', path.normalize(id))
+        console.log('path.sep', path.sep)
         // 引入 ElementPlus 和 样式
         const prepend = `import ${name} from 'element-plus';\nimport 'element-plus/dist/index.css';\n`
         // 把 ElementPlus 引入插入到文件的中部位置，不能至于开头，会导致vue来不及加载而报错
