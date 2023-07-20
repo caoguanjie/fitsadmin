@@ -1,4 +1,8 @@
-
+## [v1.2.3](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-20)(2023-7-20)
+### BUG修复（Bug Fixes）
+-  **RouteMeta:** 解决开发者自定义路由meta信息时，自定义meta信息丢失的问题([7a29c12](https://github.com/caoguanjie/fitsadmin/commit/7a29c121448d149d03f87413b43834c338761bfd))
+-  **Vite.config.ts:** 解决window系统路径反斜杠`\`导致elementplus导入失败、新增可以允许跨域([0e2d0fd](https://github.com/caoguanjie/fitsadmin/commit/0e2d0fd582056bc9a3bea4cd950d27c8f34f99ca))
+-  **other-import:** 解决formcreate插件重复注册的问题，目前formcreate不存在自动导入的方案，只能全局导入([16bbc62](https://github.com/caoguanjie/fitsadmin/commit/16bbc6290ebd2eb7b7fc4fc47d90b28b1dc02147))
 
 ## [v1.2.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-14)(2023-7-14)
 ### BUG修复（Bug Fixes）
@@ -124,6 +128,14 @@ const subscribe = permission.$subscribe((mutation, state) => {
 }, { detached: false })
 ```
 
+- **调整环境变量文件**
+```diff
+- // 修改之前
+- const NODE_ENV = process.env.NODE_ENV || 'dev' 
+
++ // 修改之后
++ const NODE_ENV = import.meta.env.MODE || 'dev'
+```
 
 
 ## [v1.1.0](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-11)(2023-7-11)
@@ -313,7 +325,8 @@ npm i https://github.com/caoguanjie/vue3-runtime-core.git
     1. 删除文件`src/utils/base/VXETablePluginElement.ts`
     2. 安装最新的代码: npm i vxe-table-plugin-element@3.0.7
     3. 创建src/fits-components/Table/FitsTable/components/ToolsPluginElement.ts文件。`ToolsPluginElement.ts`文件主要是为了兼容列表FitsTable组件的自定义工具栏，里面包括所有的工具栏的渲染器。直接在框架组复制该文件到项目即可
-    4. 安装新的ToolsPluginElement.ts插件
+    4. 去otherImport.ts安装新的ToolsPluginElement.ts和vxe-table-plugin-element插件。具体实现看代码：VXETable.use(VXETablePluginElement)和VXETable.use(VXETablePluginFits)
+
 ```
 ```diff
 // 路径：src/other-imports.ts
