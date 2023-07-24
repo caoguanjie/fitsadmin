@@ -1,6 +1,6 @@
 
 ## [v1.2.4](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-24)(2023-7-24)
- **Vite.config.ts:** 彻底解决生产环境formcreate自动导入没有注册element的组件的问题([2106aa9](https://github.com/caoguanjie/fitsadmin/commit/2106aa9aada4d7c6f988f2b2cf0978fa8c9ca669))
+ **Vite.config.ts:** 彻底解决生产环境formcreate自动导入没有注册element的组件的问题([2106aa9](https://github.com/caoguanjie/fitsadmin/commit/2106aa9aada4d7c6f988f2b2cf0978fa8c9ca669),[682394b](https://github.com/caoguanjie/fitsadmin/commit/682394bbdcd7e48e7d6ae69b0c0f9ed3420ffc99))
 
 ## [v1.2.3](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-20)(2023-7-20)
 ### BUG修复（Bug Fixes）
