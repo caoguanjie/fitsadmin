@@ -1,1 +1,0 @@
-import{u as a,a as e}from"./index-7caff8bc.js";import{E as s,l as r,m as t}from"./vxetable-1fe7c1fd.js";import"./echarts-1215139a.js";const p=s({__name:"index",setup(s){const p=a(),m=e(),{params:o,query:i}=p,{path:n}=o;return m.replace({path:"/"+n,query:i}),(a,e)=>(r(),t("div"))}});export{p as default};
