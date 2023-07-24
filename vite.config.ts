@@ -129,16 +129,14 @@ function fullImportPlugin() {
       // 解决window系统路径反斜杠`\`导致elementplus导入失败,id代表的路径一致是反斜杠。
       if (id.indexOf('src/main.ts') > -1) {
         const name = 'ElementPlus'
-        console.log('id', id)
-        console.log('path.normalize(id)', path.normalize(id))
-        console.log('path.sep', path.sep)
         // 引入 ElementPlus 和 样式
         const prepend = `import ${name} from 'element-plus';\nimport 'element-plus/dist/index.css';\n`
         // 把 ElementPlus 引入插入到文件的中部位置，不能至于开头，会导致vue来不及加载而报错
         const insertCode = code.replace('import * as directive', ($2) => prepend + $2)
+        const insertFormCreate = insertCode.replace('formCreate.use(install)', "")
         // 通过匹配字符串来使用 ElementPlus （此处替换规则根据 main.ts 的情况而定）
         // 相当于将字符串 `app.use(router).mount('#app')` 替换成 `app.use(router).use(ElementPlus).mount('#app')`
-        code = insertCode.replace('.mount(', ($1) => `.use(${name})` + $1)
+        code = insertFormCreate.replace('.mount(', ($1) => `.use(${name})` + $1)
 
         return code
       }

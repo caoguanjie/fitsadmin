@@ -1,4 +1,4 @@
-import formCreate from '@form-create/element-ui';
+
 import { App } from 'vue';
 // vxe-table插件，整合了element组件库
 import VXETable from 'vxe-table'
@@ -12,7 +12,6 @@ import 'vxe-table-plugin-element/dist/style.css'
 // 自动加载按需加载ele组件
 function setupOtherImports(app: App) {
     app
-        .use(formCreate)
         .use(VXETable)
         .use(useOutline)
     // 使用ele的组件兼容插件
