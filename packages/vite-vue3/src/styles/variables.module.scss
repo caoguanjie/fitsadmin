@@ -1,0 +1,39 @@
+// sidebar
+$menuText: #bfcbd9;
+$menuActiveText: #409eff;
+$subMenuActiveText: #f4f4f5; //https://github.com/ElemeFE/element/issues/12951
+$menuBg: #304156;
+$menuHover: #263445;
+$subMenuBg: #1f2d3d;
+$subMenuHover: #001528;
+$sideBarWidth: 200px;
+// layout header 头部高度
+$headHeight: 50px;
+// tags-view 标签页高度
+$tagsViewHeight: 40px;
+// footer的底部公司信息的高度
+$footerHeight: 24px;
+// 列表搜索的区域的表单项的宽度
+$ListSearchFormItemWidth: 338px;
+// appmain的padding距离
+$basePadding: 16px;
+// 缩小模式的侧边栏宽度
+$sideBarHideWidth: 68px;
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+    menuText: $menuText;
+    menuActiveText: $menuActiveText;
+    subMenuActiveText: $subMenuActiveText;
+    menuBg: $menuBg;
+    menuHover: $menuHover;
+    subMenuBg: $subMenuBg;
+    subMenuHover: $subMenuHover;
+    sideBarWidth: $sideBarWidth;
+    headHeight: $headHeight;
+    tagsViewHeight: $tagsViewHeight;
+    footerHeight: $footerHeight;
+    footerHeight: $footerHeight;
+    basePadding: $basePadding;
+    ListSearchFormItemWidth: $ListSearchFormItemWidth
+}

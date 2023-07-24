@@ -1,0 +1,46 @@
+
+name: 部署FitsAdmin
+
+on:
+  push:
+    branches:
+      # 确保这是你正在使用的分支名称
+      - master
+
+jobs:
+  deploy-fitsadmin-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2 
+        with:
+          version: 8.5.0
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: 安装依赖
+        run: pnpm install
+
+      - name: 构建网站
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: |-
+          pnpm run build:github
+
+      - name: 部署网站
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # 这是文档部署到的分支名称
+          repository-name: caoguanjie/fitsadmin
+          # 令牌，是要你的GitHub设置了这个ACCESS_TOKEN属性的令牌，代替你的账号密码
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          branch: frame
+          # folder这个关键字，主要是把你写这个路径的文件直接提交到分支
+          folder: FitsAdmin
+

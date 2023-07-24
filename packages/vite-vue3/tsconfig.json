@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    // 关闭class类属性必须要要初始化的值提示
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "allowSyntheticDefaultImports": true, // 默认导入
+    "skipLibCheck": true, // 不对第三方依赖类型检查 ，element-plus 生产打包报错
+    "types": ["element-plus/global"]
+  },
+  "vueCompilerOptions": {
+    "experimentalDisableTemplateSupport": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/*.d.ts"]
+}

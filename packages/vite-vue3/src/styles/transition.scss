@@ -1,0 +1,69 @@
+// global transition css
+.router-fade-leave-active,
+.router-fade-enter-active {
+    transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -webkit-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -moz-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -ms-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+    -o-transition: all .1s cubic-bezier(0.645, 0.045, 0.355, 1), border 0s, background 0s, color 0s, font-size 0s;
+}
+
+.router-fade-enter {
+    opacity: 0;
+}
+
+.router-fade-leave-to {
+    opacity: 0;
+}
+
+
+/* fade */
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.28s;
+}
+
+.fade-enter,
+.fade-leave-active {
+    opacity: 0;
+}
+
+
+/* fade-transform */
+
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+    transition: all 0.5s;
+}
+
+.fade-transform-enter {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+
+/* breadcrumb transition */
+
+// .breadcrumb-enter-active,
+// .breadcrumb-leave-active {
+//   transition: all 0.5s;
+// }
+.breadcrumb-enter,
+.breadcrumb-leave-active {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.breadcrumb-move {
+    transition: all 0.5s;
+}
+
+.breadcrumb-leave-active {
+    position: absolute;
+}

@@ -1,0 +1,5 @@
+packages:
+  # 子应用模块
+  - "packages/*"
+  # 主应用代码
+  - "main"

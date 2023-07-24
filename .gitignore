@@ -30,3 +30,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# 主应用
