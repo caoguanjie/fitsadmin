@@ -1,15 +1,13 @@
-## 2.0.0-beta.0
 
-## 2.0.0-beta.1
+## [2.0.0-beta.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
 
-### Major Changes
+### 重大改变
 
+- **改变项目目录** : 调整了项目结构，为了后续的微前端框架接入做好准备。
 - **pnpm-workspace.yml** : 引入了 Monorepo 方案管理单一项目多个模块项目,为微前端方案做准备
-  **.changesets** : 使用 changesets 管理包版本和发布
+- **.changesets** : 使用 changesets 管理包版本和发布
+- **Vite.config.ts:** ： 改变了项目的导出路径，调整路径结构
 
-### Major Changes
-
-- 发布 v2.0.0-beta.1
 
 ## [v1.2.4](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-24)(2023-7-24)
 

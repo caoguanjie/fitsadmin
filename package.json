@@ -3,7 +3,7 @@
     "version": "2.0.0-beta.1",
     "scripts": {
         "dev": "pnpm --filter '@fitsadmin/*' dev",
-        "mian": "pnpm -C mian dev",
+        "main": "pnpm -C main dev",
         "dev:vite": "pnpm --filter '@fitsadmin/vite-vue3' dev",
         "build": "pnpm --filter '@fitsadmin/*' build:dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",

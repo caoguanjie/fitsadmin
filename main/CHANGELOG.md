@@ -2,16 +2,16 @@
 ## [2.0.0-beta.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
 
 ### 重大改变
+
 - **改变项目目录** : 调整了项目结构，为了后续的微前端框架接入做好准备。
 - **pnpm-workspace.yml** : 引入了 Monorepo 方案管理单一项目多个模块项目,为微前端方案做准备
 - **.changesets** : 使用 changesets 管理包版本和发布
 - **Vite.config.ts:** ： 改变了项目的导出路径，调整路径结构
 
-
-
-
 ## [v1.2.4](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-24)(2023-7-24)
+
 ### BUG 修复（Bug Fixes）
+
 **Vite.config.ts:** 彻底解决生产环境 formcreate 自动导入没有注册 element 的组件的问题([2106aa9](https://github.com/caoguanjie/fitsadmin/commit/2106aa9aada4d7c6f988f2b2cf0978fa8c9ca669),[682394b](https://github.com/caoguanjie/fitsadmin/commit/682394bbdcd7e48e7d6ae69b0c0f9ed3420ffc99))
 
 ## [v1.2.3](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-20)(2023-7-20)
