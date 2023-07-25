@@ -12,10 +12,11 @@
         "clean": "rimraf node_modules **/*/node_modules **/node_modules"
     },
     "devDependencies": {
+        "@changesets/cli": "^2.26.2",
         "@commitlint/cli": "^16.2.3",
         "@commitlint/config-conventional": "^16.2.1",
-        "husky": "^8.0.0",
         "cross-env": "^7.0.3",
+        "husky": "^8.0.0",
         "rimraf": "^3.0.2"
     },
     "repository": "https://github.com/caoguanjie/fitsadmin",

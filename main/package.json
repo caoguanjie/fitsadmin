@@ -1,6 +1,6 @@
 {
     "name": "@fitsadmin/main",
-    "version": "1.2.3",
+    "version": "2.0.0-beta.1",
     "scripts": {
         "dev": "vite serve --mode dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",
