@@ -1,6 +1,6 @@
 {
     "name": "fitsadmin",
-    "version": "2.0.0-beta.1",
+    "version": "2.0.0-beta.2",
     "scripts": {
         "dev": "pnpm --filter '@fitsadmin/*' dev",
         "main": "pnpm -C main dev",
