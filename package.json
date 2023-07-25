@@ -3,10 +3,10 @@
     "version": "2.0.0-beta.1",
     "scripts": {
         "dev": "pnpm --filter '@fitsadmin/*' dev",
+        "build": "pnpm --filter '@fitsadmin/*' build:dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",
         "build:dev": " vite build --mode dev",
-        "build:github": " vite build --mode github",
-        "serve": "vite preview",
+        "build:github": "pnpm --filter '@fitsadmin/*' build:github",
         "prepare": "husky install",
         "prettier": "prettier --write .",
         "clean": "rimraf node_modules **/*/node_modules **/node_modules"

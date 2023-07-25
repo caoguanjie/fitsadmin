@@ -15,9 +15,8 @@ import removeConsole from 'vite-plugin-remove-console';
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
-  console.log(fileURLToPath(new URL('./src/auto-imports.d.ts', import.meta.url)))
   return {
-    base: mode !== 'github' ? '/' : '/fitsadmin',
+    base: mode !== 'github' ? '/vite-vue3' : '/fitsadmin/vite-vue3',
     plugins: [
       // 自动导入elment-plus
       AutoImport({
@@ -89,7 +88,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }
     },
     build: {
-      outDir: 'FitsAdmin',
+      outDir: fileURLToPath(new URL('../../FitsAdmin/vite-vue3', import.meta.url)),
       minify: 'terser',
       // 不生效
       terserOptions: {

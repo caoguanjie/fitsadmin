@@ -89,7 +89,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }
     },
     build: {
-      outDir: 'FitsAdmin',
+      outDir: fileURLToPath(new URL('../FitsAdmin', import.meta.url)),
       minify: 'terser',
       // 不生效
       terserOptions: {
