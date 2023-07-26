@@ -150,7 +150,7 @@ function handleFormItemNumber(width: number) {
             const restNum = (24 % lineItem / element.span)
             element.className !== 'searchBtns' && (element.folding = index >= lineItem - 1 + restNum + visibleArray.length)
             element.folding && isShowExpand && (isShowExpand = false)
-            element.className === 'searchBtns' && isShowExpand && (element.collapseNode = false)
+            element.className === 'searchBtns' && (element.collapseNode = !isShowExpand)
             return element
         })
         // console.log(state.gridOption.formConfig!.items)
