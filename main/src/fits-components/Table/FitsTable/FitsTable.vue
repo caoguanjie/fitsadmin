@@ -36,6 +36,8 @@ const state = reactive({
     dynamicSlotNameArray: [] as string[],
     // 这里有个大坑，需要把props的proxy对象先做一个深拷贝，变成一个js普通对象，不然props里面复杂的proxy对象嵌套，随便修改都会会让属性失去响应
     gridOption: _gridOption as VxeGridProps,
+    // 初始化时表格的最大高度，窗口没改变高低，这个值不变
+    maxHeight: 0 as (string | number)
 })
 
 /** 
@@ -169,7 +171,8 @@ useResizeObserver(document.body, (entries) => {
     const footerHeight = entry.target.querySelector('.footeContainer')?.clientHeight ?? 0;
     const tableFooterHeight = entry.target.querySelector('.vxe-table--footer-wrapper')?.clientHeight ?? 0;
     const pagerHeight = entry.target.querySelector('.vxe-grid--pager-wrapper') ? 0 : 10
-    state.gridOption.maxHeight = props.option?.maxHeight ?? (entry.contentRect.height - headerHeight - padding - footerHeight - tableFooterHeight - pagerHeight)
+    state.maxHeight = props.option?.maxHeight ?? (entry.contentRect.height - headerHeight - padding - footerHeight - tableFooterHeight - pagerHeight)
+    state.gridOption.maxHeight = state.maxHeight
 })
 
 
@@ -181,6 +184,8 @@ watch(() => props.option, (newValue) => {
     state.gridOption = XEUtils.clone(newValue as VxeGridProps, true)
     // 如果有表单配置才执行计算方法
     handleFormItemNumber(fitsTablePro.value?.$el.clientWidth)
+    // 解决前端端多次修改vxetable的配置，但只有第一次对【gridOption.maxHeight】进行了赋值操作
+    state.gridOption.maxHeight = state.maxHeight
     initDefaultConfig()
 }, { deep: true })
 
