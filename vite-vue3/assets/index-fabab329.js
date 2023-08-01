@@ -1,1 +1,0 @@
-import{j as r}from"./index-5ebca8e7.js";import{ah as t,l as e,S as s}from"./vxetable-f32c91e3.js";import"./echarts-1215139a.js";const o=r({},[["render",function(r,o){const a=t("router-view");return e(),s(a)}]]);export{o as default};
