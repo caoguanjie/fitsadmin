@@ -7,6 +7,7 @@ import useUserHabitsStorage from './base/storage';
 import { createPinia } from 'pinia';
 import piniaPluginPersist from 'pinia-plugin-persist'
 import { App } from 'vue';
+import { useMicroFrontendsStore } from './base/micro-frontends';
 
 const store = createPinia()
 store.use(piniaPluginPersist)
@@ -18,6 +19,7 @@ const useStore = () => ({
   setting: useSettingStore(),
   tagsView: useTagsViewStore(),
   userHabits: useUserHabitsStorage(),
+  microFrontends: useMicroFrontendsStore(),
 });
 
 export function setupStore(app: App) {

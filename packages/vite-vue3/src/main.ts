@@ -1,10 +1,10 @@
 
 
-import App from './App.vue';
+import AppComponent from './App.vue';
 import { setupRouter } from '@/router';
 // 引入svg注册脚本
 import 'virtual:svg-icons-register';
-import { Directive } from 'vue';
+import { App, Directive } from 'vue';
 // 自定义指令
 import * as directive from '@/directive';
 import { setupStore } from '@/store';
@@ -16,21 +16,50 @@ import formCreate from '@form-create/element-ui';
 import setupOtherImports from './other-imports';
 // 自定义样式
 import '@/styles/index.scss';
-const app = createApp(App);
 
-Object.keys(directive).forEach((key) => {
-  app.directive(key, (directive as { [key: string]: Directive })[key]);
-});
+/**
+ * 
+ * @param app vue创建的实例
+ * @param reload 拓展一个新的参数：是否要更新路由实例
+ */
+function init(app: App, reload = false) {
+  Object.keys(directive).forEach((key) => {
+    app.directive(key, (directive as { [key: string]: Directive })[key]);
+  });
 
+  formCreate.use(install)
+  // 挂载路由
+  setupRouter(app, reload);
+  // 挂载pinia状态管理
+  setupStore(app);
+  // 全局注册更多第三方的组件库、插件等内容
+  setupOtherImports(app)
+  // 注册全局组件
+  app.use(formCreate).mount('#app');
+}
 
-// 挂载路由
-setupRouter(app);
-// 挂载pinia状态管理
-setupStore(app);
-// 全局注册更多第三方的组件库、插件等内容
-setupOtherImports(app)
-
-formCreate.use(install)
-
-// 注册全局组件
-app.use(formCreate).mount('#app');
+if (window.__POWERED_BY_WUJIE__ && window.$wujie.props?.type === "single") {
+  let instance: any;
+  window.__WUJIE_MOUNT = () => {
+    instance = createApp(AppComponent)
+    init(instance, true)
+    console.error('创建了', instance)
+  };
+  window.__WUJIE_UNMOUNT = () => {
+    console.error('销毁了')
+    // instance.config.globalProperties.$XModal = null
+    // instance.config.globalProperties.$XPrint = null
+    // instance.config.globalProperties.$XSaveFile = null
+    // instance.config.globalProperties.$XReadFile = null
+    instance.unmount();
+  };
+  /*
+    由于vite是异步加载，而无界可能采用fiber执行机制
+    所以mount的调用时机无法确认，框架调用时可能vite
+    还没有加载回来，这里采用主动调用防止用没有mount
+    无界mount函数内置标记，不用担心重复mount
+  */
+  window.__WUJIE.mount()
+} else {
+  init(createApp(AppComponent))
+}

@@ -1,3 +1,7 @@
+## [2.0.0-beta.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
+### BUG 修复（Bug Fixes）
+- **fits-component** : 前端端多次修改vxetable的配置，没有自动赋值表格的高度，导致高度计算错误
+- **fits-component** : 解决改变浏览器窗口后，表格的展开和搜索按钮不出现的问题
 
 ## [2.0.0-beta.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
 

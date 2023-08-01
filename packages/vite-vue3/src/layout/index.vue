@@ -1,23 +1,28 @@
 <template>
-  <div :class="classObj" class="app-wrapper"
-    :style="{ 'padding-bottom': showFooterBreadcrumb ? variables.footerHeight : '0' }">
-    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <Sidebar class="sidebar-container" />
-    <div :class="{ hasTagsView: needTagsView }" class="main-container">
-      <!-- <div :class="{ 'fixed-header': fixedHeader }"> -->
-      <div class="fits-head">
-        <navbar />
-        <tags-view v-if="needTagsView" />
+  <template v-if="!isWujie">
+    <div :class="classObj" class="app-wrapper"
+      :style="{ 'padding-bottom': showFooterBreadcrumb ? variables.footerHeight : '0' }">
+      <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+      <Sidebar class="sidebar-container" />
+      <div :class="{ hasTagsView: needTagsView }" class="main-container">
+        <!-- <div :class="{ 'fixed-header': fixedHeader }"> -->
+        <div class="fits-head">
+          <navbar />
+          <tags-view v-if="needTagsView" />
+        </div>
+        <el-scrollbar :height="mainContent" class="fits-main-layout">
+          <app-main class="mainContentScrollbar" />
+        </el-scrollbar>
+        <RightPanel v-if="showSettings">
+          <settings />
+        </RightPanel>
       </div>
-      <el-scrollbar :height="mainContent" class="fits-main-layout">
-        <app-main class="mainContentScrollbar" />
-      </el-scrollbar>
-      <RightPanel v-if="showSettings">
-        <settings />
-      </RightPanel>
     </div>
-  </div>
-  <FitsFooter />
+    <FitsFooter />
+  </template>
+  <template v-else>
+    <router-view :key="route.fullPath" />
+  </template>
 </template>
 
 <script setup lang="ts">
@@ -31,9 +36,9 @@ import useStore from '@/store';
 import variables from '@/styles/variables.module.scss';
 const { width } = useWindowSize();
 const WIDTH = 992;
-
+const isWujie = ref(window.__POWERED_BY_WUJIE__)
 const { app, setting } = useStore();
-
+const route = useRoute()
 const sidebar = computed(() => app.sidebar);
 const device = computed(() => app.device);
 const needTagsView = computed(() => setting.tagsView);
@@ -48,7 +53,6 @@ const mainContent = computed(() => {
   const footerHeight = showFooterBreadcrumb.value ? parseInt(variables.footerHeight) : 0;
   return bodyHeight.value - parseInt(variables.headHeight) - tagsViewHeight - footerHeight + 'px'
 })
-
 
 const classObj = computed(() => {
   const arr = []

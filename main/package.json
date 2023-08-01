@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite serve --mode dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",
-        "build:dev": " vite build --mode dev",
+        "build:dev": " vite build --mode prod",
         "build:github": " vite build --mode github",
         "jenkins": "npx --max_old_space_size=4096 vite build --mode dev",
         "serve": "vite preview",
@@ -54,6 +54,7 @@
         "vue-router": "^4.2.4",
         "vxe-table": "^4.3.5",
         "vxe-table-plugin-element": "^3.0.6",
+        "wujie-vue3": "^1.0.18",
         "xe-utils": "^3.5.11",
         "xlsx": "^0.17.3"
     },

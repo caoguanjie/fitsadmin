@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite serve --mode dev",
         "build:prod": "vue-tsc --noEmit && vite build --mode prod",
-        "build:dev": " vite build --mode dev",
+        "build:dev": " vite build --mode prod",
         "build:github": " vite build --mode github",
         "jenkins": "npx --max_old_space_size=4096 vite build --mode dev",
         "serve": "vite preview",

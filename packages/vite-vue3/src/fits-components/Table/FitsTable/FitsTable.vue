@@ -125,7 +125,6 @@ function checkAllSlots() {
     const { log } = useLogger()
     arr.length && log.primary('FitsTable组件已有插槽', state.dynamicSlotNameArray)
 }
-
 // 处理每个表单项应该显示几个
 function handleFormItemNumber(width: number) {
     if (XEUtils.isPlainObject(state.gridOption.formConfig) && state.gridOption.formConfig?.items?.length) {
@@ -150,16 +149,16 @@ function handleFormItemNumber(width: number) {
             const restNum = (24 % lineItem / element.span)
             element.className !== 'searchBtns' && (element.folding = index >= lineItem - 1 + restNum + visibleArray.length)
             element.folding && isShowExpand && (isShowExpand = false)
-            element.className === 'searchBtns' && isShowExpand && (element.collapseNode = false)
+            element.className === 'searchBtns' && (element.collapseNode = !isShowExpand)
             return element
         })
         // console.log(state.gridOption.formConfig!.items)
     }
 }
-
-
+const _document = window.__POWERED_BY_WUJIE__ ? window.parent.document.body : window.document.body
 // 监听浏览器的变化事件
-useResizeObserver(document.body, (entries) => {
+useResizeObserver(_document, (entries) => {
+    // console.error(entries)
     const entry = entries[0]
     // 如果有表单配置才执行计算方法
     handleFormItemNumber(fitsTablePro.value?.$el.clientWidth)

@@ -32,7 +32,7 @@ const router = useRouter()
  */
 onBeforeRouteUpdate((to: RouteLocationNormalized, from: RouteLocationNormalized, next) => {
 
-  console.error('onBeforeRouteUpdate', router.keepAlive)
+  console.error('onBeforeRouteUpdate', router.keepAlive, tagsView.visitedViews)
   if (!router.keepAlive) {
     // 如果不需要缓存，就要删除当前组件的缓存
     deleteCache(to)

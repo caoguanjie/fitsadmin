@@ -6,6 +6,7 @@ import systemRouter from './base/system';
 import { businessRouter } from './base/example';
 import componentRouter from './base/componentManage';
 import { RouterUtils } from './utils';
+import { microRouter } from './base/micro-frontends';
 
 export const Layout = () => import('@/layout/index.vue');
 
@@ -104,6 +105,7 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
   systemRouter,
   businessRouter,
   componentRouter,
+  microRouter,
   //   404页必须放在末尾！！！
   { path: '/:catchAll(.*)', redirect: '/404', meta: { hidden: true } }
 ]

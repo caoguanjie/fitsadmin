@@ -8,6 +8,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
+    position: relative;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -134,5 +135,6 @@ div:focus {
     opacity: .3;
     transition: 0s;
 }
+
 
 /*========== ionic 自定义标签点击效果 水波纹 for end ========== */

@@ -111,12 +111,14 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
 
 
 // 创建路由
-const router = createRouter({
+let router = createRouter({
   history: createWebHashHistory(),
   routes: constantRoutes as RouteRecordRaw[],
   // 刷新时，滚动条位置还原
   scrollBehavior: () => ({ left: 0, top: 0 })
 });
+
+
 
 // 重置路由
 export function resetRouter() {
@@ -132,14 +134,28 @@ export function resetRouter() {
 
 /**
  * 定义一个方法，方便main.ts直接调用。
+ * 拓展一个reload入参，只有是子应用的单例模式时，才需要修改这个方法
  * @param app
  */
-export function setupRouter(app: App) {
+export function setupRouter(app: App, reload = false) {
+  if (reload) {
+    // 如果在子应用中，需要重新创建路由
+    const _router = createRouter({
+      history: createWebHashHistory(),
+      routes: constantRoutes as RouteRecordRaw[],
+      // 刷新时，滚动条位置还原
+      scrollBehavior: () => ({ left: 0, top: 0 })
+    });
+    router = _router
+    // console.log(_router)
+  }
   app.use(router);
   // 创建路由守卫
   createRouterGuards(router);
   // 路由方法的拓展，改写push、replace等写法
   RouterUtils(app.config.globalProperties.$router)
 }
+
+
 
 export default router;

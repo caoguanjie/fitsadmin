@@ -15,7 +15,6 @@ import removeConsole from 'vite-plugin-remove-console';
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
-  console.log(fileURLToPath(new URL('./src/auto-imports.d.ts', import.meta.url)))
   return {
     base: mode !== 'github' ? '/' : '/fitsadmin',
     plugins: [

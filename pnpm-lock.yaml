@@ -155,6 +155,9 @@ importers:
       vxe-table-plugin-element:
         specifier: ^3.0.6
         version: 3.0.6(vxe-table@4.3.5)
+      wujie-vue3:
+        specifier: ^1.0.18
+        version: 1.0.18(vue@3.3.4)
       xe-utils:
         specifier: ^3.5.11
         version: 3.5.11
@@ -6758,6 +6761,21 @@ packages:
   /wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
     dev: true
+
+  /wujie-vue3@1.0.18(vue@3.3.4):
+    resolution: {integrity: sha512-sSPkkUFGVbA9V/DKekyp4sJSd8O3dNsStROFRolcL9txmgEUpf4C/cSe7a1WgK7Yvrg/yA3C47qZ9194NncRqQ==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.3.4
+      wujie: 1.0.18
+    dev: false
+
+  /wujie@1.0.18:
+    resolution: {integrity: sha512-5/x2TRgJ9+6nHcHv7rmBWBKm3W49uDBOc1rzrQHxKPUCRscoHR8OQd1MCcoKDv1687CHNUTkODMyCIDktRl2ag==}
+    dependencies:
+      '@babel/runtime': 7.22.6
+    dev: false
 
   /xe-utils@3.5.11:
     resolution: {integrity: sha512-lyKc/lTBga1Zb63p+FED8mtxLnYIjSS8PVJM1N64NGdCu/3d1XubaVeke2p91RHssP0ExVAl2LUqZYperoz76Q==}

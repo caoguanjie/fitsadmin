@@ -9,16 +9,22 @@ import { useOutline } from '@lazebird/vue3outline';
 import VXETablePluginFits from '@/fits-components/Table/FitsTable/components/ToolsPluginElement'
 import VXETablePluginElement from 'vxe-table-plugin-element'
 import 'vxe-table-plugin-element/dist/style.css'
+import WujieVue from "wujie-vue3";
+import useStore from '@/store';
+
 // 自动加载按需加载ele组件
 function setupOtherImports(app: App) {
+
     app
         .use(VXETable)
         .use(useOutline)
+        .use(WujieVue)
     // 使用ele的组件兼容插件
     VXETable.use(VXETablePluginElement)
     // 自定义工具栏
     VXETable.use(VXETablePluginFits)
-
+    const { microFrontends: { setupSubApp, preloadSubApp } } = useStore()
+    setupSubApp();
+    preloadSubApp();
 }
-
 export default setupOtherImports
