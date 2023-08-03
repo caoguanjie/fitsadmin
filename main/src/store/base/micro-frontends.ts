@@ -71,24 +71,34 @@ export const useMicroFrontendsStore = defineStore('micro-frontends', () => {
      * 但是要注意它的缺点：资源的预执行会阻塞主应用的渲染线程，遇到复杂的业务，或者首页复杂时，要考虑子应用预加载的时机，在合适的时候进行预加载。
      */
     function preloadSubApp() {
-        preloadApp({
-            /** 唯一性用户必须保证 */
-            name: "vite-vue3-keepalive",
-            /** 需要渲染的url */
-            url: subURL.value,
-        })
-        preloadApp({
-            /** 唯一性用户必须保证 */
-            name: "vite-vue3-single",
-            /** 需要渲染的url */
-            url: subURL.value,
-        })
-        preloadApp({
-            /** 唯一性用户必须保证 */
-            name: "webpack-vue2",
-            /** 需要渲染的url */
-            url: 'http://192.168.32.60:3002/',
-        })
+        if (window.Proxy) {
+            preloadApp({
+                /** 唯一性用户必须保证 */
+                name: "vite-vue3-keepalive",
+                /** 需要渲染的url */
+                url: subURL.value,
+            })
+            preloadApp({
+                /** 唯一性用户必须保证 */
+                name: "vite-vue3-single",
+                /** 需要渲染的url */
+                url: subURL.value,
+            })
+
+            if (import.meta.env.MODE !== 'github') {
+                preloadApp({
+                    /** 唯一性用户必须保证 */
+                    name: "webpack-vue2",
+                    /** 需要渲染的url */
+                    url: 'http://192.168.32.60:3002/',
+                })
+            }
+        }
+
+
+
+
+
     }
 
     /**
