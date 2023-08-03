@@ -10,6 +10,7 @@
   
 <script setup lang="ts">
 import useStore from '@/store';
+import { fitslog } from '@/utils/base/logger';
 import WujieVue from 'wujie-vue3';
 const { microFrontends: { subURL } } = useStore()
 const { bus } = WujieVue;
@@ -17,10 +18,8 @@ const wujie = ref()
 const loading = ref(true)
 const route = useRoute()
 const viteUrl = ref(`${subURL}#${route.meta.path}`)
-console.log(viteUrl.value)
+fitslog.info('子应用的地址：', viteUrl.value)
 onMounted(() => {
-
-    console.error('重新打开', wujie.value.startApp)
     wujie.value.startApp({
         name: 'vite-vue3-keepalive',
         url: viteUrl
@@ -29,8 +28,6 @@ onMounted(() => {
             path: route.meta.path
         });
     })
-
-
 })
 
 // 主应用发送事件

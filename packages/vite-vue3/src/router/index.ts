@@ -120,6 +120,7 @@ let router = createRouter({
 
 
 
+
 // 重置路由
 export function resetRouter() {
   const { permission } = useStore();
@@ -137,8 +138,8 @@ export function resetRouter() {
  * 拓展一个reload入参，只有是子应用的单例模式时，才需要修改这个方法
  * @param app
  */
-export function setupRouter(app: App, reload = false) {
-  if (reload) {
+export function setupRouter(app: App, reloadRouter = false) {
+  if (reloadRouter) {
     // 如果在子应用中，需要重新创建路由
     const _router = createRouter({
       history: createWebHashHistory(),
@@ -147,7 +148,7 @@ export function setupRouter(app: App, reload = false) {
       scrollBehavior: () => ({ left: 0, top: 0 })
     });
     router = _router
-    // console.log(_router)
+    console.log(_router)
   }
   app.use(router);
   // 创建路由守卫

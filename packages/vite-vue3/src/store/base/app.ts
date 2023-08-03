@@ -6,7 +6,7 @@ export enum DeviceType {
   Desktop,
 }
 const useAppStore = defineStore({
-  id: 'app',
+  id: import.meta.env.BASE_URL + 'app',
   state: (): AppState => ({
     device: 'desktop',
     sidebar: {

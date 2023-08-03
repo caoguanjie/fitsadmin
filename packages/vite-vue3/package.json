@@ -52,8 +52,9 @@
         "vue-json-pretty": "^2.2.2",
         "vue-pdf-embed": "^1.1.4",
         "vue-router": "^4.2.4",
-        "vxe-table": "^4.3.5",
+        "vxe-table": "^4.4.7",
         "vxe-table-plugin-element": "^3.0.6",
+        "wujie-vue3": "^1.0.18",
         "xe-utils": "^3.5.11",
         "xlsx": "^0.17.3"
     },

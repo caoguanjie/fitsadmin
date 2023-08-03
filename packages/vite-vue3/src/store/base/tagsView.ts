@@ -4,7 +4,7 @@ import router from '@/router';
 import { TagsViewState } from '@/model/base/store';
 
 const useTagsViewStore = defineStore({
-  id: 'tagsView',
+  id: import.meta.env.BASE_URL + 'tagsView',
   state: (): TagsViewState => ({
     visitedViews: [],
     cachedViews: [], //  keepAlive 缓存页面
@@ -41,7 +41,6 @@ const useTagsViewStore = defineStore({
       if (view.meta.cache) {
         this.cachedViews.push(view.name);
       }
-      console.log('addTags', view, this.cachedViews)
     },
     /**
      * 添加不执行缓存视图，把组件名字存入keep-alive的exclude属性里面

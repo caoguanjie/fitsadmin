@@ -16,7 +16,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
   return {
-    base: mode !== 'github' ? '/vite-vue3' : '/fitsadmin/vite-vue3',
+    base: mode !== 'github' ? '/vite-vue3/' : '/fitsadmin/vite-vue3/',
     plugins: [
       // 自动导入elment-plus
       AutoImport({

@@ -382,11 +382,14 @@ importers:
         specifier: ^4.2.4
         version: 4.2.4(vue@3.3.4)
       vxe-table:
-        specifier: ^4.3.5
-        version: 4.3.5(vue@3.3.4)(xe-utils@3.5.11)
+        specifier: ^4.4.7
+        version: 4.4.7(vue@3.3.4)(xe-utils@3.5.11)
       vxe-table-plugin-element:
         specifier: ^3.0.6
-        version: 3.0.6(vxe-table@4.3.5)
+        version: 3.0.6(vxe-table@4.4.7)
+      wujie-vue3:
+        specifier: ^1.0.18
+        version: 1.0.18(vue@3.3.4)
       xe-utils:
         specifier: ^3.5.11
         version: 3.5.11
@@ -6653,8 +6656,26 @@ packages:
       vxe-table: 4.3.5(vue@3.3.4)(xe-utils@3.5.11)
     dev: false
 
+  /vxe-table-plugin-element@3.0.6(vxe-table@4.4.7):
+    resolution: {integrity: sha512-V0SQ2TGXmooDbHTiRSJHSHnFFBatp7fFP4vEDNPHQlGDgypo2stOJ8KXKENQznZxpNWKkmxSBNFZaMFEr+ycEQ==}
+    peerDependencies:
+      vxe-table: ^4.2.0
+    dependencies:
+      vxe-table: 4.4.7(vue@3.3.4)(xe-utils@3.5.11)
+    dev: false
+
   /vxe-table@4.3.5(vue@3.3.4)(xe-utils@3.5.11):
     resolution: {integrity: sha512-JEvGAs7SBN1rWn5f2tkoRiXd/rAT7RfnDTTlFsHsTtASiUTKNTISI2WBsVeLkkNRTs0SXh6FgrYsIPO2soSBXA==}
+    peerDependencies:
+      vue: ^3.2.28
+      xe-utils: ^3.5.0
+    dependencies:
+      vue: 3.3.4
+      xe-utils: 3.5.11
+    dev: false
+
+  /vxe-table@4.4.7(vue@3.3.4)(xe-utils@3.5.11):
+    resolution: {integrity: sha512-bevKBbUD/wXGPnadAKGRPn/GI/MDWIRBfADXxRFzp6pPmUuT018UUtSx0iwIQ7kwuyi21+yUMvJzPgpWH92YjA==}
     peerDependencies:
       vue: ^3.2.28
       xe-utils: ^3.5.0

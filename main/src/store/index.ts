@@ -26,4 +26,18 @@ export function setupStore(app: App) {
   app.use(store);
 }
 
+/**
+ * 清理用户信息
+ */
+export function clearUserInfo() {
+  const { user } = useStore();
+  user.roles = []
+}
+/**
+ * 修复element-plus中有使用Teleport组件带来的副作用
+ */
+export function fixElementPlusTeleportCrash() {
+  const micro = useMicroFrontendsStore();
+  return micro.fixElementPlusTeleportCrash();
+}
 export default useStore;

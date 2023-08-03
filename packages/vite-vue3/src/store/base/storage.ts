@@ -65,7 +65,7 @@ const IndexedDBStorage: Storage & Obj = {
 
 // 用户操作习惯记录表
 const useUserHabitsStorage = defineStore({
-    id: 'UserHabits',
+    id: import.meta.env.BASE_URL + 'UserHabits',
     state: (): UserHabitsState => ({
         store: null
     }),

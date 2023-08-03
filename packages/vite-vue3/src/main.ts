@@ -7,15 +7,17 @@ import 'virtual:svg-icons-register';
 import { App, Directive } from 'vue';
 // 自定义指令
 import * as directive from '@/directive';
-import { setupStore } from '@/store';
+import { clearUserInfo, fixElementPlusTeleportCrash, setupStore } from '@/store';
 // default-passive-events会影响工作流范例的使用
 import 'default-passive-events'
+
 // 目前不支持自动按需加载, 需要手动导入一下 auto-import.js 文件, 详情：https://github.com/xaboy/form-create/issues/511
 import install from '@form-create/element-ui/auto-import'
 import formCreate from '@form-create/element-ui';
 import setupOtherImports from './other-imports';
 // 自定义样式
 import '@/styles/index.scss';
+import FitsLog from './utils/base/logger';
 
 /**
  * 
@@ -43,15 +45,18 @@ if (window.__POWERED_BY_WUJIE__ && window.$wujie.props?.type === "single") {
   window.__WUJIE_MOUNT = () => {
     instance = createApp(AppComponent)
     init(instance, true)
-    console.error('创建了', instance)
+    instance.dispose = fixElementPlusTeleportCrash()
+    FitsLog.success('子应用mount创建成功')
   };
+  /**
+   * 每次销毁之前，先清空用户信息，在路由守卫方法中，是根据用户的角色是否存在，去执行动态路由生成。
+   * 因此每次创建新的vue实例时，需要先清空用户信息，才保证路由守卫重新执行动态路由的生成
+   */
   window.__WUJIE_UNMOUNT = () => {
-    console.error('销毁了')
-    // instance.config.globalProperties.$XModal = null
-    // instance.config.globalProperties.$XPrint = null
-    // instance.config.globalProperties.$XSaveFile = null
-    // instance.config.globalProperties.$XReadFile = null
+    clearUserInfo()
+    instance.dispose();
     instance.unmount();
+    FitsLog.danger('子应用mount已销毁')
   };
   /*
     由于vite是异步加载，而无界可能采用fiber执行机制
@@ -63,3 +68,4 @@ if (window.__POWERED_BY_WUJIE__ && window.$wujie.props?.type === "single") {
 } else {
   init(createApp(AppComponent))
 }
+

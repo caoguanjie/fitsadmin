@@ -93,7 +93,7 @@ function renderContent(
     return h(
         'span',
         {
-            class: 'custom-tree-node',
+            class: 'custom-tree-node1',
         },
         h('span', null, node.label),
         h(
@@ -130,7 +130,7 @@ function renderContent(
 </script>
 
 <style lang="scss">
-.custom-tree-node {
+.custom-tree-node1 {
     flex: 1;
     display: flex;
     align-items: center;

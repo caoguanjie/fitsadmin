@@ -122,7 +122,6 @@ const usePermissionStore = defineStore({
         }
         this.setRoutes(accessedRoutes);
         const flatRoutes = this.generateFlatRoutes(accessedRoutes)
-        console.error(accessedRoutes, flatRoutes)
         resolve(flatRoutes);
         // listRoutes()
         //   .then((response) => {

@@ -20,14 +20,14 @@ const cookiesStorage: any = {
 };
 
 const useUserStore = defineStore({
-  id: 'user',
+  id: import.meta.env.BASE_URL + 'user',
   state: () => ({
     token: '',
     nickname: '',
     avatar: '',
     roles: [] as string[],
     perms: [],
-    userInfo: {},
+    userInfo: {} as any,
     introduction: "",
     isRememberme: true,
     loginInfo: {

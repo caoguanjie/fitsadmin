@@ -41,7 +41,6 @@ const useTagsViewStore = defineStore({
       if (view.meta.cache) {
         this.cachedViews.push(view.name);
       }
-      console.log('addTags', view, this.cachedViews)
     },
     /**
      * 添加不执行缓存视图，把组件名字存入keep-alive的exclude属性里面

@@ -32,20 +32,14 @@ export const microRouter: RouteRecordRaw = {
                     path: "singleView1",
                     name: "SingleViewTest1",
                     component: () => import("@/views/wujie/vite-vue3/SingleView.vue"),
-                    meta: { title: "单例模式1", path: '/componentManger/formcomponents/treeSelect' },
+                    meta: { title: "单例模式1", path: '/sysManger/orgin/user' },
                 },
                 {
                     path: "singleView2",
                     name: "SingleViewTest2",
-                    component: () => import("@/views/wujie/vite-vue3/SingleView.vue"),
+                    component: () => import("@/views/wujie/vite-vue3/SingleViewCopy.vue"),
                     meta: { title: "单例模式2", path: '/componentManger/formcomponents/treeSelect' },
                 },
-                // {
-                //     path: "re-view",
-                //     name: "Review",
-                //     component: () => import("@/views/ready/index.vue"),
-                //     meta: { title: "重建模式" },
-                // }
             ],
         },
         {

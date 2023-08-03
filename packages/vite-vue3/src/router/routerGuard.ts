@@ -13,7 +13,6 @@ export const createRouterGuards = (router: Router) => {
         // 开启进度条
         NProgress.start()
         const { user, permission, userHabits } = useStore();
-
         // 确定用户是否已登录
         if (user && user.token) {
             if (to.path === '/login') {
@@ -45,7 +44,11 @@ export const createRouterGuards = (router: Router) => {
                         NProgress.done()
                     }
                 } else {
+
+
                     next()
+
+
 
                 }
             }

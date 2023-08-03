@@ -40,6 +40,11 @@ export const useLogger = () => {
                 content
             )
             return
+        } else if (typeof content === 'undefined') {
+            console.log(
+                `%c ${title}`,
+                `background:${typeColor(type)};border:1px solid ${typeColor(type)}; padding: 1px; border-radius: 4px 0 0 4px; color: #fff;`
+            )
         } else {
             console.log(
                 `%c ${title} %c ${content} %c`,
@@ -70,3 +75,8 @@ export const useLogger = () => {
     }
     return { print, log }
 }
+function FitsLog() {
+    const { log } = useLogger()
+    return log
+}
+export default FitsLog()

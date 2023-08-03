@@ -39,7 +39,7 @@ export const filterAsyncRoutes = (
 };
 
 const usePermissionStore = defineStore({
-  id: 'permission',
+  id: import.meta.env.BASE_URL + 'permission',
   state: (): PermissionState => ({
     routes: [],
     addRoutes: [],
@@ -122,7 +122,6 @@ const usePermissionStore = defineStore({
         }
         this.setRoutes(accessedRoutes);
         const flatRoutes = this.generateFlatRoutes(accessedRoutes)
-        console.error(accessedRoutes, flatRoutes)
         resolve(flatRoutes);
         // listRoutes()
         //   .then((response) => {
