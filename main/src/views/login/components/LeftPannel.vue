@@ -58,10 +58,13 @@ const banner = reactive([
 }
 </style>
 <style lang='scss' scoped>
-$leftPannelWidth: 630px;
+$leftPannelWidth: 33%;
+$leftPannelMinWidth: 430px;
+// $leftPannelMaxWidth: 630px;
 
 .left-pannel {
     width: $leftPannelWidth;
+    min-width: $leftPannelMinWidth;
     display: flex;
     position: relative;
     padding: 0 20px;
@@ -92,8 +95,19 @@ $leftPannelWidth: 630px;
 }
 
 @media only screen and (max-width: 1366px) {
+    // .left-pannel {
+    //     width: 430px;
+    // }
+
+    .desc {
+        padding: 0 40px 30px;
+        font-size: 17px;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
     .left-pannel {
-        width: 430px;
+        display: none;
     }
 
     .desc {

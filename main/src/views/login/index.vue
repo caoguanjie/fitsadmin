@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <img src="@/assets/Login/fitslogo.png" alt="" class="fitslogo">
-    <left-pannel v-if="isShowLeftPannel" />
+    <left-pannel />
     <div class="right-pannel">
       <div class="login-form">
         <el-tooltip v-if="!isScanCodeLogin && loginSetting.appScanCode" class="box-item" effect="accout-login"
@@ -50,7 +50,6 @@
       <div class="login-tips">最佳浏览环境：Chrome64及以上，1920*1080显示分辨率</div>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -68,7 +67,6 @@ const state = reactive({
   redirect: '',
   curentLoginText: loginSetting.accountLogin ? '账号登录' : '验证码登录',
   isScanCodeLogin: true,
-  isShowLeftPannel: document.documentElement.clientWidth > 1100,
   // 是否开始倒计时
   isCoutDown: false,
   otherQuery: {},
@@ -77,7 +75,6 @@ const state = reactive({
 const {
   curentLoginText,
   isScanCodeLogin,
-  isShowLeftPannel
 } = toRefs(state);
 
 
@@ -90,18 +87,7 @@ function handleLoginModel() {
   state.isScanCodeLogin = !state.isScanCodeLogin;
 }
 
-onMounted(() => {
-  window.onresize = () => {
-    if (document.documentElement.clientWidth > 1100) {
-      state.isShowLeftPannel = true;
-    } else {
-      state.isShowLeftPannel = false;
-    }
-  };
-});
-onUnmounted(() => {
-  window.onresize = null
-})
+
 </script>
 
 <style lang="scss">
@@ -146,10 +132,6 @@ onUnmounted(() => {
 </style>
 
 <style lang="scss" scoped>
-$rightPannelWidth: 670px;
-$inputHeight: 40px;
-$leftPannelWidth: 630px;
-
 .login-container {
   height: 100%;
   width: 100%;
@@ -172,16 +154,15 @@ $leftPannelWidth: 630px;
 
 
   .right-pannel {
-    min-width: $rightPannelWidth;
     flex: 1;
-    display: flex;
+    display: grid;
+    place-items: center;
     position: relative;
     background-image: url(@/assets/Login/bg3.svg);
     background-repeat: no-repeat;
     background-size: 883px 697px;
     background-position: 33% 42%;
-    justify-content: center;
-    align-items: center;
+
   }
 
   .title-box {
