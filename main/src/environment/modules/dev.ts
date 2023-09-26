@@ -5,7 +5,7 @@ const ENV: FitsSetting = {
         subTitle: 'FITS ADMIN',
         company: '广东丰德科技有限公司',
         version: "1.0.0",
-        api_address: 'http://192.168.32.108:3000/mock/78',
+        api_address: 'http://192.168.32.60:3005/mock/78',
         http_timeout: 15000
     },
     system: {
