@@ -1,5 +1,5 @@
 
-## [2.0.0-beta.1](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
+## [2.0.0-beta.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
 ### 重大改变
 - 采用wujie作为微前端的集成方案
 
