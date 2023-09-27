@@ -11,7 +11,7 @@ import VXETablePluginElement from 'vxe-table-plugin-element'
 import 'vxe-table-plugin-element/dist/style.css'
 import WujieVue from "wujie-vue3";
 import useStore from '@/store';
-
+import ENV from './environment';
 // 自动加载按需加载ele组件
 function setupOtherImports(app: App) {
 
@@ -24,7 +24,10 @@ function setupOtherImports(app: App) {
     // 自定义工具栏
     VXETable.use(VXETablePluginFits)
     const { microFrontends: { setupSubApp, preloadSubApp } } = useStore()
-    setupSubApp();
-    preloadSubApp();
+    if (import.meta.env.MODE !== 'dev') {
+        setupSubApp();
+        preloadSubApp();
+    }
+
 }
 export default setupOtherImports
