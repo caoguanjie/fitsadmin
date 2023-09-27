@@ -14,7 +14,7 @@ import {
 } from 'vue';
 
 import useStore from '@/store';
-import { TagView } from '@/model/base/store';
+import { TagView } from '@/router/type.d';
 
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance() as any;

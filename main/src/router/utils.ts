@@ -1,3 +1,10 @@
+/*
+ * @Author: caogj 
+ * @Date: 2023-09-27 15:14:42 
+ * @Last Modified by: caogj
+ * @Last Modified time: 2023-09-27 15:19:53
+ */
+
 /**
  * 拓展路由方法
  * router.push/replace接口展示的页面，会根据是否配置{cache:boolean}的参数或者router.meta.cache参数判断是否缓存页面
@@ -41,10 +48,31 @@ export function RouterUtils(router: Router) {
      */
     router.push = function (...to) {
         const location: any = to[0];
+        const _router = router.resolve(location);
+        /* =======================记录history.state的值  of  start============================================= */
+        if (!router.state) {
+            // 初始化state属性
+            router.state = {}
+            // 这步是关键代码，当页面刷新时，当前路由的history.state对象虽然保留了，但是并没有记录在router.state属性中。因此这里要做一个预防操作
+            // 通过解构赋值得到stateParams，back/current/forward这些参数是vue-router源码中要记录在history api的固定属性。
+            const { back, current, forward, replaced, position, scroll, ...stateParams } = history.state;
+            if (Object.keys(stateParams).length !== 0) {
+                router.state[currentRoute.value.fullPath] = stateParams
+            }
+        }
+        if (!location.state && router.state[_router.fullPath]) {
+            location.state = router.state[_router.fullPath]
+            to[0] = location
+        }
+
+        if (location.state && !router.state[_router.fullPath]) {
+            router.state[_router.fullPath] = location.state
+        }
+        /* =======================记录history.state的值  of  end============================================= */
         /**
          * 这里选择fullpath属性进行判断的原因是，<component>组件使用的key是以fullpath属性
          */
-        if (router.resolve(location).fullPath === currentRoute.value.fullPath) {
+        if (_router.fullPath === currentRoute.value.fullPath) {
             // 这一步主要解决左右切换页签时，同时也会刷新组件，默认切换左右页签，会一直使用缓存组件
             if (typeof location.cache === 'boolean' && location.cache === true) {
                 router.routerRefresh = false
@@ -60,10 +88,31 @@ export function RouterUtils(router: Router) {
 
     router.replace = function (...to) {
         const location: any = to[0];
+        const _router = router.resolve(location);
+        /* =======================记录history.state的值  of  start============================================= */
+        if (!router.state) {
+            // 初始化state属性
+            router.state = {}
+            // 这步是关键代码，当页面刷新时，当前路由的history.state对象虽然保留了，但是并没有记录在router.state属性中。因此这里要做一个预防操作
+            // 通过解构赋值得到stateParams，back/current/forward这些参数是vue-router源码中要记录在history api的固定属性。
+            const { back, current, forward, replaced, position, scroll, ...stateParams } = history.state;
+            if (Object.keys(stateParams).length !== 0) {
+                router.state[currentRoute.value.fullPath] = stateParams
+            }
+        }
+        if (!location.state && router.state[_router.fullPath]) {
+            location.state = router.state[_router.fullPath]
+            to[0] = location
+        }
+
+        if (location.state && !router.state[_router.fullPath]) {
+            router.state[_router.fullPath] = location.state
+        }
+        /* =======================记录history.state的值  of  end============================================= */
         /**
          * 这里选择fullpath属性进行判断的原因是，<component>组件使用的key是以fullpath属性
          */
-        if (router.resolve(location).fullPath === currentRoute.value.fullPath) {
+        if (_router.fullPath === currentRoute.value.fullPath) {
             if (typeof location.cache === 'boolean' && location.cache === true) {
                 router.routerRefresh = false
             } else {
@@ -144,6 +193,9 @@ declare module 'vue-router' {
     interface RouteLocationNamedRaw {
         cache?: boolean
     }
+    interface ObjectOf<state> {
+        [fullPath: string]: state
+    }
     interface Router {
         go(delta: number, option?: { cache: boolean }): void;
         back(option?: { cache: boolean }): void;
@@ -153,5 +205,7 @@ declare module 'vue-router' {
         routerRefresh: boolean
         /** 判断是否需要对当前组件进行缓存 */
         keepAlive: boolean
+        /** 新增state对象，通过fullpath作为键，history.state作为值，进行保存参数 */
+        state: ObjectOf<any>
     }
 }

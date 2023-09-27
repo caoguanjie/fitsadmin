@@ -2,7 +2,7 @@
 import { RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
 import { asyncRoutes, constantRoutes } from '@/router';
-import { RouteMeta, PermissionState } from '@/model/base/store';
+import { RouteMeta, PermissionState } from '@/router/type.d';
 
 const hasPermission = (roles: string[], route: any) => {
   if (route.meta && route.meta.roles) {

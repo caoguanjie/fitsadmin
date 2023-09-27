@@ -24,7 +24,7 @@ export const useMicroFrontendsStore = defineStore('micro-frontends', () => {
         }
         return _url
     })
-    const { setupApp, preloadApp, bus } = WujieVue;
+    const { setupApp, preloadApp, destroyApp } = WujieVue;
 
     /**
      * 设置子应用的app属性
@@ -77,12 +77,20 @@ export const useMicroFrontendsStore = defineStore('micro-frontends', () => {
                 name: "vite-vue3-keepalive",
                 /** 需要渲染的url */
                 url: subURL.value,
+                loadError: () => {
+                    // 如果子应用没有开启服务，加载资源失败的话，直接销毁wujie的实例，预执行会阻塞主应用的渲染线程
+                    destroyApp('vite-vue3-keepalive')
+                }
+
             })
             preloadApp({
                 /** 唯一性用户必须保证 */
                 name: "vite-vue3-single",
                 /** 需要渲染的url */
                 url: subURL.value,
+                loadError: () => {
+                    destroyApp('vite-vue3-single')
+                }
             })
 
             if (import.meta.env.MODE !== 'github') {
@@ -91,6 +99,9 @@ export const useMicroFrontendsStore = defineStore('micro-frontends', () => {
                     name: "webpack-vue2",
                     /** 需要渲染的url */
                     url: 'http://192.168.32.60:3002/',
+                    loadError: () => {
+                        destroyApp('webpack-vue2')
+                    }
                 })
             }
         }

@@ -8,6 +8,7 @@ NProgress.configure({ showSpinner: false })
 import ENV from '@/environment/index';
 const whiteList = ['/login', '/404']
 import { deleteCache } from './utils';
+
 export const createRouterGuards = (router: Router) => {
     router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: any) => {
         // 开启进度条

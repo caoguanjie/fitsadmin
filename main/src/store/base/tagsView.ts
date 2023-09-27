@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { nextTick } from 'vue';
 import router from '@/router';
-import { TagsViewState } from '@/model/base/store';
+import { TagsViewState } from '@/router/type.d';
 
 const useTagsViewStore = defineStore({
   id: 'tagsView',

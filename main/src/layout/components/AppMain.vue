@@ -10,7 +10,6 @@
       </transition>
     </router-view>
   </section>
-
 </template>
 
 <script setup lang="ts">
@@ -32,7 +31,7 @@ const router = useRouter()
  */
 onBeforeRouteUpdate((to: RouteLocationNormalized, from: RouteLocationNormalized, next) => {
 
-  console.error('onBeforeRouteUpdate', router.keepAlive, tagsView.visitedViews)
+  // console.error('onBeforeRouteUpdate', router.keepAlive, router.state)
   if (!router.keepAlive) {
     // 如果不需要缓存，就要删除当前组件的缓存
     deleteCache(to)

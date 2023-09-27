@@ -37,7 +37,7 @@ interface FitsProjectSetting {
     version: string;
     /**
      * @description 项目的接口地址
-     * @example  http://192.168.32.108:3000/mock/78/api,
+     * @example  http://192.168.32.60:3005/mock/78/api,
      */
     api_address: string;
     /**

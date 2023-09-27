@@ -16,6 +16,7 @@ import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
     title: 'title'               侧边栏和面包屑中显示的名称（推荐设置）、多页签的标签名字
     icon: 'svg-name'/'el-icon-x' 侧边栏要显示的图标
     breadcrumb: false            如果设置为false，则项目将隐藏在breadcrumb中（默认为true）
+    state: any                   存放history.state的值
     activeMenu: '/example/list'  如果设置路径，侧边栏将突出显示您设置的路径
     affix: true                  如果设置为true,可以固定在标签页，tag-view
   }
@@ -34,9 +35,10 @@ export class RouteMeta {
     hidden: boolean
     alwaysShow: boolean
     cache: boolean
+    state: any
     // 除了框架默认配置的meta属性，根据实际项目情况，还可以拓展更多属性
     [customMeta: string]: any
-    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow, cache, ...moreMethod }: any = {}) {
+    constructor({ roles, title, icon, breadcrumb, activeMenu, affix, hidden, alwaysShow, cache, state, ...moreMethod }: any = {}) {
         this.roles = roles ?? []
         this.title = title ?? ''
         this.icon = icon ?? ''
@@ -45,6 +47,7 @@ export class RouteMeta {
         this.affix = affix ?? false
         this.hidden = hidden ?? false
         this.alwaysShow = alwaysShow ?? false
+        this.state = state
         this.cache = cache ?? ENV.system.keepalive
         this.initMoreMethodValue(moreMethod)
     }

@@ -87,7 +87,7 @@ import CloseOtherIcon from '@/assets/icons/fits-close-other.svg';
 import CloseleftIcon from '@/assets/icons/fits-close-left.svg';
 import CloseRightIcon from '@/assets/icons/fits-close-right.svg';
 import CloseAllIcon from '@/assets/icons/fits-close-all.svg';
-import { TagView } from '@/model/base/store';
+import { TagView } from '@/router/type.d';
 
 
 const { tagsView, permission } = useStore();
