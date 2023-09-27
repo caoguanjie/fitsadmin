@@ -12,12 +12,12 @@
 <script setup lang="ts" name="UploadExcel">
 import { FitsUpload } from '@/fits-components';
 import * as XLSX from 'xlsx';
-
+import ENV from '@/environment';
 import { FitsTable, FitsTableProps } from "@/fits-components";
 import { useFitsTablePro } from "@/fits-components/type";
 import { VxeGridInstance } from 'vxe-table';
 const data = {
-    url: "http://192.168.32.108:3000/mock/78/api/uploadPDF",
+    url: `${ENV}/mock/78/api/uploadPDF`,
     type: ["excel"]
 }
 let loading = ref()
@@ -96,7 +96,5 @@ const xGrid = ref<VxeGridInstance | any>()
 const { fitsTablePro } = useFitsTablePro(gridOptions, xGrid)
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
   

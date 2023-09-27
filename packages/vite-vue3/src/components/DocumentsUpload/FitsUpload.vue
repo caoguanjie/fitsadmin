@@ -20,12 +20,11 @@
                         支持上传文件格式为pdf，大小不超过{{ props.size }}M（测试文件大小限制）
                     </slot>
                 </div>
-                <el-upload ref="uploadRef" class="upload-demo" :method="props.method" :action="props.url"
-                    :data="props.data" drag :disabled="props.disabled" :name="props.name" :on-remove="onRemove"
-                    :on-change="onChange" :show-file-list="props.showfile" :on-progress="onProgress"
-                    :on-success="onSuccess" :on-error="onError" :on-preview="onPreview" :before-upload="beforeUpload"
-                    :limit="props.limit" :on-exceed="onExceed" :with-credentials="props.withCredentials"
-                    @before-remove="beforeRemove">
+                <el-upload ref="uploadRef" class="upload-demo" :method="props.method" :action="props.url" :data="props.data"
+                    drag :disabled="props.disabled" :name="props.name" :on-remove="onRemove" :on-change="onChange"
+                    :show-file-list="props.showfile" :on-progress="onProgress" :on-success="onSuccess" :on-error="onError"
+                    :on-preview="onPreview" :before-upload="beforeUpload" :limit="props.limit" :on-exceed="onExceed"
+                    :with-credentials="props.withCredentials" @before-remove="beforeRemove">
                     <el-icon class="el-icon--upload">
                         <slot name="icon">
                             <div class=successIcon v-if="state == 1" />
@@ -64,7 +63,7 @@ const props = defineProps({
     //请求URL,必填！
     url: {
         type: String,
-        default: 'http://192.168.32.108:3000/mock/78/api/uploadPDF'
+        default: 'http://192.168.32.60:3005/mock/78/api/uploadPDF'
     },
     //设置上传请求方法
     method: {

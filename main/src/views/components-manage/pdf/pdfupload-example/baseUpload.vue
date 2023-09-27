@@ -6,12 +6,11 @@
 
 <script setup lang="ts">
 import { FitsUpload } from '@/fits-components';
+import ENV from '@/environment';
 const data = {
-    url: "http://192.168.32.108:3000/mock/78/api/uploadPDF"
+    url: `${ENV}/mock/78/api/uploadPDF`
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
   

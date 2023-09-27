@@ -14,8 +14,8 @@
             plain>目录</el-button>
           <el-button v-if="ruleForm.Type != 'caidan'" class="add-button" @click="ruleForm.Type = 'caidan'">菜单
           </el-button>
-          <el-button v-if="ruleForm.Type == 'caidan'" class="add-button" @click="ruleForm.Type = 'caidan'"
-            type="primary" plain>菜单</el-button>
+          <el-button v-if="ruleForm.Type == 'caidan'" class="add-button" @click="ruleForm.Type = 'caidan'" type="primary"
+            plain>菜单</el-button>
           <el-button v-if="ruleForm.Type != 'anniu'" class="add-button" @click="ruleForm.Type = 'anniu'">按钮</el-button>
           <el-button v-if="ruleForm.Type == 'anniu'" class="add-button" @click="ruleForm.Type = 'anniu'" type="primary"
             plain>按钮</el-button>
@@ -90,7 +90,7 @@ import { FitsIconSelect, FitsTreeSelect } from '@/fits-components';
 import { FitsIconSelectModel, FitsTreeSelectModel } from '@/fits-components/type';
 import { FitsUpload } from '@/fits-components/Form/Upload';
 import { getMenuList } from '@/api/base/system';
-const url = 'http://192.168.32.108:3000/mock/78/api/uploadPDF';
+const url = 'http://192.168.32.60:3005/mock/78/api/uploadPDF';
 const state = reactive(
   new FitsIconSelectModel({
     select: {

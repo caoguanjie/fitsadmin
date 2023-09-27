@@ -6,7 +6,7 @@ export const uploadProps = {
     //请求URL,必填！
     url: {
         type: String,
-        default: 'http://192.168.32.108:3000/mock/78/api/uploadPDF',
+        default: 'http://192.168.32.60:3005/mock/78/api/uploadPDF',
         require: true
     },
     //设置上传请求方法
