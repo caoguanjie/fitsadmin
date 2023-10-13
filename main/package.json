@@ -43,7 +43,6 @@
         "path-browserify": "^1.0.1",
         "path-to-regexp": "^6.2.0",
         "pinia": "^2.1.4",
-        "pinia-plugin-persist": "0.0.93",
         "pinyin-match": "^1.2.4",
         "qs": "^6.11.0",
         "screenfull": "^6.0.0",

@@ -122,9 +122,6 @@ importers:
       pinia:
         specifier: ^2.1.4
         version: 2.1.4(typescript@5.0.4)(vue@3.3.4)
-      pinia-plugin-persist:
-        specifier: 0.0.93
-        version: 0.0.93(vue@3.3.4)
       pinyin-match:
         specifier: ^1.2.4
         version: 1.2.4
