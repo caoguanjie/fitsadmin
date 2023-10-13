@@ -2,22 +2,10 @@ import { defineStore } from 'pinia';
 import { LoginFormData } from '@/api/base/type';
 import { login, logout } from '@/api/base/login';
 import { getUserInfo } from '@/api/base/user';
-import Cookies from 'js-cookie';
+
 import AwaitToTask from '@/utils/base/awaitToTask';
 import { resetRouter } from '@/router';
 
-const cookiesStorage: any = {
-  setItem(key: string, state: any) {
-    // 默认有效期是7天
-    const _state = JSON.parse(state);
-    return Cookies.set("accessToken", _state.token);
-  },
-  getItem(key: string) {
-    return JSON.stringify({
-      token: Cookies.get("accessToken"),
-    });
-  },
-};
 
 const useUserStore = defineStore({
   id: 'user',
@@ -152,19 +140,19 @@ const useUserStore = defineStore({
    * pinia的插件storage默认情况下，存储设置为 sessionStorage，但您可以通过设置密钥来指定要用于每个策略的存储。
    * 下面的例子就是利用js-cookie插件做token的缓存
    */
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        storage: window.localStorage,
-        paths: ["userInfo", "isRememberme", "loginInfo"],
-      },
-      {
-        storage: cookiesStorage,
-        paths: ["token"],
-      },
-    ],
-  },
-});
+  persist: [
+    {
+      type: 'indexedDB',
+      paths: ["userInfo", "isRememberme", "loginInfo"],
+    },
+    {
+      key: 'accessToken',
+      type: 'cookies',
+      encryption: false,
+      paths: ["token"],
+    },
+  ],
+
+})
 
 export default useUserStore;

@@ -2,7 +2,7 @@
  * @Author: caogj 
  * @Date: 2023-09-27 15:14:42 
  * @Last Modified by: caogj
- * @Last Modified time: 2023-09-27 15:19:53
+ * @Last Modified time: 2023-09-27 16:47:58
  */
 
 /**
@@ -65,7 +65,8 @@ export function RouterUtils(router: Router) {
             to[0] = location
         }
 
-        if (location.state && !router.state[_router.fullPath]) {
+        if (location.state) {
+            // 如果前往的路径没值，需要赋值，如果前往的路由有值，也需要重新赋值，不然保存的参数就是旧的了。
             router.state[_router.fullPath] = location.state
         }
         /* =======================记录history.state的值  of  end============================================= */

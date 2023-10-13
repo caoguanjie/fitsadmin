@@ -15,6 +15,7 @@ export const createRouterGuards = (router: Router) => {
         NProgress.start()
         const { user, permission, userHabits } = useStore();
         // 确定用户是否已登录
+
         if (user && user.token) {
             if (to.path === '/login') {
                 // 如果已登录，请重定向到主页

@@ -1,3 +1,7 @@
+## [2.0.0-beta.3](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
+### 重大改变
+- 新增vue3-persist-storages作为前端持久化存储的唯一方案
+
 
 ## [2.0.0-beta.2](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
 ### 重大改变

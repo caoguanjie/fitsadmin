@@ -5,12 +5,16 @@ import useSettingStore from './base/settings';
 import useTagsViewStore from './base/tagsView';
 import useUserHabitsStorage from './base/storage';
 import { createPinia } from 'pinia';
-import piniaPluginPersist from 'pinia-plugin-persist'
+import { createPlugin } from 'vue3-persist-storages'
 import { App } from 'vue';
 import { useMicroFrontendsStore } from './base/micro-frontends';
+import packagesInfo from '../../package.json'
 
 const store = createPinia()
-store.use(piniaPluginPersist)
+store.use(createPlugin({
+  prefix: packagesInfo.name,
+  debug: true
+}))
 
 const useStore = () => ({
   user: useUserStore(),

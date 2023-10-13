@@ -59,6 +59,9 @@ importers:
       '@logicflow/extension':
         specifier: ^1.1.26
         version: 1.1.26
+      '@types/crypto-js':
+        specifier: ^4.1.2
+        version: 4.1.2
       '@vueuse/core':
         specifier: ^10.2.1
         version: 10.2.1(vue@3.3.4)
@@ -74,6 +77,9 @@ importers:
       better-scroll:
         specifier: ^2.4.2
         version: 2.4.2
+      crypto-js:
+        specifier: ^4.1.1
+        version: 4.1.1
       default-passive-events:
         specifier: ^2.0.0
         version: 2.0.0
@@ -92,6 +98,9 @@ importers:
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
+      localforage:
+        specifier: ^1.10.0
+        version: 1.10.0
       lodash:
         specifier: 4.17.5
         version: 4.17.5
@@ -149,6 +158,9 @@ importers:
       vue-router:
         specifier: ^4.2.4
         version: 4.2.4(vue@3.3.4)
+      vue3-persist-storages:
+        specifier: ^0.0.2
+        version: 0.0.2(pinia@2.1.4)(vue@3.3.4)
       vxe-table:
         specifier: ^4.3.5
         version: 4.3.5(vue@3.3.4)(xe-utils@3.5.11)
@@ -1602,6 +1614,10 @@ packages:
     resolution: {integrity: sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==}
     dev: false
 
+  /@types/crypto-js@4.1.2:
+    resolution: {integrity: sha512-t33RNmTu5ufG/sorROIafiCVJMx3jz95bXUMoPAZcUD14fxMXnuTzqzXZoxpR0tNx2xpw11Dlmem9vGCsrSOfA==}
+    dev: false
+
   /@types/estree@1.0.1:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
     dev: true
@@ -2841,6 +2857,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypto-js@4.1.1:
+    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
+    dev: false
 
   /css-select@4.3.0:
     resolution: {integrity: sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==}
@@ -4415,6 +4435,11 @@ packages:
   /js-cookie@3.0.1:
     resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
     engines: {node: '>=12'}
+    dev: false
+
+  /js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
+    engines: {node: '>=14'}
     dev: false
 
   /js-tokens@4.0.0:
@@ -6638,6 +6663,20 @@ packages:
       semver: 7.5.4
       typescript: 5.0.4
     dev: true
+
+  /vue3-persist-storages@0.0.2(pinia@2.1.4)(vue@3.3.4):
+    resolution: {integrity: sha512-SElqy0aFahf7kSvCgxv2BCC82b/2J7QyYA9u5jRlnZS7EJiLI6iQchvgW76XCZktDx2h0vUEuH+GVBaGfdiD2A==}
+    peerDependencies:
+      pinia: ^2.1.4
+      vue: ^3.2
+    dependencies:
+      '@types/crypto-js': 4.1.2
+      crypto-js: 4.1.1
+      js-cookie: 3.0.5
+      localforage: 1.10.0
+      pinia: 2.1.4(typescript@5.0.4)(vue@3.3.4)
+      vue: 3.3.4
+    dev: false
 
   /vue@3.3.4:
     resolution: {integrity: sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==}

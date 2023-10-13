@@ -49,19 +49,12 @@ const useAppStore = defineStore({
     },
   },
   /**
-       *  开启数据缓存
-       * 默认所有 state 都会进行缓存，你可以通过 paths 指定要持久化的字段，其他的则不会进行持久化。
-       */
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        key: "keyValue",
-        storage: window.localStorage,
-        paths: ['sidebar']
-      }
-    ]
-  }
+   *  开启数据缓存
+   * 默认所有 state 都会进行缓存，你可以通过 paths 指定要持久化的字段，其他的则不会进行持久化。
+   */
+  persist: true
+
+
 });
 
 export default useAppStore;

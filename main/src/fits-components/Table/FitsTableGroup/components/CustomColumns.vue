@@ -34,7 +34,7 @@
 import { reactive, ref, toRefs, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { VueDraggableNext } from 'vue-draggable-next'
-import { CreateStorage } from '@/utils/storage/index';
+import { CreateStorage } from '@/utils/storage/storages';
 import { IFitsTableHeaders } from '../type';
 import { useColumns } from '../hooks/useColumns';
 import { ElMessage } from 'element-plus';
@@ -44,7 +44,7 @@ const props = defineProps<{ headers: IFitsTableHeaders[] }>()
 const state = reactive({
     customTableCols: [] as IFitsTableHeaders[],
     lastColsConfig: [] as IFitsTableHeaders[], // 因为拖拽插件是v-model的，需要一个变量保存上一次的配置，只有点击确定才修改
-    storage: new CreateStorage("Fits_Table_Columns")
+    storage: new CreateStorage()
 })
 const { customTableCols, lastColsConfig, storage } = toRefs(state)
 const popover = ref()
@@ -75,7 +75,7 @@ function updateCols() {
  */
 function storageVisibleColsConfig() {
     const visibleColumns = customTableCols.value.map(item => ({ field: item.field, type: item.type, visible: item.visible }))
-    storage.value.set(`${String(route.name)}_Visible`, visibleColumns, null)
+    storage.value.setItem(`${String(route.name)}_Visible`, visibleColumns, null)
 }
 
 /**
@@ -83,7 +83,7 @@ function storageVisibleColsConfig() {
  */
 function storageSortColsConfig() {
     const colsSort = customTableCols.value.map((item, index) => ({ field: item.field, type: item.type, sort: index }))
-    storage.value.set(`${String(route.name)}_Sort`, colsSort, null)
+    storage.value.setItem(`${String(route.name)}_Sort`, colsSort, null)
 }
 
 /**
@@ -203,4 +203,4 @@ function popoverShow() {
         }
     }
 }
-</style>
+</style>@/utils/storage/storages
