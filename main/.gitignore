@@ -6,6 +6,8 @@ FitsAdminDocs
 FitsAdminUI/es
 FitsAdminUI/umd
 FitsAdminUI/favicon.ico
+release
+dist-electron
 libs
 .eslintrc-auto-import.json
 auto-imports.d.ts

@@ -88,7 +88,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }
     },
     build: {
-      outDir: fileURLToPath(new URL('../../FitsAdmin/vite-vue3', import.meta.url)),
+      outDir: fileURLToPath(new URL('../../main/FitsAdmin/vite-vue3', import.meta.url)),
       minify: 'terser',
       // 不生效
       terserOptions: {

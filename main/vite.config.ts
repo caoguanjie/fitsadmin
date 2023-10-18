@@ -11,12 +11,14 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
 import removeConsole from 'vite-plugin-remove-console';
+import electron from 'vite-plugin-electron'
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
+  const isDev = mode === 'dev' || mode === 'electron'
   return {
-    base: mode !== 'github' ? '/' : '/fitsadmin',
+    base: mode !== 'github' ? './' : './fitsadmin',
     plugins: [
       // 自动导入elment-plus
       AutoImport({
@@ -31,7 +33,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
 
       }),
-      mode === 'dev' ? fullImportPlugin() : Components({
+      isDev ? fullImportPlugin() : Components({
         dts: fileURLToPath(new URL('./src/components.d.ts', import.meta.url)),
         dirs: '',
         directoryAsNamespace: true,
@@ -40,7 +42,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
 
       vue(),
-      mode !== 'dev' && removeConsole(),
+      mode === 'electron' && electron({
+        // 主进程入口文件
+        entry: 'electron/main.ts',
+      }),
+      !isDev && removeConsole(),
       svgLoader(),
       // 命名组件名字的插件
       vueSetupExtend(),
@@ -88,7 +94,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }
     },
     build: {
-      outDir: fileURLToPath(new URL('../FitsAdmin', import.meta.url)),
+      outDir: fileURLToPath(new URL('./FitsAdmin', import.meta.url)),
       minify: 'terser',
       // 不生效
       terserOptions: {
