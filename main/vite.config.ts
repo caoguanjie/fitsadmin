@@ -12,6 +12,7 @@ import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
 import removeConsole from 'vite-plugin-remove-console';
 import electron from 'vite-plugin-electron'
+
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
@@ -44,7 +45,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       vue(),
       mode === 'electron' && electron({
         // 主进程入口文件
-        entry: 'electron/main.ts',
+        entry: ['electron/main.ts', 'electron/preload.ts'],
+
       }),
       !isDev && removeConsole(),
       svgLoader(),

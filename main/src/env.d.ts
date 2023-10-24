@@ -34,6 +34,7 @@ declare global {
       props?: { [key: string]: any };
       location?: any;
     }
+    ipcRenderer: any
   }
 }
 

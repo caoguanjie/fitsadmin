@@ -61,6 +61,7 @@ import Breadcrumb from '@/layout/components/Breadcrumb/index.vue';
 // import Screenfull from '@/components/ScreenFull/index.vue'
 import ThemeSelect from '@/layout/components/Settings/ThemeSelect.vue';
 import { SvgIcon } from '@/fits-components/Basic/SvgIcon';
+import { isPlatform } from '@/utils/base/platform';
 
 const { app, user, tagsView, setting } = useStore();
 const route = useRoute();
@@ -90,6 +91,7 @@ function logout() {
       })
       .then(() => {
         router.push(`/login?redirect=${route.fullPath}`);
+        isPlatform('electron') && window.ipcRenderer.send('openLoginWindow')
       });
   });
 }

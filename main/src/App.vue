@@ -10,11 +10,10 @@ import { ElConfigProvider } from 'element-plus';
 import zhCn from 'element-plus/lib/locale/lang/zh-cn';
 
 import useStore from '@/store';
-import { useRoute } from 'vue-router';
+
 
 
 // 导入 Element Plus 语言包
-
 
 const { app } = useStore();
 

@@ -15,8 +15,8 @@
         </span>
       </el-form-item>
       <el-form-item prop="code">
-        <el-input v-model="loginForm.code" tabindex="3" auto-complete="on" placeholder="请输入验证码"
-          @keyup.enter="submitForm" clearable>
+        <el-input v-model="loginForm.code" tabindex="3" auto-complete="on" placeholder="请输入验证码" @keyup.enter="submitForm"
+          clearable>
           <template #append> <img :src="captchaBase64" @click="handleCaptchaGenerate" class="captcha"></template>
         </el-input>
       </el-form-item>
@@ -63,7 +63,6 @@
       </el-form-item>
     </el-form>
   </div>
-
 </template>
 
 <script lang='ts' setup>
@@ -77,6 +76,7 @@ import { onMounted, reactive, ref, toRefs, watch, nextTick, computed } from 'vue
 import { SvgIcon } from '@/fits-components';
 import { useRoute, useRouter } from 'vue-router';
 import useStore from '@/store';
+import { isPlatform } from '@/utils/base/platform';
 const route = useRoute();
 const router = useRouter();
 const { user } = useStore();
@@ -158,7 +158,15 @@ function submitForm() {
     if (valid) {
       state.loading = true;
       await user.login(state.loginForm);
-      router.push({ path: state.redirect || '/', query: state.otherQuery });
+      if (isPlatform('electron')) {
+
+        router.push({ path: state.redirect || '/', query: state.otherQuery }).then(() => {
+          window.ipcRenderer.send('openMainWindow')
+        })
+      } else {
+        router.push({ path: state.redirect || '/', query: state.otherQuery });
+      }
+
       state.loading = false;
     } else {
       state.loading = false;

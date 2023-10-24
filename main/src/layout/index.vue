@@ -30,6 +30,7 @@ import FitsFooter from "@/layout/components/Footer/index.vue"
 import useStore from '@/store';
 import variables from '@/styles/variables.module.scss';
 const { width } = useWindowSize();
+
 const WIDTH = 992;
 
 const { app, setting } = useStore();
@@ -62,6 +63,7 @@ const classObj = computed(() => {
 });
 
 watchEffect(() => {
+
   if (width.value < WIDTH) {
     app.toggleDevice('mobile');
     app.closeSideBar(true);
