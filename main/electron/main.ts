@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain, screen, webFrame } from 'electron';
 import { join } from 'path';
 import { platform } from 'process'
 
@@ -101,6 +101,11 @@ const createMainWindow = () => {
         mainWindow.show()
     })
 
+    // 监听窗口变化
+    mainWindow.on('will-resize', (event, newBounds) => {
+        changeWindowZoom({ width: newBounds.width }, mainWindow.webContents)
+    })
+
 }
 
 /**
@@ -109,7 +114,7 @@ const createMainWindow = () => {
  */
 
 const gotTheLock = app.requestSingleInstanceLock()
-
+console.log('当前有个多少个实例', gotTheLock)
 if (!gotTheLock) {
     app.quit()
 } else {
@@ -144,17 +149,34 @@ app.on('window-all-closed', () => {
 
 // 登录成功后，通知主线程创建新的主界面，并且清理登录窗口痕迹
 ipcMain.on('openMainWindow', () => {
+    isLogin = true;
     createMainWindow()
     console.log('openMainWindow')
     loginWindow.destroy()
     loginWindow = null
-    isLogin = true;
+
 
 })
 // 退出登录
 ipcMain.on('openLoginWindow', () => {
+    isLogin = false;
     createLoginWindow()
     mainWindow.destroy()
     mainWindow = null
-    isLogin = false;
+
 })
+
+
+// 第一次加载窗口之后，需要调整伸缩比例
+ipcMain.on('firstWidowResize', (e, { width }) => {
+    changeWindowZoom({ width }, e.sender)
+})
+// 改变窗口的伸缩比例
+function changeWindowZoom({ width }, sender: any) {
+    if (!isLogin) return
+    const designWidth = 1920;
+    const deviceScaleFactor = screen.getPrimaryDisplay().scaleFactor;  // 桌面端的缩放比例scaleFactor
+    /** 响应式比例控制在0.9-1.2之间波动 */
+    const zoom = Math.min(Math.max(Number(width / designWidth * deviceScaleFactor), 0.9), 1.2).toFixed(3);
+    sender.send('setZoomFactor', zoom)
+}

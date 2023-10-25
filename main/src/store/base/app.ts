@@ -35,6 +35,14 @@ const useAppStore = defineStore({
       this.sidebar.withoutAnimation = withoutAnimation;
     },
     /**
+    * 开启侧边栏
+    * @param withoutAnimation 
+    */
+    openSideBar(withoutAnimation: any) {
+      this.sidebar.opened = true;
+      this.sidebar.withoutAnimation = withoutAnimation;
+    },
+    /**
      * 切换设备
      * @param device 
      */

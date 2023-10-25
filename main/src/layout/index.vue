@@ -62,26 +62,30 @@ const classObj = computed(() => {
   return arr
 });
 
-watchEffect(() => {
-
-  if (width.value < WIDTH) {
-    app.toggleDevice('mobile');
-    app.closeSideBar(true);
-  } else {
-    app.toggleDevice('desktop');
-  }
-});
 
 // 监听浏览器的变化，及时更新scorll组件的高度
-useResizeObserver(document.body, (entries) => {
+const stop = useResizeObserver(document.body, (entries) => {
   const entry = entries[0]
   const { height } = entry.contentRect
   bodyHeight.value = height
+  const { width } = useWindowSize();
+  if (width.value < WIDTH) {
+    app.toggleDevice('mobile');
+    app.closeSideBar(true);
+  } else if (width.value > 1400) {
+    app.toggleDevice('desktop');
+    app.openSideBar(true);
+  } else {
+    app.toggleDevice('desktop');
+  }
 })
 
 function handleClickOutside() {
   app.closeSideBar(false);
 }
+onUnmounted(() => {
+  stop.stop()
+})
 </script>
 
 <style lang="scss" scoped>
