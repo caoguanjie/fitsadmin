@@ -19,7 +19,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd());
   const isDev = mode === 'dev' || mode === 'electron'
   return {
-    base: mode !== 'github' ? './' : './fitsadmin',
+    base: mode !== 'github' ? './' : 'fitsadmin',
     plugins: [
       // 自动导入elment-plus
       AutoImport({
