@@ -8,7 +8,7 @@
     </div>
 </template>
   
-<script setup lang="ts">
+<script setup lang="ts" name="ViteKeepalive2">
 import useStore from '@/store';
 import { fitslog } from '@/utils/base/logger';
 import WujieVue from 'wujie-vue3';
@@ -29,11 +29,18 @@ onMounted(() => {
         });
     })
 })
-
+onActivated(() => {
+    wujie.value.startApp({
+        name: 'vite-vue3-keepalive',
+        url: viteUrl
+    }).then(() => {
+        bus.$emit("move", {
+            path: route.meta.path
+        });
+    })
+})
 // 主应用发送事件
 
 </script>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
   

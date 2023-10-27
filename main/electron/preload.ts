@@ -1,10 +1,26 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron'
-
+import edge from 'electron-edge-js'
+import { join } from 'path';
 window.addEventListener('DOMContentLoaded', () => {
     contextBridge.exposeInMainWorld('ipcRenderer', {
         send: ipcRenderer.send
     })
-    getDomWindowSize()
+    getDomWindowSize();
+
+    if (process.platform === 'win32') {
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const edge = require('electron-edge-js')
+        const invoke = edge.func({
+            assemblyFile: join(__dirname, '../electron/resources/dll/FitsTest.dll'),
+            typeName: ' FitsTest.FrmHlyy',
+            methodName: 'Hello'
+        })
+        contextBridge.exposeInMainWorld('invoke', {
+            send: invoke
+        })
+    }
+
 })
 /**
  * 获取当前dom的宽高并且告诉主线程，进行调整窗口的缩放比例
@@ -20,4 +36,5 @@ function getDomWindowSize() {
         webFrame.setZoomFactor(Number(zoom))
     })
 }
+
 

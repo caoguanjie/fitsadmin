@@ -33,7 +33,7 @@ export class FitsDefaultSetting implements FitsSetting {
             showFooterBreadcrumb: true,
             breadcrumbPosition: 'bottom',
             formType: 'dialog',
-            keepalive: false,
+            keepalive: true,
             keepaliveMax: 20,
         }
     }

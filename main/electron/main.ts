@@ -1,22 +1,15 @@
 import { app, BrowserWindow, Menu, ipcMain, screen, webFrame } from 'electron';
-import { join } from 'path';
+import { join, resolve, } from 'path';
 import { platform } from 'process'
-
+import url from 'node:url'
 // 全局变量，为了控制主线程的状态和共享数据
 global.shareObject = {
     // isLogin: false
 };
 
+
+
 let mainWindow, loginWindow, isLogin = false;
-const loginURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:3000/#/login`
-    : join(__dirname, '../FitsAdmin/index.html#login')
-
-const mainURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:3000/#/home`
-    : join(__dirname, '../FitsAdmin/index.html')
-
-
 /**
  * 创建登录窗口
  */
@@ -34,7 +27,7 @@ const createLoginWindow = () => {
         // alwaysOnTop: true,//窗口一直保持在其他窗口前面
         // frame: false, // 无边框
         // transparent: true, // 透明
-        resizable: false,//用户不可以调整窗口
+        resizable: true,//用户不可以调整窗口
         center: true, // 窗口居中
         maximizable: false,
         backgroundColor: "#fff",
@@ -47,9 +40,15 @@ const createLoginWindow = () => {
             // contextIsolation: false
         },
     })
-    loginWindow.loadURL(loginURL)
+    if (process.env.NODE_ENV === "development") {
+        loginWindow.loadURL('http://localhost:3000/#/login')
+    } else {
+        loginWindow.loadFile(join(__dirname, '../FitsAdmin/index.html'), {
+            hash: "login"
+        });
+    }
 
-    // loginWindow.webContents.openDevTools()
+    loginWindow.webContents.openDevTools()
     // 为了防止闪烁，让画面准备好了再显示
     // 对于一个复杂的应用，ready-to-show 可能发出的太晚，会让应用感觉缓慢。 在这种情况下，建议立刻显示窗口，并使用接近应用程序背景的 backgroundColor
     // 请注意，即使是使用 ready-to-show 事件的应用程序，仍建议使用设置 backgroundColor 使应用程序感觉更原生。
@@ -91,8 +90,13 @@ const createMainWindow = () => {
     })
 
     mainWindow.webContents.openDevTools()
-    mainWindow.loadURL(mainURL)
-
+    if (process.env.NODE_ENV === "development") {
+        mainWindow.loadURL('http://localhost:3000/#/home')
+    } else {
+        mainWindow.loadFile(join(__dirname, '../FitsAdmin/index.html'), {
+            hash: "Home"
+        });
+    }
     mainWindow.on('closed', () => {
         mainWindow = null
     })
@@ -127,7 +131,8 @@ if (!gotTheLock) {
 }
 
 // ready比whenReady先执行
-app.on('ready', () => {
+app.whenReady().then(() => {
+    console.log('我执行了没')
     createLoginWindow()
     // createMainWindow();
     // 隐藏菜单栏,只适合mac
@@ -169,6 +174,7 @@ ipcMain.on('openLoginWindow', () => {
 
 // 第一次加载窗口之后，需要调整伸缩比例
 ipcMain.on('firstWidowResize', (e, { width }) => {
+
     changeWindowZoom({ width }, e.sender)
 })
 // 改变窗口的伸缩比例

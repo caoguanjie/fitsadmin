@@ -12,7 +12,7 @@ import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
 import removeConsole from 'vite-plugin-remove-console';
 import electron from 'vite-plugin-electron'
-
+import { viteExternalsPlugin } from 'vite-plugin-externals'
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
@@ -46,7 +46,13 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       mode === 'electron' && electron({
         // 主进程入口文件
         entry: ['electron/main.ts', 'electron/preload.ts'],
-
+        vite: {
+          build: {
+            rollupOptions: {
+              external: ['electron-edge-js']
+            }
+          }
+        }
       }),
       !isDev && removeConsole(),
       svgLoader(),
@@ -57,6 +63,9 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
         // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]'
+      }),
+      viteExternalsPlugin({
+        'electron-edge-js': 'electron-edge-js'
       }),
 
     ],
