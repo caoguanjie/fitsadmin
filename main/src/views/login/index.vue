@@ -7,7 +7,7 @@
       <div class="login-tips">最佳浏览环境：Chrome64及以上，1920*1080显示分辨率</div>
     </div>
   </div>
-  <LoginWindow style="box-shadow: none; border: none;" v-else />
+  <LoginWindow style="box-shadow: none; border: none; -webkit-app-region: drag;" v-else />
 </template>
 
 <script setup lang="ts">

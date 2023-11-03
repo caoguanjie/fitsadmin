@@ -14,7 +14,7 @@
                 <div class="title">{{ title }}</div>
                 <div class="subtitle">{{ subTitle }}</div>
             </div>
-            <main-login />
+            <main-login style="-webkit-app-region: no-drag;" />
             <div class="app-download" v-if="loginSetting.appDownload">
                 <el-popover placement="top" :hide-after="0" popper-class="loginAppdownload" :width="180" trigger="click">
                     <template #reference>
@@ -93,6 +93,7 @@ function handleLoginModel() {
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-app-region: no-drag;
 
     .btn {
         width: 76px;
@@ -140,6 +141,7 @@ function handleLoginModel() {
     top: 4px;
     font-size: 48px;
     user-select: none;
+    -webkit-app-region: no-drag;
 }
 </style>
 

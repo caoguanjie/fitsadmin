@@ -12,7 +12,7 @@ import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
 import removeConsole from 'vite-plugin-remove-console';
 import electron from 'vite-plugin-electron'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
+
 // @see: https://gitee.com/holysheng/vite2-config-description/blob/master/vite.config.ts
 export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
@@ -64,10 +64,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]'
       }),
-      viteExternalsPlugin({
-        'electron-edge-js': 'electron-edge-js'
-      }),
-
     ],
     css: {
       // css预处理器
@@ -105,6 +101,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }
     },
     build: {
+
       outDir: fileURLToPath(new URL('./FitsAdmin', import.meta.url)),
       minify: 'terser',
       // 不生效

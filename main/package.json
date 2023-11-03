@@ -15,7 +15,7 @@
         "electron:dev": "vite serve --mode electron",
         "electron:build": "vite build --mode electron && electron-builder --mac --win",
         "electron:win": "vite build --mode electron && electron-builder --win",
-        "electron:mac:dev": "vite build --mode electron &&  electron-builder --mac",
+        "electron:mac:dev": "electron-builder --win",
         "electron:mac": "vite build --mode electron && electron-builder --mac && bash ./electron/resources/macNotary.sh",
         "electron:icons": "electron-icon-builder --input=./electron/resources/icon.png --output=./electron/resources --flatten"
     },
@@ -100,8 +100,6 @@
         "unplugin-vue-components": "^0.25.1",
         "vite": "^4.4.2",
         "vite-plugin-electron": "^0.14.1",
-        "vite-plugin-electron-renderer": "^0.14.5",
-        "vite-plugin-externals": "^0.6.2",
         "vite-plugin-remove-console": "^1.1.0",
         "vite-plugin-svg-icons": "^2.0.1",
         "vite-plugin-vue-setup-extend": "^0.4.0",

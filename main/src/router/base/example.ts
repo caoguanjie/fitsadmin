@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import Layout from "@/layout/index.vue";
+import { isPlatform } from "@/utils/base/platform";
 
 
 // 业务范例
@@ -244,6 +245,23 @@ export const businessRouter: RouteRecordRaw = {
                     name: "taskView",
                     component: () => import("@/views/components-manage/calendars/taskViewExample.vue"),
                     meta: { title: "任务视图" },
+                },
+            ],
+        },
+
+        {
+            path: "Electron",
+            name: "Electron",
+            redirect: "/businessRouter/Electron/index",
+            component: () => import("@/views/components-manage/index.vue"),
+            meta: { title: "Electron原生功能", icon: 'fits-electron', alwaysShow: true, hidden: !isPlatform('electron') },
+            children: [
+                {
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "index",
+                    name: "ElectronMain",
+                    component: () => import("@/views/business-example/electron/index.vue"),
+                    meta: { title: "调用dll文件" },
                 },
             ],
         },

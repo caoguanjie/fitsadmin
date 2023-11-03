@@ -1,7 +1,7 @@
-import { app, BrowserWindow, Menu, ipcMain, screen, webFrame } from 'electron';
-import { join, resolve, } from 'path';
-import { platform } from 'process'
-import url from 'node:url'
+import { app, BrowserWindow, Menu, ipcMain, screen, dialog } from 'electron';
+import { join } from 'path';
+import { platform, env } from 'process'
+// import url from 'node:url'
 // 全局变量，为了控制主线程的状态和共享数据
 global.shareObject = {
     // isLogin: false
@@ -17,20 +17,15 @@ const createLoginWindow = () => {
     if (loginWindow) {
         return
     }
-    loginWindow = new BrowserWindow({
+    const defaultConfig = {
         show: false,// 显示窗口将没有视觉闪烁（配合下面的ready-to-show事件）
         hasShadow: true,//窗口是否有阴影
-        height: 530,
-        width: 455,
         useContentSize: false,
-        autoHideMenuBar: true,
-        // alwaysOnTop: true,//窗口一直保持在其他窗口前面
-        // frame: false, // 无边框
-        // transparent: true, // 透明
         resizable: true,//用户不可以调整窗口
         center: true, // 窗口居中
-        maximizable: false,
+        maximizable: false, // 登录界面不可以最大化
         backgroundColor: "#fff",
+        // alwaysOnTop: true,//窗口一直保持在其他窗口前面
         webPreferences: {
             //========关闭安全策略===========
             webSecurity: false,
@@ -39,16 +34,32 @@ const createLoginWindow = () => {
             preload: join(__dirname, './preload.js')
             // contextIsolation: false
         },
-    })
+    }
+    const windowConfig = {
+        // window窗口是32px顶部栏
+        height: 545,
+        width: 470,
+        autoHideMenuBar: true, // 隐藏菜单栏，仅仅window系统有效
+    }
+    const macConfig = {
+        height: 500,
+        width: 450,
+        frame: false, // 无边框
+        transparent: true, // 透明
+        titleBarStyle: 'hidden',
+    }
+    const config: any = platform === 'darwin' ? { ...defaultConfig, ...macConfig } : { ...defaultConfig, ...windowConfig }
+    // window窗口是32px顶部栏
+    loginWindow = new BrowserWindow(config)
     if (process.env.NODE_ENV === "development") {
-        loginWindow.loadURL('http://localhost:3000/#/login')
+        loginWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`)
     } else {
         loginWindow.loadFile(join(__dirname, '../FitsAdmin/index.html'), {
             hash: "login"
         });
     }
 
-    loginWindow.webContents.openDevTools()
+    // loginWindow.webContents.openDevTools()
     // 为了防止闪烁，让画面准备好了再显示
     // 对于一个复杂的应用，ready-to-show 可能发出的太晚，会让应用感觉缓慢。 在这种情况下，建议立刻显示窗口，并使用接近应用程序背景的 backgroundColor
     // 请注意，即使是使用 ready-to-show 事件的应用程序，仍建议使用设置 backgroundColor 使应用程序感觉更原生。
@@ -91,7 +102,7 @@ const createMainWindow = () => {
 
     mainWindow.webContents.openDevTools()
     if (process.env.NODE_ENV === "development") {
-        mainWindow.loadURL('http://localhost:3000/#/home')
+        mainWindow.loadURL(`${env.VITE_DEV_SERVER_URL}#/home`)
     } else {
         mainWindow.loadFile(join(__dirname, '../FitsAdmin/index.html'), {
             hash: "Home"
@@ -137,6 +148,8 @@ app.whenReady().then(() => {
     // createMainWindow();
     // 隐藏菜单栏,只适合mac
     platform === 'darwin' && Menu.setApplicationMenu(Menu.buildFromTemplate([]))
+
+
 })
 
 app.on('activate', () => {
@@ -186,3 +199,31 @@ function changeWindowZoom({ width }, sender: any) {
     const zoom = Math.min(Math.max(Number(width / designWidth * deviceScaleFactor), 0.9), 1.2).toFixed(3);
     sender.send('setZoomFactor', zoom)
 }
+// 监听渲染线程可能会读取dll的方法
+ipcMain.on('openWinFormWindow', (evt, { methodName, params }) => {
+    if (process.platform === 'win32') {
+        // 只能判断window之后，才能加载electron-edge-js。因为里面是window版本的node。如果用import关键字在mac上会报错
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const edge = require('electron-edge-js')
+        const invoke = edge.func({
+            assemblyFile: join(__dirname, '../electron/resources/dll/FitsTest.dll'),
+            typeName: 'FitsTest.Test',
+            methodName: methodName
+        })
+        /**
+         * error是调用错误提示
+         * value是dll函数调用后的返回值
+         */
+        invoke(params, (error, value) => {
+            evt.sender.send('handleWinFormWindow', { error, value })
+        })
+
+    } else {
+        dialog.showMessageBox({
+            title: '温馨提示',
+            message: "打开dll文件只能在window环境才会生效",
+            type: 'error',
+            buttons: ['确定']
+        })
+    }
+})
