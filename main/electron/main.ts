@@ -206,6 +206,7 @@ ipcMain.on('openWinFormWindow', (evt, { methodName, params }) => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const edge = require('electron-edge-js')
         const invoke = edge.func({
+            // 这里的文件地址，允许可以是http协议的服务器地址，不一定要把dll放在exe里面
             assemblyFile: join(__dirname, '../electron/resources/dll/FitsTest.dll'),
             typeName: 'FitsTest.Test',
             methodName: methodName
