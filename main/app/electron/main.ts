@@ -54,7 +54,7 @@ const createLoginWindow = () => {
     if (process.env.NODE_ENV === "development") {
         loginWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`)
     } else {
-        loginWindow.loadFile(join(__dirname, '../FitsAdmin/index.html'), {
+        loginWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
             hash: "login"
         });
     }
@@ -83,7 +83,7 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         show: false,
         // 窗口图标
-        icon: join(__dirname, '../electron/resources/icons/icon.ico'),
+        icon: join(__dirname, './resources/icons/icon.ico'),
         width: 1366,
         height: 768,
         minWidth: 900,
@@ -104,7 +104,7 @@ const createMainWindow = () => {
     if (process.env.NODE_ENV === "development") {
         mainWindow.loadURL(`${env.VITE_DEV_SERVER_URL}#/home`)
     } else {
-        mainWindow.loadFile(join(__dirname, '../FitsAdmin/index.html'), {
+        mainWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
             hash: "Home"
         });
     }
@@ -207,7 +207,7 @@ ipcMain.on('openWinFormWindow', (evt, { methodName, params }) => {
         const edge = require('electron-edge-js')
         const invoke = edge.func({
             // 这里的文件地址，允许可以是http协议的服务器地址，不一定要把dll放在exe里面
-            assemblyFile: join(__dirname, '../electron/resources/dll/FitsTest.dll'),
+            assemblyFile: join(__dirname, '../resources/dll/FitsTest.dll'),
             typeName: 'FitsTest.Test',
             methodName: methodName
         })

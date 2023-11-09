@@ -3,3 +3,5 @@ packages:
   - "packages/*"
   # 主应用代码
   - "main"
+  # 增加main项目里面的app
+  - "main/*"

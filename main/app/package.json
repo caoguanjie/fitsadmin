@@ -1,0 +1,83 @@
+{
+    "name": "@fitsadmin/app",
+    "version": "2.0.0",
+    "main": "main.js",
+    "description": "FitsAdmin 是基于vue3-element-admin升级的 Vue3 + Element Plus 版本的后台管理前端解决方案。 项目使用 Vue3 + Vite2 + TypeScript + Element Plus + Vue Router + Pinia + Volar 等前端主流技术栈，基于此项目模板生成的前端框架相信能解决您们大部分的难题，里面内置动态路由，权限验证，提炼了典型的业务模型、封装了通用型各种业务组件，提供了丰富的范例展示，可以帮助你快速搭建企业级的中后台产品原型",
+    "scripts": {
+        "electron:dev": "pnpm --filter '@fitsadmin/main' electron:dev",
+        "electron:build": "pnpm --filter '@fitsadmin/main' electron:build && electron-builder --mac --win",
+        "electron:win": "pnpm --filter '@fitsadmin/main' electron:build && electron-builder --win",
+        "electron:mac": "pnpm --filter '@fitsadmin/main' electron:build && electron-builder --mac",
+        "electron:mac:dev": "electron-builder --win",
+        "electron:mac1": "vite build --mode electron && electron-builder --mac && bash ./electron/resources/macNotary.sh",
+        "electron:icons": "electron-icon-builder --input=./assets/icon.png --output=./resources --flatten"
+    },
+    "dependencies": {
+        "electron-edge-js": "file:assets/electron-edge-js.tar.gz"
+    },
+    "devDependencies": {
+        "electron": "^26.5.0",
+        "electron-builder": "^24.6.4",
+        "electron-icon-builder": "2.0.1"
+    },
+    "build": {
+        "appId": "com.electron.fitsadmin",
+        "productName": "FitsAdmin",
+        "copyright": "Copyright © 2023-present fits",
+        "asar": false,
+        "files": [
+            "!**/assets",
+            "!**/electron",
+            {
+                "from": "../FitsAdmin",
+                "to": "FitsAdmin",
+                "filter": [
+                    "**/*",
+                    "!**/{.DS_Store}"
+                ]
+            }
+        ],
+        "directories": {
+            "output": "../release/${version}"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "perMachine": true,
+            "deleteAppDataOnUninstall": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "FitsAdmin",
+            "language": "2052",
+            "installerIcon": "resources/icons/icon.ico",
+            "uninstallerIcon": "resources/icons/icon.ico"
+        },
+        "win": {
+            "icon": "resources/icons/icon.ico",
+            "artifactName": "${productName}-v${version}-${platform}-${arch}-setup.${ext}",
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "ia32"
+                    ]
+                }
+            ]
+        },
+        "mac": {
+            "gatekeeperAssess": true,
+            "icon": "resources/icons/icon.icns",
+            "artifactName": "${productName}-v${version}-${platform}.${ext}",
+            "target": [
+                "dmg"
+            ]
+        },
+        "linux": {
+            "icon": "/resources/icons",
+            "artifactName": "${productName}-v${version}-${platform}-${arch}-setup.${ext}"
+        }
+    },
+    "repository": "https://github.com/caoguanjie/fitsadmin",
+    "author": "caoguanjie",
+    "license": "MIT"
+}

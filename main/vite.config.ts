@@ -45,9 +45,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       vue(),
       mode === 'electron' && electron({
         // 主进程入口文件
-        entry: ['electron/main.ts', 'electron/preload.ts'],
+        entry: ['app/electron/main.ts', 'app/electron/preload.ts'],
         vite: {
           build: {
+            outDir: fileURLToPath(new URL('./app', import.meta.url)),
             rollupOptions: {
               external: ['electron-edge-js']
             }
