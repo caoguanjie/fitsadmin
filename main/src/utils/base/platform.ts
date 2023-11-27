@@ -2,7 +2,7 @@
  * @Author: caoguanjie 
  * @Date: 2023-10-23 15:03:59 
  * @Last Modified by: caoguanjie
- * @Last Modified time: 2023-10-23 17:07:47
+ * @Last Modified time: 2023-11-14 19:14:20
  */
 
 /**
@@ -209,6 +209,24 @@ export function isHybrid(win = window): boolean {
     return isCordova(win) || isCapacitor(win) || isElectron(win);
 }
 
+/*
+ * 判断是否是mac os平台
+ * @param win 
+ * @returns {boolean}
+ */
+export function isMacOS(win = window): boolean {
+    return testUserAgent(win, /Mac/i)
+}
+
+/*
+ * 判断是否是window平台
+ * @param win 
+ * @returns {boolean}
+ */
+export function isWindow(win = window): boolean {
+    return testUserAgent(win, /Win/i)
+}
+
 /**
  * 判断是否是PWA平台
  * @param win 
@@ -233,4 +251,6 @@ const PLATFORMS_MAP = {
     mobileweb: isMobileWeb,
     desktop: isDesktop,
     hybrid: isHybrid,
+    mac: isMacOS,
+    window: isWindow,
 };

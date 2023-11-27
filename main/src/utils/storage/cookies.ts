@@ -2,7 +2,7 @@
  * @Author: caoguanjie 
  * @Date: 2023-10-11 19:35:30 
  * @Last Modified by: caoguanjie
- * @Last Modified time: 2023-10-12 15:32:44
+ * @Last Modified time: 2023-11-13 18:16:04
  */
 
 import Cookies from 'js-cookie'
@@ -44,7 +44,7 @@ export class CreateCookies {
      */
     setItem(key: string, value: any, expires: number | null = this.day, isOpen: boolean | null = this.isOpenExpires) {
         const _expires = expires !== null && isOpen ? expires : undefined;
-        Cookies.set(getKey(key, this.prefix, this.suffix), this.encryption ? handleEncryptData(this.encryptionKey, value) : JSON.stringify(value), { expires: _expires })
+        Cookies.set(getKey(key, this.prefix, this.suffix), this.encryption ? handleEncryptData(this.encryptionKey, value) : JSON.stringify(value), { expires: _expires, domain: 'http://demo.com' })
     }
 
     /**

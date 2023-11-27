@@ -1,8 +1,8 @@
 /*
  * @Author: caoguanjie 
  * @Date: 2023-10-11 16:35:54 
- * @Last Modified by: caogj
- * @Last Modified time: 2023-10-11 19:33:54
+ * @Last Modified by: caoguanjie
+ * @Last Modified time: 2023-11-13 15:53:04
  */
 
 import { PiniaPluginContext, StateTree, Store, SubscriptionCallbackMutation } from 'pinia'
@@ -36,6 +36,10 @@ function getStorageObj(type: string, persist: IStorageOption) {
         }
         case 'cookies': {
             _store = new CreateCookies(persist);
+            break;
+        }
+        case 'custom': {
+            _store = persist.storage;
             break;
         }
     }

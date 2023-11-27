@@ -2,7 +2,7 @@
  * @Author: caoguanjie 
  * @Date: 2023-10-11 16:36:00 
  * @Last Modified by: caoguanjie
- * @Last Modified time: 2023-10-12 16:00:35
+ * @Last Modified time: 2023-11-13 15:56:22
  */
 
 import { IStorageOption } from './types';
@@ -27,7 +27,7 @@ export class CreateStorage {
     private encryptionKey: string
     constructor(option: IStorageOption = {}) {
         const { prefix = '', suffix = '', storage = localStorage, isOpenExpires = false, day = 7, encryption = false } = option
-        this.storage = storage;
+        this.storage = storage as Storage;
         this.prefix = prefix
         this.suffix = suffix
         this.encryption = encryption

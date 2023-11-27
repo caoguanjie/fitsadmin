@@ -18,6 +18,9 @@ export const useMicroFrontendsStore = defineStore('micro-frontends', () => {
             case 'dev':
                 _url = '//localhost:8889/vite-vue3/';
                 break;
+            case 'electron':
+                _url = 'http://192.168.32.60:3001/vite-vue3/';
+                break;
             default:
                 _url = '/vite-vue3/';
                 break;

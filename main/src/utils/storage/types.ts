@@ -42,7 +42,7 @@ export interface IPluginOption {
  */
 export interface IStorageOption extends IPluginOption {
     // storage类型，有localStorage、sessionStroage（可选）
-    storage?: Storage;
+    storage?: Storage | CustomStorage;
     // 是否开启有效期, 默认值：false
     isOpenExpires?: boolean;
     // 有效期默认几天, 默认值: 7天
@@ -50,8 +50,8 @@ export interface IStorageOption extends IPluginOption {
 }
 
 export interface PersistOptions extends IStorageOption {
-    // 使用 indexedDB 或 storage（可选）
-    type?: 'storage' | 'indexedDB' | 'cookies';
+    // 使用 indexedDB 或 storage（可选）、或者自定义属性
+    type?: 'storage' | 'indexedDB' | 'cookies' | 'custom';
     // 持久化存储的key（可选）
     key?: string;
     // 需要持久化的数据的路径（可选）
@@ -63,7 +63,10 @@ export interface PersistOptions extends IStorageOption {
 
 }
 
-
+export interface CustomStorage {
+    getItem<T>(key: string): Promise<T | null> | T;
+    setItem<T>(key: string, value: T): Promise<T | null> | T;
+}
 
 
 

@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import Layout from "@/layout/index.vue";
+import { isPlatform } from "@/utils/base/platform";
 
 
 // 微前端结构
@@ -7,7 +8,7 @@ export const microRouter: RouteRecordRaw = {
     path: "/microFrontends",
     component: Layout,
     redirect: "/microFrontends/vite-vue3/keepalive",
-    meta: { title: "微前端wujie", icon: "fits-yewu", roles: ["admin", "editor"] },
+    meta: { title: "微前端wujie", icon: "fits-yewu", roles: ["admin", "editor"], hidden: isPlatform('electron') },
     children: [
         {
             path: "vite-vue3",

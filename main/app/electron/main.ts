@@ -1,6 +1,7 @@
-import { app, BrowserWindow, Menu, ipcMain, screen, dialog } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain, screen, dialog, session } from 'electron';
 import { join } from 'path';
 import { platform, env } from 'process'
+import { autoUpdate } from './autoUpdate'
 // import url from 'node:url'
 // 全局变量，为了控制主线程的状态和共享数据
 global.shareObject = {
@@ -57,6 +58,7 @@ const createLoginWindow = () => {
         loginWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
             hash: "login"
         });
+        // loginWindow.loadURL('http://192.168.32.60:3001/#/login');
     }
 
     // loginWindow.webContents.openDevTools()
@@ -120,6 +122,10 @@ const createMainWindow = () => {
     mainWindow.on('will-resize', (event, newBounds) => {
         changeWindowZoom({ width: newBounds.width }, mainWindow.webContents)
     })
+
+
+    // 只有主窗口才有应用更新功能
+    isLogin && autoUpdate(mainWindow);
 
 }
 
@@ -227,4 +233,14 @@ ipcMain.on('openWinFormWindow', (evt, { methodName, params }) => {
             buttons: ['确定']
         })
     }
+})
+
+
+ipcMain.on('setCookies', (evt, { url, name, value }) => {
+    session.defaultSession.cookies.set({ url, name, value })
+})
+
+
+ipcMain.on('getCookies', (evt, { url, name }) => {
+    session.defaultSession.cookies.get({ url, name })
 })

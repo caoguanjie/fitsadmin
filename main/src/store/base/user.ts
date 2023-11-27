@@ -5,6 +5,7 @@ import { getUserInfo } from '@/api/base/user';
 
 import AwaitToTask from '@/utils/base/awaitToTask';
 import { resetRouter } from '@/router';
+import { isPlatform } from '@/utils/base/platform';
 
 
 const useUserStore = defineStore({
@@ -145,12 +146,18 @@ const useUserStore = defineStore({
       type: 'indexedDB',
       paths: ["userInfo", "isRememberme", "loginInfo"],
     },
-    {
+    isPlatform('electron') ? {
+      key: 'accessToken',
+      type: 'storage',
+      encryption: false,
+      paths: ["token"],
+    } : {
       key: 'accessToken',
       type: 'cookies',
       encryption: false,
       paths: ["token"],
     },
+
   ],
 
 })

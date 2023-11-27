@@ -4,11 +4,13 @@
     "main": "main.js",
     "description": "FitsAdmin 是基于vue3-element-admin升级的 Vue3 + Element Plus 版本的后台管理前端解决方案。 项目使用 Vue3 + Vite2 + TypeScript + Element Plus + Vue Router + Pinia + Volar 等前端主流技术栈，基于此项目模板生成的前端框架相信能解决您们大部分的难题，里面内置动态路由，权限验证，提炼了典型的业务模型、封装了通用型各种业务组件，提供了丰富的范例展示，可以帮助你快速搭建企业级的中后台产品原型",
     "scripts": {
+        "mac": "electron-builder --mac",
+        "win": "electron-builder --win",
         "electron:dev": "pnpm --filter '@fitsadmin/main' electron:dev",
         "electron:build": "pnpm --filter '@fitsadmin/main' electron:build && electron-builder --mac --win",
         "electron:win": "pnpm --filter '@fitsadmin/main' electron:build && electron-builder --win",
         "electron:mac": "pnpm --filter '@fitsadmin/main' electron:build && electron-builder --mac",
-        "electron:mac:dev": "electron-builder --win",
+        "electron:mac:dev": "electron-builder --mac",
         "electron:mac1": "vite build --mode electron && electron-builder --mac && bash ./electron/resources/macNotary.sh",
         "electron:icons": "electron-icon-builder --input=./assets/icon.png --output=./resources --flatten"
     },
@@ -55,22 +57,17 @@
         "win": {
             "icon": "resources/icons/icon.ico",
             "artifactName": "${productName}-v${version}-${platform}-${arch}-setup.${ext}",
-            "target": [
-                {
-                    "target": "nsis",
-                    "arch": [
-                        "ia32"
-                    ]
-                }
-            ]
+            "target": [{
+                "target": "nsis",
+                "arch": [
+                    "ia32"
+                ]
+            }]
         },
         "mac": {
             "gatekeeperAssess": true,
             "icon": "resources/icons/icon.icns",
-            "artifactName": "${productName}-v${version}-${platform}.${ext}",
-            "target": [
-                "dmg"
-            ]
+            "artifactName": "${productName}-v${version}-${platform}.${ext}"
         },
         "linux": {
             "icon": "/resources/icons",

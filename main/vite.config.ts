@@ -34,18 +34,19 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
 
       }),
-      isDev ? fullImportPlugin() : Components({
+      Components({
         dts: fileURLToPath(new URL('./src/components.d.ts', import.meta.url)),
         dirs: '',
         directoryAsNamespace: true,
-        resolvers: [ElementPlusResolver()],
+        resolvers: isDev ? undefined : [ElementPlusResolver()]
       }),
-
+      // 如果是开发环境，全局导入element-plus
+      isDev && fullImportPlugin(),
 
       vue(),
       mode === 'electron' && electron({
         // 主进程入口文件
-        entry: ['app/electron/main.ts', 'app/electron/preload.ts'],
+        entry: ['app/electron/main.ts', 'app/electron/preload.ts', 'app/electron/autoUpdate.ts'],
         vite: {
           build: {
             outDir: fileURLToPath(new URL('./app', import.meta.url)),
@@ -108,8 +109,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       // 不生效
       terserOptions: {
         compress: {
-          drop_console: mode !== 'dev',
-          drop_debugger: mode !== 'dev',
+          drop_console: mode === 'prod',
+          drop_debugger: mode === 'prod',
         },
       },
       rollupOptions: {

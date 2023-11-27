@@ -1,6 +1,6 @@
 {
     "name": "@fitsadmin/main",
-    "version": "2.0.0-beta.1",
+    "version": "1.0.0",
     "main": "app/main.js",
     "description": "FitsAdmin 是基于vue3-element-admin升级的 Vue3 + Element Plus 版本的后台管理前端解决方案。 项目使用 Vue3 + Vite2 + TypeScript + Element Plus + Vue Router + Pinia + Volar 等前端主流技术栈，基于此项目模板生成的前端框架相信能解决您们大部分的难题，里面内置动态路由，权限验证，提炼了典型的业务模型、封装了通用型各种业务组件，提供了丰富的范例展示，可以帮助你快速搭建企业级的中后台产品原型",
     "scripts": {
@@ -13,7 +13,9 @@
         "lint": "eslint src/**/*.{ts,js,vue} --fix",
         "prettier": "prettier --write .",
         "electron:dev": "vite serve --mode electron",
-        "electron:build": "vite build --mode electron"
+        "electron:build": "vite build --mode electron",
+        "electron:mac": "vite build --mode electron && pnpm --filter '@fitsadmin/app' mac",
+        "electron:win": "vite build --mode electron && pnpm --filter '@fitsadmin/app' win"
     },
     "dependencies": {
         "@element-plus/icons-vue": "^1.0.0",
@@ -58,7 +60,7 @@
         "vue-json-pretty": "^2.2.2",
         "vue-pdf-embed": "^1.1.4",
         "vue-router": "^4.2.4",
-        "vue3-persist-storages": "^0.0.2",
+        "vue3-persist-storages": "^1.0.1",
         "vxe-table": "^4.3.5",
         "vxe-table-plugin-element": "^3.0.6",
         "wujie-vue3": "^1.0.18",
@@ -80,6 +82,7 @@
         "cross-env": "^7.0.3",
         "electron": "^26.5.0",
         "electron-devtools-installer": "^3.2.0",
+        "electron-updater": "^6.1.4",
         "eslint": "^8.14.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.0.0",

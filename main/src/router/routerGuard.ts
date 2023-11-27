@@ -8,14 +8,16 @@ NProgress.configure({ showSpinner: false })
 import ENV from '@/environment/index';
 const whiteList = ['/login', '/404']
 import { deleteCache } from './utils';
+import { isPlatform } from '@/utils/base/platform';
 
 export const createRouterGuards = (router: Router) => {
     router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: any) => {
         // 开启进度条
         NProgress.start()
         const { user, permission, userHabits } = useStore();
+        // 这里是在特定的electron平台底下，如果是登录页，就要清理掉localstorages中的token信息
+        isPlatform('electron') && to.path === '/login' && user.setToken('')
         // 确定用户是否已登录
-
         if (user && user.token) {
             if (to.path === '/login') {
                 // 如果已登录，请重定向到主页

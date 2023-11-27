@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron'
 
+
 window.addEventListener('DOMContentLoaded', () => {
     contextBridge.exposeInMainWorld('ipcRenderer', {
         send: (channel: string, data: any) => ipcRenderer.send(channel, data),
@@ -8,6 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
             ipcRenderer.on(channel, newCallback);
         }
     })
+
     getDomWindowSize();
 })
 /**
