@@ -1,0 +1,1 @@
+import{f as t,h as s,i as e}from"./vxetable-1644ac3d.js";const h={width:"128",height:"128",xmlns:"http://www.w3.org/2000/svg"},n=[e("path",{d:"M0 54.857h36.571V128H0V54.857zM91.429 27.43H128V128H91.429V27.429zM45.714 0h36.572v128H45.714V0z"},null,-1)];function r(e,r){return t(),s("svg",h,n)}const a={render:r};export{a as default,r as render};

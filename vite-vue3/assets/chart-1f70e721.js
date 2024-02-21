@@ -1,1 +1,0 @@
-import{l as t,m as s,p as e}from"./vxetable-9ecf1980.js";const n={width:"128",height:"128",xmlns:"http://www.w3.org/2000/svg"},r=[e("path",{d:"M0 54.857h36.571V128H0V54.857zM91.429 27.43H128V128H91.429V27.429zM45.714 0h36.572v128H45.714V0z"},null,-1)];function a(e,a){return t(),s("svg",n,r)}const h={render:a};export{h as default,a as render};
