@@ -1,3 +1,13 @@
+## [2.0.0](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
+### 重大改变
+集成electron桌面端方案，对应的功能有：
+1. electron的登录功能
+2. Electron界面兼容方案
+3. mac的签名与公证
+4. electron软件执行dll的程序的方案
+5. electron的在线升级功能
+   
+
 ## [2.0.0-beta.3](https://caoguanjie.github.io/fitsadmin-docs/guide/CHANGELOG.html#_1-1-0-2023-7-25)(2023-7-25)
 ### 重大改变
 - 新增vue3-persist-storages作为前端持久化存储的唯一方案

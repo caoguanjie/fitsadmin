@@ -1,6 +1,6 @@
 {
     "name": "fitsadmin",
-    "version": "2.0.0-beta.2",
+    "version": "2.0.0",
     "description": "FitsAdmin 是基于vue3-element-admin升级的 Vue3 + Element Plus 版本的后台管理前端解决方案。 项目使用 Vue3 + Vite2 + TypeScript + Element Plus + Vue Router + Pinia + Volar 等前端主流技术栈，基于此项目模板生成的前端框架相信能解决您们大部分的难题，里面内置动态路由，权限验证，提炼了典型的业务模型、封装了通用型各种业务组件，提供了丰富的范例展示，可以帮助你快速搭建企业级的中后台产品原型",
     "scripts": {
         "dev": "pnpm --filter '@fitsadmin/*' dev",
