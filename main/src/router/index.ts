@@ -142,6 +142,7 @@ export function setupRouter(app: App) {
   createRouterGuards(router);
   // 路由方法的拓展，改写push、replace等写法
   RouterUtils(app.config.globalProperties.$router)
+
 }
 
 export default router;

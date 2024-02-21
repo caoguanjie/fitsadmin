@@ -1,1 +1,196 @@
-"use strict";const e=require("electron"),a=require("path"),d=require("process"),g=require("./autoUpdate.js");require("events");require("crypto");require("tty");require("util");require("os");require("fs");require("stream");require("url");require("string_decoder");require("constants");require("assert");require("child_process");require("zlib");require("http");global.shareObject={};let o,r,l=!1;const c=()=>{if(r)return;const i={show:!1,hasShadow:!0,useContentSize:!1,resizable:!0,center:!0,maximizable:!1,backgroundColor:"#fff",webPreferences:{webSecurity:!1,nodeIntegration:!0,preload:a.join(__dirname,"./preload.js")}},n={height:545,width:470,autoHideMenuBar:!0},s={height:500,width:450,frame:!1,transparent:!0,titleBarStyle:"hidden"},t=d.platform==="darwin"?{...i,...s}:{...i,...n};r=new e.BrowserWindow(t),process.env.NODE_ENV==="development"?r.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`):r.loadFile(a.join(__dirname,"FitsAdmin/index.html"),{hash:"login"}),r.once("ready-to-show",()=>{r.show()}),r.on("closed",()=>{r=null})},w=()=>{o||(o=new e.BrowserWindow({show:!1,icon:a.join(__dirname,"./resources/icons/icon.ico"),width:1366,height:768,minWidth:900,minHeight:600,autoHideMenuBar:!0,useContentSize:!0,webPreferences:{webSecurity:!1,nodeIntegration:!0,preload:a.join(__dirname,"./preload.js")}}),o.webContents.openDevTools(),process.env.NODE_ENV==="development"?o.loadURL(`${d.env.VITE_DEV_SERVER_URL}#/home`):o.loadFile(a.join(__dirname,"FitsAdmin/index.html"),{hash:"Home"}),o.on("closed",()=>{o=null}),o.once("ready-to-show",()=>{o.show()}),o.on("will-resize",(i,n)=>{m({width:n.width},o.webContents)}),l&&g.autoUpdate(o))},p=e.app.requestSingleInstanceLock();console.log("当前有个多少个实例",p);p?e.app.on("second-instance",(i,n,s)=>{console.log("第二个实例");const t=o||r;t&&t.focus}):e.app.quit();e.app.whenReady().then(()=>{console.log("我执行了没"),c(),d.platform==="darwin"&&e.Menu.setApplicationMenu(e.Menu.buildFromTemplate([]))});e.app.on("activate",()=>{e.BrowserWindow.getAllWindows().length===0&&(l?w():c())});e.app.on("window-all-closed",()=>{console.log("window-all-closed"),process.platform!=="darwin"&&e.app.quit()});e.ipcMain.on("openMainWindow",()=>{l=!0,w(),console.log("openMainWindow"),r.destroy(),r=null});e.ipcMain.on("openLoginWindow",()=>{l=!1,c(),o.destroy(),o=null});e.ipcMain.on("firstWidowResize",(i,{width:n})=>{m({width:n},i.sender)});function m({width:i},n){if(!l)return;const s=1920,t=e.screen.getPrimaryDisplay().scaleFactor,u=Math.min(Math.max(Number(i/s*t),.9),1.2).toFixed(3);n.send("setZoomFactor",u)}e.ipcMain.on("openWinFormWindow",(i,{methodName:n,params:s})=>{process.platform==="win32"?require("electron-edge-js").func({assemblyFile:a.join(__dirname,"../resources/dll/FitsTest.dll"),typeName:"FitsTest.Test",methodName:n})(s,(h,f)=>{i.sender.send("handleWinFormWindow",{error:h,value:f})}):e.dialog.showMessageBox({title:"温馨提示",message:"打开dll文件只能在window环境才会生效",type:"error",buttons:["确定"]})});e.ipcMain.on("setCookies",(i,{url:n,name:s,value:t})=>{e.session.defaultSession.cookies.set({url:n,name:s,value:t})});e.ipcMain.on("getCookies",(i,{url:n,name:s})=>{e.session.defaultSession.cookies.get({url:n,name:s})});
+"use strict";
+const require$$1 = require("electron");
+const require$$1$1 = require("path");
+const process$1 = require("process");
+const autoUpdate = require("./autoUpdate.js");
+require("events");
+require("crypto");
+require("tty");
+require("util");
+require("os");
+require("fs");
+require("stream");
+require("url");
+require("string_decoder");
+require("constants");
+require("assert");
+require("child_process");
+require("zlib");
+require("http");
+global.shareObject = {
+  // isLogin: false
+};
+let mainWindow, loginWindow, isLogin = false;
+const createLoginWindow = () => {
+  if (loginWindow) {
+    return;
+  }
+  const defaultConfig = {
+    show: false,
+    // 显示窗口将没有视觉闪烁（配合下面的ready-to-show事件）
+    hasShadow: true,
+    //窗口是否有阴影
+    useContentSize: false,
+    resizable: true,
+    //用户不可以调整窗口
+    center: true,
+    // 窗口居中
+    maximizable: false,
+    // 登录界面不可以最大化
+    backgroundColor: "#fff",
+    // alwaysOnTop: true,//窗口一直保持在其他窗口前面
+    webPreferences: {
+      //========关闭安全策略===========
+      webSecurity: false,
+      // 是否完整支持node.
+      nodeIntegration: true,
+      preload: require$$1$1.join(__dirname, "./preload.js")
+      // contextIsolation: false
+    }
+  };
+  const windowConfig = {
+    // window窗口是32px顶部栏
+    height: 545,
+    width: 470,
+    autoHideMenuBar: true
+    // 隐藏菜单栏，仅仅window系统有效
+  };
+  const macConfig = {
+    height: 550,
+    width: 420,
+    frame: false,
+    // 无边框
+    transparent: true,
+    // 透明
+    titleBarStyle: "hidden"
+  };
+  const config = process$1.platform === "darwin" ? { ...defaultConfig, ...macConfig } : { ...defaultConfig, ...windowConfig };
+  loginWindow = new require$$1.BrowserWindow(config);
+  if (process.env.NODE_ENV === "development") {
+    loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`);
+  } else {
+    loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`);
+  }
+  loginWindow.once("ready-to-show", () => {
+    loginWindow.show();
+  });
+  loginWindow.on("closed", () => {
+    loginWindow = null;
+  });
+};
+const createMainWindow = () => {
+  if (mainWindow) {
+    return;
+  }
+  mainWindow = new require$$1.BrowserWindow({
+    show: false,
+    // 窗口图标
+    icon: require$$1$1.join(__dirname, "./resources/icons/icon.ico"),
+    width: 1366,
+    height: 768,
+    minWidth: 900,
+    minHeight: 600,
+    autoHideMenuBar: true,
+    useContentSize: true,
+    webPreferences: {
+      //========关闭安全策略===========
+      webSecurity: false,
+      nodeIntegration: true,
+      preload: require$$1$1.join(__dirname, "./preload.js")
+      // contextIsolation: false
+    }
+  });
+  mainWindow.webContents.openDevTools();
+  if (process.env.NODE_ENV === "development") {
+    mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`);
+  } else {
+    mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`);
+  }
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+  });
+  mainWindow.on("will-resize", (event, newBounds) => {
+    changeWindowZoom({ width: newBounds.width }, mainWindow.webContents);
+  });
+  isLogin && autoUpdate.autoUpdate(mainWindow);
+};
+const gotTheLock = require$$1.app.requestSingleInstanceLock();
+console.log("当前有个多少个实例", gotTheLock);
+if (!gotTheLock) {
+  require$$1.app.quit();
+} else {
+  require$$1.app.on("second-instance", (event, commandLine, workingDirectory) => {
+    console.log("第二个实例");
+    const win = mainWindow || loginWindow;
+    win && win.focus;
+  });
+}
+require$$1.app.whenReady().then(() => {
+  console.log("我执行了没");
+  createLoginWindow();
+  process$1.platform === "darwin" && require$$1.Menu.setApplicationMenu(require$$1.Menu.buildFromTemplate([]));
+});
+require$$1.app.on("activate", () => {
+  if (require$$1.BrowserWindow.getAllWindows().length === 0) {
+    isLogin ? createMainWindow() : createLoginWindow();
+  }
+});
+require$$1.app.on("window-all-closed", () => {
+  console.log("window-all-closed");
+  if (process.platform !== "darwin")
+    require$$1.app.quit();
+});
+require$$1.ipcMain.on("openMainWindow", () => {
+  isLogin = true;
+  createMainWindow();
+  console.log("openMainWindow");
+  loginWindow.destroy();
+  loginWindow = null;
+});
+require$$1.ipcMain.on("openLoginWindow", () => {
+  isLogin = false;
+  createLoginWindow();
+  mainWindow.destroy();
+  mainWindow = null;
+});
+require$$1.ipcMain.on("firstWidowResize", (e, { width }) => {
+  changeWindowZoom({ width }, e.sender);
+});
+function changeWindowZoom({ width }, sender) {
+  if (!isLogin)
+    return;
+  const designWidth = 1920;
+  const deviceScaleFactor = require$$1.screen.getPrimaryDisplay().scaleFactor;
+  const zoom = Math.min(Math.max(Number(width / designWidth * deviceScaleFactor), 0.9), 1.2).toFixed(3);
+  sender.send("setZoomFactor", zoom);
+}
+require$$1.ipcMain.on("openWinFormWindow", (evt, { methodName, params }) => {
+  if (process.platform === "win32") {
+    const edge = require("electron-edge-js");
+    const invoke = edge.func({
+      // 这里的文件地址，允许可以是http协议的服务器地址，不一定要把dll放在exe里面
+      assemblyFile: require$$1$1.join(__dirname, "../resources/dll/FitsTest.dll"),
+      typeName: "FitsTest.Test",
+      methodName
+    });
+    invoke(params, (error, value) => {
+      evt.sender.send("handleWinFormWindow", { error, value });
+    });
+  } else {
+    require$$1.dialog.showMessageBox({
+      title: "温馨提示",
+      message: "打开dll文件只能在window环境才会生效",
+      type: "error",
+      buttons: ["确定"]
+    });
+  }
+});
+require$$1.ipcMain.on("setCookies", (evt, { url, name, value }) => {
+  require$$1.session.defaultSession.cookies.set({ url, name, value });
+});
+require$$1.ipcMain.on("getCookies", (evt, { url, name }) => {
+  require$$1.session.defaultSession.cookies.get({ url, name });
+});

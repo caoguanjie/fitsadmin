@@ -1,1 +1,22 @@
-"use strict";const e=require("electron");window.addEventListener("DOMContentLoaded",()=>{e.contextBridge.exposeInMainWorld("ipcRenderer",{send:(n,i)=>e.ipcRenderer.send(n,i),on:(n,i)=>{const t=(r,o)=>i(o);e.ipcRenderer.on(n,t)}}),d()});function d(){const n=window.innerWidth,i=window.innerHeight,t=window.devicePixelRatio;e.ipcRenderer.send("firstWidowResize",{width:n,height:i,windowPixelRatio:t}),e.ipcRenderer.on("setZoomFactor",(r,o)=>{console.log("setZoomFactor",o,typeof o),e.webFrame.setZoomFactor(Number(o))})}
+"use strict";
+const require$$1 = require("electron");
+window.addEventListener("DOMContentLoaded", () => {
+  require$$1.contextBridge.exposeInMainWorld("ipcRenderer", {
+    send: (channel, data) => require$$1.ipcRenderer.send(channel, data),
+    on: (channel, callback) => {
+      const newCallback = (_, data) => callback(data);
+      require$$1.ipcRenderer.on(channel, newCallback);
+    }
+  });
+  getDomWindowSize();
+});
+function getDomWindowSize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const windowPixelRatio = window.devicePixelRatio;
+  require$$1.ipcRenderer.send("firstWidowResize", { width, height, windowPixelRatio });
+  require$$1.ipcRenderer.on("setZoomFactor", (e, zoom) => {
+    console.log("setZoomFactor", zoom, typeof zoom);
+    require$$1.webFrame.setZoomFactor(Number(zoom));
+  });
+}

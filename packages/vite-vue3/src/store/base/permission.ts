@@ -60,7 +60,7 @@ const usePermissionStore = defineStore({
     setRoutes(routes: RouteRecordRaw[]) {
       this.addRoutes = routes;
       this.routes = constantRoutes.concat(routes);
-      this.setActiveMenu();
+      // this.setActiveMenu();
     },
     /**
      * 将多级嵌套路由处理成一维数组
@@ -75,7 +75,6 @@ const usePermissionStore = defineStore({
         if (item.children && item.children.length > 0) {
           childrenFflatRoutes = this.castToFlatRoute(item.children, "");
         }
-
         // 一级路由是布局路由,需要处理的只是其子路由数据
         flatRoutes.push({ ...item, children: childrenFflatRoutes })
       }
@@ -112,14 +111,7 @@ const usePermissionStore = defineStore({
     },
     generateRoutes(roles: string[]) {
       return new Promise((resolve, reject) => {
-        let accessedRoutes
-        if (roles.includes('admin')) {
-          // accessedRoutes = asyncRoutes || []
-          // 临时用一下
-          accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-        } else {
-          accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-        }
+        const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
         this.setRoutes(accessedRoutes);
         const flatRoutes = this.generateFlatRoutes(accessedRoutes)
         resolve(flatRoutes);

@@ -43,8 +43,8 @@ const createLoginWindow = () => {
         autoHideMenuBar: true, // 隐藏菜单栏，仅仅window系统有效
     }
     const macConfig = {
-        height: 500,
-        width: 450,
+        height: 550,
+        width: 420,
         frame: false, // 无边框
         transparent: true, // 透明
         titleBarStyle: 'hidden',
@@ -53,11 +53,14 @@ const createLoginWindow = () => {
     // window窗口是32px顶部栏
     loginWindow = new BrowserWindow(config)
     if (process.env.NODE_ENV === "development") {
-        loginWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`)
+        loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`)
+        // loginWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`)
     } else {
-        loginWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
-            hash: "login"
-        });
+
+        loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`)
+        // loginWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
+        //     hash: "login"
+        // });
         // loginWindow.loadURL('http://192.168.32.60:3001/#/login');
     }
 
@@ -104,11 +107,13 @@ const createMainWindow = () => {
 
     mainWindow.webContents.openDevTools()
     if (process.env.NODE_ENV === "development") {
-        mainWindow.loadURL(`${env.VITE_DEV_SERVER_URL}#/home`)
+        mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`)
+        // mainWindow.loadURL(`${env.VITE_DEV_SERVER_URL}#/home`)
     } else {
-        mainWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
-            hash: "Home"
-        });
+        mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`)
+        // mainWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
+        //     hash: "Home"
+        // });
     }
     mainWindow.on('closed', () => {
         mainWindow = null
@@ -154,10 +159,43 @@ app.whenReady().then(() => {
     // createMainWindow();
     // 隐藏菜单栏,只适合mac
     platform === 'darwin' && Menu.setApplicationMenu(Menu.buildFromTemplate([]))
-
+    // 隐藏菜单栏,只适合mac
+    createMenu()
 
 })
-
+function createMenu() {
+    // darwin表示macOS，针对macOS的设置  process.platform === 'darwin'
+    if (process.platform === 'darwin') {
+        const template: any = [{
+            label: '我的应用',
+            submenu: [
+                { label: '关于', accelerator: 'CmdOrCtrl+I', role: 'about' },
+                { type: 'separator' },
+                { label: '隐藏', role: 'hide' },
+                { label: '隐藏其他', role: 'hideOthers' },
+                { type: 'separator' },
+                { label: '服务', role: 'services' },
+                { label: '退出', accelerator: 'Command+Q', role: 'quit' }
+            ]
+        },
+        {
+            label: '编辑',
+            submenu: [
+                { label: '复制', accelerator: 'CmdOrCtrl+C', role: 'copy' },
+                { label: '粘贴', accelerator: 'CmdOrCtrl+V', role: 'paste' },
+                { label: '剪切', accelerator: 'CmdOrCtrl+X', role: 'cut' },
+                { label: '撤销', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
+                { label: '重做', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+                { label: '全选', accelerator: 'CmdOrCtrl+A', role: 'selectAll' }
+            ]
+        }]
+        const menu = Menu.buildFromTemplate(template)
+        Menu.setApplicationMenu(menu)
+    } else {
+        // windows及linux系统
+        Menu.setApplicationMenu(null)
+    }
+}
 app.on('activate', () => {
     // 解决在macos上，dock图标点击后，没有任何窗口弹出
     if (BrowserWindow.getAllWindows().length === 0) {
