@@ -24,6 +24,6 @@ jobs:
           with:
             tag_name: ${{ github.ref }}
             body: |
-              详情信息请参阅 [CHANGELOG.md](https://github.com/caoguanjie/fitsadmin/blob/master/CHANGELOG.md) 
+              详情信息请参阅 [CHANGELOG.md](https://github.com/caoguanjie/fitsadmin/blob/master/main/CHANGELOG.md) 
         
   
