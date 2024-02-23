@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu, ipcMain, screen, dialog, session } from 'elec
 import { join } from 'path';
 import { platform, env } from 'process'
 import { autoUpdate } from './autoUpdate'
+import { usePrintHandler } from './print';
 // import url from 'node:url'
 // 全局变量，为了控制主线程的状态和共享数据
 global.shareObject = {
@@ -44,7 +45,7 @@ const createLoginWindow = () => {
     }
     const macConfig = {
         height: 550,
-        width: 420,
+        width: 450,
         frame: false, // 无边框
         transparent: true, // 透明
         titleBarStyle: 'hidden',
@@ -53,14 +54,12 @@ const createLoginWindow = () => {
     // window窗口是32px顶部栏
     loginWindow = new BrowserWindow(config)
     if (process.env.NODE_ENV === "development") {
-        loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`)
-        // loginWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`)
+        loginWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`)
     } else {
 
-        loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`)
-        // loginWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
-        //     hash: "login"
-        // });
+        loginWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
+            hash: "login"
+        });
         // loginWindow.loadURL('http://192.168.32.60:3001/#/login');
     }
 
@@ -107,13 +106,11 @@ const createMainWindow = () => {
 
     mainWindow.webContents.openDevTools()
     if (process.env.NODE_ENV === "development") {
-        mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`)
-        // mainWindow.loadURL(`${env.VITE_DEV_SERVER_URL}#/home`)
+        mainWindow.loadURL(`${env.VITE_DEV_SERVER_URL}#/home`)
     } else {
-        mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`)
-        // mainWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
-        //     hash: "Home"
-        // });
+        mainWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
+            hash: "Home"
+        });
     }
     mainWindow.on('closed', () => {
         mainWindow = null
@@ -156,11 +153,10 @@ if (!gotTheLock) {
 app.whenReady().then(() => {
     console.log('我执行了没')
     createLoginWindow()
-    // createMainWindow();
-    // 隐藏菜单栏,只适合mac
-    platform === 'darwin' && Menu.setApplicationMenu(Menu.buildFromTemplate([]))
-    // 隐藏菜单栏,只适合mac
-    createMenu()
+    // 隐藏菜单栏
+    createMenu();
+    // 打印设置
+    usePrintHandler()
 
 })
 function createMenu() {

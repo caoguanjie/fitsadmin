@@ -46,7 +46,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       vue(),
       mode === 'electron' && electron({
         // 主进程入口文件
-        entry: ['app/electron/main.ts', 'app/electron/preload.ts', 'app/electron/autoUpdate.ts'],
+        entry: ['app/electron/main.ts', 'app/electron/preload.ts', 'app/electron/autoUpdate.ts', 'app/electron/print.ts'],
         vite: {
           build: {
             outDir: fileURLToPath(new URL('./app', import.meta.url)),

@@ -12,7 +12,11 @@
         </fits-table>
         <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="false" @cancel="onClose"
             @submit="visible = false">
-            <vue-pdf-embed :source="doloadUrl" class="vue-pdf-embed" :style="scaleFun" :page="pdfPages" />
+            <template #header>
+                <el-button type="primary" :icon="Printer" @click="printer">打印</el-button>
+            </template>
+            <vue-pdf-embed ref="vuePdfEmbedRef" :source="doloadUrl" class="vue-pdf-embed" :style="scaleFun"
+                :page="pdfPages" />
         </fits-dialog>
         <fits-dialog :visible="visible2" :dialogProp="dialogProp" :showFooter="false" @cancel="visible2 = false"
             @submit="visible2 = false">
@@ -24,6 +28,7 @@
 <script setup lang="ts" name="PreviewPDF">
 import VuePdfEmbed from "vue-pdf-embed";
 import { ElButton } from 'element-plus';
+import { Printer } from '@element-plus/icons-vue'
 import { VxeGridInstance } from 'vxe-table';
 import { FitsTable, FitsTableProps, useFitsTablePro, FitsDialog } from "@/fits-components";
 // import { FitsDialog } from "@/fits-components/FeedBack/Dialog";
@@ -35,6 +40,7 @@ const props = defineProps({
 })
 const visible = ref(false)
 const visible2 = ref(false)
+const vuePdfEmbedRef = ref<any>(null)
 let pdfPages = ref(0); // pdf显示页数
 let scale = ref(1);  // 缩放比例
 let doloadUrl = ref("");
@@ -58,6 +64,9 @@ const onClose = () => {
 const scaleFun = () => { // 缩放
     let scale1 = scale.value;
     return `transform:scale(${scale1})`
+}
+function printer() {
+    vuePdfEmbedRef.value.print()
 }
 const gridOptions: FitsTableProps = {
     columns: [

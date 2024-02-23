@@ -263,6 +263,13 @@ export const businessRouter: RouteRecordRaw = {
                     component: () => import("@/views/business-example/electron/index.vue"),
                     meta: { title: "调用dll文件" },
                 },
+                {
+                    // path (kebab-case) 是fitsAdmin的路由命名规范
+                    path: "print",
+                    name: "ElectronPrint",
+                    component: () => import("@/views/business-example/electron/PrintPDF.vue"),
+                    meta: { title: "打印功能" },
+                }
             ],
         },
     ],

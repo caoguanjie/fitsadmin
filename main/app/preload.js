@@ -6,7 +6,8 @@ window.addEventListener("DOMContentLoaded", () => {
     on: (channel, callback) => {
       const newCallback = (_, data) => callback(data);
       require$$1.ipcRenderer.on(channel, newCallback);
-    }
+    },
+    invoke: (channel, ...args) => require$$1.ipcRenderer.invoke(channel, ...args)
   });
   getDomWindowSize();
 });

@@ -53,6 +53,12 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     meta: { hidden: true }
   },
   {
+    path: "/print-test",
+    name: "ElectronPrintTest",
+    component: () => import("@/views/business-example/electron/components/PrintTest.vue"),
+    meta: { title: "打印测试界面", hidden: true },
+  },
+  {
     path: '/404',
     component: () => import('@/views/error-page/404.vue'),
     meta: { hidden: true }
@@ -82,6 +88,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         name: 'Password',
         meta: { title: '修改密码', hidden: true }
       },
+
       {
         path: '401',
         component: () => import('@/views/error-page/401.vue'),

@@ -3,6 +3,7 @@ const require$$1 = require("electron");
 const require$$1$1 = require("path");
 const process$1 = require("process");
 const autoUpdate = require("./autoUpdate.js");
+const print = require("./print.js");
 require("events");
 require("crypto");
 require("tty");
@@ -57,7 +58,7 @@ const createLoginWindow = () => {
   };
   const macConfig = {
     height: 550,
-    width: 420,
+    width: 450,
     frame: false,
     // 无边框
     transparent: true,
@@ -67,9 +68,11 @@ const createLoginWindow = () => {
   const config = process$1.platform === "darwin" ? { ...defaultConfig, ...macConfig } : { ...defaultConfig, ...windowConfig };
   loginWindow = new require$$1.BrowserWindow(config);
   if (process.env.NODE_ENV === "development") {
-    loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`);
+    loginWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/login`);
   } else {
-    loginWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/`);
+    loginWindow.loadFile(require$$1$1.join(__dirname, "FitsAdmin/index.html"), {
+      hash: "login"
+    });
   }
   loginWindow.once("ready-to-show", () => {
     loginWindow.show();
@@ -102,9 +105,11 @@ const createMainWindow = () => {
   });
   mainWindow.webContents.openDevTools();
   if (process.env.NODE_ENV === "development") {
-    mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`);
+    mainWindow.loadURL(`${process$1.env.VITE_DEV_SERVER_URL}#/home`);
   } else {
-    mainWindow.loadURL(`https://fitsservice.qilingtong.cloud/Fits/QLT/#/Home`);
+    mainWindow.loadFile(require$$1$1.join(__dirname, "FitsAdmin/index.html"), {
+      hash: "Home"
+    });
   }
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -131,8 +136,42 @@ if (!gotTheLock) {
 require$$1.app.whenReady().then(() => {
   console.log("我执行了没");
   createLoginWindow();
-  process$1.platform === "darwin" && require$$1.Menu.setApplicationMenu(require$$1.Menu.buildFromTemplate([]));
+  createMenu();
+  print.usePrintHandler();
 });
+function createMenu() {
+  if (process.platform === "darwin") {
+    const template = [
+      {
+        label: "我的应用",
+        submenu: [
+          { label: "关于", accelerator: "CmdOrCtrl+I", role: "about" },
+          { type: "separator" },
+          { label: "隐藏", role: "hide" },
+          { label: "隐藏其他", role: "hideOthers" },
+          { type: "separator" },
+          { label: "服务", role: "services" },
+          { label: "退出", accelerator: "Command+Q", role: "quit" }
+        ]
+      },
+      {
+        label: "编辑",
+        submenu: [
+          { label: "复制", accelerator: "CmdOrCtrl+C", role: "copy" },
+          { label: "粘贴", accelerator: "CmdOrCtrl+V", role: "paste" },
+          { label: "剪切", accelerator: "CmdOrCtrl+X", role: "cut" },
+          { label: "撤销", accelerator: "CmdOrCtrl+Z", role: "undo" },
+          { label: "重做", accelerator: "Shift+CmdOrCtrl+Z", role: "redo" },
+          { label: "全选", accelerator: "CmdOrCtrl+A", role: "selectAll" }
+        ]
+      }
+    ];
+    const menu = require$$1.Menu.buildFromTemplate(template);
+    require$$1.Menu.setApplicationMenu(menu);
+  } else {
+    require$$1.Menu.setApplicationMenu(null);
+  }
+}
 require$$1.app.on("activate", () => {
   if (require$$1.BrowserWindow.getAllWindows().length === 0) {
     isLogin ? createMainWindow() : createLoginWindow();
