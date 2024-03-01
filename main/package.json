@@ -48,6 +48,7 @@
         "nprogress": "^0.2.0",
         "path-browserify": "^1.0.1",
         "path-to-regexp": "^6.2.0",
+        "pdf-merger-js": "^5.1.1",
         "phantomjs-prebuilt": "2.1.16",
         "pinia": "^2.1.4",
         "pinyin-match": "^1.2.4",

@@ -177,6 +177,12 @@ export const businessRouter: RouteRecordRaw = {
                     component: () => import("@/views/components-manage/pdf/downloadPdf.vue"),
                     meta: { title: "下载pdf" },
                 },
+                {
+                    path: "PrintPDF",
+                    name: "PrintPDF",
+                    component: () => import("@/views/components-manage/pdf/PrintPdf.vue"),
+                    meta: { title: "打印pdf" },
+                },
             ],
         },
 

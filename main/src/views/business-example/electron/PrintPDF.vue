@@ -19,11 +19,11 @@
                 </template>
             </el-table-column>
         </el-table>
+        <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="false" @cancel="visible = false"
+            @submit="visible = false">
+            <iframe ref="iframe" :src="printURL" style="width: 100%; height: 80vh;transform:scale(1);border:none" />
+        </fits-dialog>
     </div>
-    <fits-dialog :visible="visible" :dialogProp="dialogProp" :showFooter="false" @cancel="visible = false"
-        @submit="visible = false">
-        <iframe ref="iframe" :src="printURL" style="width: 100%; height: 80vh;transform:scale(1);border:none" />
-    </fits-dialog>
 </template>
 
 <script lang='ts' setup>

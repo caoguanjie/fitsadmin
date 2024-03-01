@@ -24,6 +24,10 @@ export function usePrintHandler() {
         return new Promise((resolve) => {
             event.sender.print(printOptions, (success: boolean, failureReason: string) => {
                 success && console.log('打印成功');
+                if (printWindow) {
+                    printWindow.destroy();
+                    printWindow = null;
+                }
                 resolve({ success, failureReason })
             })
 
@@ -34,8 +38,8 @@ export function usePrintHandler() {
      * 打开打印窗口
      * hash是路由的hash路径，可以利用hash路径和路由相匹配实现指定的打印内容
      */
-    ipcMain.handle('openPrintWindow', async (event, hash, silent) => {
-        openPrintWindow(hash, silent);
+    ipcMain.handle('openPrintWindow', async (event, pdfurl, silent) => {
+        openPrintWindow(pdfurl, silent);
     })
 
     // 销毁打印窗口
@@ -55,7 +59,7 @@ export function usePrintHandler() {
  * @param silent 是否静默打印
  * @returns 
  */
-export function openPrintWindow(hash: string, silent = true) {
+export function openPrintWindow(pdfurl: string, silent = true) {
     if (printWindow) {
         printWindow.hide();
         printWindow.destroy();
@@ -84,15 +88,14 @@ export function openPrintWindow(hash: string, silent = true) {
         }
 
     })
-    console.log(`${process.env.VITE_DEV_SERVER_URL}#/${hash ?? 'print'}`)
+    console.log(`${process.env.VITE_DEV_SERVER_URL}/static/web/viewer.html?file=${pdfurl}`)
     if (process.env.NODE_ENV === "development") {
         printWindow.webContents.openDevTools()
-        printWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/${hash ?? 'print'}`)
+        printWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}/static/web/viewer.html?file=${pdfurl}`)
     } else {
-        printWindow.loadFile(join(__dirname, 'FitsAdmin/index.html'), {
-            hash: hash ?? 'print'
-        });
+        printWindow.loadFile(join(__dirname, `/static/web/viewer.html?file=${pdfurl}`));
     }
+
     //  不是静默打印就 显示窗口
     if (!silent) {
         printWindow.once('ready-to-show', () => {

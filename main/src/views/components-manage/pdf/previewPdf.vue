@@ -31,15 +31,21 @@ import { ElButton } from 'element-plus';
 import { Printer } from '@element-plus/icons-vue'
 import { VxeGridInstance } from 'vxe-table';
 import { FitsTable, FitsTableProps, useFitsTablePro, FitsDialog } from "@/fits-components";
-// import { FitsDialog } from "@/fits-components/FeedBack/Dialog";
+
+
 const props = defineProps({
     url: {
         type: String,
         default: new URL(`./test.pdf`, import.meta.url).href
+    },
+    pdfjsURL: {
+        type: String,
+        default: `/static/web/viewer.html?file=${encodeURIComponent(new URL(`./test.pdf`, import.meta.url).href)}`
     }
 })
 const visible = ref(false)
 const visible2 = ref(false)
+
 const vuePdfEmbedRef = ref<any>(null)
 let pdfPages = ref(0); // pdf显示页数
 let scale = ref(1);  // 缩放比例
@@ -58,6 +64,7 @@ const onClick = (key: string) => {
     }
 }
 
+
 const onClose = () => {
     visible.value = false
 }
@@ -68,6 +75,9 @@ const scaleFun = () => { // 缩放
 function printer() {
     vuePdfEmbedRef.value.print()
 }
+
+
+
 const gridOptions: FitsTableProps = {
     columns: [
         { field: 'name', title: '文件名' },

@@ -11,12 +11,16 @@ function usePrintHandler() {
     return new Promise((resolve) => {
       event.sender.print(printOptions, (success, failureReason) => {
         success && console.log("打印成功");
+        if (printWindow) {
+          printWindow.destroy();
+          printWindow = null;
+        }
         resolve({ success, failureReason });
       });
     });
   });
-  require$$1.ipcMain.handle("openPrintWindow", async (event, hash, silent) => {
-    openPrintWindow(hash, silent);
+  require$$1.ipcMain.handle("openPrintWindow", async (event, pdfurl, silent) => {
+    openPrintWindow(pdfurl, silent);
   });
   require$$1.ipcMain.handle("destroyPrintWindow", () => {
     if (printWindow) {
@@ -26,7 +30,7 @@ function usePrintHandler() {
     console.log("打印窗口已销毁");
   });
 }
-function openPrintWindow(hash, silent = true) {
+function openPrintWindow(pdfurl, silent = true) {
   if (printWindow) {
     printWindow.hide();
     printWindow.destroy();
@@ -54,14 +58,12 @@ function openPrintWindow(hash, silent = true) {
       preload: require$$1$1.join(__dirname, "./preload.js")
     }
   });
-  console.log(`${process.env.VITE_DEV_SERVER_URL}#/${hash ?? "print"}`);
+  console.log(`${process.env.VITE_DEV_SERVER_URL}/static/web/viewer.html?file=${pdfurl}`);
   if (process.env.NODE_ENV === "development") {
     printWindow.webContents.openDevTools();
-    printWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}#/${hash ?? "print"}`);
+    printWindow.loadURL(`${process.env.VITE_DEV_SERVER_URL}/static/web/viewer.html?file=${pdfurl}`);
   } else {
-    printWindow.loadFile(require$$1$1.join(__dirname, "FitsAdmin/index.html"), {
-      hash: hash ?? "print"
-    });
+    printWindow.loadFile(require$$1$1.join(__dirname, `/static/web/viewer.html?file=${pdfurl}`));
   }
   if (!silent) {
     printWindow.once("ready-to-show", () => {
